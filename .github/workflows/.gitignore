@@ -1,0 +1,26 @@
+# PRIVATE: never publish
+modules/*/instructor.*
+modules/*/worksheet.*
+modules/*/homework.*
+tools/verify_modules.py
+legacy_week1/
+
+# Generated
+build/
+*.pdf
+site/mkdocs.yml
+site/docs/index.md
+site/docs/javascripts/
+site/docs/[0-9]*/
+tools/node/
+course_map.tex
+
+# LaTeX junk
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+__pycache__/
