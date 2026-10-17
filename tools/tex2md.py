@@ -180,7 +180,7 @@ def preprocess(body, kind, module, registries, figures):
     b = re.sub(r"\\hspace\*?\{[^}]*\}", "", b)
     b = re.sub(r"\\renewcommand\{\\arraystretch\}\{[^}]*\}", "", b)
 
-    # la.sty environments that MathJax does not know
+    # la.sty environments that the site's math renderer does not know
     b = re.sub(r"\\begin\{amat\}\{([^}]*)\}", r"\\left[\\begin{array}{\1}", b)
     b = b.replace(r"\end{amat}", r"\end{array}\right]")
     b = b.replace(r"\begin{align*}", r"\[\begin{aligned}").replace(r"\end{align*}", r"\end{aligned}\]")
