@@ -1,0 +1,342 @@
+\documentclass[11pt]{article}
+\usepackage[notes]{la}
+\lamodule{1}{4}{The Matrix Equation Ax = b}
+\laxdoc{1.2}
+\laxdoc{1.3}
+
+\begin{document}
+
+\section{The Matrix Equation Ax = b}
+
+\begin{guide}
+In Section~1.3 we saw that a linear system is the same thing as a vector equation. Can that equation be written so
+compactly that it looks like the equation $ax=b$ from elementary algebra, with a matrix $A$ in the role of $a$? And when we
+do this, which questions about the \emph{matrix} $A$ turn out to decide whether $A\bv{x}=\bv{b}$ can be solved for every $\bv{b}$?
+\end{guide}
+
+\textbf{By the end of this section you should be able to:}
+\begin{itemize}
+  \item compute $A\bv{x}$ both from the definition (a combination of the columns) and by the row--column rule;
+  \item move freely among a system, a vector equation and a matrix equation;
+  \item decide whether $A\bv{x}=\bv{b}$ is solvable for \emph{every} $\bv{b}$, and find the condition on $\bv{b}$ when it is not;
+  \item state and use the four equivalent conditions of the existence theorem;
+  \item use the linearity rules $A(\bv{u}+\bv{v})=A\bv{u}+A\bv{v}$ and $A(c\bv{u})=cA\bv{u}$;
+  \item explain why $A\bv{e}_j$ is the $j$th column of $A$.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{The product of a matrix and a vector}
+
+\begin{defn}{The product $A\bv{x}$}{matvec}
+If $A$ is an $m\times n$ matrix with columns $\bv{a}_1,\dots,\bv{a}_n$ (each in $\R^m$), and $\bv{x}$ is in $\R^n$, then
+the \emph{product of $A$ and $\bv{x}$}, denoted $A\bv{x}$, is the linear combination of the columns of $A$ using the entries of
+$\bv{x}$ as weights:
+\[
+A\bv{x}=\begin{bmatrix}\bv{a}_1&\bv{a}_2&\cdots&\bv{a}_n\end{bmatrix}\begin{bmatrix}x_1\\ \vdots\\ x_n\end{bmatrix}
+=x_1\bv{a}_1+x_2\bv{a}_2+\cdots+x_n\bv{a}_n.
+\]
+\end{defn}
+
+\begin{warn}[Size must match]
+$A\bv{x}$ is defined \emph{only} when the number of columns of $A$ equals the number of entries of $\bv{x}$. The result lies in $\R^m$,
+where $m$ is the number of \emph{rows} of $A$. A $3\times2$ matrix can multiply a vector in $\R^2$ and produces a vector in $\R^3$;
+it cannot multiply a vector in $\R^3$.
+\end{warn}
+
+\begin{exmp}{Computing $A\bv{x}$ from the definition}{defcompute}
+Let $A=\begin{bmatrix}1&2&-1\\0&-5&3\end{bmatrix}$ and $\bv{x}=(4,3,7)$. Then $A$ is $2\times3$ and $\bv{x}$ is in $\R^3$, so
+$A\bv{x}$ is defined and lies in $\R^2$:
+\[
+A\bv{x}=4\begin{bmatrix}1\\0\end{bmatrix}+3\begin{bmatrix}2\\-5\end{bmatrix}+7\begin{bmatrix}-1\\3\end{bmatrix}
+=\begin{bmatrix}4\\0\end{bmatrix}+\begin{bmatrix}6\\-15\end{bmatrix}+\begin{bmatrix}-7\\21\end{bmatrix}
+=\begin{bmatrix}3\\6\end{bmatrix}.
+\]
+\end{exmp}
+
+The same number can be found one \emph{entry} at a time, which is faster by hand. The first entry of $A\bv{x}$ collects
+the first entry of every term: $4\cdot1+3\cdot2+7\cdot(-1)=3$. The second collects the second entries:
+$4\cdot0+3\cdot(-5)+7\cdot3=6$. This is the following rule.
+
+\begin{thm}{The row--column rule}{rowcol}
+The $i$th entry of $A\bv{x}$ is the sum of the products of the entries of row $i$ of $A$ with the corresponding entries of $\bv{x}$:
+\[
+(A\bv{x})_i=a_{i1}x_1+a_{i2}x_2+\cdots+a_{in}x_n.
+\]
+\end{thm}
+
+\begin{proof}
+By Definition~\ref{def:matvec}, the $i$th entry of $x_1\bv{a}_1+\cdots+x_n\bv{a}_n$ is the sum of the $i$th entries of the terms
+$x_j\bv{a}_j$. The $i$th entry of $x_j\bv{a}_j$ is $x_j a_{ij}$, so the $i$th entry of the sum is $\sum_j a_{ij}x_j$.
+\end{proof}
+
+\begin{kc}{Two ways}{twoways}
+Let $B=\begin{bmatrix}3&-1\\2&0\\1&4\end{bmatrix}$ and $\bv{z}=(2,-3)$. Compute $B\bv{z}$ twice: once as a combination of columns, and once with the row--column
+rule. Do the answers agree? In what space does the answer lie?
+\end{kc}
+
+\begin{kc}{Is it defined?}{defined}
+For each product decide whether it is defined, and if so give the size of the result:
+(a)~a $4\times3$ matrix times a vector in $\R^3$; \ (b)~a $3\times4$ matrix times a vector in $\R^3$; \ (c)~a $1\times5$ matrix times a vector in $\R^5$.
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{Three languages for one problem}
+
+The definition lets us rewrite the vector equation of Section~1.3 as a single matrix equation.
+
+\begin{thm}{Three equivalent descriptions}{three}
+If $A$ is an $m\times n$ matrix with columns $\bv{a}_1,\dots,\bv{a}_n$, and $\bv{b}$ is in $\R^m$, then the matrix equation
+\[
+A\bv{x}=\bv{b}
+\]
+has the same solution set as the vector equation
+\[
+x_1\bv{a}_1+x_2\bv{a}_2+\cdots+x_n\bv{a}_n=\bv{b},
+\]
+which in turn has the same solution set as the system of linear equations whose augmented matrix is
+$\begin{bmatrix}\bv{a}_1&\cdots&\bv{a}_n&\bv{b}\end{bmatrix}$.
+\end{thm}
+
+\begin{proof}
+The left side of $A\bv{x}=\bv{b}$ is, by Definition~\ref{def:matvec}, the left side of the vector equation, so those equations are the same
+equation. The equivalence of the vector equation and the system is Theorem~\ref{1.3-thm:vecsys}.
+\end{proof}
+
+So $A\bv{x}=\bv{b}$ can be read in three ways: \textbf{(1)} \emph{Does a combination of the columns of $A$ equal $\bv{b}$?}
+\textbf{(2)} \emph{Is the system with augmented matrix $[A\ \bv{b}]$ consistent?} \textbf{(3)} \emph{Is $\bv{b}$ in
+$\Span\{\bv{a}_1,\dots,\bv{a}_n\}$?} Which reading is the most useful depends on the problem.
+
+\begin{exmp}{A system, a vector equation and a matrix equation}{three}
+The system
+\[
+x_1+2x_2-x_3=-3,\qquad -3x_1-4x_2+2x_3=5,\qquad 5x_1+2x_2+3x_3=9
+\]
+is the matrix equation $A\bv{x}=\bv{b}$ with
+\[
+A=\begin{bmatrix}1&2&-1\\-3&-4&2\\5&2&3\end{bmatrix},\qquad \bv{b}=\begin{bmatrix}-3\\5\\9\end{bmatrix},
+\]
+and the vector equation $x_1(1,-3,5)+x_2(2,-4,2)+x_3(-1,2,3)=(-3,5,9)$. Row reducing the augmented matrix:
+\begin{align*}
+\begin{amat}{ccc|c}1&2&-1&-3\\-3&-4&2&5\\5&2&3&9\end{amat}
+&\rops{R_2+3R_1,\ R_3-5R_1}
+\begin{amat}{ccc|c}1&2&-1&-3\\0&2&-1&-4\\0&-8&8&24\end{amat}
+\rops{\frac18R_3}
+\begin{amat}{ccc|c}1&2&-1&-3\\0&2&-1&-4\\0&-1&1&3\end{amat}\\[4pt]
+&\rops{R_2\leftrightarrow R_3}
+\begin{amat}{ccc|c}1&2&-1&-3\\0&-1&1&3\\0&2&-1&-4\end{amat}
+\rops{R_3+2R_2}
+\begin{amat}{ccc|c}1&2&-1&-3\\0&-1&1&3\\0&0&1&2\end{amat}\\[4pt]
+&\rops{-R_2}
+\begin{amat}{ccc|c}1&2&-1&-3\\0&1&-1&-3\\0&0&1&2\end{amat}
+\rops{R_1+R_3,\ R_2+R_3}
+\begin{amat}{ccc|c}1&2&0&-1\\0&1&0&-1\\0&0&1&2\end{amat}\\[4pt]
+&\rops{R_1-2R_2}
+\begin{amat}{ccc|c}1&0&0&1\\0&1&0&-1\\0&0&1&2\end{amat}.
+\end{align*}
+So $\bv{x}=(1,-1,2)$ is the unique solution. Check with the row--column rule:
+$1-2-2=-3$, \ $-3+4+4=5$, \ $5-2+6=9$. \ $\checkmark$ Every column of $A$ is a pivot column.
+\end{exmp}
+
+\begin{kc}{Translate}{translate}
+Write the system $2x_1-x_2=4$, $x_1+3x_2=-5$, $-x_1+x_2=0$ as $A\bv{x}=\bv{b}$, giving $A$ and $\bv{b}$ explicitly. What are the sizes of $A$, $\bv{x}$, $\bv{b}$?
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{Does $A\bv{x}=\bv{b}$ have a solution for every $\bv{b}$?}
+
+For the equation $ax=b$ with $a\neq0$, the answer is always yes: $x=b/a$. For matrices the situation is more interesting,
+and the answer depends on $A$ alone.
+
+\begin{exmp}{Some right-hand sides work and some do not}{exist}
+Let
+\[
+A=\begin{bmatrix}1&3&4\\-4&2&-6\\-3&-2&-7\end{bmatrix},\qquad \bv{b}=\begin{bmatrix}b_1\\b_2\\b_3\end{bmatrix}.
+\]
+For which $\bv{b}$ is $A\bv{x}=\bv{b}$ consistent?
+
+\textbf{Solution.} Row reduce $[A\ \bv{b}]$, keeping $b_1,b_2,b_3$ unspecified:
+\begin{align*}
+\begin{amat}{ccc|c}1&3&4&b_1\\-4&2&-6&b_2\\-3&-2&-7&b_3\end{amat}
+&\rops{R_2+4R_1,\ R_3+3R_1}
+\begin{amat}{ccc|c}1&3&4&b_1\\0&14&10&b_2+4b_1\\0&7&5&b_3+3b_1\end{amat}\\[4pt]
+&\rops{R_2-2R_3}
+\begin{amat}{ccc|c}1&3&4&b_1\\0&0&0&-2b_1+b_2-2b_3\\0&7&5&b_3+3b_1\end{amat}.
+\end{align*}
+Interchanging rows $2$ and $3$ gives an echelon form. Its third row is $[\,0\ \ 0\ \ 0\mid -2b_1+b_2-2b_3\,]$, so the system is consistent if and only if
+\[
+2b_1-b_2+2b_3=0.
+\]
+This is the equation of a plane in $\R^3$. For $\bv{b}=(1,4,1)$ we get $2-4+2=0$, so $A\bv{x}=\bv{b}$ has a solution;
+for $\bv{b}=(1,1,1)$ we get $3\neq0$, so it has none. The columns of $A$ span only this plane, not all of $\R^3$. And $A$ has only $2$ pivot
+positions for its $3$ rows.
+\end{exmp}
+
+The next theorem says that this is no accident: the question of solving $A\bv{x}=\bv{b}$ for \emph{every} $\bv{b}$ is answered by looking at pivots in $A$ alone.
+
+\begin{thm}{The existence theorem}{existence}
+Let $A$ be an $m\times n$ matrix. The following four statements are either all true or all false.
+\begin{enumerate}[label=(\alph*),itemsep=1pt]
+  \item For each $\bv{b}$ in $\R^m$, the equation $A\bv{x}=\bv{b}$ has at least one solution.
+  \item Each $\bv{b}$ in $\R^m$ is a linear combination of the columns of $A$.
+  \item The columns of $A$ span $\R^m$.
+  \item $A$ has a pivot position in every row.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+(a), (b) and (c) are three ways to say the same thing, by Theorem~\ref{thm:three} and the definition of span.
+It remains to connect these with (d). Let $U$ be an echelon form of $A$.
+
+If (d) holds, then $U$ has no zero row. Then for any $\bv{b}$, the augmented matrix $[A\ \bv{b}]$ reduces to $[U\ \bv{d}]$ for some $\bv{d}$,
+and no row of $[U\ \bv{d}]$ has the form $[\,0\cdots0\mid\ast\,]$ with $\ast\neq0$, because every row of $U$ has a pivot.
+By Theorem~\ref{1.2-thm:existuniq} the system is consistent, so (a) holds.
+
+If (d) fails, then the last row of $U$ is a zero row. Let $\bv{d}=(0,\dots,0,1)$. The augmented matrix $[U\ \bv{d}]$ is inconsistent. Apply the
+row operations that took $A$ to $U$ in \emph{reverse order} (each row operation is reversible, Section~1.1) to $[U\ \bv{d}]$. We obtain an augmented
+matrix $[A\ \bv{b}]$ for some $\bv{b}$, row equivalent to an inconsistent system, hence inconsistent. So (a) fails.
+\end{proof}
+
+\begin{warn}[Pivots live in rows]
+Statement (d) is about the \emph{rows}. A matrix with a pivot in every \emph{column} need not have a pivot in every row: for the $3\times2$ matrix
+with columns $(1,0,0)$ and $(0,1,0)$ both columns have pivots, yet the third row has none, and $(0,0,1)$ is not a combination of the columns.
+\end{warn}
+
+\begin{exmp}{Does the span fill $\R^3$? A parameter}{param}
+For which values of $h$ do the columns of
+\[
+A=\begin{bmatrix}2&-1&h\\1&3&-1\\0&1&2\end{bmatrix}
+\]
+span $\R^3$?
+
+\textbf{Solution.} By Theorem~\ref{thm:existence} we ask when $A$ has a pivot in every row. Row reduce:
+\begin{align*}
+\begin{bmatrix}2&-1&h\\1&3&-1\\0&1&2\end{bmatrix}
+&\rops{R_1\leftrightarrow R_2}
+\begin{bmatrix}1&3&-1\\2&-1&h\\0&1&2\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}1&3&-1\\0&-7&h+2\\0&1&2\end{bmatrix}\\[4pt]
+&\rops{R_2\leftrightarrow R_3}
+\begin{bmatrix}1&3&-1\\0&1&2\\0&-7&h+2\end{bmatrix}
+\rops{R_3+7R_2}
+\begin{bmatrix}1&3&-1\\0&1&2\\0&0&h+16\end{bmatrix}.
+\end{align*}
+There is a pivot in every row exactly when $h+16\neq0$. So the columns span $\R^3$ for every $h$ \emph{except} $h=-16$. When $h=-16$ the
+third column is a combination of the first two (it is redundant) and the span is only a plane.
+\end{exmp}
+
+\begin{kc}{Apply the theorem}{apply}
+(a)~A $4\times6$ matrix has $3$ pivot positions. Can the equation $A\bv{x}=\bv{b}$ fail to have a solution for some $\bv{b}$ in $\R^4$?
+(b)~A $3\times5$ matrix has $3$ pivot positions. Does $A\bv{x}=\bv{b}$ have a solution for every $\bv{b}$ in $\R^3$?
+(c)~Can the columns of a $5\times3$ matrix span $\R^5$?
+\end{kc}
+
+\begin{think}{Rows versus columns}{rowscols}
+Theorem~\ref{thm:existence} says that being able to reach every $\bv{b}$ depends on having a pivot in \emph{every row}, while uniqueness of a
+solution (Theorem~\ref{1.2-thm:existuniq}) depends on having a pivot in \emph{every column}. Draw the shape of an echelon form for each of the cases
+``wide'' ($m<n$), ``square'' and ``tall'' ($m>n$). Which of the two properties (existence for every $\bv{b}$, uniqueness whenever a solution exists)
+can a wide matrix possibly have? Which can a tall matrix possibly have? Can a matrix have both without being square?
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{Properties of the matrix--vector product}
+
+\begin{exmp}{Applying a matrix as a machine}{machine}
+A workshop produces tables, chairs and stools. Each table uses $3$ units of wood and $2$ hours of labor; each chair uses $1$ unit of wood and $1$ hour; each stool uses
+$2$ units of wood and $1$ hour. The columns of
+\[
+A=\begin{bmatrix}3&1&2\\2&1&1\end{bmatrix}
+\]
+record the (wood, labor) needed by one table, one chair and one stool. If the workshop makes $\bv{x}=(4,10,6)$ items of each kind, the total resources used are
+\[
+A\bv{x}=4\begin{bmatrix}3\\2\end{bmatrix}+10\begin{bmatrix}1\\1\end{bmatrix}+6\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}34\\24\end{bmatrix}:
+\]
+$34$ units of wood and $24$ hours of labor. The matrix takes a vector of \emph{production levels} in $\R^3$ and returns a vector of \emph{resource totals} in $\R^2$.
+\end{exmp}
+
+In this example doubling production doubles the resources, and combining two production plans adds their resource totals. These two facts are true for every matrix.
+
+\begin{thm}{Linearity of $A\bv{x}$}{linear}
+If $A$ is an $m\times n$ matrix, $\bv{u},\bv{v}$ are in $\R^n$, and $c$ is a scalar, then
+\begin{enumerate}[label=(\alph*),itemsep=1pt]
+  \item $A(\bv{u}+\bv{v})=A\bv{u}+A\bv{v}$;
+  \item $A(c\bv{u})=c\,(A\bv{u})$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+Let $\bv{a}_1,\dots,\bv{a}_n$ be the columns of $A$. Using Definition~\ref{def:matvec} and Theorem~\ref{1.3-thm:props},
+\begin{align*}
+A(\bv{u}+\bv{v})&=(u_1+v_1)\bv{a}_1+\cdots+(u_n+v_n)\bv{a}_n\\
+&=(u_1\bv{a}_1+\cdots+u_n\bv{a}_n)+(v_1\bv{a}_1+\cdots+v_n\bv{a}_n)=A\bv{u}+A\bv{v},\\
+A(c\bv{u})&=(cu_1)\bv{a}_1+\cdots+(cu_n)\bv{a}_n=c\,(u_1\bv{a}_1+\cdots+u_n\bv{a}_n)=c\,(A\bv{u}).
+\end{align*}
+\end{proof}
+
+\begin{exmp}{Checking linearity numerically}{lincheck}
+Let $A=\begin{bmatrix}3&-1&2\\0&4&1\end{bmatrix}$, $\bv{u}=(1,2,-1)$, $\bv{v}=(0,1,3)$. Then $A\bv{u}=(-1,7)$ and $A\bv{v}=(5,7)$. Since
+$\bv{u}+\bv{v}=(1,3,2)$,
+\[
+A(\bv{u}+\bv{v})=\begin{bmatrix}3-3+4\\12+2\end{bmatrix}=\begin{bmatrix}4\\14\end{bmatrix}=\begin{bmatrix}-1\\7\end{bmatrix}+\begin{bmatrix}5\\7\end{bmatrix}=A\bv{u}+A\bv{v},
+\]
+and $A(3\bv{u})=A(3,6,-3)=(-3,21)=3A\bv{u}$. The computation on the left needs only one matrix--vector product; it is the proof's
+point that the two sides must agree, so such a calculation can serve as a \emph{check} of arithmetic.
+\end{exmp}
+
+\begin{exmp}{The columns of $A$ are the products $A\bv{e}_j$}{ei}
+Let $\bv{e}_1,\dots,\bv{e}_n$ denote the columns of the $n\times n$ identity matrix; e.g.\ in $\R^3$, $\bv{e}_1=(1,0,0)$, $\bv{e}_2=(0,1,0)$, $\bv{e}_3=(0,0,1)$.
+For $A=\begin{bmatrix}3&-1&2\\0&4&1\end{bmatrix}$,
+\[
+A\bv{e}_2=0\begin{bmatrix}3\\0\end{bmatrix}+1\begin{bmatrix}-1\\4\end{bmatrix}+0\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}-1\\4\end{bmatrix}=\bv{a}_2.
+\]
+In general $A\bv{e}_j=\bv{a}_j$: the vector $\bv{e}_j$ puts weight $1$ on column $j$ and weight $0$ on every other column. Consequently, if you know
+what $A$ does to $\bv{e}_1,\dots,\bv{e}_n$, you know $A$. Moreover, for any $\bv{x}=x_1\bv{e}_1+\cdots+x_n\bv{e}_n$, Theorem~\ref{thm:linear} gives
+$A\bv{x}=x_1A\bv{e}_1+\cdots+x_nA\bv{e}_n$, which is Definition~\ref{def:matvec} again.
+\end{exmp}
+
+\begin{kc}{Use linearity}{uselinear}
+Suppose $A$ is a matrix with $A\bv{u}=(1,-2)$ and $A\bv{v}=(3,0)$ for some vectors $\bv{u},\bv{v}$. Find $A(2\bv{u}-\bv{v})$ \emph{without knowing $A$}. Can you also find $A(\bv{u}\cdot\bv{v})$?
+(Think about what that expression would mean.)
+\end{kc}
+
+\begin{think}{A pattern in the solutions}{pattern}
+Suppose $\bv{p}$ and $\bv{q}$ are both solutions of $A\bv{x}=\bv{b}$. Use Theorem~\ref{thm:linear} to compute $A(\bv{p}-\bv{q})$. What equation does
+$\bv{p}-\bv{q}$ satisfy? Conversely, if $A\bv{w}=\bv{0}$ and $\bv{p}$ solves $A\bv{x}=\bv{b}$, what is $A(\bv{p}+\bv{w})$? What does this say about the
+\emph{shape} of the set of all solutions of $A\bv{x}=\bv{b}$, and how does it relate to the parametric descriptions you found in Section~1.2?
+\end{think}
+
+\begin{think}{Why not just divide?}{divide}
+For numbers, $ax=b$ is solved by $x=b/a$. Why can we not write $\bv{x}=\bv{b}/A$? Which hypothesis of the existence theorem would have to hold for a matrix to be
+``invertible'' in a way that lets us solve $A\bv{x}=\bv{b}$ for every $\bv{b}$, and what else would be needed so that there is only \emph{one} answer? (Chapter~2 will make this precise.)
+\end{think}
+
+\subsection*{Summary}
+\begin{itemize}
+  \item $A\bv{x}=x_1\bv{a}_1+\cdots+x_n\bv{a}_n$: a combination of the columns of $A$ with weights from $\bv{x}$. It is defined only when the number of columns of $A$ equals the number of entries of $\bv{x}$.
+  \item By hand, use the \textbf{row--column rule}: the $i$th entry of $A\bv{x}$ is (row $i$ of $A$)$\cdot\bv{x}$.
+  \item A system, a vector equation and the matrix equation $A\bv{x}=\bv{b}$ have the \textbf{same solution set}; the augmented matrix is $[A\ \bv{b}]$.
+  \item \textbf{Existence theorem:} $A\bv{x}=\bv{b}$ has a solution for every $\bv{b}\in\R^m$ $\iff$ the columns span $\R^m$ $\iff$ $A$ has a pivot in every row.
+  \item When $A$ lacks a pivot in some row, a row reduction with symbolic $\bv{b}$ produces the \textbf{condition} that $\bv{b}$ must satisfy.
+  \item $A(\bv{u}+\bv{v})=A\bv{u}+A\bv{v}$, \ $A(c\bv{u})=cA\bv{u}$, and $A\bv{e}_j=\bv{a}_j$.
+\end{itemize}
+
+\subsection*{Questions to think about before the next section}
+\begin{enumerate}
+  \item The equation $A\bv{x}=\bv{0}$ always has the solution $\bv{x}=\bv{0}$. When does it have \emph{other} solutions? What does a free variable say about the columns of $A$?
+  \item Is the solution set of $A\bv{x}=\bv{0}$ closed under addition and scalar multiplication? (Use Theorem~\ref{thm:linear}.) Is the solution set of $A\bv{x}=\bv{b}$ for $\bv{b}\neq\bv{0}$?
+  \item If $A$ is $3\times3$ and $A\bv{x}=\bv{b}$ has a solution for every $\bv{b}$, how many solutions does it have for each $\bv{b}$?
+\end{enumerate}
+
+\subsection*{Answers and discussion}
+\begin{description}[leftmargin=0pt,itemsep=5pt]
+  \item[Knowledge Check \ref{kc:twoways}.] As a combination of columns: $2(3,2,1)-3(-1,0,4)=(6,4,2)+(3,0,-12)=(9,4,-10)$. By rows: $3\cdot2+(-1)(-3)=9$, \ $2\cdot2+0\cdot(-3)=4$, \ $1\cdot2+4\cdot(-3)=-10$. They agree; the answer is in $\R^3$ (the number of rows of $B$).
+  \item[Knowledge Check \ref{kc:defined}.] (a)~Defined, result in $\R^4$. (b)~Not defined: the matrix has $4$ columns but the vector has $3$ entries. (c)~Defined; the result is in $\R^1$, i.e.\ a single number.
+  \item[Knowledge Check \ref{kc:translate}.] $A=\begin{bmatrix}2&-1\\1&3\\-1&1\end{bmatrix}$, \ $\bv{b}=\begin{bmatrix}4\\-5\\0\end{bmatrix}$, \ $\bv{x}=(x_1,x_2)$. Sizes: $A$ is $3\times2$, $\bv{x}$ is in $\R^2$, $\bv{b}$ is in $\R^3$.
+  \item[Knowledge Check \ref{kc:apply}.] (a)~Yes: with $3$ pivot positions and $4$ rows, some row has no pivot, so by Theorem~\ref{thm:existence} some $\bv{b}$ gives no solution. (b)~Yes: $3$ pivot positions in $3$ rows means a pivot in every row. (c)~No: a $5\times3$ matrix has at most $3$ pivot positions, so at least $2$ rows have no pivot (this is the rule ``at least $m$ vectors are needed to span $\R^m$'' of Section~1.3).
+  \item[Knowledge Check \ref{kc:uselinear}.] $A(2\bv{u}-\bv{v})=2A\bv{u}-A\bv{v}=(2,-4)-(3,0)=(-1,-4)$. The expression $\bv{u}\cdot\bv{v}$ is not defined for us yet (and, once it is, it will be a \emph{number}, to which $A$ cannot be applied). Linearity speaks only of sums and scalar multiples.
+  \item[Pause and think \ref{think:rowscols}.] A wide matrix ($m<n$) has more columns than rows. It can have a pivot in every row (existence for every $\bv{b}$), but it \emph{cannot} have a pivot in every column, so whenever a solution exists there are infinitely many. A tall matrix ($m>n$) can have a pivot in every column (uniqueness), but cannot have one in every row, so some $\bv{b}$ has no solution. Both properties together require $m\le n$ and $n\le m$, that is, $m=n$: only a square matrix can have a pivot in every row \emph{and} every column. This is the situation of Example~\ref{ex:three}, which Chapter~2 studies.
+  \item[Pause and think \ref{think:pattern}.] $A(\bv{p}-\bv{q})=A\bv{p}-A\bv{q}=\bv{b}-\bv{b}=\bv{0}$. Conversely $A(\bv{p}+\bv{w})=A\bv{p}+A\bv{w}=\bv{b}+\bv{0}=\bv{b}$. So the solutions of $A\bv{x}=\bv{b}$ are exactly the vectors $\bv{p}+\bv{w}$ where $\bv{p}$ is one fixed solution and $\bv{w}$ ranges over all solutions of $A\bv{x}=\bv{0}$: the solution set is a translate of the solution set of the homogeneous equation. In the parametric vector form from Section~1.2 the free-variable part is the $\bv{w}$ part, and the constants are a particular solution $\bv{p}$. We will develop this in Section~1.5.
+  \item[Pause and think \ref{think:divide}.] A matrix does not have a quotient: $\bv{b}/A$ is not defined for any rule we have given, and for a non-square matrix there is no sensible meaning at all. For numbers, $a\neq0$ is what makes division possible. For matrices the analogue is a combination of two conditions: existence of a solution for every $\bv{b}$ (a pivot in every row) and uniqueness (a pivot in every column). A square matrix with a pivot in every row (hence column) is the right kind of matrix; Chapter~2 introduces its inverse $A^{-1}$ so that $\bv{x}=A^{-1}\bv{b}$.
+  \item[Before the next section.] (1)~Other solutions exist exactly when there is a free variable, i.e.\ when some column is not a pivot column; then that column is a combination of the earlier ones (compare Example~\ref{1.3-ex:nonunique}). (2)~Yes for $A\bv{x}=\bv{0}$: if $A\bv{u}=\bv{0}=A\bv{v}$ then $A(\bv{u}+\bv{v})=\bv{0}$ and $A(c\bv{u})=\bv{0}$. No for $\bv{b}\neq\bv{0}$: $A(\bv{u}+\bv{v})=2\bv{b}\neq\bv{b}$, and $\bv{x}=\bv{0}$ is not even a solution. (3)~Exactly one: existence means a pivot in every row, and with $3$ rows and $3$ columns every column has a pivot, so there are no free variables.
+\end{description}
+
+\end{document}
