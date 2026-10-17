@@ -1,0 +1,145 @@
+% =====================================================================
+% la.sty -- shared preamble for all Linear Algebra course materials
+%
+% Usage:   \usepackage[<kind>]{la}      where <kind> is exactly one of
+%          notes | worksheet | homework | instructor
+% Then, in the preamble (or at the top of the document):
+%          \lamodule{<chapter>}{<section>}{<title>}   % e.g. {1}{1}{Systems of Linear Equations}
+%
+% Source of truth for the PDF and (via pandoc + Lua filters) the site.
+% Any macro added here MUST also be added to site/macros.json (MathJax).
+%
+% v0.2 (2026/10/17): added \laxdoc for cross-module references in the notes.
+% =====================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{la}[2026/10/17 v0.2 Linear Algebra course materials]
+
+\newif\ifla@notes      \la@notesfalse
+\newif\ifla@worksheet  \la@worksheetfalse
+\newif\ifla@homework   \la@homeworkfalse
+\newif\ifla@instructor \la@instructorfalse
+\DeclareOption{notes}{\la@notestrue}
+\DeclareOption{worksheet}{\la@worksheettrue}
+\DeclareOption{homework}{\la@homeworktrue}
+\DeclareOption{instructor}{\la@instructortrue}
+\ProcessOptions\relax
+
+% ---------- packages ----------
+\RequirePackage{amsmath,amssymb,amsthm,mathtools}
+\RequirePackage{enumitem}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{fancyhdr}
+\RequirePackage{booktabs,array}
+% pdfTeX font expansion can be fatal on the instructor notes; keep it off there.
+\ifla@instructor
+  \RequirePackage[expansion=false]{microtype}
+\else
+  \RequirePackage{microtype}
+\fi
+\RequirePackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\RequirePackage{xr-hyper}   % must come after hyperref
+
+% ---------- page geometry and text ----------
+\ifla@worksheet
+  \RequirePackage[margin=0.9in]{geometry}
+\else
+  \RequirePackage[margin=1in]{geometry}
+\fi
+\ifla@notes \setlist{itemsep=2pt,topsep=4pt}\else
+  \ifla@instructor \setlist{itemsep=2pt,topsep=3pt}\else \setlist{itemsep=3pt,topsep=4pt}\fi\fi
+\setlength{\parindent}{0pt}
+\ifla@instructor \setlength{\parskip}{5pt}\else \setlength{\parskip}{6pt}\fi
+\ifla@instructor \renewcommand{\arraystretch}{1.25}\fi
+
+% ---------- math shortcuts (mirror these in site/macros.json) ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\lead}{\blacksquare}
+\newcommand{\st}{\ast}
+\newenvironment{amat}[1]{\left[\begin{array}{#1}}{\end{array}\right]}
+\newcommand{\rops}[1]{\xrightarrow{\;#1\;}}
+\newcommand{\T}{^{\mathsf T}}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Nul}{Nul}
+\DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\Row}{Row}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\proj}{proj}
+\newcommand{\bv}[1]{\mathbf{#1}}          % bold vector: \bv{x}
+\newcommand{\inner}[2]{\langle #1,\,#2\rangle}
+
+% ---------- running header ----------
+\pagestyle{fancy}
+\newcommand{\lahead}[2]{\fancyhf{}\fancyhead[L]{\small #1}\fancyhead[R]{\small #2}\fancyfoot[C]{\small\thepage}}
+\ifla@notes      \lahead{Linear Algebra --- Lecture Notes}{}\fi
+\ifla@worksheet  \lahead{Linear Algebra --- Activity Worksheet}{}\fi
+\ifla@homework   \lahead{Linear Algebra --- Homework}{}\fi
+\ifla@instructor \lahead{Linear Algebra --- Instructor Notes}{\textbf{(not for students)}}\fi
+
+% \lamodule{chapter}{section}{title}: sets the title block and header; numbering follows Lay.
+\newcommand{\lamodule}[3]{%
+  \renewcommand{\thesection}{#1.#2}%
+  \gdef\la@modnum{#1.#2}\gdef\la@modtitle{#3}%
+  \ifla@instructor \lahead{Linear Algebra --- Instructor Notes}{\S\la@modnum\ \textbf{(not for students)}}%
+  \else \fancyhead[R]{\small \S\la@modnum\ --- #3}\fi}
+
+% \laxdoc{<ch.sec>}: make labels of another module's notes available as \ref{<ch.sec>-<label>}.
+% Build order follows course_map.yaml, so the other module's notes.aux must already exist.
+\newcommand{\laxdoc}[1]{%
+  \IfFileExists{../#1/notes.aux}%
+    {\externaldocument[#1-]{../#1/notes}[../#1/notes.pdf]}%
+    {\PackageWarning{la}{No notes.aux for module #1 -- build it first}}}
+
+% ---------- shared box style ----------
+\tcbset{nbox/.style={enhanced,breakable,arc=2pt,boxrule=0.6pt,
+  left=8pt,right=8pt,top=5pt,bottom=5pt,fonttitle=\bfseries,before skip=10pt,after skip=10pt}}
+
+% ---------- lecture notes ----------
+\ifla@notes
+\newtcbtheorem[number within=section]{defn}{Definition}
+  {nbox,colback=blue!4,colframe=blue!55!black,coltitle=white}{def}
+\newtcbtheorem[use counter from=defn]{thm}{Theorem}
+  {nbox,colback=green!5,colframe=green!40!black,coltitle=white}{thm}
+\newtcbtheorem[use counter from=defn]{exmp}{Example}
+  {nbox,colback=black!3,colframe=black!55,coltitle=white}{ex}
+\newtcbtheorem[use counter from=defn]{proc}{Procedure}
+  {nbox,colback=teal!5,colframe=teal!50!black,coltitle=white}{proc}
+\newtcbtheorem[number within=section]{kc}{Knowledge Check}
+  {nbox,colback=orange!8,colframe=orange!75!black,coltitle=black}{kc}
+\newtcbtheorem[number within=section]{think}{Pause and think}
+  {nbox,colback=violet!5,colframe=violet!60!black,coltitle=white}{think}
+\newtcolorbox{warn}[1][Warning]{nbox,colback=red!4,colframe=red!60!black,coltitle=white,title=#1}
+\newtcolorbox{guide}[1][Guiding question]{nbox,colback=yellow!10,colframe=yellow!40!black,coltitle=white,title=#1}
+\newtcolorbox{remark}[1][Remark]{nbox,colback=white,colframe=black!40,coltitle=white,title=#1}
+\fi
+
+% ---------- worksheets ----------
+\ifla@worksheet
+\newtcolorbox{activity}[2]{nbox,colback=blue!3,colframe=blue!55!black,coltitle=white,
+  title={#1 \hfill \normalfont\small #2}}
+\newtcolorbox{ext}[2]{nbox,unbreakable,colback=green!4,colframe=green!40!black,coltitle=white,
+  title={#1 \hfill \normalfont\small #2}}
+\newtcolorbox{roles}{nbox,colback=yellow!10,colframe=yellow!40!black,coltitle=white,title=Group roles}
+\newcommand{\answerline}{\par\vspace{0.3in}}
+\newcommand{\workspace}[1]{\par\vspace{#1}}
+\fi
+
+% ---------- homework ----------
+\ifla@homework
+\newtcolorbox{howto}{nbox,colback=yellow!10,colframe=yellow!40!black,coltitle=white,
+  title=How to write up your work}
+\newcounter{prob}
+\newcommand{\problem}[1][]{\stepcounter{prob}\medskip\par\noindent\textbf{\theprob.}\ \textbf{#1}\ }
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\fi
+
+% ---------- instructor notes ----------
+\ifla@instructor
+\newtcolorbox{tip}{nbox,colback=green!4,colframe=green!40!black,coltitle=white,title=Teaching tip}
+\newtcolorbox{sol}[1][Solution]{nbox,colback=gray!6,colframe=gray!60!black,coltitle=white,title=#1,
+  before upper={\setlength{\parskip}{5pt}}}
+\fi
+
+\endinput

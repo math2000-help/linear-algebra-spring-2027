@@ -1,0 +1,63 @@
+/* Hand-written styles for the course site (not generated). */
+
+/* Box vocabulary from CONVENTIONS.md section 4.  Custom admonition types reuse Material's icons. */
+:root {
+  --md-admonition-icon--definition: var(--md-admonition-icon--info);
+  --md-admonition-icon--theorem: var(--md-admonition-icon--success);
+  --md-admonition-icon--procedure: var(--md-admonition-icon--abstract);
+  --md-admonition-icon--think: var(--md-admonition-icon--quote);
+}
+
+.md-typeset .admonition.definition,
+.md-typeset details.definition { border-color: rgb(40, 70, 170); }
+.md-typeset .definition > .admonition-title,
+.md-typeset .definition > summary { background-color: rgba(40, 70, 170, 0.1); }
+.md-typeset .definition > .admonition-title::before,
+.md-typeset .definition > summary::before {
+  background-color: rgb(40, 70, 170);
+  -webkit-mask-image: var(--md-admonition-icon--definition);
+  mask-image: var(--md-admonition-icon--definition);
+}
+
+.md-typeset .admonition.theorem,
+.md-typeset details.theorem { border-color: rgb(30, 120, 60); }
+.md-typeset .theorem > .admonition-title,
+.md-typeset .theorem > summary { background-color: rgba(30, 120, 60, 0.1); }
+.md-typeset .theorem > .admonition-title::before,
+.md-typeset .theorem > summary::before {
+  background-color: rgb(30, 120, 60);
+  -webkit-mask-image: var(--md-admonition-icon--theorem);
+  mask-image: var(--md-admonition-icon--theorem);
+}
+
+.md-typeset .admonition.procedure,
+.md-typeset details.procedure { border-color: rgb(0, 128, 128); }
+.md-typeset .procedure > .admonition-title,
+.md-typeset .procedure > summary { background-color: rgba(0, 128, 128, 0.1); }
+.md-typeset .procedure > .admonition-title::before,
+.md-typeset .procedure > summary::before {
+  background-color: rgb(0, 128, 128);
+  -webkit-mask-image: var(--md-admonition-icon--procedure);
+  mask-image: var(--md-admonition-icon--procedure);
+}
+
+.md-typeset .admonition.think,
+.md-typeset details.think { border-color: rgb(124, 77, 255); }
+.md-typeset .think > .admonition-title,
+.md-typeset .think > summary { background-color: rgba(124, 77, 255, 0.1); }
+.md-typeset .think > .admonition-title::before,
+.md-typeset .think > summary::before {
+  background-color: rgb(124, 77, 255);
+  -webkit-mask-image: var(--md-admonition-icon--think);
+  mask-image: var(--md-admonition-icon--think);
+}
+
+/* the empty <span id="..."> anchor paragraph that opens each numbered box takes no space */
+.md-typeset p:has(> span[id]:only-child:empty) { margin: 0; height: 0; }
+
+/* display math should scroll, not overflow, on phones */
+.md-typeset .arithmatex { overflow-x: auto; overflow-y: hidden; }
+
+/* TikZ figures are black-on-transparent SVGs: keep them readable in dark mode */
+.md-typeset img.la-figure { display: block; margin: 0.8em auto; max-width: 100%; }
+[data-md-color-scheme="slate"] .md-typeset img.la-figure { filter: invert(0.9) hue-rotate(180deg); }

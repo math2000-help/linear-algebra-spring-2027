@@ -1,0 +1,405 @@
+\documentclass[11pt]{article}
+\usepackage[notes]{la}
+\lamodule{1}{2}{Row Reduction and Echelon Forms}
+\laxdoc{1.1}   % cross-references to Section 1.1 as \ref{1.1-<label>}
+
+\begin{document}
+
+\section{Row Reduction and Echelon Forms}
+
+\begin{guide}
+Elimination can end in many different-looking matrices. What makes a matrix ``simple enough'' that
+the answer can be read off from it? And how can we organize the work so that it succeeds on
+\emph{every} system, including those with no solution or with infinitely many?
+\end{guide}
+
+\textbf{By the end of this section you should be able to:}
+\begin{itemize}
+  \item decide whether a matrix is in echelon form or reduced echelon form;
+  \item locate the pivot positions and pivot columns of a matrix;
+  \item carry out the row reduction algorithm on any matrix;
+  \item write the general solution of a consistent system in parametric form;
+  \item use the pivot structure to answer the existence and uniqueness questions, even before the
+        system is completely solved.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Echelon forms}
+
+In a nonzero row, the \emph{leading entry} is the leftmost nonzero entry. A \emph{zero row} has all entries
+equal to $0$.
+
+\begin{defn}{Echelon form and reduced echelon form}{echelon}
+A rectangular matrix is in \emph{echelon form} (or \emph{row echelon form}) if
+\begin{enumerate}[itemsep=1pt]
+  \item every nonzero row lies above every zero row;
+  \item the leading entry of each row lies in a column strictly to the right of the leading entry of
+        the row above it;
+  \item all entries in a column below a leading entry are zero (this follows from~2).
+\end{enumerate}
+It is in \emph{reduced echelon form} if, in addition,
+\begin{enumerate}[itemsep=1pt,start=4]
+  \item every leading entry is $1$;
+  \item each leading $1$ is the only nonzero entry in its column.
+\end{enumerate}
+\end{defn}
+
+The leading entries form a ``staircase'' that descends to the right. Schematically (here $\lead$ is any
+nonzero number and $\st$ is any number, zero included):
+\[
+\text{echelon: }
+\begin{bmatrix}\lead&\st&\st&\st&\st\\0&\lead&\st&\st&\st\\0&0&0&\lead&\st\\0&0&0&0&0\end{bmatrix}
+\qquad
+\text{reduced echelon: }
+\begin{bmatrix}1&0&\st&0&\st\\0&1&\st&0&\st\\0&0&0&1&\st\\0&0&0&0&0\end{bmatrix}
+\]
+
+\begin{kc}{Classify the matrix}{classify}
+For each matrix decide: not in echelon form, echelon but not reduced, or reduced echelon. Give a reason.
+\[
+\text{(a)}\begin{bmatrix}1&2&0&3\\0&0&1&4\\0&0&0&0\end{bmatrix}\quad
+\text{(b)}\begin{bmatrix}2&1&5\\0&3&1\\0&0&0\end{bmatrix}\quad
+\text{(c)}\begin{bmatrix}1&0&0\\0&0&1\\0&1&0\end{bmatrix}
+\]
+\[
+\text{(d)}\begin{bmatrix}1&3&0&2\\0&1&0&5\\0&0&0&1\end{bmatrix}\quad
+\text{(e)}\begin{bmatrix}0&0\\1&0\end{bmatrix}
+\]
+\end{kc}
+
+A matrix can usually be reduced to many different echelon forms. For instance, with
+$A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$, the operation $R_2-3R_1\to R_2$ gives
+$\begin{bmatrix}1&2\\0&-2\end{bmatrix}$, which is in echelon form; scaling row~2 by $-\tfrac12$ then gives
+$\begin{bmatrix}1&2\\0&1\end{bmatrix}$, also in echelon form. But \emph{reduced} echelon form is different:
+
+\begin{thm}{Uniqueness of the reduced echelon form}{rref}
+Every matrix is row equivalent to one and only one matrix in reduced echelon form.
+\end{thm}
+
+We accept this theorem here; a proof is given in Appendix~A of the textbook. It is what justifies
+speaking of \emph{the} reduced echelon form of $A$ (often abbreviated RREF, as in calculators and
+software). In the example above it is $\begin{bmatrix}1&0\\0&1\end{bmatrix}$, no matter how you get there.
+
+\begin{defn}{Pivot position and pivot column}{pivot}
+A \emph{pivot position} in a matrix $A$ is a location in $A$ that corresponds to a leading $1$ in the reduced
+echelon form of $A$. A \emph{pivot column} is a column of $A$ that contains a pivot position. A \emph{pivot}
+is a nonzero number in a pivot position that is used to create zeros below (or above) it.
+\end{defn}
+
+\begin{think}{What is well defined?}{pivotpos}
+Different row operations lead to different echelon forms, yet we speak of \emph{the} pivot positions of $A$.
+Use Theorem~\ref{thm:rref} to explain why this is legitimate. (Hint: what happens to the \emph{positions} of
+leading entries when you pass from an echelon form to the reduced echelon form?)
+Also: in the example above, the pivots used were $1$ and $-2$. Are these numbers the same as the entries of
+$A$ in the pivot positions? Why or why not?
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{The row reduction algorithm}
+
+The procedure below works on \emph{any} matrix, whether or not it came from a linear system. The
+first four steps (the \emph{forward phase}) produce an echelon form; the fifth step (the
+\emph{backward phase}) produces the reduced echelon form.
+
+\begin{proc}{Row reduction}{rowreduce}
+\begin{enumerate}[itemsep=2pt]
+  \item Begin with the leftmost nonzero column. This is a pivot column; the pivot position is at its top.
+  \item Select a nonzero entry in this column and, if necessary, interchange rows to move it into the pivot
+        position.
+  \item Use replacement operations to create zeros in all positions \emph{below} the pivot.
+  \item Cover (ignore) the row containing the pivot and all rows above it. Repeat steps~1--3 on the
+        submatrix that remains, until there are no nonzero rows left to modify.
+  \item \emph{(Backward phase.)} Starting with the rightmost pivot and moving up and to the left, create
+        zeros \emph{above} each pivot. Scale each pivot row so that its pivot becomes $1$.
+\end{enumerate}
+\end{proc}
+
+\begin{exmp}{Row reducing a system with a missing pivot}{rr}
+Solve
+\[
+\begin{aligned}
+\phantom{x_1+{}}2x_2+4x_3-2x_4&=6\\
+x_1+2x_2+\phantom{4}x_3\phantom{{}-2x_4}&=3\\
+2x_1+4x_2+2x_3+\phantom{2}x_4&=5\\
+x_1+3x_2+3x_3-\phantom{2}x_4&=6.
+\end{aligned}
+\]
+
+\textbf{Forward phase.} The leftmost column is a pivot column, but the top entry is $0$, so interchange
+rows~1 and~2. Then clear the first column below the pivot, and the second column below the
+second pivot (which is the $2$ in row~2):
+\begin{align*}
+\begin{amat}{cccc|c}0&2&4&-2&6\\1&2&1&0&3\\2&4&2&1&5\\1&3&3&-1&6\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{cccc|c}1&2&1&0&3\\0&2&4&-2&6\\2&4&2&1&5\\1&3&3&-1&6\end{amat}
+\rops{R_3-2R_1,\ R_4-R_1}
+\begin{amat}{cccc|c}1&2&1&0&3\\0&2&4&-2&6\\0&0&0&1&-1\\0&1&2&-1&3\end{amat}\\[4pt]
+&\rops{R_4-\frac12R_2}
+\begin{amat}{cccc|c}1&2&1&0&3\\0&2&4&-2&6\\0&0&0&1&-1\\0&0&0&0&0\end{amat}.
+\end{align*}
+Now look at column~3. Below row~2 it contains only zeros, so there is \emph{nothing to pivot on} there; we
+move right to column~4, whose pivot is the $1$ in row~3. The matrix is in echelon form, with pivot columns
+$1$, $2$, and $4$. Column~3 is \emph{not} a pivot column.
+
+\textbf{Backward phase.} Clear above the pivot in column~4, then scale row~2, then clear above the pivot in column~2:
+\begin{align*}
+&\rops{R_2+2R_3}
+\begin{amat}{cccc|c}1&2&1&0&3\\0&2&4&0&4\\0&0&0&1&-1\\0&0&0&0&0\end{amat}
+\rops{\frac12R_2}
+\begin{amat}{cccc|c}1&2&1&0&3\\0&1&2&0&2\\0&0&0&1&-1\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1-2R_2}
+\begin{amat}{cccc|c}1&0&-3&0&-1\\0&1&2&0&2\\0&0&0&1&-1\\0&0&0&0&0\end{amat}.
+\end{align*}
+This is the reduced echelon form. The next subsection shows how to read the solution from it.
+\end{exmp}
+
+\begin{remark}[Practical tips]
+\begin{itemize}
+  \item You may choose which nonzero entry to use as the pivot. Picking an entry that makes the arithmetic
+        avoid fractions (for instance a $1$ or $-1$) saves effort and reduces mistakes; interchanging rows
+        for this reason is perfectly fine.
+  \item Computer programs usually choose the entry of \emph{largest absolute value} in the column as the
+        pivot (``partial pivoting''), because dividing by tiny numbers magnifies rounding errors in floating
+        point arithmetic.
+  \item For an $n\times(n+1)$ augmented matrix the forward phase takes roughly $\tfrac23n^3$ arithmetic
+        operations, while the backward phase takes at most about $n^2$. So for large systems the forward
+        phase is where nearly all the work is.
+  \item Historically, elimination appears in ancient Chinese mathematical texts; it is named after Gauss,
+        who used it in the 19th century, and Wilhelm Jordan, who popularized the full reduction to
+        reduced echelon form.
+\end{itemize}
+\end{remark}
+
+% ---------------------------------------------------------------------
+\subsection*{Reading the solution from the reduced echelon form}
+
+Take the reduced echelon form from Example~\ref{ex:rr}. It is the augmented matrix of the system
+\[
+x_1-3x_3=-1,\qquad x_2+2x_3=2,\qquad x_4=-1,\qquad 0=0.
+\]
+The last equation $0=0$ is always true and imposes no condition.
+
+\begin{defn}{Basic and free variables; general solution}{basicfree}
+The variables corresponding to \emph{pivot columns} are the \emph{basic variables}; the others are the
+\emph{free variables}. When a system is consistent, we solve each equation for its one basic variable
+in terms of the free variables. The result, in which the free variables act as \emph{parameters},
+is the \emph{general solution} (or a \emph{parametric description} of the solution set).
+\end{defn}
+
+Here the pivot columns are $1,2,4$, so $x_1,x_2,x_4$ are basic and $x_3$ is free:
+\[
+x_1=-1+3x_3,\qquad x_2=2-2x_3,\qquad x_3\ \text{is free},\qquad x_4=-1.
+\]
+``$x_3$ is free'' means that \emph{any} real number may be chosen for $x_3$, after which the other
+variables are determined. Taking $x_3=0$ gives $(-1,2,0,-1)$; taking $x_3=1$ gives $(2,0,1,-1)$. Check
+the second one in the original system:
+$0+4+2=6$, $\ 2+0+1=3$, $\ 4+0+2-1=5$, $\ 2+0+3+1=6$. \ $\checkmark$
+
+\begin{kc}{Another member of the solution set}{another}
+Use the general solution above to find the solution with $x_3=2$, and verify it in the original
+four equations.
+\end{kc}
+
+\begin{warn}[Be precise about what is free]
+A common error is to write a ``solution'' such as
+$x_1=5-x_3,\ x_2=2+x_3,\ x_3=3-x_2$. This describes $x_2$ in terms of $x_3$ \emph{and} $x_3$ in terms of
+$x_2$, so it hides which variable is actually free (there is only one free variable in this case).
+By convention, \emph{the free variables are the parameters}, and every other variable is expressed in
+terms of them alone.
+\end{warn}
+
+Notice also what happens with an inconsistent system. The solution set is empty, \emph{even if the
+system has free variables}. There is no parametric description of the empty set.
+
+% ---------------------------------------------------------------------
+\subsection*{Existence and uniqueness}
+
+The reduced echelon form answers both fundamental questions from Section~1.1.
+
+\begin{thm}{Existence and Uniqueness}{existuniq}
+A linear system is consistent if and only if the rightmost column of its augmented matrix is \emph{not}
+a pivot column; equivalently, if and only if an echelon form of the augmented matrix has no row of the form
+\[
+[\,0\ \ \cdots\ \ 0\mid b\,]\qquad\text{with } b\neq0 .
+\]
+If the system is consistent, then it has
+\begin{enumerate}[label=(\roman*),itemsep=1pt]
+  \item a \emph{unique} solution when there are no free variables, and
+  \item \emph{infinitely many} solutions when there is at least one free variable.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+By Theorem~\ref{1.1-thm:rowsol} we may study the reduced echelon form instead. If the rightmost column is a pivot
+column, some row of the reduced echelon form is $[\,0\ \cdots\ 0\mid1\,]$, i.e.\ the equation $0=1$, so the
+system is inconsistent. (A row $[\,0\ \cdots\ 0\mid b\,]$ with $b\ne0$ in \emph{any} echelon form gives the same
+conclusion, and creates a pivot in the last column.)
+
+Conversely, suppose the rightmost column is not a pivot column. Then the leading $1$ of every nonzero row lies
+in a coefficient column, so each nonzero equation has the form
+\[
+(\text{one basic variable})+(\text{terms involving free variables only})=\text{constant}.
+\]
+Give the free variables any values (say all $0$) and solve each equation for its basic variable: this is a
+solution, so the system is consistent. If there are no free variables, the values of the basic variables are forced,
+so the solution is unique. If there is at least one free variable, different values of that free variable give
+different solutions, so there are infinitely many.
+\end{proof}
+
+\begin{proc}{Solving a linear system}{solve}
+\begin{enumerate}[itemsep=1pt]
+  \item Write the augmented matrix of the system.
+  \item Row reduce to an echelon form. If the rightmost column is a pivot column, stop: the system is inconsistent.
+  \item Otherwise continue to the reduced echelon form.
+  \item Write the system of equations corresponding to the reduced matrix.
+  \item Solve each nonzero equation for its basic variable in terms of the free variables.
+  \item Check your answer in the \emph{original} system.
+\end{enumerate}
+\end{proc}
+
+\begin{kc}{Read the pivots}{readpivots}
+Each matrix below is the augmented matrix of a system in an echelon form. For each, decide whether the system is
+consistent and, if so, whether the solution is unique.
+\[
+\text{(i)}\begin{amat}{ccc|c}1&2&0&4\\0&0&1&3\end{amat}\qquad
+\text{(ii)}\begin{amat}{cc|c}1&0&5\\0&1&2\\0&0&0\end{amat}\qquad
+\text{(iii)}\begin{amat}{cc|c}2&1&3\\0&0&4\end{amat}
+\]
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{What the shape of a matrix tells us}
+
+The theorem lets us predict a great deal from the \emph{pattern of pivots} alone. Let $A$ be the $m\times n$
+coefficient matrix of a system with $m$ equations and $n$ unknowns, and write $[A\mid b]$ for its augmented
+matrix, where $b$ is the column of right-hand sides.
+
+\begin{thm}{Counting pivots}{counting}
+\begin{enumerate}[label=(\alph*),itemsep=2pt]
+  \item If $A$ has a pivot position in \emph{every row}, then the system is consistent for \emph{every} choice of $b$.
+  \item If $A$ has a pivot position in \emph{every column}, then the system has \emph{at most one} solution,
+        for every choice of $b$.
+  \item If $m<n$ and the system is consistent, then it has infinitely many solutions.
+  \item If $m>n$, then there is some choice of $b$ for which the system is inconsistent.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+Row operations on $[A\mid b]$ act on the columns of $A$ exactly as they would on $A$ alone, so the pivot positions
+within the first $n$ columns are the pivot positions of $A$.
+
+(a) If every row of $A$ has a pivot, then an echelon form of $A$ has no zero row. So no row of the form
+$[\,0\ \cdots\ 0\mid b'\,]$ with $b'\ne0$ can appear, and the system is consistent by
+Theorem~\ref{thm:existuniq}.
+
+(b) If every column of $A$ is a pivot column, there are no free variables, so by Theorem~\ref{thm:existuniq} there is
+either no solution or exactly one.
+
+(c) There are at most $m$ pivots (one per row) and $m<n$, so some column of $A$ has no pivot, giving a free variable.
+If the system is consistent, Theorem~\ref{thm:existuniq} gives infinitely many solutions.
+
+(d) There are at most $n<m$ pivots, so some row of an echelon form $U$ of $A$ is zero. Choose $d$ with last entry $1$;
+then $[U\mid d]$ is inconsistent. Since row operations are reversible, applying the reverse operations to $[U\mid d]$
+produces some $[A\mid b]$, which is therefore inconsistent as well.
+\end{proof}
+
+\begin{kc}{Using the counting theorem}{counting}
+(a) $A$ is a $3\times5$ matrix with three pivot positions. Is the system $[A\mid b]$ consistent for every $b$?
+When it is consistent, how many solutions does it have?\\
+(b) $A$ is a $5\times3$ matrix with three pivot positions. Is the system consistent for every $b$? When it is
+consistent, how many solutions does it have?
+\end{kc}
+
+\begin{think}{Shape is not destiny}{shape}
+\begin{enumerate}[label=(\arabic*)]
+  \item Parts (c) and (d) do \emph{not} say that a system with fewer equations than unknowns is consistent, nor that
+        a system with more equations than unknowns is inconsistent. Give an example of each of the opposite
+        behaviors: an inconsistent system with $m<n$, and a consistent system with $m>n$.
+  \item Suppose $A$ is square, $n\times n$. Explain why ``a pivot in every row'' and ``a pivot in every
+        column'' are the \emph{same} condition. What do parts (a) and (b) then say together?
+        (This innocent-looking observation will grow into one of the central ideas of the course.)
+\end{enumerate}
+\end{think}
+
+\subsection*{Summary}
+\begin{itemize}
+  \item \textbf{Echelon form} has a descending staircase of leading entries; \textbf{reduced echelon form} also has
+        leading $1$s that are the only nonzero entries in their columns.
+  \item Echelon forms are not unique, but the \textbf{reduced echelon form is}, so \textbf{pivot positions} are
+        well defined.
+  \item \textbf{Forward phase} (to echelon form) answers \emph{existence}; with the \textbf{backward phase} (to
+        reduced echelon form) you can read off the solution.
+  \item Basic variables $\leftrightarrow$ pivot columns; free variables $\leftrightarrow$ non-pivot columns. A free
+        variable gives infinitely many solutions \emph{if the system is consistent}.
+  \item A pivot in every row means ``always solvable''; a pivot in every column means ``never more than one solution.''
+\end{itemize}
+
+\subsection*{Questions to think about before the next section}
+\begin{enumerate}
+  \item In your own words: why is the reduced echelon form unique, while an echelon form is not, and why does
+        the uniqueness not affect the pivot \emph{positions}?
+  \item The augmented matrix of a system of $3$ equations in $4$ unknowns has reduced echelon form with pivots only
+        in columns $1$ and $3$. Is it consistent? How many free variables are there?
+  \item True or false (justify): ``A system with a free variable is always consistent.''
+\end{enumerate}
+
+\subsection*{Answers and discussion}
+\begin{description}[leftmargin=0pt,itemsep=5pt]
+  \item[Knowledge Check \ref{kc:classify}.] (a)~reduced echelon. (b)~echelon but not reduced: the leading
+        entries $2$ and $3$ are not $1$. (c)~not echelon: the leading entry of row~3 (column~2) lies to the
+        \emph{left} of the leading entry of row~2 (column~3). (d)~echelon but not reduced: the entries above the
+        leading $1$s should be $0$ (the $3$ above the leading $1$ in column~2, and the $2$ and $5$ above the
+        leading $1$ in column~4). (e)~not echelon: a zero row lies above a nonzero row.
+  \item[Knowledge Check \ref{kc:another}.] With $x_3=2$: $x_1=-1+6=5$, $x_2=2-4=-2$, $x_4=-1$, i.e.\
+        $(5,-2,2,-1)$. Check: $-4+8+2=6$, \ $5-4+2=3$, \ $10-8+4-1=5$, \ $5-6+6+1=6$. \ $\checkmark$
+  \item[Knowledge Check \ref{kc:readpivots}.] (i)~consistent (last column is not a pivot column); $x_2$ is free,
+        so infinitely many solutions: $x_1=4-2x_2$, $x_3=3$. (ii)~consistent with no free variables, so the unique
+        solution is $(5,2)$ (the zero row is just $0=0$). (iii)~inconsistent: row~2 says $0=4$.
+  \item[Knowledge Check \ref{kc:counting}.] (a)~Yes, by part~(a) of the theorem. There are $5-3=2$ free variables,
+        so infinitely many solutions. (b)~No: only $3$ pivots among $5$ rows means some row of an echelon form of $A$
+        is zero, so some $b$ gives an inconsistent system. When consistent, the solution is unique, because all
+        three columns are pivot columns.
+  \item[Pause and think \ref{think:pivotpos}.] \emph{Why ``the'' pivot positions make sense.} Let $U$ be
+        \emph{any} echelon form of $A$. To pass from $U$ to the reduced echelon form we only scale rows and add
+        multiples of a pivot row to rows \emph{above} it. These steps change the numbers in the matrix but never
+        move a leading entry: each stays in its own row and column (and becomes $1$). So the leading entries of
+        $U$ sit exactly where the leading $1$s of the reduced echelon form sit. By Theorem~\ref{thm:rref} that
+        reduced form is the same matrix no matter which echelon form we started from or which operations we used.
+        Hence every echelon form of $A$ has its leading entries in the same positions, and these are the
+        pivot positions of $A$.
+
+        \emph{Pivots versus entries.} No. A pivot is the number that sits in the pivot position \emph{after}
+        earlier row operations have changed it. For $A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$ the second pivot
+        position holds $4$ in $A$, but after $R_2-3R_1\to R_2$ it holds $4-3\cdot2=-2$. If we then scaled row~2
+        by $-\tfrac12$, the pivot would become $1$. The \emph{values} of pivots depend on the path taken; the
+        \emph{positions} do not.
+  \item[Pause and think \ref{think:shape}.]
+        \begin{enumerate}[label=(\arabic*),nosep,leftmargin=*]
+          \item An inconsistent system with $m<n$: $x_1+x_2+x_3=1,\ x_1+x_2+x_3=2$ (two equations, three
+                unknowns; the planes are parallel). A consistent system with $m>n$:
+                $x_1=1,\ 2x_1=2,\ 3x_1=3$ (three equations, one unknown); another is
+                $x_1+x_2=2,\ x_1-x_2=0,\ 2x_1=2$ from Section~1.1, whose solution is $(1,1)$.
+                Extra equations may simply repeat information, and too few equations may still
+                contradict each other. Parts (c) and (d) say only that \emph{if} $m<n$ and the system is
+                consistent then there are infinitely many solutions, and that when $m>n$ \emph{some} choice
+                of $b$ fails, not that every choice fails.
+          \item Each pivot lies in a different row and in a different column (that is the staircase).
+                Suppose an $n\times n$ matrix has a pivot in every row. Then there are $n$ pivots in $n$
+                different columns, but there are only $n$ columns, so every column has a pivot.
+                Conversely, if every column has a pivot, there are $n$ pivots in $n$ different rows, so every
+                row has a pivot. The two conditions are equivalent. Then (a) says the system is consistent
+                for \emph{every} $b$ and (b) says it has \emph{at most one} solution, so together: for every
+                $b$ the system has \emph{exactly one} solution. This is the first glimpse of what it means for
+                a square matrix to be ``invertible.''
+        \end{enumerate}
+  \item[Before the next section.] (1)~An echelon form still leaves freedom: you may scale a row by any nonzero
+        number, or add multiples of a lower pivot row to a higher row, and each choice gives a different echelon
+        form. The extra conditions for reduced echelon form (leading entries equal to $1$, zeros above and below
+        each leading $1$) remove exactly that freedom, which is why only one matrix is possible. None of those
+        freedoms moves a leading entry, so the pivot positions are unaffected (see
+        Pause and think~\ref{think:pivotpos}). (2)~Consistent, since the last column (column~5) is not a pivot column; there are
+        $4-2=2$ free variables ($x_2$ and $x_4$). (3)~False: $x_1+x_2=1,\ x_1+x_2=2$ reduces to
+        $\begin{amat}{cc|c}1&1&1\\0&0&1\end{amat}$, which has a free variable $x_2$ and is inconsistent.
+\end{description}
+
+\end{document}

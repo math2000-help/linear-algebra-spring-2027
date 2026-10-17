@@ -1,0 +1,16 @@
+{
+  "R": "\\mathbb{R}",
+  "C": "\\mathbb{C}",
+  "lead": "\\blacksquare",
+  "st": "\\ast",
+  "rops": ["\\xrightarrow{\\;#1\\;}", 1],
+  "T": "{^{\\mathsf T}}",
+  "Span": "\\operatorname{Span}",
+  "Nul": "\\operatorname{Nul}",
+  "Col": "\\operatorname{Col}",
+  "Row": "\\operatorname{Row}",
+  "rank": "\\operatorname{rank}",
+  "proj": "\\operatorname{proj}",
+  "bv": ["\\mathbf{#1}", 1],
+  "inner": ["\\langle #1,\\,#2\\rangle", 2]
+}

@@ -1,0 +1,522 @@
+\documentclass[11pt]{article}
+\usepackage[notes]{la}
+\lamodule{1}{1}{Systems of Linear Equations}
+
+\begin{document}
+
+\section{Systems of Linear Equations}
+
+\begin{remark}[How to read these notes]
+These notes are meant to be read \emph{actively}. Besides definitions, theorems and worked
+examples, you will meet three kinds of prompts.
+\begin{itemize}
+  \item A \textbf{Knowledge Check} is a short question that you should be able to answer right
+        after reading the preceding paragraph. Try it \emph{before} looking at its answer at the
+        end of the section.
+  \item A \textbf{Pause and think} box is a deeper question with no one-line answer. These are about
+        \emph{why}, not \emph{how}. Discuss them with a neighbor first; a complete discussion of each
+        one appears in the answers at the end of the section, numbered to match.
+  \item A \textbf{Warning} flags a common mistake so that you can avoid it.
+\end{itemize}
+Every theorem is either proved or you are told exactly where its proof will be supplied.
+The goal is not only that you can row reduce a matrix, but that you can explain
+\emph{why} the method works and \emph{what} its output means.
+\end{remark}
+
+\begin{guide}
+A system of equations is a list of constraints that must hold \emph{simultaneously}. Before
+doing a lot of computation: how can we tell whether any assignment of values satisfies all the
+constraints? And if one does, is it the only one?
+\end{guide}
+
+\textbf{By the end of this section you should be able to:}
+\begin{itemize}
+  \item decide whether an equation is linear, and whether a list of numbers solves a system;
+  \item describe the three possible sizes of a solution set and explain why no other size occurs;
+  \item translate a system into an augmented matrix and back;
+  \item use the three elementary row operations, and explain why they never change the solution set;
+  \item recognize an inconsistent system from the row it produces.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Linear equations}
+
+\begin{defn}{Linear equation}{lineq}
+A \emph{linear equation} in the variables $x_1,\dots,x_n$ is an equation that can be written in
+the form
+\[
+a_1x_1+a_2x_2+\cdots+a_nx_n=b,
+\]
+where $b$ and the \emph{coefficients} $a_1,\dots,a_n$ are real numbers known in advance.
+The number of variables $n$ can be any positive integer.
+\end{defn}
+
+``Linear'' is a statement about how the \emph{unknowns} appear: each unknown is multiplied by a
+constant, and the results are added. An equation does not have to \emph{look} like the
+form above; it only has to be rearrangeable into it. For example,
+\[
+x_2 = 2(3-x_1)+x_3 \quad\text{rearranges to}\quad 2x_1+x_2-x_3=6,
+\]
+so it is linear. On the other hand,
+\[
+x_1x_2=4,\qquad x_1+\sqrt{x_2}=1,\qquad x_1^2+x_2=0
+\]
+are not linear: they contain a product of unknowns, a square root of an unknown, and a square.
+
+\begin{kc}{Is it linear?}{linear}
+Decide which of the following are linear equations in $x_1,x_2,x_3$.
+\begin{enumerate}[label=(\alph*)]
+  \item $3x_1-x_2=7$
+  \item $x_1x_3+x_2=1$
+  \item $\tfrac12 x_1+\pi x_2=4$
+  \item $x_1^2+x_2=0$
+  \item $5=2x_2-3x_1$
+\end{enumerate}
+\end{kc}
+
+\begin{think}{Lines versus curves}{lines}
+In two variables, $ax_1+bx_2=c$ graphs as a line, while $x_1x_2=4$ graphs as a hyperbola.
+A line and a hyperbola can meet in exactly two points. Keep this in mind: later in this
+section you will be asked to explain why \emph{two lines} can never meet in exactly two points.
+What property of lines is the hyperbola missing?
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{Systems and solutions}
+
+\begin{defn}{System, solution, solution set}{system}
+A \emph{system of linear equations} (or \emph{linear system}) is a collection of one or more
+linear equations in the \emph{same} variables $x_1,\dots,x_n$.
+
+A \emph{solution} of the system is a list $(s_1,\dots,s_n)$ of numbers that makes \emph{every}
+equation in the system a true statement when $s_1,\dots,s_n$ are substituted for
+$x_1,\dots,x_n$. The set of all solutions is the \emph{solution set}. Two systems are
+\emph{equivalent} if they have the same solution set.
+\end{defn}
+
+For example, consider
+\begin{equation}\label{eq:2x2}
+\begin{aligned}
+x_1+2x_2&=5\\
+3x_1-x_2&=1.
+\end{aligned}
+\end{equation}
+The list $(1,2)$ is a solution: $1+2\cdot2=5$ and $3\cdot1-2=1$. The word ``every'' in the
+definition matters. A list that satisfies only some of the equations is \emph{not} a solution.
+
+\begin{kc}{Checking a candidate}{candidate}
+Is $(3,1)$ a solution of system \eqref{eq:2x2}? Show the substitution.
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{How many solutions can a system have?}
+
+With two equations in two unknowns, each equation is a line in the plane and a solution is a
+point lying on \emph{both} lines. Lines in the plane can be arranged in three ways.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.62,>=stealth]
+\begin{scope}
+  \clip (-0.4,-0.4) rectangle (3.6,3.6);
+  \draw[->] (-0.4,0)--(3.6,0); \draw[->] (0,-0.4)--(0,3.6);
+  \draw[thick,blue!70!black,domain=0:3.5] plot (\x,{(5-\x)/2});
+  \draw[thick,red!70!black,domain=0:3.5] plot (\x,{3*\x-1});
+  \fill (1,2) circle (3pt);
+\end{scope}
+\node at (1.6,-1.0) {\small exactly one solution};
+\begin{scope}[xshift=5.2cm]
+  \clip (-0.4,-0.4) rectangle (3.6,3.6);
+  \draw[->] (-0.4,0)--(3.6,0); \draw[->] (0,-0.4)--(0,3.6);
+  \draw[thick,blue!70!black,domain=0:3.5] plot (\x,{(\x-1)/2});
+  \draw[thick,red!70!black,domain=0:3.5] plot (\x,{\x/2+0.75});
+\end{scope}
+\node at (6.8,-1.0) {\small no solution};
+\begin{scope}[xshift=10.4cm]
+  \clip (-0.4,-0.4) rectangle (3.6,3.6);
+  \draw[->] (-0.4,0)--(3.6,0); \draw[->] (0,-0.4)--(0,3.6);
+  \draw[ultra thick,blue!70!black,domain=0:3.5] plot (\x,{(\x-1)/2});
+  \draw[thin,red!70!black,dashed,domain=0:3.5] plot (\x,{(\x-1)/2});
+\end{scope}
+\node at (12.0,-1.0) {\small infinitely many solutions};
+\end{tikzpicture}
+\end{center}
+
+The three pictures correspond to system \eqref{eq:2x2} (the lines cross at $(1,2)$);
+to $x_1-2x_2=1,\ {-2x_1}+4x_2=3$ (parallel lines); and to $x_1-2x_2=1,\ {-2x_1}+4x_2=-2$ (the
+second equation is $-2$ times the first, so the lines coincide).
+
+\begin{defn}{Consistent and inconsistent}{consistent}
+A system is \emph{consistent} if it has at least one solution and \emph{inconsistent} if it has
+none.
+\end{defn}
+
+Is it an accident of the picture that we never see exactly two solutions? Not at all.
+
+\begin{thm}{Only three possibilities}{three}
+A system of linear equations has either no solution, or exactly one solution, or infinitely many
+solutions.
+\end{thm}
+
+\begin{proof}
+Suppose the system has two \emph{different} solutions $p=(p_1,\dots,p_n)$ and
+$q=(q_1,\dots,q_n)$. We show that it has infinitely many.
+For a real number $t$, define the list
+\[
+r(t)=\bigl((1-t)p_1+tq_1,\ \dots,\ (1-t)p_n+tq_n\bigr).
+\]
+Take any one equation of the system, $a_1x_1+\cdots+a_nx_n=b$. Substituting $r(t)$ gives
+\begin{align*}
+a_1\bigl((1-t)p_1+tq_1\bigr)+\cdots+a_n\bigl((1-t)p_n+tq_n\bigr)
+&=(1-t)\underbrace{(a_1p_1+\cdots+a_np_n)}_{=\,b}+t\underbrace{(a_1q_1+\cdots+a_nq_n)}_{=\,b}\\
+&=(1-t)b+tb=b.
+\end{align*}
+So $r(t)$ satisfies every equation, i.e.\ $r(t)$ is a solution for \emph{every} real $t$.
+Finally, if $t\ne s$, then the $i$th entries of $r(t)$ and $r(s)$ differ by $(t-s)(q_i-p_i)$, and
+this is nonzero for some $i$ because $p\ne q$. So different values of $t$ give different
+solutions, and there are infinitely many of them.
+\end{proof}
+
+\begin{think}{Anatomy of the proof}{proof}
+\begin{enumerate}[label=(\arabic*)]
+  \item Geometrically, what is the set $\{r(t): t\in\R\}$? (Try $n=2$ and $n=3$.)
+  \item Where in the proof did we use that the equations are \emph{linear}? Redo the
+        computation for $x_1x_2=4$ with $p=(1,4)$ and $q=(4,1)$ and see which step fails.
+  \item Use the theorem to explain why two lines in the plane can never meet in exactly two
+        points. (This answers the question from the earlier box.)
+\end{enumerate}
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{Matrix notation}
+
+Writing the variables over and over is wasteful: all of the information in a linear system is
+in its coefficients and right-hand sides. We record it in a rectangular array of numbers called a
+\emph{matrix}. A matrix with $m$ rows and $n$ columns is an $m\times n$ matrix
+(read ``$m$ by $n$''); \textbf{rows are always counted first}.
+
+For the system
+\begin{equation}\label{eq:3x3}
+\begin{aligned}
+x_1+\phantom{2}x_2+x_3&=\phantom{-}2\\
+2x_1+3x_2+x_3&=\phantom{-}6\\
+x_1-\phantom{2}x_2+2x_3&=-1
+\end{aligned}
+\end{equation}
+we line up the variables in columns and obtain
+\[
+\underbrace{\begin{bmatrix}1&1&1\\2&3&1\\1&-1&2\end{bmatrix}}_{\text{coefficient matrix } (3\times3)}
+\qquad
+\underbrace{\begin{amat}{ccc|c}1&1&1&2\\2&3&1&6\\1&-1&2&-1\end{amat}}_{\text{augmented matrix } (3\times4)}
+\]
+The \emph{coefficient matrix} contains only the coefficients; the \emph{augmented matrix}
+adds a final column containing the right-hand sides. (The vertical bar is only a visual
+reminder of where the equal signs were.) If a variable is missing from an equation, its
+coefficient is $0$.
+
+\begin{kc}{Matrix to system and back}{augmented}
+Write the augmented matrix of
+\[
+2x_1-x_3=4,\qquad x_2+3x_3=-1,
+\]
+and state its size. (Be careful about the missing variables.)
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{Elementary row operations}
+
+The strategy for solving a system is to replace it by an \emph{equivalent} system that is easier to
+read off. We do this with three operations, written here on the rows of the augmented matrix
+(each row is one equation).
+
+\begin{defn}{Elementary row operations}{rowops}
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{Replacement:} replace row $i$ by the sum of row $i$ and a multiple of a
+        \emph{different} row $j$. Notation: $R_i+cR_j\to R_i$.
+  \item \textbf{Interchange:} swap two rows. Notation: $R_i\leftrightarrow R_j$.
+  \item \textbf{Scaling:} multiply every entry of a row by a \emph{nonzero} constant.
+        Notation: $cR_i\to R_i$ ($c\neq0$).
+\end{enumerate}
+Two matrices are \emph{row equivalent} if one can be turned into the other by a sequence of
+elementary row operations. We write $A\sim B$.
+\end{defn}
+
+Row operations can be applied to \emph{any} matrix, not only an augmented one. But why are
+these three operations allowed? Why can we be sure we are not accidentally changing the answer?
+
+\begin{thm}{Row operations preserve solutions}{rowsol}
+If the augmented matrices of two linear systems are row equivalent, then the two systems have the
+same solution set.
+\end{thm}
+
+\begin{proof}
+It is enough to show that a \emph{single} elementary row operation does not change the solution
+set; the theorem then follows by repeating the argument for each operation in the sequence.
+Let $p$ be a solution of the original system. We check each operation.
+\begin{itemize}
+  \item \emph{Interchange.} The new system contains exactly the same equations in a different
+        order, so $p$ still satisfies all of them.
+  \item \emph{Scaling.} If $p$ satisfies $L_i=b_i$, then it satisfies $cL_i=cb_i$ (multiply
+        both sides by $c$).
+  \item \emph{Replacement.} If $p$ satisfies $L_i=b_i$ and $L_j=b_j$, then it satisfies
+        $L_i+cL_j=b_i+cb_j$, which is the new equation. The other equations are unchanged.
+\end{itemize}
+So every solution of the old system is a solution of the new one. For the converse we use that
+every elementary row operation can be \emph{undone} by another elementary row operation:
+interchange is undone by the same interchange; scaling by $c\neq0$ is undone by scaling by $1/c$;
+and $R_i+cR_j\to R_i$ is undone by $R_i-cR_j\to R_i$. Hence the old system is obtained from
+the new one by row operations, and the same argument shows every solution of the new system
+is a solution of the old one.
+\end{proof}
+
+\begin{kc}{Undoing a row operation}{undo}
+Name the elementary row operation that undoes each of: (a) $R_3-5R_1\to R_3$;
+(b) $R_2\leftrightarrow R_4$; (c) $4R_2\to R_2$.
+\end{kc}
+
+\begin{think}{Why these restrictions?}{rowops}
+\begin{enumerate}[label=(\arabic*)]
+  \item The proof needs $c\neq0$ in scaling. What would the operation ``$0\cdot R_i\to R_i$'' do to
+        the system, and exactly which step of the proof breaks?
+  \item In replacement we insisted that $j\neq i$. What happens if you try
+        $R_i+cR_i\to R_i$ with $c=-1$? Why is that not safe, even though it looks like a
+        replacement?
+  \item Reversibility is the real reason the method is safe. Can you think of an everyday
+        ``operation'' on an equation (for example, squaring both sides) that is \emph{not}
+        reversible and can therefore introduce false solutions?
+\end{enumerate}
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{Worked examples}
+
+The plan is to use the leading term of the first equation to eliminate that variable from the
+equations below it, then repeat with the next equation, and so on.
+
+\begin{exmp}{A system with exactly one solution}{unique}
+Solve system \eqref{eq:3x3}.
+
+\medskip\textbf{Solution.} Work with the augmented matrix. Use the $1$ in the upper left to clear
+the first column below it, then the $1$ in row~2 to clear the second column below it:
+\begin{align*}
+\begin{amat}{ccc|c}1&1&1&2\\2&3&1&6\\1&-1&2&-1\end{amat}
+&\rops{R_2-2R_1,\ R_3-R_1}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&-1&2\\0&-2&1&-3\end{amat}
+\rops{R_3+2R_2}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&-1&2\\0&0&-1&1\end{amat}
+\end{align*}
+The bottom row now says $-x_3=1$. Scale it, then use it to clear the third column above it,
+and finally clear the second column above row~2:
+\begin{align*}
+&\rops{-R_3}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&-1&2\\0&0&1&-1\end{amat}
+\rops{R_2+R_3,\ R_1-R_3}
+\begin{amat}{ccc|c}1&1&0&3\\0&1&0&1\\0&0&1&-1\end{amat}
+\rops{R_1-R_2}
+\begin{amat}{ccc|c}1&0&0&2\\0&1&0&1\\0&0&1&-1\end{amat}
+\end{align*}
+This is the augmented matrix of $x_1=2,\ x_2=1,\ x_3=-1$. By Theorem~\ref{thm:rowsol} this is the
+only solution of \eqref{eq:3x3}: $(2,1,-1)$.
+
+\textbf{Check} (substitute into the \emph{original} equations):
+$2+1-1=2$, \ $4+3-1=6$, \ $2-1-2=-1$. \ $\checkmark$
+\end{exmp}
+
+\begin{warn}[Always check]
+Elimination involves many small calculations, and one slip changes the answer. Substituting your
+answer back into the \emph{original} system takes a minute and catches nearly every arithmetic
+error. If a check fails, the mistake is in your work, not in the problem.
+\end{warn}
+
+\begin{exmp}{An inconsistent system}{incons}
+Determine whether the system is consistent:
+\[
+\begin{aligned}
+x_1+x_2+x_3&=2\\
+2x_1+3x_2+x_3&=6\\
+3x_1+4x_2+2x_3&=7
+\end{aligned}
+\]
+
+\textbf{Solution.}
+\begin{align*}
+\begin{amat}{ccc|c}1&1&1&2\\2&3&1&6\\3&4&2&7\end{amat}
+&\rops{R_2-2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&-1&2\\0&1&-1&1\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&-1&2\\0&0&0&-1\end{amat}
+\end{align*}
+The last row represents the equation $0x_1+0x_2+0x_3=-1$, i.e.\ $0=-1$, which is never true.
+Since row operations preserve solution sets, the original system has no solution: it is
+inconsistent.
+\end{exmp}
+
+\begin{think}{What does a contradiction mean?}{contradiction}
+Look back at the original system in Example~\ref{ex:incons}. The left side of equation~3 equals the
+sum of the left sides of equations~1 and~2. What \emph{should} the right side of equation~3 have been
+for the system to be consistent? What does the contradiction ``$0=-1$'' tell you about the
+relationship among the original equations?
+\end{think}
+
+\begin{exmp}{A parameter in the system}{param}
+For which values of $h$ does the system $x_1+2x_2=3,\ 2x_1+hx_2=7$ have no solution, one solution,
+or infinitely many?
+
+\medskip\textbf{Solution.}
+\[
+\begin{amat}{cc|c}1&2&3\\2&h&7\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{cc|c}1&2&3\\0&h-4&1\end{amat}
+\]
+The second row says $(h-4)x_2=1$.
+\begin{itemize}
+  \item If $h\neq4$, then $x_2=1/(h-4)$ and $x_1=3-2x_2$: exactly one solution.
+  \item If $h=4$, the row reads $0=1$: no solution.
+\end{itemize}
+Infinitely many solutions never occurs here. Geometrically, $h=4$ makes the two lines parallel
+(both have slope $-\tfrac12$) and they are different lines; for every other $h$ the slopes differ and
+the lines cross once.
+\end{exmp}
+
+\begin{think}{Coefficients versus right-hand sides}{rhs}
+In Example~\ref{ex:param}, change the right-hand side $7$ to $6$ and repeat. What changes, and
+why? What does this tell you about the roles of the coefficients versus the right-hand sides in
+deciding \emph{existence} versus \emph{uniqueness}?
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{The two fundamental questions}
+
+Everything we do with linear systems answers one of two questions.
+
+\begin{remark}[The two fundamental questions]
+\textbf{Existence:} Is the system consistent, i.e.\ does at least one solution exist?
+
+\textbf{Uniqueness:} If a solution exists, is it the only one?
+\end{remark}
+
+These two questions will reappear throughout the course in many disguises. In the next section we
+learn how to answer both by looking at the \emph{shape} of the matrix left at the end of
+elimination, without necessarily solving the system completely.
+
+\subsection*{Summary}
+\begin{itemize}
+  \item A linear system has \textbf{no solution, one solution, or infinitely many}; never exactly two
+        (Theorem~\ref{thm:three}).
+  \item A system is encoded by its \textbf{augmented matrix}; the three \textbf{elementary row
+        operations} are replacement, interchange, and (nonzero) scaling.
+  \item Row operations are \textbf{reversible}, which is exactly why they preserve the solution set.
+  \item A row of the form $[\,0\ \cdots\ 0\mid b\,]$ with $b\neq0$ means the system is inconsistent.
+\end{itemize}
+
+\subsection*{Questions to think about before the next section}
+\begin{enumerate}
+  \item Can a system of \emph{three} equations in \emph{two} unknowns be consistent? Give an example
+        or explain why not.
+  \item Explain, in your own words and without looking at the notes, why row operations do not
+        change the solution set.
+  \item A classmate says, ``I found two solutions to my system, so it has exactly two solutions.''
+        What do you say?
+\end{enumerate}
+
+\subsection*{Answers and discussion}
+\begin{description}[leftmargin=0pt,itemsep=5pt]
+  \item[Knowledge Check \ref{kc:linear}.] (a)~yes. (b)~no: it contains the product $x_1x_3$.
+        (c)~yes: $\pi$ is just a number, so it is a perfectly good coefficient. (d)~no: $x_1^2$.
+        (e)~yes: it rearranges to $3x_1-2x_2=-5$.
+  \item[Knowledge Check \ref{kc:candidate}.] The first equation gives $3+2\cdot1=5$, which is true,
+        but the second gives $3\cdot3-1=8\neq1$. So $(3,1)$ is \emph{not} a solution: it lies on the
+        first line but not on the second.
+  \item[Knowledge Check \ref{kc:augmented}.] Rewrite as $2x_1+0x_2-x_3=4$ and $0x_1+x_2+3x_3=-1$:
+        \[\begin{amat}{ccc|c}2&0&-1&4\\0&1&3&-1\end{amat},\qquad\text{size }2\times4.\]
+  \item[Knowledge Check \ref{kc:undo}.] (a)~$R_3+5R_1\to R_3$. (b)~the same interchange,
+        $R_2\leftrightarrow R_4$. (c)~$\tfrac14R_2\to R_2$.
+  \item[Pause and think \ref{think:lines}.] Lines are \emph{straight}: a line that contains two
+        points contains the entire line through them. A hyperbola curves away from its chords. For
+        example, $(1,4)$ and $(4,1)$ both lie on $x_1x_2=4$, but the point halfway between them,
+        $(2.5,2.5)$, does not, since $2.5\cdot2.5=6.25\neq4$. The line $x_1+x_2=5$ passes through both
+        points and meets the hyperbola exactly twice. Two \emph{lines} cannot do this: if they share
+        two different points, they share the whole line through those points, so they coincide.
+
+        Algebra says the same thing. Substituting $x_2=5-x_1$ into $x_1x_2=4$ gives the
+        \emph{quadratic} $x_1^2-5x_1+4=0$, whose two roots $x_1=1$ and $x_1=4$ are the two
+        intersection points. Substituting into a second \emph{linear} equation always gives a linear
+        equation, which has no solution, one solution, or every number as a solution. Theorem~\ref{thm:three}
+        makes the idea of ``straightness'' precise and extends it to any number of equations and
+        unknowns.
+  \item[Pause and think \ref{think:proof}.]
+        \begin{enumerate}[label=(\arabic*),nosep,leftmargin=*]
+          \item $\{r(t):t\in\R\}$ is the \emph{line} through $p$ and $q$: a line in the plane when
+                $n=2$, a line in space when $n=3$. We can rewrite $r(t)=p+t(q-p)$, meaning ``start at
+                $p$ and move in the direction $q-p$.'' The value $t=0$ gives $p$, $t=1$ gives $q$,
+                $0<t<1$ gives the points \emph{between} them (with $t=\tfrac12$ the midpoint), and
+                $t<0$ or $t>1$ gives points beyond them.
+          \item Linearity is used in the middle step of the computation, where we expand
+                $a_i\bigl((1-t)p_i+tq_i\bigr)$ and regroup everything multiplied by $(1-t)$ and
+                everything multiplied by $t$. This works because each unknown is only multiplied by
+                a constant and added to the others. For $x_1x_2=4$ with $p=(1,4)$ and $q=(4,1)$ we get
+                $r(t)=(1+3t,\ 4-3t)$ and
+                \[(1+3t)(4-3t)=4+9t-9t^2,\]
+                which equals $4$ only when $t=0$ or $t=1$. The step that fails is the regrouping:
+                multiplying two expressions that each contain $t$ produces a $t^2$ term, and the result
+                can no longer be written as $(1-t)\cdot4+t\cdot4$.
+          \item A solution of a system of two linear equations in two unknowns is a common point of two
+                lines. If there were exactly two common points, then in particular there would be two
+                \emph{different} solutions, so by Theorem~\ref{thm:three} there would be infinitely many,
+                a contradiction. So two lines meet in no point, one point, or infinitely many points.
+        \end{enumerate}
+  \item[Pause and think \ref{think:rowops}.]
+        \begin{enumerate}[label=(\arabic*),nosep,leftmargin=*]
+          \item The operation $0\cdot R_i\to R_i$ turns row $i$ into all zeros, i.e.\ the equation
+                $0=0$. The information in that equation is thrown away, and the new system can have
+                \emph{more} solutions than the old one. For example, $x_1=1,\ x_1=2$ has no
+                solution, but after $0\cdot R_1\to R_1$ the system $0=0,\ x_1=2$ has the solution
+                $x_1=2$. The ``forward'' half of the proof survives (every old solution is still a
+                solution), but the converse half breaks: no operation can undo $0\cdot R_i$, since we
+                would have to scale by $1/0$.
+          \item Since $R_i+cR_i=(1+c)R_i$, this ``replacement'' is really a scaling by $1+c$. With
+                $c=-1$ it is scaling by $0$, which is exactly the problem in part~(1): row $i$ becomes
+                zero. That is why replacement requires $j\neq i$. (For $c\neq-1$ it is just a scaling by
+                a nonzero number, harmless but redundant.)
+          \item Squaring both sides turns $x=2$ into $x^2=4$, which also has the false solution
+                $x=-2$. Multiplying both sides by $x$ turns $x=1$ into $x^2=x$, which gains the false
+                solution $x=0$; dividing $x^2=x$ by $x$ \emph{loses} the true solution $x=0$.
+                The common thread: a step that cannot be reversed can add or lose solutions. Row
+                operations are safe because each one has an inverse operation of the same kind.
+        \end{enumerate}
+  \item[Pause and think \ref{think:contradiction}.] For the system to be consistent, the right side of
+        equation~3 would have to be $2+6=8$. Any solution of equations~1 and~2 automatically satisfies
+        their sum, $3x_1+4x_2+2x_3=8$, so demanding that it equal $7$ is a contradiction. Subtracting
+        (equation~1)$+$(equation~2) from equation~3 produces $0=-1$.
+
+        With right side $8$ the third equation would be redundant: row reduction would end in a row of
+        zeros, and the system would be consistent with infinitely many solutions
+        $(x_1,x_2,x_3)=(-2s,\,2+s,\,s)$. (Check in equation~3: $-6s+8+4s+2s=8$.)
+
+        So a contradiction $0=b$ with $b\neq0$ means: \emph{some combination of the equations has a
+        left side that is identically zero but a right side that is not.} The equations make
+        incompatible demands on the same quantity. Geometrically, the three planes meet pairwise
+        in lines, but those lines are parallel to each other, like the three long edges of a triangular
+        prism, so no point lies on all three planes.
+  \item[Pause and think \ref{think:rhs}.] With right side $6$ the reduction gives
+        $\begin{amat}{cc|c}1&2&3\\0&h-4&0\end{amat}$.
+        If $h\neq4$, then $x_2=0$ and $x_1=3$: a unique solution (as before). If $h=4$, the last row
+        is $0=0$, so $x_2$ is free and $x_1=3-2x_2$: infinitely many solutions. With right side $7$ the
+        case $h=4$ gave \emph{no} solution, so changing only the right-hand side flipped that case from
+        ``none'' to ``infinitely many.'' Geometrically, at $h=4$ the second equation is
+        $2x_1+4x_2=b$, which is parallel to the first line: for $b=6$ it is the same line (twice the
+        first equation), while for $b=7$ it is a different line.
+
+        What this shows: the \emph{coefficients} decide whether there can be more than one solution.
+        When $h\neq4$ there is a pivot in every column, so there is never a free variable. They
+        also decide whether existence is guaranteed: for $h\neq4$ there is a pivot in every row, so the
+        system is consistent whatever the right-hand side. When $h=4$ that guarantee is lost, and
+        the right-hand side alone decides whether a solution exists. This is exactly the pattern
+        that the pivot-counting theorem in Section~1.2 will describe.
+  \item[Before the next section.] (1)~Yes: $x_1+x_2=2,\ x_1-x_2=0,\ 2x_1=2$ has the solution $(1,1)$,
+        because equation~3 is the sum of equations~1 and~2. (2)~Each operation maps solutions of the old
+        system to solutions of the new one, and each can be undone by another operation, so solutions
+        also map back. (3)~If $p\neq q$ are solutions then, by the theorem, so is the midpoint
+        $\tfrac12(p+q)$, and infinitely many more.
+\end{description}
+
+\end{document}
