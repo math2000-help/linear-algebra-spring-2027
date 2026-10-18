@@ -24,8 +24,8 @@ modules:
   - {id: "1.7", chapter: 1, title: "Linear Independence", tested: true, prereqs: ["1.5"], status: done}
   - {id: "1.8", chapter: 1, title: "Introduction to Linear Transformations", tested: true, prereqs: ["1.4", "1.7"], status: done}
   - {id: "1.9", chapter: 1, title: "The Matrix of a Linear Transformation", tested: true, prereqs: ["1.8"], status: done}
-  - {id: "2.1", chapter: 2, title: "Matrix Operations", tested: true, prereqs: ["1.9"], status: todo}
-  - {id: "2.2", chapter: 2, title: "The Inverse of a Matrix", tested: true, prereqs: ["2.1"], status: todo}
+  - {id: "2.1", chapter: 2, title: "Matrix Operations", tested: true, prereqs: ["1.9"], status: done}
+  - {id: "2.2", chapter: 2, title: "The Inverse of a Matrix", tested: true, prereqs: ["2.1"], status: done}
   - {id: "2.3", chapter: 2, title: "Characterizations of Invertible Matrices", tested: true, prereqs: ["2.2", "1.7", "1.9"], status: todo}
   - {id: "2.5", chapter: 2, title: "Matrix Factorizations", tested: false, prereqs: ["2.2"], status: todo, note: "Enrichment (LU). Not required by any later section."}
   - {id: "3.1", chapter: 3, title: "Introduction to Determinants", tested: true, prereqs: ["2.2"], status: todo}
