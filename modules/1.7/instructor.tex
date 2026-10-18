@@ -1,0 +1,123 @@
+\documentclass[11pt]{article}
+\usepackage[instructor]{la}
+\lamodule{1}{7}{Linear Independence}
+
+\begin{document}
+
+\section{Linear Independence}
+
+\subsection*{Overview}
+\textbf{Big ideas.}
+\begin{enumerate}[nosep]
+  \item Independent means: the \emph{only} way to combine the vectors to get $\bv{0}$ is with all weights $0$. This is the same as ``$A\bv{x}=\bv{0}$ has only the trivial solution'' (Section 1.5).
+  \item The columns of $A$ are independent iff every column is a pivot column. (Spanning is the \emph{row} condition; independence is the \emph{column} condition.)
+  \item Dependent means redundant: at least one vector is a combination of the others and may be removed without changing the span.
+  \item Independent vectors give unique weights; dependent vectors give infinitely many (translate theorem, Section 1.5).
+  \item More than $n$ vectors in $\R^n$ are always dependent.
+\end{enumerate}
+\textbf{Prerequisites.} Sections 1.1--1.5; especially Theorem 1.5.2 and Theorem 1.5.7.
+
+\textbf{Materials.} Lecture notes (\texttt{notes.tex}), Activity Worksheet, Homework, this document.
+
+\textbf{Student learning outcomes.} After this section a student can: (1) test a set for independence using pivot columns; (2) write and check a dependence relation; (3) recognise the special cases (zero vector, two multiples, too many vectors); (4) explain redundancy and unique weights; (5) find a parameter value that creates a dependence; (6) read chemical equations and polynomial identities as dependence relations.
+
+\subsection*{Suggested pacing}
+Times are for one 80-minute meeting. Examples~1.7.10 and 1.7.11 (applications) and Pause and think~1.7.5 can be assigned as reading or used as the first ten minutes of the next meeting.
+
+\begin{tabular}{@{}p{1.1in}p{4.6in}@{}}\toprule
+Minutes & Content\\\midrule
+0--3 & Guiding question (three vectors, a plane: where is the redundancy?).\\
+3--15 & Definition~1.7.1, Theorem~1.7.2, Example~1.7.3; Knowledge Check 1.7.1.\\
+15--27 & Example~1.7.4; Theorems~1.7.5 and 1.7.6; the Warning; Pause and think 1.7.1 (no multiples, still dependent).\\
+27--37 & Special cases; Knowledge Check 1.7.2; Example~1.7.7 (parameter).\\
+37--45 & Theorem~1.7.8 and Example~1.7.9; Knowledge Checks 1.7.3--1.7.4.\\
+45--73 & \textbf{Worksheet}: Activity 1 (14 min), Activity 2 (14 min).\\
+73--80 & Summary, exit ticket, homework due date.\\\bottomrule
+\end{tabular}
+
+Extension Activities 3--5 are for early finishers or take-home. Activity 4 anticipates vector spaces of polynomials (Chapter 4).
+
+\begin{tip}
+\textbf{Pause and think boxes to do live.} 1.7.1 (no multiples, still dependent), 1.7.2 (which vector may be removed) and 1.7.3 (growing an independent set). The second leads to the idea of a basis (``fewest vectors with the same span''); do not name it yet, but let a student say it. 1.7.4 (pivot columns) is the bridge to Chapter 4.
+\end{tip}
+
+\subsection*{Common misconceptions and responses}
+\begin{center}\small
+\begin{tabular}{p{2.25in}p{3.6in}}\toprule
+\textbf{Misconception} & \textbf{How to respond}\\\midrule
+``Independent means no vector is a multiple of another.'' & Fine for two vectors only. Pause and think 1.7.1; Worksheet Activity 2(vi); Homework 4(f).\\
+``Dependent means every vector is a combination of the others.'' & Only \emph{at least one}. Warning after Theorem~1.7.6; Pause and think 1.7.2 ($\bv{w}_2$ cannot be removed).\\
+Confusing ``span $\R^n$'' with ``independent'': pivot in every row versus every column. & Summary box; Homework 5; the 6$\times$4 and 3$\times$5 examples in Homework 5(a)--(b).\\
+``Fewer vectors than entries means independent.'' & Theorem~1.7.8 is one-directional. Homework 4(c) (first three already dependent).\\
+Row reducing only $A$ and forgetting what the zero column means. & State the conclusion in terms of pivot columns of $A$; the zero column never changes (Section 1.5).\\
+Treating the zero vector as ``not really there''. & Knowledge Check 1.7.2(c); Homework 4(d): $1\cdot\bv{0}=\bv{0}$ is a nontrivial relation.\\\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Worksheet: facilitation notes and solutions}
+\textbf{Setup.} Groups of 3--4 with rotating roles. The Checker substitutes each relation into the vectors.
+
+\begin{sol}[Activity 1: Test and explain]
+(a)~Rows of the matrix with columns $\bv{v}_1,\bv{v}_2,\bv{v}_3$: $R_2-R_1$, $R_3-R_2$ give $\begin{bmatrix}1&1&0\\0&1&1\\0&0&2\end{bmatrix}$: three pivot columns, so \emph{independent}.
+(b)~Reduced form $\begin{bmatrix}1&0&-2\\0&1&1\\0&0&0\end{bmatrix}$; $x_3$ free; relation $2\bv{v}_1-\bv{v}_2+\bv{v}_3=\bv{0}$. Check: $(2,-2,4)-(2,1,1)+(0,3,-3)=(0,0,0)$.
+(c)~$\bv{v}_2=2\bv{v}_1+\bv{v}_3$, $\bv{v}_1=\tfrac12(\bv{v}_2-\bv{v}_3)$, $\bv{v}_3=\bv{v}_2-2\bv{v}_1$ (all possible since every weight is nonzero). The span is a plane through the origin; any two of the three vectors span the same plane (the pairs are independent: no one is a multiple of another).
+\emph{Think about it.} (a)~Pivot columns $1,2,3$; (b)~pivot columns $1,2$, column $3$ free. A nonpivot column is a combination of earlier columns.
+\end{sol}
+
+\begin{sol}[Activity 2: Spot the dependence]
+(i)~Dependent: $(-4,2,-6)=-2(2,-1,3)$. (ii)~Dependent: four vectors in $\R^3$. (iii)~Independent: neither is a multiple of the other. (iv)~Dependent: contains $\bv{0}$. (v)~Independent: nonzero single vector. (vi)~Dependent: $(1,2,1)=(1,1,0)+(0,1,1)$, though no vector is a multiple of another.
+(a)~Set (vi); relation $(1,1,0)+(0,1,1)-(1,2,1)=\bv{0}$. (b)~$(4,5,6)=4\bv{e}_1+5\bv{e}_2+6\bv{e}_3$; $\bv{e}_1,\bv{e}_2,\bv{e}_3$ already span $\R^3$, and Theorem~1.7.8 guarantees a relation for $p>n$.
+\emph{Think about it.} Two vectors: dependent iff one is a multiple of the other. Three or more: dependent iff one is a linear combination of the others (equivalently some nontrivial relation exists).
+\end{sol}
+
+\begin{sol}[Extension Activities 3--5]
+\textbf{Activity 3.} The determinant of the matrix is $4h+12=4(h+3)$ (equivalently the last pivot is proportional to $h+3$). (a)~Dependent iff $h=-3$. (b)~$\bv{v}_3=(1,-3,-3)=\bv{v}_1-\bv{v}_2$; relation $-\bv{v}_1+\bv{v}_2+\bv{v}_3=\bv{0}$ (check: $(-2+1+1,\ 2+1-3,\ 3+0-3)=\bv{0}$). (c)~For $h\neq-3$ the vectors are independent, so the weights are unique (Theorem~1.7.5).
+
+\textbf{Activity 4.} (a)~$p_1=1+2t\leftrightarrow(1,2,0)$, $p_2=t^2\leftrightarrow(0,0,1)$, $p_3=2+4t+t^2\leftrightarrow(2,4,1)$: $2p_1+p_2-p_3=0$; check $2(1+2t)+t^2-(2+4t+t^2)=0$. Dependent. (b)~Coefficient vectors $(1,0,0),(1,1,0),(1,1,1)$: triangular with three pivots: independent. (c)~Yes, e.g.\ the set in (b): $1+t+t^2\neq$ the sum of the others. Independence is about \emph{every} possible relation, not just one pattern.
+
+\textbf{Activity 5.} (a)~$\bv{w}=3\bv{u}-2\bv{v}$: $(6-2,\ 3-6)=(4,-3)$. Unique, since $\bv{u},\bv{v}$ are independent (det $=5$). (b)~$3\bv{u}-2\bv{v}-\bv{w}=\bv{0}$. (c)~With $\bv{u},\bv{v},\bv{w}$ the zero vector has infinitely many representations $t(3\bv{u}-2\bv{v}-\bv{w})$; with $\bv{u},\bv{v}$ only the trivial one. Unique weights for $\bv{w}$ in terms of $\bv{u},\bv{v}$ is Theorem~1.7.5.
+\end{sol}
+
+\subsection*{Homework: solutions and grading notes}
+Suggested grading: 100 points, Problems 1--9 worth 12, 10, 12, 10, 10, 12, 8, 16, 10 and credit for method. Take a point off for a missing check of a relation, but not more.
+
+\begin{sol}[Part A: Problems 1--4]
+\textbf{1.} (a)~Independent: three pivots. (b)~Dependent; reduced form $\begin{bmatrix}1&0&\ast\\0&1&\ast\\0&0&0\end{bmatrix}$, relation $2\bv{c}_1+\bv{c}_2-\bv{c}_3=\bv{0}$: $(2,-2,4)+(2,1,1)-(4,-1,5)=\bv{0}$. (c)~The sum of the first two is $(3,1,1,3)\neq(3,1,1,4)$; three pivots, so independent.
+
+\textbf{2.} (a)~$\det=-9(h-2)$; dependent iff $h=2$, relation $\bv{c}_1-\bv{c}_2+\bv{c}_3=\bv{0}$: $(-1,-3,-3)-(2,-1,-3)+(3,2,0)=\bv{0}$. (b)~$\det=2(h-4)$; $h=4$, relation $-2\bv{c}_1+4\bv{c}_2+\bv{c}_3=\bv{0}$: $(-2,6,0)+(4,-4,-4)+(-2,-2,4)=\bv{0}$.
+
+\textbf{3.} (a)~Four vectors in $\R^3$ (Theorem~1.7.8). (b)~$2\bv{w}_1+\bv{w}_3-\bv{w}_4=\bv{0}$. (c)~No: its weight in every relation is $0$ (the null space is $\Span\{(2,0,1,-1)\}$), and $\bv{w}_2\notin\Span\{\bv{w}_1,\bv{w}_3,\bv{w}_4\}$, a plane. (d)~Any one of $\bv{w}_1,\bv{w}_3,\bv{w}_4$; the three vectors left still span $\R^3$ (three pivots). Removing $\bv{w}_2$ shrinks the span to a plane.
+
+\textbf{4.} (a)~Dependent: $(-6,2)=-2(3,-1)$. (b)~Independent: nonzero. (c)~Dependent: four vectors in $\R^3$ (indeed $(7,8,9)=2(4,5,6)-(1,2,3)$). (d)~Dependent: zero vector. (e)~Independent: triangular, three pivots. (f)~Dependent: $(3,5,7)=(1,2,3)+(2,3,4)$.
+\end{sol}
+
+\begin{sol}[Parts B and C: Problems 5--9]
+\textbf{5.} (a)~Independent (pivot in every column); not spanning, since only $4<6$ pivots. (b)~Dependent ($5>3$); they span $\R^3$ iff there are $3$ pivots (one in each row). (c)~Four pivot columns means four pivots in four rows, so yes it spans and $A\bv{x}=\bv{b}$ has exactly one solution for every $\bv{b}$.
+
+\textbf{6.} (a)~True. (b)~False: $\{(1,0),(2,0),(0,1)\}$ is dependent but $(0,1)$ is not a combination of the others. (c)~True (a relation among the subset is a relation among the whole set). (d)~True (Pause and think 1.7.3). (e)~True: a nonpivot column exists. (f)~False: $A\bv{x}=\bv{b}$ may have no solution; e.g.\ $A=\begin{bmatrix}1&1\\1&1\end{bmatrix}$, $\bv{b}=(1,2)$.
+
+\textbf{7.} (a)~Dependent: with coefficient vectors $(1,-1,0)$, $(0,1,-1)$, $(1,0,-1)$ we have $p_1+p_2-p_3=0$: $(1-t)+(t-t^2)-(1-t^2)=0$. (b)~Independent: the $3\times3$ matrix of coefficient vectors $\begin{bmatrix}1&0&1\\0&1&1\\1&1&0\end{bmatrix}$ has determinant $-2\neq0$, hence three pivots.
+
+\textbf{8.} (a)~Vectors (C,H,O): glucose $(6,12,6)$, $\mathrm{O_2}=(0,0,2)$, $\mathrm{CO_2}=(1,0,2)$, $\mathrm{H_2O}=(0,2,1)$; relation (null space $\Span\{(1,6,-6,-6)\}$): $\mathrm{C_6H_{12}O_6}+6\mathrm{O_2}\to6\mathrm{CO_2}+6\mathrm{H_2O}$. Atoms: C: $6=6$; H: $12=6\cdot2$; O: $6+12=12+6$. (b)~Five vectors in $\R^3$ with rank $3$: two free variables. In the order (glucose, ethanol, $\mathrm{O_2}$, $\mathrm{CO_2}$, $\mathrm{H_2O}$): combustion of glucose $(1,0,6,-6,-6)$; fermentation $(1,-2,0,-2,0)$ (C: $6=2\cdot2+2$, H: $12=2\cdot6$, O: $6=2+4$); combustion of ethanol $(0,1,3,-2,-3)=\tfrac12[(1,0,6,-6,-6)-(1,-2,0,-2,0)]$ (C: $2=2$, H: $6=3\cdot2$, O: $1+6=4+3$).
+
+\textbf{9.} (a)~If $a(\bv{u}+\bv{v})+b(\bv{v}+\bv{w})+c(\bv{w}+\bv{u})=\bv{0}$ then $(a+c)\bv{u}+(a+b)\bv{v}+(b+c)\bv{w}=\bv{0}$, so $a+c=a+b=b+c=0$, which gives $a=b=c=0$ (coefficient matrix $\begin{bmatrix}1&0&1\\1&1&0\\0&1&1\end{bmatrix}$ with determinant $2$). (b)~$(\bv{u}-\bv{v})+(\bv{v}-\bv{w})+(\bv{w}-\bv{u})=\bv{0}$: a nontrivial relation. (c)~Coefficient matrices $\begin{bmatrix}1&0&1\\1&1&0\\0&1&1\end{bmatrix}$ (determinant $2$, invertible, three pivots) and $\begin{bmatrix}1&0&-1\\-1&1&0\\0&-1&1\end{bmatrix}$ (determinant $0$, the columns sum to $\bv{0}$).
+\end{sol}
+
+\subsection*{Optional quick quiz (10 minutes, start of the next meeting; covers \S1.7)}
+\begin{enumerate}
+ \item Are $(1,2,1)$, $(2,1,0)$, $(0,3,2)$ independent? If not, give a relation. \emph{(Dependent: $-2\bv{v}_1+\bv{v}_2+\bv{v}_3=\bv{0}$.)}
+ \item Five vectors in $\R^4$: independent, dependent, or can't say? \emph{(Dependent.)}
+ \item True or false: ``If $\bv{v}_3$ is not a multiple of $\bv{v}_1$ or of $\bv{v}_2$, then $\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ is independent.'' \emph{(False.)}
+ \item For which $h$ are $(1,2)$ and $(3,h)$ dependent? \emph{(Answer: $h=6$.)}
+\end{enumerate}
+
+\subsection*{Connections forward}
+\begin{itemize}
+ \item \textbf{Sections 1.8--1.9:} a linear map is one-to-one iff the columns of its matrix are independent; onto iff they span.
+ \item \textbf{Chapter 2:} a square matrix is invertible iff its columns are independent (and iff they span).
+ \item \textbf{Chapter 3:} the determinant of a square matrix is nonzero iff its columns are independent.
+ \item \textbf{Chapter 4:} Pause and think 1.7.2 and 1.7.4 lead to the definition of a \emph{basis}, a spanning set that is independent; polynomials are vectors (Example~1.7.11).
+ \item \textbf{Chapter 5:} eigenvectors for distinct eigenvalues are independent.
+\end{itemize}
+
+\end{document}

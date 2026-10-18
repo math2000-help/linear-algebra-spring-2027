@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[instructor]{la}
+\lamodule{1}{5}{Solution Sets of Linear Systems}
+
+\begin{document}
+
+\section{Solution Sets of Linear Systems}
+
+\subsection*{Overview}
+\textbf{Big ideas.}
+\begin{enumerate}[nosep]
+  \item $A\bv{x}=\bv{0}$ is always consistent; it has a nontrivial solution exactly when there is a free variable, i.e.\ a column that is not a pivot column.
+  \item Parametric vector form turns ``$x_3$ is free'' into a picture: each free variable multiplies a fixed direction vector.
+  \item The solutions of $A\bv{x}=\bv{b}$ are one particular solution plus all solutions of $A\bv{x}=\bv{0}$: a translate of the homogeneous solution set. Uniqueness is therefore decided by $A\bv{x}=\bv{0}$ alone.
+  \item Lines, planes and their translates are solution sets; networks give a reason to care about the free parameter.
+  \item Seeds for Section 1.7: a nontrivial solution of $A\bv{x}=\bv{0}$ is a relation among the columns.
+\end{enumerate}
+\textbf{Prerequisites.} Sections 1.1--1.4 (row reduction, pivots, vector equations, $A\bv{x}=\bv{b}$ and linearity). Pause and think 1.4.2 is the preview of this section's main theorem; consider returning to it at the start.
+
+\textbf{Materials.} Lecture notes (\texttt{notes.tex}), Activity Worksheet, Homework, this document.
+
+\textbf{Student learning outcomes.} After this section a student can: (1) decide whether $A\bv{x}=\bv{0}$ has a nontrivial solution; (2) write solution sets in parametric vector form; (3) state and use the translate theorem; (4) read uniqueness off the homogeneous equation; (5) write a line or plane as a solution set and conversely; (6) interpret the free parameter of a network flow.
+
+\subsection*{Suggested pacing}
+Times are for one 80-minute meeting. The notes contain more than fits; Examples~1.5.4, 1.5.12 and 1.5.13 and Knowledge Checks~1.5.3--1.5.6 can be assigned as reading and discussed briefly at the start of the next meeting.
+
+\begin{tabular}{@{}p{1.1in}p{4.6in}@{}}\toprule
+Minutes & Content\\\midrule
+0--3 & Guiding question (what does the whole solution set look like?).\\
+3--14 & Definition~1.5.1, Theorem~1.5.2, Example~1.5.3; Pause and think 1.5.1 (free variable $=$ relation among columns).\\
+14--24 & Procedure~1.5.5, Example~1.5.6 (two free variables); Knowledge Checks 1.5.1--1.5.2.\\
+24--38 & Theorem~1.5.7 and its proof; the Warning; Examples~1.5.8--1.5.9; Pause and think 1.5.2 (many particular solutions).\\
+38--45 & Theorem~1.5.10 (uniqueness); Example~1.5.11 (parameter); Pause and think 1.5.4 (existence versus uniqueness).\\
+45--73 & \textbf{Worksheet}: Activity 1 (14 min), Activity 2 (14 min).\\
+73--80 & Summary, exit ticket, homework due date.\\\bottomrule
+\end{tabular}
+
+Extension Activities 3--5 are for early finishers or take-home; Activity 3 is the same type of problem as the network in Example~1.5.13.
+
+\begin{tip}
+\textbf{Pause and think boxes to do live.} 1.5.1 (free variables and column relations) and 1.5.2 (many particular solutions); both reward 90 seconds of silent writing followed by a pair discussion. 1.5.3 (rebuilding the plane) is the cleanest introduction to ``two vectors span a plane iff neither is a multiple of the other'', which becomes the definition of independence in Section 1.7. 1.5.4 makes a good closing question.
+\end{tip}
+
+\subsection*{Common misconceptions and responses}
+\begin{center}\small
+\begin{tabular}{p{2.25in}p{3.6in}}\toprule
+\textbf{Misconception} & \textbf{How to respond}\\\midrule
+``Nontrivial solutions exist only if some right-hand side is nonzero.'' & $A\bv{x}=\bv{0}$ has no right-hand side to change; the free variables are what matter (Theorem~1.5.2, Knowledge Check 1.5.1).\\
+Writing the free variables' coefficients incorrectly, e.g.\ using the wrong sign for $x_1=-2x_2-x_4$. & Insist on the check $A\bv{u}=\bv{0}$ (Worksheet Activity 1(c)); the Checker role is there for this.\\
+``The solution set of $A\bv{x}=\bv{b}$ is a span.'' & Worksheet Activity 2(e) and the Warning after Theorem~1.5.7: $\bv{0}$ is not a solution when $\bv{b}\neq\bv{0}$; sums of solutions are not solutions (Homework 7(e)).\\
+``If $A\bv{x}=\bv{0}$ has nontrivial solutions then $A\bv{x}=\bv{b}$ does too.'' & Needs consistency first. Counterexample $\begin{bmatrix}1&1\\1&1\end{bmatrix}$, $\bv{b}=(1,2)$ (Warning; Homework 7(b)).\\
+``The particular solution is unique'' or ``my answer differs from the key, so it is wrong''. & Pause and think 1.5.2: any particular solution works, and direction vectors may be rescaled. Teach students to compare solution \emph{sets} by checking that each key solution satisfies their parametric form.\\
+Confusing ``unique solution'' with ``solution exists for every $\bv{b}$''. & Pause and think 1.5.4 and Knowledge Check 1.5.6: uniqueness is columns, existence is rows.\\\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Worksheet: facilitation notes and solutions}
+\textbf{Setup.} Groups of 3--4 with rotating roles. Circulate; ask ``how could you check?'' (multiply by the matrix).
+
+\begin{sol}[Activity 1: The homogeneous equation]
+(a)~$R_2-2R_1,\ R_3+R_1$ give $\begin{bmatrix}1&2&3&-1\\0&1&2&-2\\0&1&2&-2\end{bmatrix}$; then $R_3-R_2$ and $R_1-2R_2$ give the reduced form $\begin{bmatrix}1&0&-1&3\\0&1&2&-2\\0&0&0&0\end{bmatrix}$. Pivot columns $1,2$; $x_3,x_4$ free.
+(b)~$x_1=x_3-3x_4$, $x_2=-2x_3+2x_4$: $\bv{u}=(1,-2,1,0)$, $\bv{v}=(-3,2,0,1)$.
+(c)~$A\bv{u}=(1-4+3,\ 2-10+8,\ -1+2-1)=(0,0,0)$; $A\bv{v}=(-3+4+0-1,\ -6+10+0-4,\ 3-2+0-1)=(0,0,0)$.
+(d)~$\bv{w}=(11,-10,2,-3)$. By linearity $A\bv{w}=2A\bv{u}-3A\bv{v}=\bv{0}$.
+(e)~$A(1,1,1,1)=(5,11,-4)\neq\bv{0}$: not a solution.
+\emph{Think about it.} At least $1$ free variable (three pivots, four columns) and at most $4$ (the zero matrix). Example for $1$: $[\,I_3\ \ \bv{c}\,]$; for $4$: $0$.
+\end{sol}
+
+\begin{sol}[Activity 2: Shifting the solution set]
+(a)~The reduced form of $[A\ \bv{b}]$ is $\begin{bmatrix}1&0&-1&3&1\\0&1&2&-2&1\\0&0&0&0&0\end{bmatrix}$; consistent.
+(b)~$\bv{x}=(1,1,0,0)+x_3(1,-2,1,0)+x_4(-3,2,0,1)$; the directions are exactly $\bv{u},\bv{v}$ from Activity~1.
+(c)~$A\bv{p}=1\cdot\bv{a}_1+1\cdot\bv{a}_2=(1,2,-1)+(2,5,-1)=(3,7,-2)$, columns $1$ and $2$.
+(d)~For $x_3=x_4=1$: $\bv{q}=(-1,1,1,1)$, $\bv{q}-\bv{p}=(-2,0,1,1)=\bv{u}+\bv{v}$, which solves $A\bv{x}=\bv{0}$.
+(e)~$A\bv{0}=\bv{0}\neq\bv{b}$, so $\bv{0}$ is not a solution; a span always contains $\bv{0}$.
+(f)~$\bv{p}=(3,0)$, $\bv{d}=(2,1)$; $\bv{p}+\bv{d}=(5,1)$. The solution set is the line through $(3,0)$ parallel to the line $\Span\{(2,1)\}$ through the origin (so, for instance, $(1,-1)$ is also a solution).
+\emph{Think about it.} Same direction vectors (same $A$); a different particular solution, so a parallel translate (or, if $\bv{b}'$ is inconsistent, no solution at all).
+\end{sol}
+
+\begin{sol}[Extension Activities 3--5]
+\textbf{Activity 3.} (a)~Balance equations: $A$: $x_3+40=x_1+10$; $B$: $x_1+20=x_2+50$; $C$: $x_2+30=x_3+30$. So $x_1-x_3=30$, $x_1-x_2=30$, $x_2-x_3=0$. (b)~In: $40+20+30=90$; out: $10+50+30=90$; cars are neither created nor destroyed, so this is necessary for steady traffic. (c)~Reduction gives $x_1=30+x_3$, $x_2=x_3$: $\bv{x}=(30,0,0)+x_3(1,1,1)$; the direction $(1,1,1)$ is a circulation around the triangle. (d)~$x_3\ge0$. (e)~$x_2=12$ gives $\bv{x}=(42,12,12)$.
+
+\textbf{Activity 4.} (a)~$x_1+x_2-x_3=-1$: $\bv{p}$: $1+0-2=-1$; $\bv{p}+\bv{s}=(2,-1,2)$: $2-1-2=-1$; $\bv{p}+\bv{t}=(1,1,3)$: $1+1-3=-1$. (b)~$\bv{s}$: $1-1-0=0$; $\bv{t}$: $0+1-1=0$; neither is a multiple of the other. (c)~One equation in $3$ unknowns has $2$ free variables, so the homogeneous solution set $\{x_1+x_2-x_3=0\}=\Span\{(-1,1,0),(1,0,1)\}$ is a plane through the origin. Since $\bv{s}=-(-1,1,0)$ and $\bv{t}=(-1,1,0)+(1,0,1)$, we have $\Span\{\bv{s},\bv{t}\}=$ this plane, and by Theorem~1.5.7 the solution set of the equation is $\bv{p}+\Span\{\bv{s},\bv{t}\}$.
+
+\textbf{Activity 5.} $\bv{p}+t(\bv{q}-\bv{p})=c\bv{p}+(1-c)\bv{q}$-type combinations: $A(c\bv{p}+(1-c)\bv{q})=c\bv{b}+(1-c)\bv{b}=\bv{b}$ for \emph{every} $c$, so there are infinitely many solutions. $\bv{p}+\bv{q}$ gives $2\bv{b}$, a solution only if $\bv{b}=\bv{0}$.
+\end{sol}
+
+\subsection*{Homework: solutions and grading notes}
+Suggested grading: 100 points, Problems 1--9 worth 10, 10, 10, 12, 12, 10, 10, 16, 10 and credit for method. Take a point off for a missing check, but not more.
+
+\begin{sol}[Part A: Problems 1--4]
+\textbf{1.} (a)~Reduced form $\begin{bmatrix}1&0&-1\\0&1&2\\0&0&0\end{bmatrix}$: $\bv{x}=x_3(1,-2,1)$. Relation: $\bv{a}_1-2\bv{a}_2+\bv{a}_3=(1,2,-1)-2(-1,0,3)+(-3,-2,7)=\bv{0}$. (b)~Reduced form $\begin{bmatrix}1&3&0&-2\\0&0&1&3\end{bmatrix}$: $\bv{x}=x_2(-3,1,0,0)+x_4(2,0,-3,1)$. (c)~Yes: $(2,-4,2)=2(1,-2,1)$.
+
+\textbf{2.} (a)~Reduced form $\begin{bmatrix}1&0&2&0&3\\0&1&-1&0&-2\\0&0&0&1&4\end{bmatrix}$; $\bv{x}=(3,-2,0,4)+x_3(-2,1,1,0)$. (b)~$\bv{p}=(3,-2,0,4)$; the homogeneous solutions are $x_3(-2,1,1,0)$. (c)~$(-1,0,2,4)$; check: $-1+4=3$, \ $-2+0+6=4$, \ $1+0-6+4=-1$.
+
+\textbf{3.} The determinant is $-4(h-2)$. Reduction: $R_2+3R_1$, $R_3-2R_1$ give $\begin{bmatrix}1&-3&2\\0&h-9&7\\0&4&-4\end{bmatrix}$; swap rows $2,3$ and scale to get $\begin{bmatrix}1&-3&2\\0&1&-1\\0&h-9&7\end{bmatrix}$, and $R_3-(h-9)R_2$ gives last entry $h-2$. Nontrivial solution iff $h=2$, and then $\bv{x}=x_3(1,1,1)$ (columns satisfy $\bv{a}_1+\bv{a}_2+\bv{a}_3=\bv{0}$). For $h\neq2$ there are three pivots: the only way to combine the columns to get $\bv{0}$ is with all weights $0$.
+
+\textbf{4.} (a)~$\bv{x}=(2,-1,0)+t(3,2,3)$. Eliminating $t$: $x_1-x_3=2$ and $3x_2-2x_3=-3$ (both points satisfy them). (b)~Solve for $x_3=2x_1-x_2-1$: $\bv{x}=(0,0,-1)+x_1(1,0,2)+x_2(0,1,-1)$. (Another particular solution such as $(1,1,0)$ gives the same plane.)
+\end{sol}
+
+\begin{sol}[Parts B and C: Problems 5--9]
+\textbf{5.} (a)~Yes: at most $3$ pivots among $5$ columns, so at least $2$ free variables. (b)~Only the trivial solution (all $3$ columns pivot) or infinitely many (some column without a pivot). Examples: $\begin{bmatrix}I_3\\0\end{bmatrix}$ and the zero matrix. (c)~$I_4$ (or any matrix with a pivot in every row and column): pivot in every row gives existence, in every column uniqueness. (d)~Consistent for every $\bv{b}$, with $5-3=2$ free variables: a plane (translate of a plane through the origin).
+
+\textbf{6.} (a)~$\bv{q}-\bv{p}=(2,-2,-2)$. (b)~$\bv{p}-(\bv{q}-\bv{p})=(-1,4,5)$ and $\bv{p}+2(\bv{q}-\bv{p})=(5,-2,-1)$; the midpoint is $\tfrac12(\bv{p}+\bv{q})=(2,1,2)$. (c)~$A=\begin{bmatrix}1&1&0\\1&0&1\end{bmatrix}$, $\bv{b}=(3,4)$: $A\bv{p}=(3,4)=A\bv{q}$.
+
+\textbf{7.} (a)~True. (b)~False: $\begin{bmatrix}1&1\\1&1\end{bmatrix}\bv{x}=(1,2)$ has no solution. (c)~True (Theorem~1.5.10). (d)~True: at most $m<n$ pivots. (e)~False: $A=[\,1\ \ 1\,]$, $\bv{b}=1$, $\bv{p}=(1,0)$, $\bv{q}=(0,1)$: $\bv{p}+\bv{q}$ gives $2$. (f)~True (Theorem~1.5.7).
+
+\textbf{8.} (a)~In: $60+20+50+30=160$; out: $20+50+40+50=160$. Equations $x_4+60=x_1+20$; $x_1+20=x_2+x_5+50$; $x_2+50=x_3+40$; $x_3+x_5+30=x_4+50$, i.e.\ $x_1-x_4=40$, $x_1-x_2-x_5=30$, $x_2-x_3=-10$, $x_3-x_4+x_5=20$. (b)~Reduced form $\begin{bmatrix}1&0&0&-1&0&40\\0&1&0&-1&1&10\\0&0&1&-1&1&20\\0&0&0&0&0&0\end{bmatrix}$; $\bv{x}=(40,10,20,0,0)+x_4(1,1,1,1,0)+x_5(0,-1,-1,0,1)$. (c)~The loop is $(1,0,0,1,1)=(1,1,1,1,0)+(0,-1,-1,0,1)$. (d)~With $x_4=0$ the flows are $(40,\,10-x_5,\,20-x_5,\,0,\,x_5)$, all $\ge0$ iff $0\le x_5\le10$. (e)~$(46,12,22,6,4)$.
+
+\textbf{9.} (a)~Only trivial: pivot in each of the $3$ columns, so $3$ pivots in $3$ rows; every row has a pivot (existence) and no free variables (uniqueness). (b)~$A(c\bv{p}+d\bv{q})=(c+d)\bv{b}$; this equals $\bv{b}$ iff $c+d=1$ (since $\bv{b}\neq\bv{0}$). So the solutions of this form are exactly the affine combinations $c\bv{p}+(1-c)\bv{q}$: the line through $\bv{p}$ and $\bv{q}$.
+\end{sol}
+
+\subsection*{Optional quick quiz (10 minutes, start of the next meeting; covers \S1.5)}
+\begin{enumerate}
+ \item The reduced echelon form of $A$ is $\begin{bmatrix}1&0&-2&3\\0&1&4&-1\end{bmatrix}$. Describe the solutions of $A\bv{x}=\bv{0}$. \emph{(Answer: $x_3(2,-4,1,0)+x_4(-3,1,0,1)$.)}
+ \item Write the line through $(1,0,2)$ with direction $(1,1,-1)$ in parametric vector form and find its point with $t=2$. \emph{(Answer: $(3,2,0)$.)}
+ \item True or false: ``If $A\bv{x}=\bv{b}$ has exactly one solution, then $A\bv{x}=\bv{0}$ has only the trivial solution.'' \emph{(True.)}
+ \item For which $h$ does $\begin{bmatrix}1&2\\3&h\end{bmatrix}\bv{x}=\bv{0}$ have a nontrivial solution? Find it. \emph{(Answer: $h=6$; $x_2(-2,1)$.)}
+\end{enumerate}
+
+\subsection*{Connections forward}
+\begin{itemize}
+ \item \textbf{Section 1.7:} a nontrivial solution of $A\bv{x}=\bv{0}$ is a linear dependence relation among the columns; ``only the trivial solution'' is independence.
+ \item \textbf{Sections 1.8--1.9:} translates and kernels of linear maps.
+ \item \textbf{Chapter 4:} the solution set of $A\bv{x}=\bv{0}$ is the null space, one of the basic subspaces; the free variables count its dimension.
+ \item \textbf{Chapter 6:} least squares replaces an inconsistent $A\bv{x}=\bv{b}$ by a consistent one whose solution set is again a translate.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage[worksheet]{la}
+\lamodule{1}{7}{Linear Independence}
+
+\begin{document}
+
+\section{Linear Independence}
+
+{\Large\bfseries Activity Worksheet: Is Anyone Redundant?}\par
+
+\textbf{Names:} \rule{2.4in}{0.4pt}\quad\rule{2.4in}{0.4pt}\\[6pt]
+\hspace*{3.8em}\rule{2.4in}{0.4pt}\quad\rule{1.3in}{0.4pt}\quad\textbf{Date:} \rule{0.9in}{0.4pt}
+
+\begin{roles}
+Work in groups of three or four. Rotate the roles after each activity.
+\begin{itemize}[nosep]
+  \item \textbf{Facilitator:} keeps the group on task and makes sure everyone can explain the answer.
+  \item \textbf{Recorder:} writes the group's work on \emph{this} sheet.
+  \item \textbf{Checker:} verifies every claimed dependence relation by substituting it.
+  \item \textbf{Reporter:} shares the group's reasoning with the class.
+\end{itemize}
+Everyone must be able to explain \emph{why} an answer is correct, not just what it is. If you finish
+early, move on to the extension activities.
+\end{roles}
+
+% =====================================================================
+\begin{activity}{Activity 1: Test, then explain}{about 14 minutes}
+For each set, decide whether it is linearly independent by row reducing the matrix whose columns are the vectors. If it is dependent, write down a dependence relation and \textbf{check it}.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item $\bv{v}_1=(1,1,0)$, $\bv{v}_2=(1,2,1)$, $\bv{v}_3=(0,1,3)$.
+        \workspace{1.3in}
+  \item $\bv{v}_1=(1,-1,2)$, $\bv{v}_2=(2,1,1)$, $\bv{v}_3=(0,3,-3)$.
+        \workspace{1.3in}
+  \item In part~(b), write each of $\bv{v}_1,\bv{v}_2,\bv{v}_3$ as a combination of the other two, whenever this is possible. What is the span of the three vectors geometrically? Which \emph{pair} of the three spans the same set?
+        \answerline
+\end{enumerate}
+\textbf{Think about it.} In the matrix of part~(a), which columns are pivot columns? In part~(b)? How does this match your answers?
+\answerline\answerline
+\end{activity}
+
+\newpage
+\begin{activity}{Activity 2: Spot the dependence}{about 14 minutes}
+Without row reducing, decide whether each set is independent or dependent, and give a one-sentence reason.
+\begin{enumerate}[label=(\roman*),itemsep=6pt]
+  \item $\{(2,-1,3),\ (-4,2,-6)\}$
+  \item $\{(1,0,0),\ (0,1,0),\ (0,0,1),\ (4,5,6)\}$
+  \item $\{(1,2),\ (3,4)\}$
+  \item $\{(0,0,0),\ (1,2,3)\}$
+  \item $\{(1,2,3,4)\}$
+  \item $\{(1,1,0),\ (0,1,1),\ (1,2,1)\}$
+\end{enumerate}
+\answerline
+\begin{enumerate}[label=(\alph*),itemsep=6pt,start=1]
+  \item Which set above has no vector that is a multiple of another, yet is dependent? What relation shows this?
+        \answerline
+  \item In part~(ii), express $(4,5,6)$ in terms of the others. Why did you not need any row reduction to know that a relation exists?
+        \answerline
+\end{enumerate}
+\textbf{Think about it.} Complete the sentence: ``For two vectors, dependent means \dots; for three or more vectors, dependent means \dots''
+\answerline\answerline
+\end{activity}
+
+\textbf{Exit ticket} (individually, before leaving). In one or two sentences: what is the connection between a free variable in $A\bv{x}=\bv{0}$ and a redundant column of $A$? What question do you still have?
+\answerline\answerline
+
+\newpage
+% =====================================================================
+\subsection*{Extension activities \quad (if you finish early, or as take-home)}
+
+\begin{ext}{Activity 3: A parameter}{}
+Let $\bv{v}_1=(2,-2,-3)$, $\bv{v}_2=(1,1,0)$, $\bv{v}_3=(1,-3,h)$.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item For which values of $h$ is $\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ dependent?
+  \item For that value, give a dependence relation and write $\bv{v}_3$ as a combination of $\bv{v}_1,\bv{v}_2$.
+  \item For every other $h$, what can you say about the solutions of $[\,\bv{v}_1\ \bv{v}_2\ \bv{v}_3\,]\bv{x}=\bv{b}$ for a $\bv{b}$ that is a combination of the three vectors?
+\end{enumerate}
+\workspace{1.8in}
+\end{ext}
+
+\begin{ext}{Activity 4: Polynomials as vectors}{}
+Represent a polynomial $a+bt+ct^2$ by the vector $(a,b,c)$.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item Are $1+2t$, \ $t^2$, \ $2+4t+t^2$ independent? Find a relation and verify it as an identity of polynomials.
+  \item Are $1$, \ $1+t$, \ $1+t+t^2$ independent?
+  \item Can you find three polynomials of degree $\le2$ that are independent but none of which is the sum of the others? (Is every independent set of this kind?)
+\end{enumerate}
+\workspace{1.8in}
+\end{ext}
+
+\begin{ext}{Activity 5: Two vectors, many weights}{}
+Let $\bv{u}=(2,1)$, $\bv{v}=(1,3)$ and $\bv{w}=(4,-3)$.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item Write $\bv{w}$ as a combination of $\bv{u}$ and $\bv{v}$. Is this the \emph{only} way?
+  \item Find a dependence relation among $\bv{u},\bv{v},\bv{w}$.
+  \item Show that $\bv{0}$ can be written as a combination of $\bv{u},\bv{v},\bv{w}$ in infinitely many ways, but as a combination of $\bv{u},\bv{v}$ in only one way. Is the weighting in part~(a) unique? Explain using the word \emph{independent}.
+\end{enumerate}
+\workspace{1.5in}
+\end{ext}
+
+\end{document}

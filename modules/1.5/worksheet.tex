@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage[worksheet]{la}
+\lamodule{1}{5}{Solution Sets of Linear Systems}
+
+\begin{document}
+
+\section{Solution Sets of Linear Systems}
+
+{\Large\bfseries Activity Worksheet: Describing All the Solutions}\par
+
+\textbf{Names:} \rule{2.4in}{0.4pt}\quad\rule{2.4in}{0.4pt}\\[6pt]
+\hspace*{3.8em}\rule{2.4in}{0.4pt}\quad\rule{1.3in}{0.4pt}\quad\textbf{Date:} \rule{0.9in}{0.4pt}
+
+\begin{roles}
+Work in groups of three or four. Rotate the roles after each activity.
+\begin{itemize}[nosep]
+  \item \textbf{Facilitator:} keeps the group on task and makes sure everyone can explain the answer.
+  \item \textbf{Recorder:} writes the group's work on \emph{this} sheet.
+  \item \textbf{Checker:} verifies every claimed solution by multiplying it by the matrix.
+  \item \textbf{Reporter:} shares the group's reasoning with the class.
+\end{itemize}
+Everyone must be able to explain \emph{why} an answer is correct, not just what it is. If you finish
+early, move on to the extension activities.
+\end{roles}
+
+% =====================================================================
+\begin{activity}{Activity 1: The homogeneous equation}{about 14 minutes}
+Let
+\[
+A=\begin{bmatrix}1&2&3&-1\\2&5&8&-4\\-1&-1&-1&-1\end{bmatrix}.
+\]
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item Row reduce $[A\ \bv{0}]$ to reduced echelon form. Circle the pivot positions. Which variables are free?
+        \workspace{1.4in}
+  \item Write the solution set of $A\bv{x}=\bv{0}$ in parametric vector form $\bv{x}=x_3\bv{u}+x_4\bv{v}$. Write down $\bv{u}$ and $\bv{v}$.
+        \answerline
+  \item \textbf{Checker:} verify $A\bv{u}=\bv{0}$ and $A\bv{v}=\bv{0}$ by computing each product.
+        \answerline
+  \item Let $\bv{w}=2\bv{u}-3\bv{v}$. Compute $\bv{w}$. Without computing $A\bv{w}$ directly, explain why $A\bv{w}=\bv{0}$.
+        \answerline
+  \item Is $(1,1,1,1)$ a solution? Compute $A(1,1,1,1)$ to find out.
+        \answerline
+\end{enumerate}
+\textbf{Think about it.} A $3\times4$ homogeneous system can have how many free variables: what is the smallest possible number, and what is the largest? Give a matrix for each extreme.
+\answerline\answerline
+\end{activity}
+
+\newpage
+\begin{activity}{Activity 2: Shifting the solution set}{about 14 minutes}
+Use the same matrix $A$ as in Activity~1 and let $\bv{b}=(3,7,-2)$.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item Row reduce $[A\ \bv{b}]$. Is the system consistent?
+        \workspace{1.4in}
+  \item Write the solution set of $A\bv{x}=\bv{b}$ in parametric vector form $\bv{x}=\bv{p}+x_3\bv{u}+x_4\bv{v}$. Compare the vectors $\bv{u},\bv{v}$ with Activity~1.
+        \answerline
+  \item Verify that your $\bv{p}$ is a solution by writing $A\bv{p}$ as a combination of columns of $A$. Which columns?
+        \answerline
+  \item Choose values for $x_3$ and $x_4$ to produce a second solution $\bv{q}$. Compute $\bv{q}-\bv{p}$ and check that it solves $A\bv{x}=\bv{0}$.
+        \answerline
+  \item Is $\bv{0}$ a solution of $A\bv{x}=\bv{b}$? How does this show that the solution set is \emph{not} a span?
+        \answerline
+  \item \textbf{Warm-down in $\R^2$.} The equation $x_1-2x_2=3$ has solution set $\bv{p}+x_2\bv{d}$. Find $\bv{p}$ and $\bv{d}$, and sketch the points $\bv{p}$ and $\bv{p}+\bv{d}$ in the space below. Where is the homogeneous solution set $\Span\{\bv{d}\}$ in relation to it?
+        \workspace{1.6in}
+\end{enumerate}
+\textbf{Think about it.} Suppose a different right-hand side $\bv{b}'$ also gives a consistent system with the same $A$. What would be the same and what would be different about its solution set?
+\answerline\answerline
+\end{activity}
+
+\textbf{Exit ticket} (individually, before leaving). In one or two sentences: if you are handed one solution of $A\bv{x}=\bv{b}$, what else do you need to know to describe \emph{all} solutions? What question do you still have?
+\answerline\answerline
+
+\newpage
+% =====================================================================
+\subsection*{Extension activities \quad (if you finish early, or as take-home)}
+
+\begin{ext}{Activity 3: A three-junction road network}{}
+Three junctions $A,B,C$ lie on a one-way triangle $A\to B\to C\to A$. Let $x_1,x_2,x_3$ be the traffic (cars per hour) on $A\to B$, $B\to C$, $C\to A$. Cars enter at $A,B,C$ at the rates $40,20,30$ and leave at the rates $10,50,30$.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item Write the balance equation (flow in $=$ flow out) at each junction and put the system in the form $M\bv{x}=\bv{b}$.
+  \item Check that the total entering equals the total leaving. Why is this necessary?
+  \item Solve the system in parametric vector form. What is the meaning of the direction vector?
+  \item Since traffic counts cannot be negative, which values of the free variable are allowed?
+  \item A traffic counter on $B\to C$ reads $12$ cars per hour. Find the other two flows.
+\end{enumerate}
+\workspace{1.8in}
+\end{ext}
+
+\begin{ext}{Activity 4: A plane in $\R^3$}{}
+Let $\bv{p}=(1,0,2)$, $\bv{s}=(1,-1,0)$, $\bv{t}=(0,1,1)$. The points $\bv{p}+a\bv{s}+b\bv{t}$ ($a,b\in\R$) form a plane.
+\begin{enumerate}[label=(\alph*),itemsep=6pt]
+  \item Find one linear equation $c_1x_1+c_2x_2+c_3x_3=d$ satisfied by $\bv{p}$, $\bv{p}+\bv{s}$ and $\bv{p}+\bv{t}$.
+  \item Show that $\bv{s}$ and $\bv{t}$ are solutions of the corresponding homogeneous equation, and that neither is a multiple of the other.
+  \item Explain why the solution set of your equation is exactly the plane (count free variables).
+\end{enumerate}
+\workspace{1.8in}
+\end{ext}
+
+\begin{ext}{Activity 5: Two solutions are enough}{}
+Suppose $A\bv{x}=\bv{b}$ has two different solutions $\bv{p}$ and $\bv{q}$. Show that it has infinitely many, by exhibiting a one-parameter family of solutions built from $\bv{p}$ and $\bv{q}$. For which values of $c$ is $c\bv{p}+(1-c)\bv{q}$ a solution? Is $\bv{p}+\bv{q}$ a solution when $\bv{b}\neq\bv{0}$?
+\workspace{1.6in}
+\end{ext}
+
+\end{document}

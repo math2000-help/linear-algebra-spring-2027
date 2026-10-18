@@ -1,0 +1,386 @@
+\documentclass[11pt]{article}
+\usepackage[notes]{la}
+\lamodule{1}{5}{Solution Sets of Linear Systems}
+\laxdoc{1.2}
+\laxdoc{1.3}
+\laxdoc{1.4}
+
+\begin{document}
+
+\section{Solution Sets of Linear Systems}
+
+\begin{guide}
+In Section~1.2 you wrote the solutions of a consistent system with free variables as a list of formulas, and you may have noticed that the free variables always seemed to
+contribute the same ``shape'' of answer. In Section~1.4 you proved that if $\bv{p}$ and $\bv{q}$ both solve $A\bv{x}=\bv{b}$, then $A(\bv{p}-\bv{q})=\bv{0}$.
+Put these together. What does the \emph{whole set} of solutions look like, and why does everything about it hinge on the single equation $A\bv{x}=\bv{0}$?
+\end{guide}
+
+\textbf{By the end of this section you should be able to:}
+\begin{itemize}
+  \item decide, from a row reduction, whether a homogeneous system has a nontrivial solution, and explain why in terms of free variables and pivot columns;
+  \item write the solution set of $A\bv{x}=\bv{0}$ and of $A\bv{x}=\bv{b}$ in \emph{parametric vector form};
+  \item state and use the theorem that the solutions of $A\bv{x}=\bv{b}$ are a particular solution plus all solutions of $A\bv{x}=\bv{0}$;
+  \item recognise the solution set geometrically (a point, a line, a plane, or a translate of one) and write a line or plane through given points as a solution set;
+  \item decide when a solution is \emph{unique} by looking only at the homogeneous equation;
+  \item interpret the free parameter in a model (for instance a network flow).
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Homogeneous systems}
+
+\begin{defn}{Homogeneous system}{homog}
+A linear system is \emph{homogeneous} if it can be written as $A\bv{x}=\bv{0}$, where $A$ is an $m\times n$ matrix and $\bv{0}$ is the zero vector in $\R^m$. Such a system always has the
+\emph{trivial solution} $\bv{x}=\bv{0}$. A solution $\bv{x}\neq\bv{0}$ is called a \emph{nontrivial solution}.
+\end{defn}
+
+Homogeneous systems are never inconsistent, so the only question is whether there is something \emph{besides} the trivial solution. Since the last column of the augmented matrix
+$[A\ \bv{0}]$ is all zeros, no row operation can change it; we may row reduce $A$ alone.
+
+\begin{thm}{When is there a nontrivial solution?}{nontriv}
+The homogeneous equation $A\bv{x}=\bv{0}$ has a nontrivial solution if and only if it has at least one free variable, that is, if and only if some column of $A$ is \emph{not} a pivot column.
+\end{thm}
+
+\begin{proof}
+The system is consistent, so by the Existence and Uniqueness Theorem (Theorem~\ref{1.2-thm:existuniq}) the solution is unique exactly when there are no free variables. Hence
+a solution other than $\bv{0}$ exists exactly when there is a free variable. If $x_j$ is free, setting $x_j=1$ and the other free variables to $0$ gives a solution with $j$th entry $1$, which is not $\bv{0}$.
+\end{proof}
+
+\begin{exmp}{A homogeneous system with one free variable}{hom1}
+Describe all solutions of $A\bv{x}=\bv{0}$, where
+\[
+A=\begin{bmatrix}1&2&0\\2&5&1\\-1&-3&-1\end{bmatrix}.
+\]
+\textbf{Solution.} Row reduce the augmented matrix:
+\begin{align*}
+\begin{amat}{ccc|c}1&2&0&0\\2&5&1&0\\-1&-3&-1&0\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{ccc|c}1&2&0&0\\0&1&1&0\\0&-1&-1&0\end{amat}\\[4pt]
+&\rops{R_3+R_2}
+\begin{amat}{ccc|c}1&2&0&0\\0&1&1&0\\0&0&0&0\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{ccc|c}1&0&-2&0\\0&1&1&0\\0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$ and $2$, so $x_1,x_2$ are basic and $x_3$ is free. The equations are $x_1=2x_3$ and $x_2=-x_3$, so
+\[
+\bv{x}=\begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix}=\begin{bmatrix}2x_3\\-x_3\\x_3\end{bmatrix}=x_3\begin{bmatrix}2\\-1\\1\end{bmatrix}.
+\]
+The solution set is $\Span\{(2,-1,1)\}$, a line through the origin. Check one solution with the columns of $A$ (Definition~\ref{1.4-def:matvec}): taking $x_3=1$,
+$2(1,2,-1)-(2,5,-3)+(0,1,-1)=(2-2+0,\ 4-5+1,\ -2+3-1)=(0,0,0)$. \ $\checkmark$
+\end{exmp}
+
+The check in this example says something worth reading aloud: \emph{the third column is a combination of the first two}, $\bv{a}_3=-2\bv{a}_1+\bv{a}_2$. A nontrivial solution of $A\bv{x}=\bv{0}$ is exactly a
+way of combining the columns of $A$, with weights that are not all zero, to produce $\bv{0}$. We will name this phenomenon in Section~1.7.
+
+\begin{think}{What does a free variable say about the columns?}{freecols}
+In Example~\ref{ex:hom1} the free variable was $x_3$ and the nontrivial solution had $x_3=1$. Rewrite the nontrivial solution as an equation among $\bv{a}_1,\bv{a}_2,\bv{a}_3$.
+Then explain in a sentence why the vectors $\bv{a}_1,\bv{a}_2$ alone cannot satisfy such an equation. What does this suggest about the relationship between pivot columns and the span of the columns?
+\end{think}
+
+\begin{exmp}{One equation in three unknowns: a plane}{plane}
+The single equation $x_1-2x_2+3x_3=0$ is a homogeneous system with one equation and three unknowns. Its coefficient matrix $[\,1\ \ {-2}\ \ 3\,]$ is already in reduced echelon form with one pivot column,
+so $x_2$ and $x_3$ are free and $x_1=2x_2-3x_3$:
+\[
+\bv{x}=\begin{bmatrix}2x_2-3x_3\\x_2\\x_3\end{bmatrix}=x_2\begin{bmatrix}2\\1\\0\end{bmatrix}+x_3\begin{bmatrix}-3\\0\\1\end{bmatrix}.
+\]
+The solution set is $\Span\{(2,1,0),(-3,0,1)\}$, a plane through the origin: two free variables, two directions.
+\end{exmp}
+
+\subsection*{Parametric vector form}
+
+The solution formulas of Section~1.2 ($x_1=\dots$, $x_2$ free, \dots) can be rewritten as a single vector equation in which each free variable multiplies a fixed vector. This is the
+form in which the \emph{shape} of the solution set is visible.
+
+\begin{proc}{Writing a solution set in parametric vector form}{pvf}
+\begin{enumerate}
+  \item Row reduce the augmented matrix $[A\ \bv{b}]$ to reduced echelon form. If the system is inconsistent, stop: the solution set is empty.
+  \item Express each basic variable in terms of the free variables, if any.
+  \item Write a general solution $\bv{x}$ as a vector whose entries are these expressions (with $x_j=x_j$ for each free variable).
+  \item Split $\bv{x}$ into a constant vector and, for each free variable, that variable times a fixed vector:
+  \[
+  \bv{x}=\bv{p}+x_{j_1}\bv{v}_1+\cdots+x_{j_k}\bv{v}_k.
+  \]
+\end{enumerate}
+For $\bv{b}=\bv{0}$ the constant vector is $\bv{p}=\bv{0}$.
+\end{proc}
+
+\begin{exmp}{Two free variables}{hom2}
+Let
+\[
+A=\begin{bmatrix}1&2&-1&3\\2&4&1&0\\-1&-2&4&-9\end{bmatrix}.
+\]
+Describe the solutions of $A\bv{x}=\bv{0}$.
+
+\textbf{Solution.}
+\begin{align*}
+\begin{amat}{cccc|c}1&2&-1&3&0\\2&4&1&0&0\\-1&-2&4&-9&0\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&2&-1&3&0\\0&0&3&-6&0\\0&0&3&-6&0\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccc|c}1&2&-1&3&0\\0&0&3&-6&0\\0&0&0&0&0\end{amat}
+\rops{\frac13R_2}
+\begin{amat}{cccc|c}1&2&-1&3&0\\0&0&1&-2&0\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1+R_2}
+\begin{amat}{cccc|c}1&2&0&1&0\\0&0&1&-2&0\\0&0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$ and $3$; $x_2$ and $x_4$ are free. Then $x_1=-2x_2-x_4$ and $x_3=2x_4$, so
+\[
+\bv{x}=\begin{bmatrix}-2x_2-x_4\\x_2\\2x_4\\x_4\end{bmatrix}=x_2\begin{bmatrix}-2\\1\\0\\0\end{bmatrix}+x_4\begin{bmatrix}-1\\0\\2\\1\end{bmatrix}.
+\]
+Name the two vectors $\bv{u}=(-2,1,0,0)$ and $\bv{v}=(-1,0,2,1)$. Then the solution set is $\Span\{\bv{u},\bv{v}\}$. Notice how to read off the vectors: $\bv{u}$ comes from setting
+$x_2=1,\ x_4=0$ and $\bv{v}$ from $x_2=0,\ x_4=1$. Notice also that each free variable appears in its own position of the vector, which is why no combination of $\bv{u}$ and $\bv{v}$ can be $\bv{0}$ except the trivial one.
+\end{exmp}
+
+\begin{kc}{Read it off}{readoff}
+Each matrix below is the reduced echelon form of $[A\ \bv{0}]$ with the last column omitted. Write the solution set of $A\bv{x}=\bv{0}$ in parametric vector form, or say that only the trivial solution exists.
+\[
+\text{(a) }\begin{bmatrix}1&0&3\\0&1&-2\end{bmatrix},\qquad
+\text{(b) }\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix},\qquad
+\text{(c) }\begin{bmatrix}1&-2&0&1\\0&0&1&3\end{bmatrix}.
+\]
+\end{kc}
+
+\begin{kc}{Counting}{count}
+A homogeneous system has $4$ equations and $6$ unknowns. What is the smallest possible number of free variables? Is a nontrivial solution guaranteed? Now answer the same questions for $6$ equations and $4$ unknowns, and give an example showing that both outcomes can happen.
+\end{kc}
+
+\subsection*{Solutions of $A\bv{x}=\bv{b}$: a particular solution plus the homogeneous solutions}
+
+When $\bv{b}\neq\bv{0}$ the zero vector is not a solution, and the picture changes only by a shift.
+
+\begin{thm}{Solution set of $A\bv{x}=\bv{b}$}{translate}
+Suppose $A\bv{x}=\bv{b}$ is consistent and $\bv{p}$ is any one solution. Then the solution set of $A\bv{x}=\bv{b}$ is the set of all vectors of the form
+\[
+\bv{w}+\bv{p},\qquad\text{where }\bv{w}\text{ is any solution of }A\bv{x}=\bv{0}.
+\]
+\end{thm}
+
+\begin{proof}
+Use the linearity rules of Theorem~\ref{1.4-thm:linear}. If $A\bv{w}=\bv{0}$, then $A(\bv{p}+\bv{w})=A\bv{p}+A\bv{w}=\bv{b}+\bv{0}=\bv{b}$, so every vector $\bv{p}+\bv{w}$ is a solution.
+Conversely, if $\bv{x}$ is any solution of $A\bv{x}=\bv{b}$, put $\bv{w}=\bv{x}-\bv{p}$. Then $A\bv{w}=A\bv{x}-A\bv{p}=\bv{b}-\bv{b}=\bv{0}$, and $\bv{x}=\bv{p}+\bv{w}$.
+\end{proof}
+
+Geometrically, adding $\bv{p}$ to every vector of a line or plane through the origin \emph{translates} it, without turning it, to a parallel line or plane that passes through the point $\bv{p}$.
+This is exactly the structure that was hidden in the formulas of Section~1.2: the constants form $\bv{p}$, and the free-variable terms form $\bv{w}$.
+
+\begin{warn}[The theorem needs a solution to start with]
+Theorem~\ref{thm:translate} describes the solution set \emph{given} that a particular solution $\bv{p}$ exists. It does not say that every $A\bv{x}=\bv{b}$ is consistent. For example, a homogeneous equation $A\bv{x}=\bv{0}$
+with infinitely many solutions can accompany an inconsistent $A\bv{x}=\bv{b}$ with the \emph{same} $A$ (try $A=\begin{bmatrix}1&1\\1&1\end{bmatrix}$ and $\bv{b}=(1,2)$). Also, for $\bv{b}\neq\bv{0}$ the solution set is not closed under addition, since $A(\bv{p}+\bv{q})=2\bv{b}\neq\bv{b}$.
+\end{warn}
+
+\begin{exmp}{A nonhomogeneous system, one free variable}{nonhom1}
+Use $A$ from Example~\ref{ex:hom1} and $\bv{b}=(1,3,-2)$. Describe all solutions of $A\bv{x}=\bv{b}$.
+
+\textbf{Solution.}
+\begin{align*}
+\begin{amat}{ccc|c}1&2&0&1\\2&5&1&3\\-1&-3&-1&-2\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{ccc|c}1&2&0&1\\0&1&1&1\\0&-1&-1&-1\end{amat}\\[4pt]
+&\rops{R_3+R_2}
+\begin{amat}{ccc|c}1&2&0&1\\0&1&1&1\\0&0&0&0\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{ccc|c}1&0&-2&-1\\0&1&1&1\\0&0&0&0\end{amat}.
+\end{align*}
+The system is consistent, $x_3$ is free, and $x_1=-1+2x_3$, $x_2=1-x_3$. In parametric vector form
+\[
+\bv{x}=\begin{bmatrix}-1\\1\\0\end{bmatrix}+x_3\begin{bmatrix}2\\-1\\1\end{bmatrix}.
+\]
+The constant vector $\bv{p}=(-1,1,0)$ is a particular solution (it is the solution with $x_3=0$), and the direction $(2,-1,1)$ is the same one we found for the homogeneous equation in Example~\ref{ex:hom1}.
+So the solution set is the \emph{line through $(-1,1,0)$ parallel to the line $\Span\{(2,-1,1)\}$}. Taking $x_3=2$ gives the solution $(3,-1,2)$; check: $A(3,-1,2)=(3-2,\ 6-5+2,\ -3+3-2)=(1,3,-2)$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{A nonhomogeneous system with a condition on $\bv{b}$}{nonhom2}
+Let $A$ be the $3\times4$ matrix of Example~\ref{ex:hom2}. For which $\bv{b}$ is $A\bv{x}=\bv{b}$ consistent, and what are the solutions when $\bv{b}=(1,5,2)$?
+
+\textbf{Solution.} Row reduce with $b_1,b_2,b_3$ unspecified, using the same operations as before:
+\begin{align*}
+\begin{amat}{cccc|c}1&2&-1&3&b_1\\2&4&1&0&b_2\\-1&-2&4&-9&b_3\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&2&-1&3&b_1\\0&0&3&-6&b_2-2b_1\\0&0&3&-6&b_3+b_1\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccc|c}1&2&-1&3&b_1\\0&0&3&-6&b_2-2b_1\\0&0&0&0&3b_1-b_2+b_3\end{amat}.
+\end{align*}
+So $A\bv{x}=\bv{b}$ is consistent if and only if $3b_1-b_2+b_3=0$. For $\bv{b}=(1,5,2)$ we get $3-5+2=0$, so there are solutions. Reducing with these numbers:
+\begin{align*}
+\begin{amat}{cccc|c}1&2&-1&3&1\\2&4&1&0&5\\-1&-2&4&-9&2\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&2&-1&3&1\\0&0&3&-6&3\\0&0&3&-6&3\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccc|c}1&2&-1&3&1\\0&0&3&-6&3\\0&0&0&0&0\end{amat}
+\rops{\frac13R_2}
+\begin{amat}{cccc|c}1&2&-1&3&1\\0&0&1&-2&1\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1+R_2}
+\begin{amat}{cccc|c}1&2&0&1&2\\0&0&1&-2&1\\0&0&0&0&0\end{amat}.
+\end{align*}
+Then $x_1=2-2x_2-x_4$, $x_3=1+2x_4$, with $x_2,x_4$ free:
+\[
+\bv{x}=\begin{bmatrix}2\\0\\1\\0\end{bmatrix}+x_2\begin{bmatrix}-2\\1\\0\\0\end{bmatrix}+x_4\begin{bmatrix}-1\\0\\2\\1\end{bmatrix}.
+\]
+The two direction vectors are those of Example~\ref{ex:hom2}, as Theorem~\ref{thm:translate} predicts, and $\bv{p}=(2,0,1,0)$ is a particular solution: $A\bv{p}=2\bv{a}_1+\bv{a}_3=2(1,2,-1)+(-1,1,4)=(1,5,2)$. \ $\checkmark$
+The solution set is a plane in $\R^4$ that does not pass through the origin.
+\end{exmp}
+
+\begin{kc}{Is it a solution?}{member}
+With $A$ and $\bv{b}=(1,3,-2)$ from Example~\ref{ex:nonhom1}, decide whether each of $(3,-1,2)$, $(0,0,0)$, $(-3,2,-2)$ is a solution of $A\bv{x}=\bv{b}$, \emph{in two ways}: by computing $A\bv{x}$ directly, and by testing whether the vector is of the form $\bv{p}+x_3(2,-1,1)$.
+\end{kc}
+
+\begin{kc}{Differences of solutions}{diff}
+Let $\bv{u}=(1,2,0)$ and $\bv{v}=(3,0,2)$ both satisfy $A\bv{x}=\bv{b}$ for some matrix $A$. Find a nonzero solution of $A\bv{x}=\bv{0}$, and then find a third solution of $A\bv{x}=\bv{b}$ that is neither $\bv{u}$ nor $\bv{v}$. (You do not need to know $A$.)
+\end{kc}
+
+\begin{think}{Many particular solutions}{partic}
+In Example~\ref{ex:nonhom1} we used $\bv{p}=(-1,1,0)$. Another solution is $(1,0,1)$ (check it). If we had written the answer as $(1,0,1)+x_3(2,-1,1)$ instead, would we have described the same set? Why does Theorem~\ref{thm:translate} allow \emph{any} particular solution? What does this say about the claim that ``the'' parametric vector form of a solution set is unique?
+\end{think}
+
+\subsection*{Uniqueness, and the shape of solution sets}
+
+Theorem~\ref{thm:translate} gives, for free, a clean answer to the uniqueness question.
+
+\begin{thm}{Uniqueness is decided by $A\bv{x}=\bv{0}$}{uniq}
+If $A\bv{x}=\bv{b}$ is consistent, then it has exactly one solution if and only if $A\bv{x}=\bv{0}$ has only the trivial solution, that is, if and only if every column of $A$ is a pivot column.
+\end{thm}
+
+\begin{proof}
+By Theorem~\ref{thm:translate} the solutions are the vectors $\bv{p}+\bv{w}$ with $A\bv{w}=\bv{0}$; there is exactly one if and only if $\bv{w}=\bv{0}$ is the only choice. The second statement is Theorem~\ref{thm:nontriv}.
+\end{proof}
+
+The same bookkeeping tells us the \emph{shape} of the solution set: the number of free variables is the number of independent directions. For a $3\times3$ matrix, $0$, $1$, $2$ or $3$ free variables
+correspond respectively to a point, a line, a plane, or all of $\R^3$ (translated if $\bv{b}\neq\bv{0}$).
+
+\begin{think}{Rebuilding the plane}{build}
+In Example~\ref{ex:plane} the plane $x_1-2x_2+3x_3=0$ was written as $\Span\{(2,1,0),(-3,0,1)\}$. Show that $(2,1,0)$ and $(-1,1,1)$ also solve the equation and also span the plane. Then find a vector that solves the equation but, together with $(2,1,0)$, spans only a \emph{line}. What property of the two vectors decides?
+\end{think}
+
+\begin{exmp}{A parameter in the coefficients}{hparam}
+For which values of $h$ does the homogeneous system with coefficient matrix
+\[
+A(h)=\begin{bmatrix}1&3&-2\\2&5&h\\-1&-1&4\end{bmatrix}
+\]
+have a nontrivial solution? Describe the solutions for those values.
+
+\textbf{Solution.} By Theorem~\ref{thm:nontriv} we are looking for the $h$ that leave a column without a pivot. Reduce, keeping $h$:
+\begin{align*}
+\begin{amat}{ccc|c}1&3&-2&0\\2&5&h&0\\-1&-1&4&0\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{ccc|c}1&3&-2&0\\0&-1&h+4&0\\0&2&2&0\end{amat}\\[4pt]
+&\rops{R_3+2R_2}
+\begin{amat}{ccc|c}1&3&-2&0\\0&-1&h+4&0\\0&0&2h+10&0\end{amat}.
+\end{align*}
+The third pivot exists if and only if $2h+10\neq0$. So for every $h\neq-5$ there are three pivots and only the trivial solution. For $h=-5$ the third row is zero and $x_3$ is free:
+\begin{align*}
+\begin{amat}{ccc|c}1&3&-2&0\\0&-1&-1&0\\0&0&0&0\end{amat}
+&\rops{-R_2}
+\begin{amat}{ccc|c}1&3&-2&0\\0&1&1&0\\0&0&0&0\end{amat}
+\rops{R_1-3R_2}
+\begin{amat}{ccc|c}1&0&-5&0\\0&1&1&0\\0&0&0&0\end{amat}.
+\end{align*}
+Then $x_1=5x_3$, $x_2=-x_3$, so for $h=-5$ the solution set is $\Span\{(5,-1,1)\}$. Check with the rows of $A(-5)$: $5-3-2=0$, \ $10-5-5=0$, \ $-5+1+4=0$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Lines and planes as solution sets}
+
+A parametric vector form can be run backward. Given two points, we can write the line through them, and then, if we like, eliminate the parameter to get a system whose solution set it is.
+
+\begin{exmp}{From two points to a line to a system}{line}
+Find a parametric vector form for the line through $\bv{p}=(1,0,2)$ and $\bv{q}=(3,1,0)$, and then a system of linear equations whose solution set is exactly this line.
+
+\textbf{Solution.} The direction of the line is $\bv{q}-\bv{p}=(2,1,-2)$, so the line is
+\[
+\bv{x}=\bv{p}+t(\bv{q}-\bv{p})=\begin{bmatrix}1\\0\\2\end{bmatrix}+t\begin{bmatrix}2\\1\\-2\end{bmatrix},\qquad t\in\R.
+\]
+(At $t=0$ we are at $\bv{p}$ and at $t=1$ at $\bv{q}$.) Componentwise, $x_1=1+2t$, $x_2=t$, $x_3=2-2t$. Since $t=x_2$, we can substitute: $x_1=1+2x_2$ and $x_3=2-2x_2$, that is
+\[
+x_1-2x_2=1,\qquad 2x_2+x_3=2.
+\]
+Check the two points: $\bv{p}$ gives $1-0=1$ and $0+2=2$; $\bv{q}$ gives $3-2=1$ and $2+0=2$. \ $\checkmark$ This system has one free variable, so its solution set is a line, and it contains $\bv{p}$ and $\bv{q}$, so it is the line we started with.
+\end{exmp}
+
+\subsection*{An application: network flow}
+
+\begin{exmp}{Traffic around a ring road}{network}
+Four junctions $A,B,C,D$ lie on a one-way ring road: traffic flows $A\to B\to C\to D\to A$. Let $x_1,x_2,x_3,x_4$ be the traffic (cars per hour) on the four stretches $A\to B$, $B\to C$, $C\to D$, $D\to A$.
+Cars also enter and leave the ring at the junctions, as follows (in cars per hour).
+\[
+\begin{array}{c|cccc}
+ & A & B & C & D\\\hline
+\text{enter} & 50 & 10 & 60 & 20\\
+\text{leave} & 20 & 40 & 30 & 50
+\end{array}
+\]
+Assuming that traffic is steady, the flow into each junction equals the flow out of it:
+\begin{align*}
+A:&\quad x_4+50=x_1+20, & B:&\quad x_1+10=x_2+40,\\
+C:&\quad x_2+60=x_3+30, & D:&\quad x_3+20=x_4+50.
+\end{align*}
+Moving the unknowns to the left gives the system $x_1-x_4=30$, \ $x_1-x_2=30$, \ $x_2-x_3=-30$, \ $x_3-x_4=30$. Row reduce:
+\begin{align*}
+\begin{amat}{cccc|c}1&0&0&-1&30\\1&-1&0&0&30\\0&1&-1&0&-30\\0&0&1&-1&30\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{cccc|c}1&0&0&-1&30\\0&-1&0&1&0\\0&1&-1&0&-30\\0&0&1&-1&30\end{amat}\\[4pt]
+&\rops{R_3+R_2}
+\begin{amat}{cccc|c}1&0&0&-1&30\\0&-1&0&1&0\\0&0&-1&1&-30\\0&0&1&-1&30\end{amat}\\[4pt]
+&\rops{-R_2,\ -R_3}
+\begin{amat}{cccc|c}1&0&0&-1&30\\0&1&0&-1&0\\0&0&1&-1&30\\0&0&1&-1&30\end{amat}
+\rops{R_4-R_3}
+\begin{amat}{cccc|c}1&0&0&-1&30\\0&1&0&-1&0\\0&0&1&-1&30\\0&0&0&0&0\end{amat}.
+\end{align*}
+Here $x_4$ is free, and $x_1=30+x_4$, $x_2=x_4$, $x_3=30+x_4$:
+\[
+\bv{x}=\begin{bmatrix}30\\0\\30\\0\end{bmatrix}+x_4\begin{bmatrix}1\\1\\1\\1\end{bmatrix}.
+\]
+\textbf{Interpretation.} The system is consistent because the totals match ($50+10+60+20=140=20+40+30+50$). The particular solution $(30,0,30,0)$ is the flow in which nobody drives the full circle at $B\to C$ or $D\to A$.
+The homogeneous direction $(1,1,1,1)$ is a \emph{circulation}: adding one extra car per hour all the way around the ring changes none of the junction totals. Since flows cannot be negative, we need $x_4\ge0$, and then the other three are automatically nonnegative. Traffic counts alone cannot determine the flow; measuring a single stretch, say $x_2=12$, pins it down at $(42,12,42,12)$.
+\end{exmp}
+
+\begin{kc}{Reading the solution from a reduced matrix}{readoff2}
+The augmented matrix of a system is row equivalent to
+\[
+\begin{amat}{cccc|c}1&0&4&0&2\\0&1&-1&0&3\\0&0&0&1&-5\end{amat}.
+\]
+Write the solution set in parametric vector form, identify a particular solution, and state the homogeneous equation whose solutions give the direction vectors.
+\end{kc}
+
+\begin{kc}{Shapes}{shape}
+A $3\times3$ homogeneous system $A\bv{x}=\bv{0}$ is row reduced and found to have $0$, $1$, $2$ or $3$ free variables. Describe the solution set in each case geometrically, and say what $A$ must be in the case of $3$ free variables.
+\end{kc}
+
+\begin{think}{Existence and uniqueness are different questions}{table}
+For each of the four matrices
+\[
+\begin{bmatrix}1&0\\0&1\end{bmatrix},\qquad \begin{bmatrix}1&1\end{bmatrix},\qquad \begin{bmatrix}1\\1\end{bmatrix},\qquad \begin{bmatrix}1&1\\1&1\end{bmatrix},
+\]
+decide which of the outcomes \emph{no solution}, \emph{exactly one solution}, \emph{infinitely many solutions} can occur for $A\bv{x}=\bv{b}$ as $\bv{b}$ varies. What do the matrices have in common that explains the outcomes: pivots in every row, pivots in every column, or neither?
+\end{think}
+
+\subsection*{Summary}
+\begin{itemize}
+  \item A \textbf{homogeneous} system $A\bv{x}=\bv{0}$ is always consistent. It has a \textbf{nontrivial} solution if and only if it has a free variable, i.e.\ some column of $A$ is not a pivot column. More unknowns than equations forces a nontrivial solution.
+  \item \textbf{Parametric vector form:} $\bv{x}=\bv{p}+x_{j_1}\bv{v}_1+\cdots+x_{j_k}\bv{v}_k$, with one direction vector for each free variable; $\bv{p}=\bv{0}$ for a homogeneous system.
+  \item \textbf{Translate theorem:} if $A\bv{x}=\bv{b}$ is consistent and $A\bv{p}=\bv{b}$, its solution set is $\{\bv{p}+\bv{w} : A\bv{w}=\bv{0}\}$, a translate of the homogeneous solution set. Any particular solution can serve as $\bv{p}$.
+  \item A consistent system has a \textbf{unique} solution exactly when $A\bv{x}=\bv{0}$ has only the trivial solution (a pivot in every column).
+  \item The number of free variables is the number of directions: a point, line, plane, \dots\ (through the origin when $\bv{b}=\bv{0}$).
+  \item A nontrivial solution of $A\bv{x}=\bv{0}$ is a nontrivial \textbf{relation among the columns}; this is the idea of linear dependence (Section~1.7).
+\end{itemize}
+
+\subsection*{Questions to think about before the next section}
+\begin{enumerate}
+  \item If the columns of $A$ are $\bv{a}_1,\dots,\bv{a}_n$, what does a nontrivial solution of $A\bv{x}=\bv{0}$ say about them? What does it say when there is none?
+  \item Is the solution set of $A\bv{x}=\bv{0}$ closed under addition and under scalar multiples? Why does this make it, like a $\Span$, a ``flat'' set through the origin?
+  \item A $3\times2$ matrix has columns $\bv{e}_1,\bv{e}_2$. Show that $A\bv{x}=(1,1,0)$ has a unique solution, yet the equation is not solvable for every $\bv{b}$. Which pivot condition fails?
+\end{enumerate}
+
+\subsection*{Answers and discussion}
+\begin{description}[leftmargin=0pt,itemsep=5pt]
+  \item[Pause and think \ref{think:freecols}.] The nontrivial solution $(2,-1,1)$ says $2\bv{a}_1-\bv{a}_2+\bv{a}_3=\bv{0}$, equivalently $\bv{a}_3=-2\bv{a}_1+\bv{a}_2$. Any equation $c_1\bv{a}_1+c_2\bv{a}_2=\bv{0}$ would be a solution with $x_3=0$, but $x_3$ is free exactly because the first two columns (the pivot columns) are not related; with $x_3=0$ the reduced matrix forces $x_1=x_2=0$. The suggestion: the pivot columns are not combinations of earlier columns, while a nonpivot column is a combination of the pivot columns to its left, so the span of all the columns equals the span of the pivot columns.
+  \item[Knowledge Check \ref{kc:readoff}.] (a)~$x_3$ is free, $x_1=-3x_3$, $x_2=2x_3$: $\bv{x}=x_3(-3,2,1)$. (b)~There are no free variables, so only the trivial solution. (c)~Free variables $x_2,x_4$; $x_1=2x_2-x_4$, $x_3=-3x_4$: $\bv{x}=x_2(2,1,0,0)+x_4(-1,0,-3,1)$.
+  \item[Knowledge Check \ref{kc:count}.] With $4$ equations the matrix has at most $4$ pivots, so among $6$ columns at least $2$ are nonpivot: at least $2$ free variables, hence a nontrivial solution is guaranteed. With $6$ equations and $4$ unknowns nothing is guaranteed: the matrix with the $4\times4$ identity on top and two rows of zeros has only the trivial solution, while the $6\times4$ zero matrix has every vector as a solution.
+  \item[Knowledge Check \ref{kc:readoff2}.] The basic variables are $x_1,x_2,x_4$ and $x_3$ is free: $x_1=2-4x_3$, $x_2=3+x_3$, $x_4=-5$. So $\bv{x}=(2,3,0,-5)+x_3(-4,1,1,0)$; $\bv{p}=(2,3,0,-5)$ is the solution with $x_3=0$, and $(-4,1,1,0)$ solves the homogeneous system whose coefficient matrix is the first four columns.
+  \item[Knowledge Check \ref{kc:member}.] $A(3,-1,2)=(1,3,-2)$ (computed in Example~\ref{ex:nonhom1}), and $(3,-1,2)=\bv{p}+2(2,-1,1)$: yes. $A\bv{0}=\bv{0}\neq\bv{b}$: no, and $\bv{0}$ is not of the form $(-1,1,0)+x_3(2,-1,1)$ since the first entry would give $x_3=\tfrac12$ and the second $x_3=1$. For $(-3,2,-2)$, $A(-3,2,-2)=(1,2,-1)\neq(1,3,-2)$: no. Both methods agree.
+  \item[Knowledge Check \ref{kc:diff}.] $\bv{w}=\bv{v}-\bv{u}=(2,-2,2)$ satisfies $A\bv{w}=A\bv{v}-A\bv{u}=\bv{b}-\bv{b}=\bv{0}$. Then $\bv{v}+\bv{w}=(5,-2,4)$ is a third solution: $A(\bv{v}+\bv{w})=\bv{b}+\bv{0}$. Indeed, every $\bv{u}+t\bv{w}$ is a solution, so there are infinitely many.
+  \item[Knowledge Check \ref{kc:shape}.] $0$ free variables: only $\bv{0}$ (a point). $1$: a line through the origin. $2$: a plane through the origin. $3$: all of $\R^3$, which happens only when $A$ is the zero matrix (every vector is a solution, so $A\bv{e}_j=\bv{0}$ for all $j$, by Section~1.4).
+  \item[Pause and think \ref{think:partic}.] Yes, the same set: $(1,0,1)-(-1,1,0)=(2,-1,1)$, which is itself a homogeneous solution, so $(1,0,1)+x_3(2,-1,1)=(-1,1,0)+(x_3+1)(2,-1,1)$ is the same set with the parameter shifted by $1$. In general, if $\bv{p}$ and $\bv{p}'$ are both solutions, then $\bv{p}'-\bv{p}$ solves $A\bv{x}=\bv{0}$ and the theorem applies equally with either. So the parametric vector form is \emph{not} unique as an expression (the particular solution can be changed by any homogeneous solution, and direction vectors can be rescaled), but the \emph{set} it describes is.
+  \item[Pause and think \ref{think:build}.] $(-1,1,1)$: $-1-2+3=0$, and $(2,1,0)$ and $(-1,1,1)$ are not multiples of each other. Any solution of the equation is a combination of $(2,1,0)$ and $(-3,0,1)$, and $(-3,0,1)=(-1,1,1)-(2,1,0)$, so the two sets of generators have the same span: the plane. For a vector that gives only a line take $(4,2,0)=2(2,1,0)$, which solves the equation ($4-4+0=0$). The decisive property: whether one of the two vectors is a multiple of the other. Two vectors in a plane span the plane exactly when neither is a multiple of the other (this is the idea of independence, Section~1.7).
+  \item[Pause and think \ref{think:table}.] $\begin{bmatrix}1&0\\0&1\end{bmatrix}$: pivot in every row and column, exactly one solution for every $\bv{b}$. $\begin{bmatrix}1&1\end{bmatrix}$: pivot in the only row, none in column $2$; every $b$ has infinitely many solutions. $\begin{bmatrix}1\\1\end{bmatrix}$: pivot in the only column but not in row $2$; $x_1=b_1$ requires $b_1=b_2$, so exactly one solution or none. $\begin{bmatrix}1&1\\1&1\end{bmatrix}$: pivot in row $1$ only and column $1$ only; $b_1=b_2$ gives infinitely many solutions, otherwise none. A missing pivot in a row allows \emph{no solution} (Section~1.4); a missing pivot in a column allows \emph{many solutions} (Theorem~\ref{thm:uniq}); neither failure happens only with a pivot in every row \emph{and} column.
+  \item[Before the next section.] (1)~A nontrivial solution says the columns satisfy $x_1\bv{a}_1+\cdots+x_n\bv{a}_n=\bv{0}$ with not all $x_j=0$, so some column is a combination of the others; if there is none, the only way to combine the columns to get $\bv{0}$ is with all weights $0$. (2)~Yes: if $A\bv{u}=A\bv{v}=\bv{0}$ then $A(\bv{u}+\bv{v})=\bv{0}$ and $A(c\bv{u})=\bv{0}$ (Theorem~\ref{1.4-thm:linear}); like a span, it contains $\bv{0}$, sums and multiples of its elements, which is why such sets are lines, planes and their higher-dimensional cousins through the origin. (3)~With columns $\bv{e}_1,\bv{e}_2$, $A\bv{x}=(x_1,x_2,0)$, so $x=(1,1)$ is the only solution of $A\bv{x}=(1,1,0)$; but $\bv{b}=(0,0,1)$ has no solution. Every column has a pivot, so the solution is unique, but row $3$ has no pivot (Theorem~\ref{1.4-thm:existence}).
+\end{description}
+
+\end{document}

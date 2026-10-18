@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage[homework]{la}
+\lamodule{1}{5}{Solution Sets of Linear Systems}
+
+\begin{document}
+
+\section{Solution Sets of Linear Systems}
+
+{\Large\bfseries Homework}\par
+
+\textbf{Name:} \rule{2.6in}{0.4pt}\qquad\textbf{Due:} \rule{1.4in}{0.4pt}
+
+\begin{howto}
+\begin{itemize}[nosep]
+  \item Show every row operation using the notation $R_i+cR_j\to R_i$, $R_i\leftrightarrow R_j$, $cR_i\to R_i$.
+  \item Write each solution set in \textbf{parametric vector form} and say what it is geometrically (a point, a line, a plane, \dots).
+  \item When a problem asks you to \textbf{justify} or \textbf{explain}, write complete sentences that a classmate
+        could follow. A bare ``yes'' or ``no'' earns no credit.
+  \item \textbf{Check} every claimed solution by multiplying it by the matrix.
+  \item Problems marked $\star$ are more challenging. Attempt them even if you do not finish; partial
+        reasoning earns credit.
+\end{itemize}
+\end{howto}
+
+% =====================================================================
+\subsection*{Part A \quad Computing}
+
+\problem[Homogeneous systems.]
+Find the solution set of $A\bv{x}=\bv{0}$ in parametric vector form.
+\begin{enumerate}
+  \item $A=\begin{bmatrix}1&-1&-3\\2&0&-2\\-1&3&7\end{bmatrix}$. Use your answer to write a nontrivial relation among the columns of $A$.
+  \item $A=\begin{bmatrix}1&3&0&-2\\2&6&1&-1\end{bmatrix}$.
+  \item Is $(2,-4,2)$ a solution of the system in~(a)? Is it a multiple of your direction vector?
+\end{enumerate}
+
+\problem[A nonhomogeneous system.]
+Let $A=\begin{bmatrix}1&0&2&0\\2&1&3&0\\-1&1&-3&1\end{bmatrix}$ and $\bv{b}=(3,4,-1)$.
+\begin{enumerate}
+  \item Row reduce $[A\ \bv{b}]$ and write the solution set of $A\bv{x}=\bv{b}$ in parametric vector form.
+  \item Identify a particular solution $\bv{p}$ and the solution set of $A\bv{x}=\bv{0}$.
+  \item Find the solution with $x_3=2$, and check it.
+\end{enumerate}
+
+\problem[A parameter.]
+For which values of $h$ does the homogeneous system with coefficient matrix $\begin{bmatrix}1&-3&2\\-3&h&1\\2&-2&0\end{bmatrix}$ have a nontrivial solution? For each such $h$ describe all solutions. What does this say about the columns when $h$ is not one of these values?
+
+\problem[Lines and planes.]
+\begin{enumerate}
+  \item Find a parametric vector form of the line through $(2,-1,0)$ and $(5,1,3)$, and then a system of two linear equations whose solution set is this line.
+  \item Write the plane $2x_1-x_2-x_3=1$ in parametric vector form $\bv{p}+s\bv{v}_1+t\bv{v}_2$.
+\end{enumerate}
+
+% =====================================================================
+\subsection*{Part B \quad Reasoning and explaining}
+
+\problem[Counting.]
+Justify each answer.
+\begin{enumerate}
+  \item A homogeneous system has $3$ equations and $5$ unknowns. Must it have a nontrivial solution? How many free variables are there at least?
+  \item A homogeneous system has $5$ equations and $3$ unknowns. What are the possibilities for the number of solutions? Give an example for each.
+  \item Give a $4\times4$ matrix $A$ for which $A\bv{x}=\bv{b}$ has exactly one solution for every $\bv{b}$, and explain how you know using pivots.
+  \item A $3\times5$ matrix has a pivot in every row. Describe the solution set of $A\bv{x}=\bv{b}$ for any $\bv{b}$ (what shape, how many free variables).
+\end{enumerate}
+
+\problem[Using the translate theorem.]
+Suppose $\bv{p}=(1,2,3)$ and $\bv{q}=(3,0,1)$ are both solutions of $A\bv{x}=\bv{b}$.
+\begin{enumerate}
+  \item Find a nonzero solution of $A\bv{x}=\bv{0}$.
+  \item Find two more solutions of $A\bv{x}=\bv{b}$, and the solution that lies midway between $\bv{p}$ and $\bv{q}$.
+  \item Give an explicit $2\times3$ matrix $A$ and $\bv{b}$ for which this is true, and check it.
+\end{enumerate}
+
+\problem[True or false?]
+Decide whether each statement is true in \textbf{all} cases or false in at least one. If false, give a specific counterexample. If true, justify briefly.
+\begin{enumerate}
+  \item The equation $A\bv{x}=\bv{0}$ is always consistent.
+  \item If $A\bv{x}=\bv{0}$ has a nontrivial solution, then $A\bv{x}=\bv{b}$ has a solution for every $\bv{b}$.
+  \item If $A\bv{x}=\bv{b}$ is consistent and $A\bv{x}=\bv{0}$ has only the trivial solution, then the solution of $A\bv{x}=\bv{b}$ is unique.
+  \item If $A$ has more columns than rows, then $A\bv{x}=\bv{0}$ has a nontrivial solution.
+  \item If $\bv{p}$ and $\bv{q}$ are solutions of $A\bv{x}=\bv{b}$ with $\bv{b}\neq\bv{0}$, then so is $\bv{p}+\bv{q}$.
+  \item The solution set of a consistent system $A\bv{x}=\bv{b}$ is obtained by adding one fixed vector to every solution of $A\bv{x}=\bv{0}$.
+\end{enumerate}
+
+% =====================================================================
+\subsection*{Part C \quad Modeling}
+
+\problem[A network with a diagonal road.]
+Junctions $A,B,C,D$ are joined by one-way roads: $A\to B$ ($x_1$), $B\to C$ ($x_2$), $C\to D$ ($x_3$), $D\to A$ ($x_4$) and a diagonal $B\to D$ ($x_5$). Cars per hour enter at $A,B,C,D$ at the rates $60,20,50,30$ and leave at $20,50,40,50$.
+\begin{enumerate}
+  \item Check that total in equals total out, and write the four balance equations as a system $M\bv{x}=\bv{b}$.
+  \item Solve it in parametric vector form $\bv{p}+x_4\bv{v}_4+x_5\bv{v}_5$ and check your answer.
+  \item Describe the circulation $A\to B\to D\to A$ as a vector, and express it as a combination of your direction vectors.
+  \item If no cars use $D\to A$ ($x_4=0$), what range of values of $x_5$ gives nonnegative flows?
+  \item Traffic counters read $x_4=6$ and $x_5=4$. Find all five flows.
+\end{enumerate}
+
+\problem[$\star$ Uniqueness and combinations of solutions.]
+\begin{enumerate}
+  \item Let $A$ be $3\times3$ and suppose $A\bv{x}=\bv{0}$ has only the trivial solution. Explain using pivots why $A\bv{x}=\bv{b}$ has exactly one solution for every $\bv{b}\in\R^3$.
+  \item If $\bv{p},\bv{q}$ solve $A\bv{x}=\bv{b}$ with $\bv{b}\neq\bv{0}$, for which scalars $c,d$ is $c\bv{p}+d\bv{q}$ again a solution? Prove your answer.
+\end{enumerate}
+
+\end{document}
