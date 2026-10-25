@@ -31,7 +31,7 @@ modules:
   - {id: "3.1", chapter: 3, title: "Introduction to Determinants", tested: true, prereqs: ["2.2"], status: done}
   - {id: "3.2", chapter: 3, title: "Properties of Determinants", tested: true, prereqs: ["3.1"], status: done, note: "Include a Pause-and-think on |det A| as an area/volume scale factor (replaces 3.3)."}
   - {id: "3.3", chapter: 3, title: "Cramer's Rule, Volume, and Linear Transformations", tested: false, prereqs: ["3.2"], status: done, note: "Enrichment. Not required by any later section."}
-  - {id: "4.1", chapter: 4, title: "Vector Spaces and Subspaces", tested: true, prereqs: ["2.3", "3.2"], status: todo, note: "Generalizes R^n; do not repeat Ch. 1-2 material, abstract it."}
+  - {id: "4.1", chapter: 4, title: "Vector Spaces and Subspaces", tested: true, prereqs: ["2.3", "3.2"], status: done, note: "Generalizes R^n; do not repeat Ch. 1-2 material, abstract it."}
   - {id: "4.2", chapter: 4, title: "Null Spaces, Column Spaces, Row Spaces, and Linear Transformations", tested: true, prereqs: ["4.1", "2.1"], status: todo}
   - {id: "4.3", chapter: 4, title: "Linearly Independent Sets; Bases", tested: true, prereqs: ["4.2", "1.7"], status: todo}
   - {id: "4.4", chapter: 4, title: "Coordinate Systems", tested: true, prereqs: ["4.3"], status: todo}
