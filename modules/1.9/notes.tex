@@ -373,6 +373,146 @@ A map that is both one-to-one and onto sends each $\bv{b}$ to exactly one $\bv{x
   \item For a square matrix, one-to-one and onto go together. Which of the earlier characterisations of ``every column is a pivot column'' and ``every row is a pivot row'' have you now seen to coincide?
 \end{enumerate}
 
+% =====================================================================
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Standard matrix from a description.} Reflection in a given line; a map described in words in $\R^3$.
+  \item \textbf{Standard matrix from values at other vectors.} Three given values in $\R^3$, solved by one row reduction.
+  \item \textbf{Do this, then that.} A three-step composite, the reversed order, and a check on a point.
+  \item \textbf{One-to-one and onto.} A parameter that decides whether a $3\times4$ map is onto, and a $4\times3$ map that is one-to-one but misses part of its codomain.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: standard matrix from a description}
+
+\begin{exmp}{A map described in words}{bankWords}
+Let $T:\R^3\to\R^3$ reverse the order of the entries of a vector and then double the new first entry, so $T(x_1,x_2,x_3)=(2x_3,\ x_2,\ x_1)$. Find the standard matrix, and decide whether $T$ is one-to-one and onto.
+
+\textbf{Solution.} Follow the unit vectors through both steps of the description. Reversing $\bv{e}_1=(1,0,0)$ gives $(0,0,1)$, and doubling the first entry leaves it $(0,0,1)$. Reversing $\bv{e}_2$ gives $(0,1,0)$, unchanged by the doubling. Reversing $\bv{e}_3=(0,0,1)$ gives $(1,0,0)$, and doubling the first entry makes it $(2,0,0)$. So
+\[
+T(\bv{e}_1)=(0,0,1),\qquad T(\bv{e}_2)=(0,1,0),\qquad T(\bv{e}_3)=(2,0,0),\qquad A=\begin{bmatrix}0&0&2\\0&1&0\\1&0&0\end{bmatrix}.
+\]
+Check with $\bv{x}=(1,2,3)$: the description gives $(3,2,1)$ and then $(6,2,1)$, and $A\bv{x}=(2\cdot3,\ 2,\ 1)=(6,2,1)$. \ $\checkmark$
+
+Swapping the first and third rows reaches an echelon form with a pivot in every row and in every column:
+\begin{align*}
+\begin{amat}{ccc}0&0&2\\0&1&0\\1&0&0\end{amat}
+&\rops{R_1\leftrightarrow R_3}
+\begin{amat}{ccc}1&0&0\\0&1&0\\0&0&2\end{amat}.
+\end{align*}
+Three pivots in three rows and three columns: $T$ is both one-to-one and onto (Theorem~\ref{thm:ontoone}). In words, the description can be undone: halve the first entry and reverse the order again.
+\end{exmp}
+
+\begin{exmp}{Reflection in a line through the origin}{bankReflect}
+Find the standard matrix of the reflection $F$ of the plane in the line $x_2=2x_1$.
+
+\textbf{Solution.} The line makes an angle $\alpha$ with the $x_1$-axis where $\tan\alpha=2$. By the Remark after the catalogue, the matrix is $\begin{bmatrix}\cos2\alpha&\sin2\alpha\\\sin2\alpha&-\cos2\alpha\end{bmatrix}$. We do not need $\alpha$ itself: with $\tan\alpha=2$ the double-angle formulas give
+\[
+\cos2\alpha=\frac{1-\tan^2\alpha}{1+\tan^2\alpha}=\frac{1-4}{1+4}=-\frac35,\qquad \sin2\alpha=\frac{2\tan\alpha}{1+\tan^2\alpha}=\frac45,
+\]
+so
+\[
+F=\begin{bmatrix}-\tfrac35&\tfrac45\\\tfrac45&\tfrac35\end{bmatrix}.
+\]
+A reflection should fix every point of its mirror and reverse the direction perpendicular to it, so test both. The point $(1,2)$ lies on the mirror, and $F(1,2)=\bigl(-\tfrac35+\tfrac85,\ \tfrac45+\tfrac65\bigr)=(1,2)$. \ $\checkmark$ The vector $(2,-1)$ is perpendicular to $(1,2)$, and $F(2,-1)=\bigl(-\tfrac65-\tfrac45,\ \tfrac85-\tfrac35\bigr)=(-2,1)$. \ $\checkmark$ Finally, reflecting twice must return every vector, so $F$ times itself should be the identity:
+\[
+\begin{bmatrix}-\tfrac35&\tfrac45\\\tfrac45&\tfrac35\end{bmatrix}\begin{bmatrix}-\tfrac35&\tfrac45\\\tfrac45&\tfrac35\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix},
+\]
+which holds entry by entry: $\tfrac{9}{25}+\tfrac{16}{25}=1$ and $-\tfrac{12}{25}+\tfrac{12}{25}=0$.
+\end{exmp}
+
+\subsection*{Bank: standard matrix from values at other vectors}
+
+\begin{exmp}{Three values in $\R^3$}{bankThree}
+A linear map $T:\R^3\to\R^2$ has $T(1,1,0)=(3,1)$, \ $T(0,1,1)=(0,2)$ and $T(1,0,1)=(1,-1)$. Find its standard matrix.
+
+\textbf{Solution.} Procedure~\ref{proc:findmat} needs $T(\bv{e}_1)$, $T(\bv{e}_2)$ and $T(\bv{e}_3)$, so write each unit vector as a combination of the three given vectors $\bv{u}_1=(1,1,0)$, $\bv{u}_2=(0,1,1)$ and $\bv{u}_3=(1,0,1)$. The three weight problems share the coefficient matrix $[\bv{u}_1\ \bv{u}_2\ \bv{u}_3]$, and the right-hand sides are the columns of the identity matrix, so one row reduction does all three:
+\begin{align*}
+\begin{amat}{ccc|ccc}1&0&1&1&0&0\\1&1&0&0&1&0\\0&1&1&0&0&1\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{ccc|ccc}1&0&1&1&0&0\\0&1&-1&-1&1&0\\0&1&1&0&0&1\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|ccc}1&0&1&1&0&0\\0&1&-1&-1&1&0\\0&0&2&1&-1&1\end{amat}\\
+&\rops{\tfrac12R_3}
+\begin{amat}{ccc|ccc}1&0&1&1&0&0\\0&1&-1&-1&1&0\\0&0&1&\tfrac12&-\tfrac12&\tfrac12\end{amat}
+\rops{R_1-R_3,\ R_2+R_3}
+\begin{amat}{ccc|ccc}1&0&0&\tfrac12&\tfrac12&-\tfrac12\\0&1&0&-\tfrac12&\tfrac12&\tfrac12\\0&0&1&\tfrac12&-\tfrac12&\tfrac12\end{amat}.
+\end{align*}
+The columns of the right side are the weights. Column~$1$ says $\bv{e}_1=\tfrac12\bv{u}_1-\tfrac12\bv{u}_2+\tfrac12\bv{u}_3$, and similarly $\bv{e}_2=\tfrac12\bv{u}_1+\tfrac12\bv{u}_2-\tfrac12\bv{u}_3$ and $\bv{e}_3=-\tfrac12\bv{u}_1+\tfrac12\bv{u}_2+\tfrac12\bv{u}_3$. By superposition,
+\begin{align*}
+T(\bv{e}_1)&=\tfrac12(3,1)-\tfrac12(0,2)+\tfrac12(1,-1)=(2,-1),\\
+T(\bv{e}_2)&=\tfrac12(3,1)+\tfrac12(0,2)-\tfrac12(1,-1)=(1,2),\\
+T(\bv{e}_3)&=-\tfrac12(3,1)+\tfrac12(0,2)+\tfrac12(1,-1)=(-1,0).
+\end{align*}
+So $A=\begin{bmatrix}2&1&-1\\-1&2&0\end{bmatrix}$. Check against the data: $A(1,1,0)=(3,1)$, \ $A(0,1,1)=(0,2)$ and $A(1,0,1)=(1,-1)$. \ $\checkmark$ The three given vectors are independent (the reduction found three pivots), which is exactly why they determine $T$: compare Pause and think~\ref{think:whyunit}(b).
+\end{exmp}
+
+\subsection*{Bank: do this, then that}
+
+\begin{exmp}{A three-step composite and its reverse}{bankCompose}
+Let $S=\begin{bmatrix}1&1\\0&1\end{bmatrix}$ be the horizontal shear, $R=\begin{bmatrix}0&-1\\1&0\end{bmatrix}$ the rotation by $90^\circ$ and $D=\begin{bmatrix}1&0\\0&3\end{bmatrix}$ the vertical stretch by $3$. Find the standard matrix of ``shear, then rotate, then stretch'', and of the same three steps in the reverse order (stretch, then rotate, then shear). Test the first on $(1,1)$.
+
+\textbf{Solution.} Follow $\bv{e}_1$ and $\bv{e}_2$ through the steps in the stated order, applying one matrix at a time to the vector we have.
+
+\emph{Shear, rotate, stretch.} $\bv{e}_1\mapsto S\bv{e}_1=(1,0)\mapsto R(1,0)=(0,1)\mapsto D(0,1)=(0,3)$, and $\bv{e}_2\mapsto S\bv{e}_2=(1,1)\mapsto R(1,1)=(-1,1)\mapsto D(-1,1)=(-1,3)$. The columns of the composite are $(0,3)$ and $(-1,3)$:
+\[
+M_1=\begin{bmatrix}0&-1\\3&3\end{bmatrix}.
+\]
+\emph{Stretch, rotate, shear.} $\bv{e}_1\mapsto D\bv{e}_1=(1,0)\mapsto R(1,0)=(0,1)\mapsto S(0,1)=(1,1)$, and $\bv{e}_2\mapsto D\bv{e}_2=(0,3)\mapsto R(0,3)=(-3,0)\mapsto S(-3,0)=(-3,0)$:
+\[
+M_2=\begin{bmatrix}1&-3\\1&0\end{bmatrix}.
+\]
+The two matrices are different, so the order matters, as in Example~\ref{ex:compose}.
+
+\emph{Test on $(1,1)$.} Directly: $S(1,1)=(2,1)$, then $R(2,1)=(-1,2)$, then $D(-1,2)=(-1,6)$. With the matrix: $M_1(1,1)=(0\cdot1-1\cdot1,\ 3\cdot1+3\cdot1)=(-1,6)$. \ $\checkmark$ The matrix does in one step what the three steps do.
+
+\emph{What the composite does to area.} The shear and the rotation keep the area of the unit square equal to $1$ and the stretch triples it, so the image of the unit square under $M_1$ has area $3$. The columns $(0,3)$ and $(-1,3)$ give $0\cdot3-(-1)\cdot3=3$ as well, in agreement with Pause and think~\ref{think:area}. Since both columns of $M_1$ are pivot columns, the composite is one-to-one and onto.
+\end{exmp}
+
+\subsection*{Bank: one-to-one and onto}
+
+\begin{exmp}{A parameter decides onto}{bankParam}
+Let $A(h)=\begin{bmatrix}1&2&0&1\\2&4&1&3\\0&0&1&h\end{bmatrix}$ and $T(\bv{x})=A(h)\bv{x}$, a map from $\R^4$ to $\R^3$. For which values of $h$ is $T$ onto? Is it ever one-to-one? Describe the vectors sent to $\bv{0}$.
+
+\textbf{Solution.} Row reduce, keeping $h$ as a symbol:
+\begin{align*}
+\begin{amat}{cccc}1&2&0&1\\2&4&1&3\\0&0&1&h\end{amat}
+&\rops{R_2-2R_1}
+\begin{amat}{cccc}1&2&0&1\\0&0&1&1\\0&0&1&h\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{cccc}1&2&0&1\\0&0&1&1\\0&0&0&h-1\end{amat}.
+\end{align*}
+\emph{Onto.} $T$ is onto exactly when there is a pivot in every row (Theorem~\ref{thm:ontoone}(b)). The third row has a pivot, in column~$4$, if and only if $h-1\neq0$. So $T$ is onto for every $h\neq1$ and is not onto for $h=1$.
+
+\emph{One-to-one.} This needs a pivot in every \emph{column}, and $A(h)$ has four columns but only three rows, hence at most three pivots. Column~$2$ is a free column for every $h$: no choice of $h$ makes $T$ one-to-one. This is the counting remark after Theorem~\ref{thm:ontoone}: more columns than rows forbids one-to-one.
+
+\emph{Vectors sent to $\bv{0}$.} Take $h\neq1$. The last row gives $(h-1)x_4=0$, so $x_4=0$; the second row then gives $x_3=0$; the first row gives $x_1=-2x_2$ with $x_2$ free. The vectors sent to $\bv{0}$ are the multiples of $(-2,1,0,0)$. Check: $A(h)(-2,1,0,0)=(-2+2,\ -4+4,\ 0)=\bv{0}$. \ $\checkmark$ For $h=1$ the variable $x_4$ is free as well, and a second independent direction, $(-1,0,-1,1)$, is also sent to $\bv{0}$: $A(1)(-1,0,-1,1)=(-1+1,\ -2-1+3,\ -1+1)=\bv{0}$. \ $\checkmark$ Losing the pivot in the last row adds a free variable: one more direction collapses to $\bv{0}$, and the range shrinks to a plane.
+\end{exmp}
+
+\begin{exmp}{One-to-one but not onto}{bankMiss}
+Let $B=\begin{bmatrix}1&0&1\\1&1&0\\0&1&1\\1&1&2\end{bmatrix}$ and $T(\bv{x})=B\bv{x}$, a map from $\R^3$ to $\R^4$. Show that $T$ is one-to-one, describe its range by an equation, and decide whether $\bv{b}=(1,2,3,4)$ and $\bv{c}=(1,2,3,5)$ are in the range.
+
+\textbf{Solution.} Row reduce $[B\ \bv{b}]$ with the right-hand side left as $\bv{b}=(b_1,b_2,b_3,b_4)$, so that one reduction answers every question about the range:
+\begin{align*}
+\begin{amat}{ccc|c}1&0&1&b_1\\1&1&0&b_2\\0&1&1&b_3\\1&1&2&b_4\end{amat}
+&\rops{R_2-R_1,\ R_4-R_1}
+\begin{amat}{ccc|c}1&0&1&b_1\\0&1&-1&b_2-b_1\\0&1&1&b_3\\0&1&1&b_4-b_1\end{amat}\\
+&\rops{R_3-R_2,\ R_4-R_2}
+\begin{amat}{ccc|c}1&0&1&b_1\\0&1&-1&b_2-b_1\\0&0&2&b_3-b_2+b_1\\0&0&2&b_4-b_2\end{amat}\\
+&\rops{R_4-R_3}
+\begin{amat}{ccc|c}1&0&1&b_1\\0&1&-1&b_2-b_1\\0&0&2&b_3-b_2+b_1\\0&0&0&b_4-b_3-b_1\end{amat}.
+\end{align*}
+\emph{One-to-one.} The coefficient part has a pivot in each of the three columns, so $T$ is one-to-one (Theorem~\ref{thm:ontoone}(a)). It cannot be onto: there are four rows and only three pivots.
+
+\emph{The range.} The system is consistent exactly when the last row, $0=b_4-b_3-b_1$, is not contradictory. So the range is the set of $\bv{b}$ with $b_4=b_1+b_3$, a flat piece of $\R^4$ cut out by the single equation $b_4=b_1+b_3$. Since $T$ is one-to-one, each such $\bv{b}$ has exactly one preimage.
+
+\emph{The two vectors.} For $\bv{b}=(1,2,3,4)$: $b_1+b_3=4=b_4$, so $\bv{b}$ is in the range. Back-substitution in the reduced system with these numbers: $2x_3=b_3-b_2+b_1=2$ gives $x_3=1$; then $x_2-x_3=b_2-b_1=1$ gives $x_2=2$; and $x_1+x_3=b_1=1$ gives $x_1=0$. Check: $B(0,2,1)=(0+0+1,\ 0+2+0,\ 2+1,\ 2+2)=(1,2,3,4)$. \ $\checkmark$ For $\bv{c}=(1,2,3,5)$: $c_1+c_3=4\neq5=c_4$, so the last row reads $0=1$: $\bv{c}$ is \emph{not} in the range, although it differs from $\bv{b}$ in a single entry. Its failure comes from the one relation among the rows of $B$: the fourth row is the sum of the first and third.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:matdata}.] (a)~$A=\begin{bmatrix}2&0\\-1&3\end{bmatrix}$; $T(3,-2)=3(2,-1)-2(0,3)=(6,-9)$. Check by rows: $2\cdot3+0\cdot(-2)=6$ and $-1\cdot3+3\cdot(-2)=-9$. (b)~$T(\bv{e}_1)=(1,0)$, $T(\bv{e}_2)=(0,1)$, $T(\bv{e}_3)=(0,-1)$, $T(\bv{e}_4)=(4,0)$, so $A=\begin{bmatrix}1&0&0&4\\0&1&-1&0\end{bmatrix}$, a $2\times4$ matrix (domain $\R^4$, codomain $\R^2$).
