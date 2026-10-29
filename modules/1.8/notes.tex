@@ -485,6 +485,133 @@ The conversion from degrees Celsius to degrees Fahrenheit is $F=1.8\,C+32$. Is $
   \item Which pivot condition (a pivot in every row, or in every column) decides whether every vector of the codomain is an image? Which one decides that no two inputs share an image?
 \end{enumerate}
 
+% =====================================================================
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Follow a figure through a matrix.} Find the image of a triangle and use it to check that lines, midpoints and independence behave as the theory says.
+  \item \textbf{Decide linearity.} Test a map given in words, find the rule that breaks for a map that looks harmless, and find the values of a parameter that make a family of maps linear.
+  \item \textbf{Prescribed values.} Decide whether a linear map with prescribed values at several vectors exists, and find its matrix.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: follow a figure through a matrix}
+
+\begin{exmp}{Image of a triangle}{bankTriangle}
+Let $A=\begin{bmatrix}1&2\\-1&1\end{bmatrix}$ and $T(\bv{x})=A\bv{x}$. The triangle has vertices $P=(1,1)$, $Q=(3,1)$ and $R=(1,3)$. (a)~Find the image of the triangle. (b)~Check that the midpoint of $QR$ goes to the midpoint of the image of $QR$. (c)~Explain why the image is a genuine triangle and not a segment.
+
+\textbf{Solution.} (a)~A side of the triangle is a piece of a line, and a linear map sends a line to a line (Theorem~\ref{thm:lines}). A segment is determined by its two endpoints, so the image of each side is the segment joining the images of its endpoints. It is therefore enough to compute the images of the three vertices:
+\[
+\begin{bmatrix}1&2\\-1&1\end{bmatrix}\begin{bmatrix}1\\1\end{bmatrix}=\begin{bmatrix}3\\0\end{bmatrix},\qquad
+\begin{bmatrix}1&2\\-1&1\end{bmatrix}\begin{bmatrix}3\\1\end{bmatrix}=\begin{bmatrix}5\\-2\end{bmatrix},\qquad
+\begin{bmatrix}1&2\\-1&1\end{bmatrix}\begin{bmatrix}1\\3\end{bmatrix}=\begin{bmatrix}7\\2\end{bmatrix}.
+\]
+The image is the triangle with vertices $T(P)=(3,0)$, $T(Q)=(5,-2)$ and $T(R)=(7,2)$. The points inside the triangle are also carried inside: a point of the triangle is a weighted average $\bv{x}=\lambda_1P+\lambda_2Q+\lambda_3R$ with weights $\lambda_j\ge0$ adding up to $1$, and superposition gives $T(\bv{x})=\lambda_1T(P)+\lambda_2T(Q)+\lambda_3T(R)$, a weighted average of the image vertices with the \emph{same} weights.
+
+(b)~The midpoint of $QR$ is $\tfrac12(3,1)+\tfrac12(1,3)=(2,2)$. Then
+\[
+\begin{bmatrix}1&2\\-1&1\end{bmatrix}\begin{bmatrix}2\\2\end{bmatrix}=\begin{bmatrix}6\\0\end{bmatrix},
+\]
+and the midpoint of $T(Q)=(5,-2)$ and $T(R)=(7,2)$ is $\bigl(\tfrac{5+7}{2},\tfrac{-2+2}{2}\bigr)=(6,0)$. They agree, as equal spacing along a line (Theorem~\ref{thm:lines}) says they must.
+
+(c)~Two sides leaving $P$ are $Q-P=(2,0)$ and $R-P=(0,2)$, which are independent. The columns of $A$ are $(1,-1)$ and $(2,1)$, neither a multiple of the other, so they are independent, and by Theorem~\ref{thm:depimages}(b) the images $A(2,0)=(2,-2)$ and $A(0,2)=(4,2)$ are independent too. Two independent sides mean the image has a corner with a genuine angle, so it is a triangle with positive area. A matrix with dependent columns, such as $\begin{bmatrix}1&2\\2&4\end{bmatrix}$, would have flattened the triangle onto a segment.
+\end{exmp}
+
+\subsection*{Bank: decide linearity}
+
+\begin{exmp}{Averaging the entries}{bankAverage}
+Let $T:\R^3\to\R^3$ replace every entry of a vector by the average of the three entries:
+\[
+T(x_1,x_2,x_3)=\tfrac13(x_1+x_2+x_3)\,(1,1,1).
+\]
+(a)~Show that $T$ is linear and find its matrix. (b)~Describe the range. (c)~Find every $\bv{x}$ with $T(\bv{x})=(2,2,2)$.
+
+\textbf{Solution.} (a)~Each entry of $T(\bv{x})$ is $\tfrac13x_1+\tfrac13x_2+\tfrac13x_3$: a sum of constant multiples of the $x_j$ and nothing else. By the row--column rule (Procedure~\ref{proc:testproc}, step~2) $T$ is the matrix transformation of
+\[
+K=\tfrac13\begin{bmatrix}1&1&1\\1&1&1\\1&1&1\end{bmatrix},
+\]
+so it is linear (Theorem~\ref{thm:matlin}).
+
+(b)~Every image is a multiple of $(1,1,1)$, and every multiple $s(1,1,1)$ occurs: take $\bv{x}=(s,s,s)$, whose average is $s$. So the range is the line $\Span\{(1,1,1)\}$, a very small part of the codomain $\R^3$.
+
+(c)~Multiplying the equation $K\bv{x}=(2,2,2)$ by $3$ keeps it equivalent, and then all three rows are the same equation:
+\begin{align*}
+\begin{amat}{ccc|c}1&1&1&6\\1&1&1&6\\1&1&1&6\end{amat}
+&\rops{R_2-R_1,\ R_3-R_1}
+\begin{amat}{ccc|c}1&1&1&6\\0&0&0&0\\0&0&0&0\end{amat}.
+\end{align*}
+The solutions form the plane $x_1+x_2+x_3=6$ (``three numbers with average $2$''), with $x_2$ and $x_3$ free. For instance $(1,2,3)$ and $(6,0,0)$ are both preimages. Their difference $(5,-2,-3)$ has entries adding up to $0$, so it is sent to $\bv{0}$, in agreement with Theorem~\ref{thm:sameimage}. The vectors sent to $\bv{0}$ are those with average $0$, the plane $x_1+x_2+x_3=0$, which is the solution set of $K\bv{x}=\bv{0}$; every preimage of $(2,2,2)$ is a translate of it (Theorem~\ref{1.5-thm:translate}).
+\end{exmp}
+
+\begin{exmp}{Sorting the entries}{bankSort}
+Let $T:\R^2\to\R^2$ put the larger entry first: $T(x_1,x_2)=(\max\{x_1,x_2\},\ \min\{x_1,x_2\})$. Is $T$ linear?
+
+\textbf{Solution.} First the quick test: $T(0,0)=(0,0)$, so $T(\bv{0})=\bv{0}$ and the origin test cannot reject $T$. The formula is not a sum of constant multiples of $x_1$ and $x_2$, so we must hunt for a counterexample. Try the two rules with small numbers.
+
+\emph{Rule~(ii) with $c=2$.} For $\bv{u}=(3,1)$ we get $T(2\bv{u})=T(6,2)=(6,2)=2T(\bv{u})$. This works. In fact for every $c\ge0$ sorting commutes with scaling, so a search that tries only positive $c$ would never find a failure. That is why Procedure~\ref{proc:testproc} also suggests $c=-1$.
+
+\emph{Rule~(ii) with $c=-1$.} For $\bv{u}=(1,0)$: $T(\bv{u})=(1,0)$ but $T(-\bv{u})=T(-1,0)=(0,-1)$, while $-T(\bv{u})=(-1,0)$. They differ, so rule~(ii) fails.
+
+\emph{Rule~(i)} fails as well, with the unit vectors: $T(\bv{e}_1)=(1,0)$ and $T(\bv{e}_2)=(1,0)$, so $T(\bv{e}_1)+T(\bv{e}_2)=(2,0)$, but $T(\bv{e}_1+\bv{e}_2)=T(1,1)=(1,1)$.
+
+One failure is enough: $T$ is \emph{not} linear. Geometrically, sorting folds the plane over along the line $x_2=x_1$. A fold bends lines: the line $x_1+x_2=1$ has the points $(1-t,t)$, and sorting sends both $(1-t,t)$ and $(t,1-t)$ to the same point, so the whole line is folded onto a single ray starting at $(\tfrac12,\tfrac12)$. Theorem~\ref{thm:lines} says a linear map would send the line to a line (or a point), so $T$ cannot be linear.
+\end{exmp}
+
+\begin{exmp}{A parameter in a map on polynomials}{bankPoly}
+Polynomials $p(t)=a+bt+ct^2$ of degree at most $2$ are recorded by their coefficient vectors $(a,b,c)$ in $\R^3$. For a real number $k$ define two maps from these polynomials to $\R^2$:
+\[
+S_k(p)=\bigl(p(1)+k,\ p'(0)\bigr),\qquad U_k(p)=\bigl(p(1)+k\,p(0),\ p'(0)\bigr).
+\]
+(a)~For which $k$ is $S_k$ linear? For which $k$ is $U_k$ linear? (b)~Take $k=1$ in $U_k$ and find every polynomial with $U_1(p)=(4,2)$.
+
+\textbf{Solution.} (a)~In coefficients, $p(1)=a+b+c$, $p(0)=a$ and $p'(0)=b$. For $S_k$ the zero polynomial goes to $S_k(0)=(k,0)$. A linear map must send $\bv{0}$ to $\bv{0}$ (Theorem~\ref{thm:props}(a)), so $S_k$ can be linear only if $k=0$; and for $k=0$ it is $(a,b,c)\mapsto(a+b+c,\ b)$, a matrix transformation, hence linear. So $S_k$ is linear exactly for $k=0$, and for every other $k$ it is affine (a linear map plus the constant shift $(k,0)$, as in Example~\ref{ex:workshop}).
+
+For $U_k$ the constant $k$ is not added on its own; it multiplies $p(0)$. Then $U_k(p)=\bigl((1+k)a+b+c,\ b\bigr)$, and each entry is a sum of constant multiples of $a,b,c$. So $U_k$ is the matrix transformation
+\[
+\bv{x}\mapsto\begin{bmatrix}1+k&1&1\\0&1&0\end{bmatrix}\bv{x},
+\]
+and it is linear for \emph{every} $k$. The moral: the parameter does not decide linearity; what decides it is whether it appears as a coefficient (linear) or as an added constant (affine).
+
+(b)~With $k=1$ the matrix is $\begin{bmatrix}2&1&1\\0&1&0\end{bmatrix}$. Solve $U_1(p)=(4,2)$:
+\begin{align*}
+\begin{amat}{ccc|c}2&1&1&4\\0&1&0&2\end{amat}
+&\rops{R_1-R_2}
+\begin{amat}{ccc|c}2&0&1&2\\0&1&0&2\end{amat}
+\rops{\tfrac12R_1}
+\begin{amat}{ccc|c}1&0&\tfrac12&1\\0&1&0&2\end{amat}.
+\end{align*}
+Column $3$ is free, so $c$ is free, $b=2$ and $a=1-\tfrac12c$. Every preimage has the form $p(t)=\bigl(1-\tfrac12c\bigr)+2t+ct^2$ for a real number $c$. Check with $c=2$: $p(t)=2t^2+2t$, so $p(1)+p(0)=4+0=4$ and $p'(0)=2$. \ $\checkmark$ The preimages form a line in coefficient space, parallel to $(-\tfrac12,0,1)$, the polynomial $-\tfrac12+t^2$ that $U_1$ sends to $\bv{0}$.
+\end{exmp}
+
+\subsection*{Bank: prescribed values}
+
+\begin{exmp}{Can these values come from a linear map?}{bankValues}
+Let $\bv{u}=(1,1)$, $\bv{v}=(1,-1)$ and $\bv{w}=(3,1)$ in $\R^2$. (a)~Is there a linear $T:\R^2\to\R^3$ with $T(\bv{u})=(2,1,0)$, $T(\bv{v})=(0,1,2)$ and $T(\bv{w})=(4,3,2)$? If so, find its matrix. (b)~Is there one with $T(\bv{w})=(4,3,1)$ instead, the other two values unchanged?
+
+\textbf{Solution.} A linear map must respect every relation among its inputs, so first find the relations. Write $\bv{w}$, $\bv{e}_1$ and $\bv{e}_2$ in terms of $\bv{u}$ and $\bv{v}$; all three weight problems share the coefficient matrix $[\bv{u}\ \bv{v}]$, so we solve them together:
+\begin{align*}
+\begin{amat}{cc|ccc}1&1&3&1&0\\1&-1&1&0&1\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{cc|ccc}1&1&3&1&0\\0&-2&-2&-1&1\end{amat}\\
+&\rops{-\tfrac12R_2}
+\begin{amat}{cc|ccc}1&1&3&1&0\\0&1&1&\tfrac12&-\tfrac12\end{amat}\\
+&\rops{R_1-R_2}
+\begin{amat}{cc|ccc}1&0&2&\tfrac12&\tfrac12\\0&1&1&\tfrac12&-\tfrac12\end{amat}.
+\end{align*}
+Reading the columns of the right side: $\bv{w}=2\bv{u}+\bv{v}$, \ $\bv{e}_1=\tfrac12\bv{u}+\tfrac12\bv{v}$, \ $\bv{e}_2=\tfrac12\bv{u}-\tfrac12\bv{v}$.
+
+(a)~Superposition forces $T(\bv{w})=2T(\bv{u})+T(\bv{v})=(4,2,0)+(0,1,2)=(4,3,2)$. This is the prescribed value, so the data are consistent. Because $\bv{u},\bv{v}$ span $\R^2$, they determine $T$ completely:
+\[
+T(\bv{e}_1)=\tfrac12(2,1,0)+\tfrac12(0,1,2)=(1,1,1),\qquad T(\bv{e}_2)=\tfrac12(2,1,0)-\tfrac12(0,1,2)=(1,0,-1),
+\]
+so the map exists, is unique, and has the matrix $A=\begin{bmatrix}1&1\\1&0\\1&-1\end{bmatrix}$. Check all three values: $A\bv{u}=(2,1,0)$, $A\bv{v}=(0,1,2)$, $A\bv{w}=(4,3,2)$. \ $\checkmark$
+
+(b)~The relation $\bv{w}=2\bv{u}+\bv{v}$ still holds, so any linear $T$ would have to give $T(\bv{w})=(4,3,2)$. The requested value $(4,3,1)$ contradicts it. No such linear map exists, even though each value looks harmless on its own. This is Theorem~\ref{thm:depimages}(a) in action: the inputs $\bv{u},\bv{v},\bv{w}$ are dependent, and the outputs must be dependent with the same weights.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:images}.] (a)~$A$ is $2\times3$, so the domain is $\R^3$ and the codomain is $\R^2$. (b)~By columns: $2(1,3)+1(0,-1)-1(2,0)=(2-2,\ 6-1)=(0,5)$. By rows: $1\cdot2+0\cdot1+2\cdot(-1)=0$ and $3\cdot2+(-1)\cdot1+0\cdot(-1)=5$. (c)~$\bv{x}=(2,7,0)$ works: $2+0=2$ and $6-7=-1$. It is not the only one: $(0,1,1)$ also works ($0+2=2$, \ $0-1=-1$). The third column is not a pivot column, so $x_3$ is free and there are infinitely many preimages. (d)~Yes. Row reducing gives $\begin{bmatrix}1&0&2\\0&1&6\end{bmatrix}$, with a pivot in each of the $2$ rows, so by Theorem~\ref{1.4-thm:existence} every vector of $\R^2$ is an image.
