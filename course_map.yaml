@@ -36,7 +36,7 @@ modules:
   - {id: "4.3", chapter: 4, title: "Linearly Independent Sets; Bases", tested: true, prereqs: ["4.2", "1.7"], status: done}
   - {id: "4.4", chapter: 4, title: "Coordinate Systems", tested: true, prereqs: ["4.3"], status: done}
   - {id: "4.5", chapter: 4, title: "The Dimension of a Vector Space", tested: true, prereqs: ["4.4"], status: done, note: "Includes the Rank Theorem and the IMT continuation."}
-  - {id: "4.6", chapter: 4, title: "Change of Basis", tested: false, prereqs: ["4.4"], status: todo, note: "Enrichment. Section 5.4 must stand on 4.4 alone and introduce the change-of-basis matrix itself."}
+  - {id: "4.6", chapter: 4, title: "Change of Basis", tested: false, prereqs: ["4.4", "4.5"], status: done, note: "Enrichment. Section 5.4 must stand on 4.4 alone and introduce the change-of-basis matrix itself."}
   - {id: "5.1", chapter: 5, title: "Eigenvectors and Eigenvalues", tested: true, prereqs: ["4.1", "4.3"], status: todo}
   - {id: "5.2", chapter: 5, title: "The Characteristic Equation", tested: true, prereqs: ["5.1", "3.2"], status: todo}
   - {id: "5.3", chapter: 5, title: "Diagonalization", tested: true, prereqs: ["5.2", "4.3"], status: todo}
