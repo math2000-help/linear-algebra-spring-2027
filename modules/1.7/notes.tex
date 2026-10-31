@@ -267,6 +267,295 @@ In Example~\ref{ex:chem} there were $4$ molecules and only $3$ kinds of atoms. U
   \item In Section~1.8 a matrix will be viewed as a function $\bv{x}\mapsto A\bv{x}$. What do you expect independence of the columns to say about whether this function can send two different vectors to the same output?
 \end{enumerate}
 
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section, followed by a few short proofs. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Small sets by inspection.} One vector, two vectors, a repeated vector and a count, decided without row reducing.
+  \item \textbf{Testing the columns of a matrix.} A $4\times4$ matrix whose columns are independent, and what that says about the span.
+  \item \textbf{Finding a dependence relation.} A free column in the middle of the matrix, with the question of which vector may be removed, and four vectors in $\R^3$ whose relations form a two-parameter family.
+  \item \textbf{A parameter that decides independence.} Two exceptional values of $h$, each with its own reason and its own relation.
+  \item \textbf{The counting shortcut and its limits.} Five vectors in $\R^4$, and two sets of three vectors in $\R^4$ with opposite answers.
+  \item \textbf{A set that contains a dependent subset.} How to spot a hidden relation, and why a dependent set can still have an independent subset.
+  \item \textbf{Polynomials.} Independence of polynomials of degree at most $2$, and a relation found by matching coefficients.
+  \item \textbf{Basic proofs.} Read an ``if \dots\ then'' statement before proving it, prove an ``if and only if'' statement in its two directions, and disprove a statement with a single counterexample.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: testing small sets by inspection}
+
+\begin{exmp}{Independent or dependent? Decide five small sets without row reducing}{bankSmall}
+Decide whether each set is linearly independent. Give a reason, and if the set is dependent and a relation is easy to write, write it.
+\begin{enumerate}[label=(\alph*),itemsep=2pt]
+  \item $\{(0,0,0)\}$.
+  \item $\{(2,-6,4),\ (-1,3,-2)\}$.
+  \item $\{(2,-6,4),\ (-1,3,-1)\}$.
+  \item $\{(1,2),\ (3,1),\ (-2,5)\}$.
+  \item The list $\bv{a},\bv{b},\bv{a}$ with $\bv{a}=(1,2,3)$ and $\bv{b}=(4,5,6)$ (an indexed set may use the same vector twice).
+\end{enumerate}
+
+\textbf{Solution.} The special cases of this section settle each part.
+
+(a)~A single vector is independent exactly when it is nonzero. This one is the zero vector, so the set is \emph{dependent}: $1\cdot(0,0,0)=\bv{0}$ is a relation with a nonzero weight.
+
+(b)~Two vectors are dependent exactly when one is a multiple of the other. Here $(2,-6,4)=-2\,(-1,3,-2)$, since $-2\cdot(-1)=2$, $-2\cdot3=-6$ and $-2\cdot(-2)=4$. The set is \emph{dependent}, and the relation is $(2,-6,4)+2\,(-1,3,-2)=(0,0,0)$.
+
+(c)~Neither vector is zero, so it is enough to ask whether the first is a multiple $c$ of the second. The first coordinate gives $2=-c$, so $c=-2$; the second gives $-6=3c$, so $c=-2$ again; but the third gives $4=-c$, so $c=-4$. There is no single multiplier, so the set is \emph{independent}. The first two coordinates alone looked proportional, which is why every coordinate must be checked.
+
+(d)~These are three vectors in $\R^2$ and $3>2$, so the set is \emph{dependent} by Theorem~\ref{thm:count}. We have no relation yet, and none is needed for the question.
+
+(e)~The list uses $\bv{a}$ twice, so $1\cdot\bv{a}+0\cdot\bv{b}+(-1)\cdot\bv{a}=\bv{0}$ is a relation with weights $(1,0,-1)$, not all zero. The list is \emph{dependent}.
+
+\emph{Moral.} Before any row reduction, look for a zero vector, a repeated vector, two vectors that are multiples (compare \emph{every} coordinate), and more vectors than entries. Each of these decides the question at once, and the answer ``independent'' needs the full test of Theorem~\ref{thm:cols}.
+\end{exmp}
+
+\subsection*{Bank: testing the columns of a matrix}
+
+\begin{exmp}{Independent columns of a square matrix, and what else follows}{bankSquare}
+Are $\bv{c}_1=(1,1,-1,0)$, $\bv{c}_2=(0,1,1,0)$, $\bv{c}_3=(-2,2,0,0)$ and $\bv{c}_4=(2,-1,-1,1)$ in $\R^4$ linearly independent? Do they span $\R^4$?
+
+\textbf{Solution.} Row reduce the matrix whose columns are $\bv{c}_1,\dots,\bv{c}_4$, with the zero column carried along. We only need to see where the pivots are, so an echelon form is enough:
+\begin{align*}
+&\begin{amat}{cccc|c}1&0&-2&2&0\\1&1&2&-1&0\\-1&1&0&-1&0\\0&0&0&1&0\end{amat}
+\rops{R_2-R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&0&-2&2&0\\0&1&4&-3&0\\0&1&-2&1&0\\0&0&0&1&0\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccc|c}1&0&-2&2&0\\0&1&4&-3&0\\0&0&-6&4&0\\0&0&0&1&0\end{amat}.
+\end{align*}
+There is a pivot in each of the four columns, so by Theorem~\ref{thm:cols} the columns are \emph{independent}.
+
+There is also a pivot in each of the four rows. By the existence theorem (Theorem~\ref{1.4-thm:existence}) the equation with these columns is solvable for every right-hand side, so the vectors \emph{span} $\R^4$. By Theorem~\ref{thm:unique} each $\bv{b}$ in $\R^4$ is a combination of $\bv{c}_1,\dots,\bv{c}_4$ in \emph{exactly one} way.
+
+\emph{Moral.} In a square matrix the number of pivots is at most the common number of rows and columns. A pivot in every column therefore forces a pivot in every row, and the other way round, so ``independent'' and ``spans'' are the same question. For a matrix that is not square they are different questions, as the matrices in the next groups show.
+\end{exmp}
+
+\subsection*{Bank: finding a dependence relation}
+
+\begin{exmp}{A free column in the middle: find the relation and decide which vector may be removed}{bankMiddle}
+Let $\bv{v}_1=(1,0,2,-1)$, $\bv{v}_2=(0,1,1,3)$, $\bv{v}_3=(2,-1,3,-5)$ and $\bv{v}_4=(1,1,2,2)$. (a)~Show that the set is dependent and find a dependence relation. (b)~Which of the four vectors can be removed without changing the span? After removing one, are the rest independent?
+
+\textbf{Solution.} (a)~Row reduce all the way to reduced echelon form, because the relation is read from it:
+\begin{align*}
+&\begin{amat}{cccc|c}1&0&2&1&0\\0&1&-1&1&0\\2&1&3&2&0\\-1&3&-5&2&0\end{amat}
+\rops{R_3-2R_1,\ R_4+R_1}
+\begin{amat}{cccc|c}1&0&2&1&0\\0&1&-1&1&0\\0&1&-1&0&0\\0&3&-3&3&0\end{amat}\\[4pt]
+&\rops{R_3-R_2,\ R_4-3R_2}
+\begin{amat}{cccc|c}1&0&2&1&0\\0&1&-1&1&0\\0&0&0&-1&0\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{-R_3}
+\begin{amat}{cccc|c}1&0&2&1&0\\0&1&-1&1&0\\0&0&0&1&0\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1-R_3,\ R_2-R_3}
+\begin{amat}{cccc|c}1&0&2&0&0\\0&1&-1&0&0\\0&0&0&1&0\\0&0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$ and $4$, and column $3$ is free. So the set is dependent, and the solutions are $x_1=-2x_3$, $x_2=x_3$, $x_4=0$, that is $\bv{x}=x_3(-2,1,1,0)$. With $x_3=1$,
+\[
+-2\bv{v}_1+\bv{v}_2+\bv{v}_3+0\,\bv{v}_4=-2\begin{bmatrix}1\\0\\2\\-1\end{bmatrix}+\begin{bmatrix}0\\1\\1\\3\end{bmatrix}+\begin{bmatrix}2\\-1\\3\\-5\end{bmatrix}=\begin{bmatrix}-2+0+2\\0+1-1\\-4+1+3\\2+3-5\end{bmatrix}=\begin{bmatrix}0\\0\\0\\0\end{bmatrix}.\ \checkmark
+\]
+Solving for the third vector, $\bv{v}_3=2\bv{v}_1-\bv{v}_2$. This is exactly column $3$ of the reduced matrix, $(2,-1,0,0)$: the entries are the weights on the pivot columns that come before it.
+
+(b)~By Theorem~\ref{thm:char} a vector can be removed when it has a \emph{nonzero} weight in a dependence relation. Every relation is a multiple of $(-2,1,1,0)$, so $\bv{v}_1$, $\bv{v}_2$ and $\bv{v}_3$ can each be removed without changing the span. The vector $\bv{v}_4$ cannot: its weight is $0$ in every relation, and if $\bv{v}_4$ were a combination of the other three, we would get a relation with weight $-1$ on $\bv{v}_4$. If we remove $\bv{v}_3$, the vectors $\bv{v}_1,\bv{v}_2,\bv{v}_4$ remain, which are columns $1$, $2$, $4$ and so are independent (the pivot columns).
+
+\emph{Moral.} A free column is a combination of the pivot columns before it, and the reduced form shows the weights. A zero weight in the relation marks a vector that the others do \emph{not} explain.
+\end{exmp}
+
+\begin{exmp}{Four vectors in $\R^3$: all the dependence relations}{bankTwoRel}
+Let $\bv{a}_1=(1,2,-1)$, $\bv{a}_2=(0,1,3)$, $\bv{a}_3=(2,3,-5)$ and $\bv{a}_4=(-1,1,10)$. Find \emph{all} the dependence relations among them.
+
+\textbf{Solution.} Theorem~\ref{thm:count} says the set is dependent ($4>3$), but we want every relation, so we describe the solutions of $x_1\bv{a}_1+\cdots+x_4\bv{a}_4=\bv{0}$:
+\begin{align*}
+&\begin{amat}{cccc|c}1&0&2&-1&0\\2&1&3&1&0\\-1&3&-5&10&0\end{amat}
+\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&0&2&-1&0\\0&1&-1&3&0\\0&3&-3&9&0\end{amat}\\[4pt]
+&\rops{R_3-3R_2}
+\begin{amat}{cccc|c}1&0&2&-1&0\\0&1&-1&3&0\\0&0&0&0&0\end{amat}.
+\end{align*}
+The third row is zero, so there are only two pivot columns, and $x_3$ and $x_4$ are both free: $x_1=-2x_3+x_4$ and $x_2=x_3-3x_4$. In parametric vector form (Procedure~\ref{1.5-proc:pvf}),
+\[
+\bv{x}=x_3\begin{bmatrix}-2\\1\\1\\0\end{bmatrix}+x_4\begin{bmatrix}1\\-3\\0\\1\end{bmatrix}.
+\]
+The two basic relations are $-2\bv{a}_1+\bv{a}_2+\bv{a}_3=\bv{0}$ and $\bv{a}_1-3\bv{a}_2+\bv{a}_4=\bv{0}$. Check them: $-2(1,2,-1)+(0,1,3)+(2,3,-5)=(-2+0+2,\ -4+1+3,\ 2+3-5)=(0,0,0)$, and $(1,2,-1)-3(0,1,3)+(-1,1,10)=(1-0-1,\ 2-3+1,\ -1-9+10)=(0,0,0)$. Every other relation is a combination of these two; for instance $x_3=2$, $x_4=-1$ gives $-5\bv{a}_1+5\bv{a}_2+2\bv{a}_3-\bv{a}_4=\bv{0}$.
+
+\emph{Moral.} The counting theorem promises at least $p-n=1$ free variable. Here the third row of the reduced matrix is zero, so there are two. The dependence relations are the solutions of a homogeneous system, so they form the same kind of set as in Section~1.5, with one basic relation for each free variable.
+\end{exmp}
+
+\subsection*{Bank: a parameter that decides independence}
+
+\begin{exmp}{Two exceptional values of $h$, with a different relation for each}{bankParam}
+For which values of $h$ are $\bv{u}_1=(1,1,-1)$, $\bv{u}_2=(2,h+1,-2)$ and $\bv{u}_3=(1,4,h+1)$ linearly dependent? For each such $h$ write a dependence relation.
+
+\textbf{Solution.} Row reduce $[\,\bv{u}_1\ \bv{u}_2\ \bv{u}_3\mid\bv{0}\,]$, keeping $h$ in the matrix:
+\begin{align*}
+\begin{amat}{ccc|c}1&2&1&0\\1&h+1&4&0\\-1&-2&h+1&0\end{amat}
+&\rops{R_2-R_1,\ R_3+R_1}
+\begin{amat}{ccc|c}1&2&1&0\\0&h-1&3&0\\0&0&h+2&0\end{amat}.
+\end{align*}
+We must decide, for each $h$, where the pivots are. If $h\neq1$ and $h\neq-2$, the entries $h-1$ and $h+2$ are both nonzero, there is a pivot in every column, and the vectors are independent.
+
+\emph{Case $h=1$.} The matrix is $\begin{bmatrix}1&2&1\\0&0&3\\0&0&3\end{bmatrix}$; subtracting row $2$ from row $3$ gives a zero row. The pivot columns are $1$ and $3$, and column $2$ is free. The vectors are dependent; here $\bv{u}_2=(2,2,-2)=2\bv{u}_1$, so $2\bv{u}_1-\bv{u}_2+0\,\bv{u}_3=\bv{0}$.
+
+\emph{Case $h=-2$.} The matrix is $\begin{bmatrix}1&2&1\\0&-3&3\\0&0&0\end{bmatrix}$. The pivot columns are $1$ and $2$, and column $3$ is free. Column $3$ is $a$ times column $1$ plus $b$ times column $2$ with $-3b=3$ and $a+2b=1$, so $b=-1$ and $a=3$. With $\bv{u}_1=(1,1,-1)$, $\bv{u}_2=(2,-1,-2)$, $\bv{u}_3=(1,4,-1)$:
+\[
+3\bv{u}_1-\bv{u}_2-\bv{u}_3=(3-2-1,\ 3+1-4,\ -3+2+1)=(0,0,0).\ \checkmark
+\]
+So the set is dependent exactly for $h=1$ and $h=-2$.
+
+\emph{Moral.} A parameter can switch off a pivot in more than one place, and each exceptional value has its own free column and its own relation: at $h=1$ the free column is $2$ and $\bv{u}_3$ gets weight $0$; at $h=-2$ the free column is $3$. Always substitute each exceptional value back to find out which column became free. For every other $h$ the three columns are also a set that spans $\R^3$ (pivot in every row), with unique weights.
+\end{exmp}
+
+\subsection*{Bank: the counting shortcut and its limits}
+
+\begin{exmp}{When counting settles it, and when it says nothing}{bankLimits}
+(a)~Are $\bv{e}_1,\bv{e}_2,\bv{e}_3,\bv{e}_4$ together with $\bv{w}=(7,-3,2,5)$ independent? (b)~Let $\bv{s}_1=(1,2,0,1)$, $\bv{s}_2=(0,1,1,1)$, $\bv{s}_3=(0,0,1,2)$ in $\R^4$. Is $\{\bv{s}_1,\bv{s}_2,\bv{s}_3\}$ independent? (c)~Let $\bv{t}_3=(1,3,1,2)$. Is $\{\bv{s}_1,\bv{s}_2,\bv{t}_3\}$ independent?
+
+\textbf{Solution.} (a)~These are five vectors in $\R^4$ and $5>4$, so they are \emph{dependent} by Theorem~\ref{thm:count}, whatever $\bv{w}$ is. Here the relation is visible too: $\bv{w}=7\bv{e}_1-3\bv{e}_2+2\bv{e}_3+5\bv{e}_4$, so $7\bv{e}_1-3\bv{e}_2+2\bv{e}_3+5\bv{e}_4-\bv{w}=\bv{0}$.
+
+(b)~Three vectors in $\R^4$: $3\le4$, so the counting theorem says nothing, and we row reduce:
+\begin{align*}
+\begin{amat}{ccc|c}1&0&0&0\\2&1&0&0\\0&1&1&0\\1&1&2&0\end{amat}
+&\rops{R_2-2R_1,\ R_4-R_1}
+\begin{amat}{ccc|c}1&0&0&0\\0&1&0&0\\0&1&1&0\\0&1&2&0\end{amat}\\[4pt]
+&\rops{R_3-R_2,\ R_4-R_2}
+\begin{amat}{ccc|c}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&2&0\end{amat}
+\rops{R_4-2R_3}
+\begin{amat}{ccc|c}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&0\end{amat}.
+\end{align*}
+Every column is a pivot column, so the set is \emph{independent}.
+
+(c)~Again $3\le4$, so counting says nothing. Look at the vectors instead: $\bv{t}_3=\bv{s}_1+\bv{s}_2$, so $\bv{s}_1+\bv{s}_2-\bv{t}_3=(1+0-1,\ 2+1-3,\ 0+1-1,\ 1+1-2)=(0,0,0,0)$. The set is \emph{dependent}.
+
+\emph{Moral.} Parts (b) and (c) are both three vectors in $\R^4$, and they have different answers. The theorem gives a one-way test: $p>n$ forces dependence, and $p\le n$ forces nothing. Only the pivots, or a relation that you can see, decide.
+\end{exmp}
+
+\subsection*{Bank: a set that contains a dependent subset}
+
+\begin{exmp}{Spot the dependent subset, and see that the converse fails}{bankSubset}
+In $\R^6$ let $\bv{m}_1=(1,2,0,1,0,3)$, $\bv{m}_2=(0,1,1,0,2,1)$, $\bv{m}_3=(2,3,-1,2,-2,5)$ and $\bv{m}_4=(0,0,0,1,0,1)$. (a)~Is $\{\bv{m}_1,\bv{m}_2,\bv{m}_3,\bv{m}_4\}$ independent? (b)~Is $\{\bv{m}_1,\bv{m}_2,\bv{m}_4\}$ independent?
+
+\textbf{Solution.} (a)~Row reducing a $6\times4$ matrix is possible but heavy, and the counting theorem does not apply ($4\le6$). Instead look for a relation among a few of the vectors. In coordinates $1$ and $3$, the vector $\bv{m}_1$ has entries $1,0$ and $\bv{m}_2$ has entries $0,1$, so a combination $a\bv{m}_1+b\bv{m}_2$ has entries $a,b$ there. The vector $\bv{m}_3$ has entries $2,-1$ in those coordinates, which suggests $\bv{m}_3=2\bv{m}_1-\bv{m}_2$. Now check all six coordinates:
+\[
+2\bv{m}_1-\bv{m}_2=(2-0,\ 4-1,\ 0-1,\ 2-0,\ 0-2,\ 6-1)=(2,3,-1,2,-2,5)=\bv{m}_3.\ \checkmark
+\]
+So $2\bv{m}_1-\bv{m}_2-\bv{m}_3=\bv{0}$ is a relation among the first three. Giving $\bv{m}_4$ the weight $0$,
+\[
+2\bv{m}_1-\bv{m}_2-\bv{m}_3+0\,\bv{m}_4=\bv{0}
+\]
+has weights $(2,-1,-1,0)$, not all zero. The whole set is \emph{dependent}.
+
+(b)~Suppose $x\bv{m}_1+y\bv{m}_2+z\bv{m}_4=\bv{0}$. The first coordinate gives $x=0$. The second gives $2x+y=0$, so $y=0$. The fourth gives $x+z=0$, so $z=0$. Only the trivial solution exists, so $\{\bv{m}_1,\bv{m}_2,\bv{m}_4\}$ is \emph{independent}.
+
+\emph{Moral.} A set that contains a dependent subset is dependent: pad the relation with zero weights. Part (b) shows the converse is false, since a dependent set can contain an independent subset. In words, dependence passes \emph{up} from a subset to the whole set, and independence passes \emph{down} from a set to each subset (if a subset were dependent, so would be the whole set).
+\end{exmp}
+
+\subsection*{Bank: polynomials as vectors}
+
+\begin{exmp}{Independence of polynomials, and a relation by matching coefficients}{bankPoly}
+(a)~Are $p_1(t)=1+t$, $p_2(t)=t+t^2$ and $p_3(t)=1+t^2$ independent? (b)~Find a dependence relation among $q_1(t)=1+t$, $q_2(t)=1-t$, $q_3(t)=t^2$ and $q_4(t)=3+t+2t^2$.
+
+\textbf{Solution.} As in Example~\ref{ex:poly}, record each polynomial by its coefficients of $1,t,t^2$. A relation holds when the polynomials are equal as polynomials, that is, when the coefficients of $1$, $t$ and $t^2$ all match.
+
+(a)~The coefficient vectors are $(1,1,0)$, $(0,1,1)$, $(1,0,1)$:
+\begin{align*}
+\begin{amat}{ccc|c}1&0&1&0\\1&1&0&0\\0&1&1&0\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{ccc|c}1&0&1&0\\0&1&-1&0\\0&1&1&0\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|c}1&0&1&0\\0&1&-1&0\\0&0&2&0\end{amat}.
+\end{align*}
+Every column is a pivot column, so the polynomials are \emph{independent}. Directly: $a\,p_1+b\,p_2+c\,p_3=(a+c)+(a+b)t+(b+c)t^2$, and this is the zero polynomial only if $a+c=a+b=b+c=0$, which forces $a=b=c=0$.
+
+(b)~The coefficient vectors are $(1,1,0)$, $(1,-1,0)$, $(0,0,1)$, $(3,1,2)$: four vectors in $\R^3$, so they are dependent. To find a relation, write $q_4=a\,q_1+b\,q_2+c\,q_3$ and match coefficients. The constant terms give $a+b=3$, the coefficients of $t$ give $a-b=1$, and the coefficients of $t^2$ give $c=2$. So $a=2$, $b=1$, $c=2$, and
+\[
+2q_1+q_2+2q_3-q_4=(2+1-3)+(2-1-1)t+(2-2)t^2=0.\ \checkmark
+\]
+
+\emph{Moral.} ``Equal as polynomials'' means that every coefficient agrees, and that is a system of linear equations, one for each power of $t$. The same pivot tests and the same counting theorem then apply to polynomials.
+\end{exmp}
+
+\subsection*{Bank: basic proofs}
+
+A proof is a chain of reasons that convinces a reader that a statement is true in \emph{every} case that the statement covers. The three examples below model the habits of a short proof: read the statement, name what is assumed and what is to be shown, and write the argument in steps. They use only Definition~\ref{def:indep} and the facts of this section.
+
+\begin{exmp}{Reading an ``if \dots\ then'' statement before proving it}{bankZero}
+\textbf{Statement.} If a list of vectors $\bv{v}_1,\dots,\bv{v}_p$ in $\R^n$ contains the zero vector, then the list is linearly dependent.
+
+\textbf{What we are proving and how.} This is the ``zero vector'' item of the special cases in this section. We prove it directly from the definition, by writing down weights that work.
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Hypothesis} (what we may assume): one of the vectors is the zero vector, say $\bv{v}_j=\bv{0}$.
+  \item \emph{Goal} (what we must show): there are weights $c_1,\dots,c_p$, \emph{not all zero}, with $c_1\bv{v}_1+\cdots+c_p\bv{v}_p=\bv{0}$. The definition of dependence says that such weights \emph{exist}, so to prove it we may \emph{choose} the weights.
+  \item \emph{Scope.} The statement covers every $n$, every $p$, every position $j$ of the zero vector and all the other vectors in the list. So the proof may use nothing about the other vectors.
+\end{itemize}
+A numerical test checks that we have read the statement correctly, but it is not a proof. For the list $(1,2,3),(0,0,0),(4,5,6)$ the weights $(0,1,0)$ give $0\cdot(1,2,3)+1\cdot(0,0,0)+0\cdot(4,5,6)=(0,0,0)$.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $\bv{v}_j=\bv{0}$ for some $j$.
+  \item \emph{Compute.} Choose $c_j=1$ and $c_k=0$ for every $k\neq j$. Then
+  \[
+  c_1\bv{v}_1+\cdots+c_p\bv{v}_p=1\cdot\bv{0}+\sum_{k\neq j}0\cdot\bv{v}_k=\bv{0}+\bv{0}=\bv{0}.
+  \]
+  \item \emph{Conclude.} The weight $c_j=1$ is nonzero, so these weights are not all zero, and they form a dependence relation. Therefore the list is linearly dependent. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} Only that $1\cdot\bv{0}=\bv{0}$ and that $0\cdot\bv{v}=\bv{0}$ for every vector. That is why nothing about the other vectors was needed. The converse is false: $(1,2),(2,4)$ is dependent and contains no zero vector.
+\end{exmp}
+
+\begin{exmp}{Proving an ``if and only if'' statement in both directions}{bankTwo}
+\textbf{Statement.} Let $\bv{u}$ and $\bv{v}$ be vectors in $\R^n$. Then $\{\bv{u},\bv{v}\}$ is linearly dependent if and only if $\bv{u}$ is a multiple of $\bv{v}$ or $\bv{v}$ is a multiple of $\bv{u}$.
+
+\textbf{What we are proving and how.} This is the two-vector item of the special cases. An ``if and only if'' statement is two statements, so we prove each direction separately, again from the definition.
+
+\textbf{Read the statement first.} The two directions are:
+\begin{itemize}
+  \item $(\Leftarrow)$ \emph{if} one vector is a multiple of the other, \emph{then} the set is dependent;
+  \item $(\Rightarrow)$ \emph{if} the set is dependent, \emph{then} one vector is a multiple of the other.
+\end{itemize}
+A multiple may be the zero multiple, so $\bv{0}=0\cdot\bv{v}$ counts as a multiple of $\bv{v}$. Test: $\bv{u}=(3,1)$ and $\bv{v}=(-6,-2)$ have $\bv{v}=-2\bv{u}$, and indeed $2\bv{u}+\bv{v}=(6-6,\ 2-2)=(0,0)$.
+
+\textbf{Proof of $(\Leftarrow)$.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $\bv{u}=c\bv{v}$ for some scalar $c$.
+  \item \emph{Compute.} $1\cdot\bv{u}+(-c)\cdot\bv{v}=c\bv{v}-c\bv{v}=\bv{0}$.
+  \item \emph{Conclude.} The weight on $\bv{u}$ is $1\neq0$, so this is a dependence relation and $\{\bv{u},\bv{v}\}$ is dependent. If instead $\bv{v}=c\bv{u}$, exchange the roles of $\bv{u}$ and $\bv{v}$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{Proof of $(\Rightarrow)$.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $c_1\bv{u}+c_2\bv{v}=\bv{0}$ with $c_1$ and $c_2$ not both zero.
+  \item \emph{Compute, in two cases.} If $c_1\neq0$, solve for $\bv{u}$: $\bv{u}=-\tfrac{c_2}{c_1}\bv{v}$. If $c_1=0$, then $c_2\neq0$ and the relation reads $c_2\bv{v}=\bv{0}$, so $\bv{v}=\bv{0}=0\cdot\bv{u}$.
+  \item \emph{Conclude.} In the first case $\bv{u}$ is a multiple of $\bv{v}$, in the second $\bv{v}$ is a multiple of $\bv{u}$. In both cases one vector is a multiple of the other. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{Why two cases.} The division by $c_1$ is allowed only when $c_1\neq0$. The second case really occurs: for $\bv{u}=(1,2)$ and $\bv{v}=(0,0)$ the relation $0\cdot\bv{u}+1\cdot\bv{v}=\bv{0}$ has $c_1=0$, and here $\bv{v}$ is a multiple of $\bv{u}$ but $\bv{u}$ is \emph{not} a multiple of $\bv{v}$. That is why the statement says ``or''.
+\end{exmp}
+
+\begin{exmp}{Disproving a statement with one counterexample}{bankTransitive}
+\textbf{Statement.} For all vectors $\bv{u},\bv{v},\bv{w}$ in $\R^n$: if $\{\bv{u},\bv{v}\}$ is dependent and $\{\bv{v},\bv{w}\}$ is dependent, then $\{\bv{u},\bv{w}\}$ is dependent.
+
+\textbf{What we are doing and how.} The statement looks plausible: two vectors are dependent when they lie on one line through the origin, and ``on the same line as'' passes along a chain. But it claims something for \emph{every} triple, so one triple for which it fails disproves it. A counterexample must do two jobs: satisfy the hypotheses, and violate the conclusion.
+
+\textbf{Counterexample.} Take $\bv{u}=(1,0)$, $\bv{v}=(0,0)$ and $\bv{w}=(0,1)$ in $\R^2$.
+\begin{itemize}
+  \item \emph{The hypotheses hold.} $\{\bv{u},\bv{v}\}$ and $\{\bv{v},\bv{w}\}$ each contain the zero vector, so both are dependent by Example~\ref{ex:bankZero}.
+  \item \emph{The conclusion fails.} If $x\bv{u}+y\bv{w}=\bv{0}$, then $(x,y)=(0,0)$, so only the trivial solution exists and $\{\bv{u},\bv{w}\}$ is independent.
+\end{itemize}
+So the statement is false. \qquad$\blacksquare$
+
+\textbf{What is true instead.} The zero vector was the problem. If $\bv{v}\neq\bv{0}$, the statement is true: by Example~\ref{ex:bankTwo} both $\bv{u}$ and $\bv{w}$ are then multiples of $\bv{v}$, say $\bv{u}=a\bv{v}$ and $\bv{w}=b\bv{v}$. Then $b\bv{u}-a\bv{w}=ab\bv{v}-ab\bv{v}=\bv{0}$, a relation whose weights $(b,-a)$ are not both zero unless $a=b=0$, and in that case $\bv{u}=\bv{0}$ and $\{\bv{u},\bv{w}\}$ is dependent anyway.
+
+\emph{Moral.} A single example can \emph{disprove} a ``for every'' statement, and finding the counterexample shows which hypothesis was missing: here $\bv{v}\neq\bv{0}$. Whenever a statement about dependence seems to be obvious, test it with a zero vector first.
+\end{exmp}
+
+\begin{think}{Proof habits}{habits}
+\begin{enumerate}[label=(\arabic*)]
+  \item In Example~\ref{ex:bankZero} the zero vector gets weight $1$ and every other vector gets weight $0$. Why would the proof fail if we also gave the zero vector weight $0$? What changes in the proof if the zero vector appears twice in the list?
+  \item A classmate argues: ``$\{(1,2),(3,4),(5,6)\}$ contains no zero vector, so by Example~\ref{ex:bankZero} it is independent.'' Which statement is the classmate really using, and is it true? What does Example~\ref{ex:bankZero} tell us about an \emph{independent} list?
+  \item In the proof of $(\Rightarrow)$ in Example~\ref{ex:bankTwo} we split into the cases $c_1\neq0$ and $c_1=0$. Which line would be wrong without the split? Give a pair $\bv{u},\bv{v}$ for which the second case occurs.
+\end{enumerate}
+\end{think}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:rref}.] (a)~Two pivot columns, so independent. (b)~Column $3$ is free, with $x_1=3x_3$, $x_2=-2x_3$: the relation is $3\bv{c}_1-2\bv{c}_2+\bv{c}_3=\bv{0}$ (for the matrix whose columns are $(1,0),(0,1),(-3,2)$ this reads $3(1,0)-2(0,1)+(-3,2)=\bv{0}$). (c)~Column $2$ is free with $x_1=-2x_2$: $-2\bv{c}_1+\bv{c}_2=\bv{0}$, i.e.\ $\bv{c}_2=2\bv{c}_1$. Column $3$ is a pivot column.
@@ -278,6 +567,7 @@ In Example~\ref{ex:chem} there were $4$ molecules and only $3$ kinds of atoms. U
   \item[Pause and think \ref{think:grow}.] Adding $(1,1,0)=(1,0,0)+(0,1,0)$ lies in the span of the first two, so the set becomes dependent; adding $(0,0,1)$, which is not in the span $\{(a,b,0)\}$, leaves it independent. In general, $S\cup\{\bv{v}\}$ is independent iff $S$ is independent and $\bv{v}$ is not in $\Span S$: if $\bv{v}\in\Span S$ it is a combination of $S$, and conversely a relation with nonzero weight on $\bv{v}$ expresses $\bv{v}$ in terms of $S$.
   \item[Pause and think \ref{think:pivotcols}.] The reduced matrix has $x_1=x_2=0$ when $x_3=0$, so $\bv{a}_1,\bv{a}_2$ are independent; $\bv{a}_3=2\bv{a}_1-3\bv{a}_2$. Therefore $\Span\{\bv{a}_1,\bv{a}_2,\bv{a}_3\}=\Span\{\bv{a}_1,\bv{a}_2\}$: the pivot columns give an independent set with the same span as all the columns. This holds for every matrix: each nonpivot column is a combination of the pivot columns that come before it (read off from the reduced form). The idea of a smallest set with the same span is a \emph{basis}, in Chapter~4.
   \item[Pause and think \ref{think:chem}.] There are $3$ rows, so at most $3$ pivots, but $4$ columns: some column is not a pivot column, hence a nontrivial relation exists. It need not be chemically meaningful: all molecules on one side of the equation must carry weights of the right signs (reactants positive, products negative in our convention), and the weights must be nonnegative integers after scaling. Here the free variable could give signs that do not match the intended reaction.
+  \item[Pause and think \ref{think:habits}.] (1)~A combination with every weight $0$ is always $\bv{0}$, but it is the trivial relation, and every list has it; dependence needs a relation with a weight that is not zero, so the zero vector must get a nonzero weight. If the zero vector appears twice, give one copy weight $1$ and everything else weight $0$ (or give both copies weight $1$): the weights are still not all zero, and the computation $1\cdot\bv{0}+\cdots=\bv{0}$ is the same. (2)~The classmate is using the converse, ``if the list contains no zero vector, then it is independent'', which is false: the three vectors lie in $\R^2$ and $3>2$, so they are dependent by Theorem~\ref{thm:count}, with the relation $(1,2)-2(3,4)+(5,6)=(1-6+5,\ 2-8+6)=(0,0)$. Example~\ref{ex:bankZero} gives the contrapositive instead: if a list is independent, then it does not contain the zero vector. (3)~The line $\bv{u}=-\tfrac{c_2}{c_1}\bv{v}$ divides by $c_1$, which is not allowed when $c_1=0$. The second case occurs for $\bv{u}=(1,2)$ and $\bv{v}=(0,0)$ with the relation $0\cdot\bv{u}+1\cdot\bv{v}=\bv{0}$.
   \item[Before the next section.] (1)~Infinitely many ways if dependent (add any multiple of a dependence relation; compare Theorem~\ref{1.5-thm:translate}), exactly one if independent (Theorem~\ref{thm:unique}). (2)~Yes: a pivot in each of the three columns of a $3\times3$ matrix is a pivot in each of the three rows, so the columns span $\R^3$. No: a $3\times4$ matrix always has a free column, so the columns are dependent even if they span. (3)~If $A\bv{x}=A\bv{y}$ then $A(\bv{x}-\bv{y})=\bv{0}$; if the columns are independent this forces $\bv{x}=\bv{y}$, so different inputs always give different outputs.
 \end{description}
 
