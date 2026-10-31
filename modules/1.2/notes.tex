@@ -1,18 +1,19 @@
+
 \documentclass[11pt]{article}
 \usepackage[notes]{la}
 \lamodule{1}{2}{Row Reduction and Echelon Forms}
 \laxdoc{1.1}   % cross-references to Section 1.1 as \ref{1.1-<label>}
-
+ 
 \begin{document}
-
+ 
 \section{Row Reduction and Echelon Forms}
-
+ 
 \begin{guide}
 Elimination can end in many different-looking matrices. What makes a matrix ``simple enough'' that
 the answer can be read off from it? And how can we organize the work so that it succeeds on
 \emph{every} system, including those with no solution or with infinitely many?
 \end{guide}
-
+ 
 \textbf{By the end of this section you should be able to:}
 \begin{itemize}
   \item decide whether a matrix is in echelon form or reduced echelon form;
@@ -22,13 +23,13 @@ the answer can be read off from it? And how can we organize the work so that it 
   \item use the pivot structure to answer the existence and uniqueness questions, even before the
         system is completely solved.
 \end{itemize}
-
+ 
 % ---------------------------------------------------------------------
 \subsection*{Echelon forms}
-
+ 
 In a nonzero row, the \emph{leading entry} is the leftmost nonzero entry. A \emph{zero row} has all entries
 equal to $0$.
-
+ 
 \begin{defn}{Echelon form and reduced echelon form}{echelon}
 A rectangular matrix is in \emph{echelon form} (or \emph{row echelon form}) if
 \begin{enumerate}[itemsep=1pt]
@@ -43,7 +44,7 @@ It is in \emph{reduced echelon form} if, in addition,
   \item each leading $1$ is the only nonzero entry in its column.
 \end{enumerate}
 \end{defn}
-
+ 
 The leading entries form a ``staircase'' that descends to the right. Schematically (here $\lead$ is any
 nonzero number and $\st$ is any number, zero included):
 \[
@@ -53,7 +54,7 @@ nonzero number and $\st$ is any number, zero included):
 \text{reduced echelon: }
 \begin{bmatrix}1&0&\st&0&\st\\0&1&\st&0&\st\\0&0&0&1&\st\\0&0&0&0&0\end{bmatrix}
 \]
-
+ 
 \begin{kc}{Classify the matrix}{classify}
 For each matrix decide: not in echelon form, echelon but not reduced, or reduced echelon. Give a reason.
 \[
@@ -66,26 +67,26 @@ For each matrix decide: not in echelon form, echelon but not reduced, or reduced
 \text{(e)}\begin{bmatrix}0&0\\1&0\end{bmatrix}
 \]
 \end{kc}
-
+ 
 A matrix can usually be reduced to many different echelon forms. For instance, with
 $A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$, the operation $R_2-3R_1\to R_2$ gives
 $\begin{bmatrix}1&2\\0&-2\end{bmatrix}$, which is in echelon form; scaling row~2 by $-\tfrac12$ then gives
 $\begin{bmatrix}1&2\\0&1\end{bmatrix}$, also in echelon form. But \emph{reduced} echelon form is different:
-
+ 
 \begin{thm}{Uniqueness of the reduced echelon form}{rref}
 Every matrix is row equivalent to one and only one matrix in reduced echelon form.
 \end{thm}
-
+ 
 We accept this theorem here; a proof is given in Appendix~A of the textbook. It is what justifies
 speaking of \emph{the} reduced echelon form of $A$ (often abbreviated RREF, as in calculators and
 software). In the example above it is $\begin{bmatrix}1&0\\0&1\end{bmatrix}$, no matter how you get there.
-
+ 
 \begin{defn}{Pivot position and pivot column}{pivot}
 A \emph{pivot position} in a matrix $A$ is a location in $A$ that corresponds to a leading $1$ in the reduced
 echelon form of $A$. A \emph{pivot column} is a column of $A$ that contains a pivot position. A \emph{pivot}
 is a nonzero number in a pivot position that is used to create zeros below (or above) it.
 \end{defn}
-
+ 
 \begin{think}{What is well defined?}{pivotpos}
 Different row operations lead to different echelon forms, yet we speak of \emph{the} pivot positions of $A$.
 Use Theorem~\ref{thm:rref} to explain why this is legitimate. (Hint: what happens to the \emph{positions} of
@@ -93,14 +94,14 @@ leading entries when you pass from an echelon form to the reduced echelon form?)
 Also: in the example above, the pivots used were $1$ and $-2$. Are these numbers the same as the entries of
 $A$ in the pivot positions? Why or why not?
 \end{think}
-
+ 
 % ---------------------------------------------------------------------
 \subsection*{The row reduction algorithm}
-
+ 
 The procedure below works on \emph{any} matrix, whether or not it came from a linear system. The
 first four steps (the \emph{forward phase}) produce an echelon form; the fifth step (the
 \emph{backward phase}) produces the reduced echelon form.
-
+ 
 \begin{proc}{Row reduction}{rowreduce}
 \begin{enumerate}[itemsep=2pt]
   \item Begin with the leftmost nonzero column. This is a pivot column; the pivot position is at its top.
@@ -113,7 +114,7 @@ first four steps (the \emph{forward phase}) produce an echelon form; the fifth s
         zeros \emph{above} each pivot. Scale each pivot row so that its pivot becomes $1$.
 \end{enumerate}
 \end{proc}
-
+ 
 \begin{exmp}{Row reducing a system with a missing pivot}{rr}
 Solve
 \[
@@ -124,7 +125,7 @@ x_1+2x_2+\phantom{4}x_3\phantom{{}-2x_4}&=3\\
 x_1+3x_2+3x_3-\phantom{2}x_4&=6.
 \end{aligned}
 \]
-
+ 
 \textbf{Forward phase.} The leftmost column is a pivot column, but the top entry is $0$, so interchange
 rows~1 and~2. Then clear the first column below the pivot, and the second column below the
 second pivot (which is the $2$ in row~2):
@@ -140,7 +141,7 @@ second pivot (which is the $2$ in row~2):
 Now look at column~3. Below row~2 it contains only zeros, so there is \emph{nothing to pivot on} there; we
 move right to column~4, whose pivot is the $1$ in row~3. The matrix is in echelon form, with pivot columns
 $1$, $2$, and $4$. Column~3 is \emph{not} a pivot column.
-
+ 
 \textbf{Backward phase.} Clear above the pivot in column~4, then scale row~2, then clear above the pivot in column~2:
 \begin{align*}
 &\rops{R_2+2R_3}
@@ -152,7 +153,7 @@ $1$, $2$, and $4$. Column~3 is \emph{not} a pivot column.
 \end{align*}
 This is the reduced echelon form. The next subsection shows how to read the solution from it.
 \end{exmp}
-
+ 
 \begin{remark}[Practical tips]
 \begin{itemize}
   \item You may choose which nonzero entry to use as the pivot. Picking an entry that makes the arithmetic
@@ -169,23 +170,23 @@ This is the reduced echelon form. The next subsection shows how to read the solu
         reduced echelon form.
 \end{itemize}
 \end{remark}
-
+ 
 % ---------------------------------------------------------------------
 \subsection*{Reading the solution from the reduced echelon form}
-
+ 
 Take the reduced echelon form from Example~\ref{ex:rr}. It is the augmented matrix of the system
 \[
 x_1-3x_3=-1,\qquad x_2+2x_3=2,\qquad x_4=-1,\qquad 0=0.
 \]
 The last equation $0=0$ is always true and imposes no condition.
-
+ 
 \begin{defn}{Basic and free variables; general solution}{basicfree}
 The variables corresponding to \emph{pivot columns} are the \emph{basic variables}; the others are the
 \emph{free variables}. When a system is consistent, we solve each equation for its one basic variable
 in terms of the free variables. The result, in which the free variables act as \emph{parameters},
 is the \emph{general solution} (or a \emph{parametric description} of the solution set).
 \end{defn}
-
+ 
 Here the pivot columns are $1,2,4$, so $x_1,x_2,x_4$ are basic and $x_3$ is free:
 \[
 x_1=-1+3x_3,\qquad x_2=2-2x_3,\qquad x_3\ \text{is free},\qquad x_4=-1.
@@ -194,12 +195,12 @@ x_1=-1+3x_3,\qquad x_2=2-2x_3,\qquad x_3\ \text{is free},\qquad x_4=-1.
 variables are determined. Taking $x_3=0$ gives $(-1,2,0,-1)$; taking $x_3=1$ gives $(2,0,1,-1)$. Check
 the second one in the original system:
 $0+4+2=6$, $\ 2+0+1=3$, $\ 4+0+2-1=5$, $\ 2+0+3+1=6$. \ $\checkmark$
-
+ 
 \begin{kc}{Another member of the solution set}{another}
 Use the general solution above to find the solution with $x_3=2$, and verify it in the original
 four equations.
 \end{kc}
-
+ 
 \begin{warn}[Be precise about what is free]
 A common error is to write a ``solution'' such as
 $x_1=5-x_3,\ x_2=2+x_3,\ x_3=3-x_2$. This describes $x_2$ in terms of $x_3$ \emph{and} $x_3$ in terms of
@@ -207,15 +208,15 @@ $x_2$, so it hides which variable is actually free (there is only one free varia
 By convention, \emph{the free variables are the parameters}, and every other variable is expressed in
 terms of them alone.
 \end{warn}
-
+ 
 Notice also what happens with an inconsistent system. The solution set is empty, \emph{even if the
 system has free variables}. There is no parametric description of the empty set.
-
+ 
 % ---------------------------------------------------------------------
 \subsection*{Existence and uniqueness}
-
+ 
 The reduced echelon form answers both fundamental questions from Section~1.1.
-
+ 
 \begin{thm}{Existence and Uniqueness}{existuniq}
 A linear system is consistent if and only if the rightmost column of its augmented matrix is \emph{not}
 a pivot column; equivalently, if and only if an echelon form of the augmented matrix has no row of the form
@@ -228,13 +229,13 @@ If the system is consistent, then it has
   \item \emph{infinitely many} solutions when there is at least one free variable.
 \end{enumerate}
 \end{thm}
-
+ 
 \begin{proof}
 By Theorem~\ref{1.1-thm:rowsol} we may study the reduced echelon form instead. If the rightmost column is a pivot
 column, some row of the reduced echelon form is $[\,0\ \cdots\ 0\mid1\,]$, i.e.\ the equation $0=1$, so the
 system is inconsistent. (A row $[\,0\ \cdots\ 0\mid b\,]$ with $b\ne0$ in \emph{any} echelon form gives the same
 conclusion, and creates a pivot in the last column.)
-
+ 
 Conversely, suppose the rightmost column is not a pivot column. Then the leading $1$ of every nonzero row lies
 in a coefficient column, so each nonzero equation has the form
 \[
@@ -245,7 +246,7 @@ solution, so the system is consistent. If there are no free variables, the value
 so the solution is unique. If there is at least one free variable, different values of that free variable give
 different solutions, so there are infinitely many.
 \end{proof}
-
+ 
 \begin{proc}{Solving a linear system}{solve}
 \begin{enumerate}[itemsep=1pt]
   \item Write the augmented matrix of the system.
@@ -256,7 +257,7 @@ different solutions, so there are infinitely many.
   \item Check your answer in the \emph{original} system.
 \end{enumerate}
 \end{proc}
-
+ 
 \begin{kc}{Read the pivots}{readpivots}
 Each matrix below is the augmented matrix of a system in an echelon form. For each, decide whether the system is
 consistent and, if so, whether the solution is unique.
@@ -266,14 +267,14 @@ consistent and, if so, whether the solution is unique.
 \text{(iii)}\begin{amat}{cc|c}2&1&3\\0&0&4\end{amat}
 \]
 \end{kc}
-
+ 
 % ---------------------------------------------------------------------
 \subsection*{What the shape of a matrix tells us}
-
+ 
 The theorem lets us predict a great deal from the \emph{pattern of pivots} alone. Let $A$ be the $m\times n$
 coefficient matrix of a system with $m$ equations and $n$ unknowns, and write $[A\mid b]$ for its augmented
 matrix, where $b$ is the column of right-hand sides.
-
+ 
 \begin{thm}{Counting pivots}{counting}
 \begin{enumerate}[label=(\alph*),itemsep=2pt]
   \item If $A$ has a pivot position in \emph{every row}, then the system is consistent for \emph{every} choice of $b$.
@@ -283,33 +284,33 @@ matrix, where $b$ is the column of right-hand sides.
   \item If $m>n$, then there is some choice of $b$ for which the system is inconsistent.
 \end{enumerate}
 \end{thm}
-
+ 
 \begin{proof}
 Row operations on $[A\mid b]$ act on the columns of $A$ exactly as they would on $A$ alone, so the pivot positions
 within the first $n$ columns are the pivot positions of $A$.
-
+ 
 (a) If every row of $A$ has a pivot, then an echelon form of $A$ has no zero row. So no row of the form
 $[\,0\ \cdots\ 0\mid b'\,]$ with $b'\ne0$ can appear, and the system is consistent by
 Theorem~\ref{thm:existuniq}.
-
+ 
 (b) If every column of $A$ is a pivot column, there are no free variables, so by Theorem~\ref{thm:existuniq} there is
 either no solution or exactly one.
-
+ 
 (c) There are at most $m$ pivots (one per row) and $m<n$, so some column of $A$ has no pivot, giving a free variable.
 If the system is consistent, Theorem~\ref{thm:existuniq} gives infinitely many solutions.
-
+ 
 (d) There are at most $n<m$ pivots, so some row of an echelon form $U$ of $A$ is zero. Choose $d$ with last entry $1$;
 then $[U\mid d]$ is inconsistent. Since row operations are reversible, applying the reverse operations to $[U\mid d]$
 produces some $[A\mid b]$, which is therefore inconsistent as well.
 \end{proof}
-
+ 
 \begin{kc}{Using the counting theorem}{counting}
 (a) $A$ is a $3\times5$ matrix with three pivot positions. Is the system $[A\mid b]$ consistent for every $b$?
 When it is consistent, how many solutions does it have?\\
 (b) $A$ is a $5\times3$ matrix with three pivot positions. Is the system consistent for every $b$? When it is
 consistent, how many solutions does it have?
 \end{kc}
-
+ 
 \begin{think}{Shape is not destiny}{shape}
 \begin{enumerate}[label=(\arabic*)]
   \item Parts (c) and (d) do \emph{not} say that a system with fewer equations than unknowns is consistent, nor that
@@ -320,7 +321,7 @@ consistent, how many solutions does it have?
         (This innocent-looking observation will grow into one of the central ideas of the course.)
 \end{enumerate}
 \end{think}
-
+ 
 \subsection*{Summary}
 \begin{itemize}
   \item \textbf{Echelon form} has a descending staircase of leading entries; \textbf{reduced echelon form} also has
@@ -333,7 +334,7 @@ consistent, how many solutions does it have?
         variable gives infinitely many solutions \emph{if the system is consistent}.
   \item A pivot in every row means ``always solvable''; a pivot in every column means ``never more than one solution.''
 \end{itemize}
-
+ 
 \subsection*{Questions to think about before the next section}
 \begin{enumerate}
   \item In your own words: why is the reduced echelon form unique, while an echelon form is not, and why does
@@ -342,6 +343,342 @@ consistent, how many solutions does it have?
         in columns $1$ and $3$. Is it consistent? How many free variables are there?
   \item True or false (justify): ``A system with a free variable is always consistent.''
 \end{enumerate}
+ 
+% =====================================================================
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section, followed by a few short proofs. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Classify and repair.} Decide whether a matrix is in echelon or reduced echelon form, say which condition fails when it is not, and find the operation that repairs it.
+  \item \textbf{Pivot positions and pivot columns.} Locate them in a matrix with a zero row after the reduction, and see what ``pivot column of $A$'' means.
+  \item \textbf{Reduce and write the general solution.} Two full reductions to reduced echelon form, one with a skipped column and one with two free variables and a redundant equation, each ending in a general solution that is checked.
+  \item \textbf{Read the pivots.} Decide consistency and the number of solutions from an echelon form without finishing the reduction, and decide which outcomes are \emph{possible} when only the shape and the pivots are known.
+  \item \textbf{A parameter in the matrix.} A parameter that makes a row vanish, and two parameters with three different outcomes.
+  \item \textbf{Build a matrix to order.} Write matrices with a prescribed pivot pattern, and decide when a pattern is impossible.
+  \item \textbf{Basic proofs.} Prove a statement about \emph{every} member of a family, show that two solutions force infinitely many, and disprove a statement with a counterexample.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: classify and repair}
+
+\begin{exmp}{Classify six matrices and repair the ones that fail}{bankSort}
+For each matrix decide whether it is (i) not in echelon form, (ii) in echelon form but not reduced, or (iii) in reduced echelon form (Definition~\ref{def:echelon}). If a condition fails, name it and give one row operation that repairs it.
+\[
+\text{(a)}\begin{bmatrix}1&0&2&0\\0&1&-3&0\\0&0&0&1\end{bmatrix}\quad
+\text{(b)}\begin{bmatrix}2&0&3\\0&0&0\\0&5&1\end{bmatrix}\quad
+\text{(c)}\begin{bmatrix}1&4&0\\0&3&1\\0&0&2\end{bmatrix}
+\]
+\[
+\text{(d)}\begin{bmatrix}0&1&2\\1&0&3\end{bmatrix}\quad
+\text{(e)}\begin{bmatrix}1&2&3\\0&1&4\\0&1&5\end{bmatrix}\quad
+\text{(f)}\begin{bmatrix}0&0\\0&0\end{bmatrix}
+\]
+
+\textbf{Solution.} For each matrix, first mark the leading entry of every nonzero row, then test the conditions of the definition in order: zero rows at the bottom, leading entries moving strictly to the right, and then, for \emph{reduced} form, leading entries equal to $1$ with zeros above and below them.
+
+(a)~The leading entries are the $1$s in columns $1$, $2$ and $4$, moving to the right. Each is $1$, and each is alone in its column. This is \emph{reduced echelon form}. (The $2$ and $-3$ in column~3 are allowed: that column has no leading entry.)
+
+(b)~Row~2 is a zero row lying above the nonzero row~3, which breaks condition~1. It is \emph{not in echelon form}. Interchange rows~2 and~3 (the operation $R_2\leftrightarrow R_3$): the result $\begin{bmatrix}2&0&3\\0&5&1\\0&0&0\end{bmatrix}$ is in echelon form. It is not reduced, because the leading entries are $2$ and $5$, not $1$.
+
+(c)~The leading entries $1,3,2$ lie in columns $1,2,3$, moving to the right, so the matrix is in echelon form. It is \emph{not reduced}: two leading entries are not $1$, and the $4$ sits above the leading entry $3$. To reach reduced form, work from the bottom row upward:
+\begin{align*}
+&\begin{bmatrix}1&4&0\\0&3&1\\0&0&2\end{bmatrix}
+\rops{\frac12R_3}
+\begin{bmatrix}1&4&0\\0&3&1\\0&0&1\end{bmatrix}
+\rops{R_2-R_3}
+\begin{bmatrix}1&4&0\\0&3&0\\0&0&1\end{bmatrix}\\[4pt]
+&
+\rops{\frac13R_2}
+\begin{bmatrix}1&4&0\\0&1&0\\0&0&1\end{bmatrix}
+\rops{R_1-4R_2}
+\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}.
+\end{align*}
+The result is reduced echelon form (compare Theorem~\ref{thm:rref}: no matter how the operations are chosen, this is the only reduced form this matrix can have).
+
+(d)~The leading entry of row~1 is in column~2, and the leading entry of row~2 is in column~1, which is to the \emph{left}. Condition~2 fails, so the matrix is \emph{not in echelon form}. Interchanging the rows, $R_1\leftrightarrow R_2$, gives $\begin{bmatrix}1&0&3\\0&1&2\end{bmatrix}$, which is in reduced echelon form.
+
+(e)~The leading entries of rows~2 and~3 are both in column~2. Condition~2 needs the leading entry of row~3 to be \emph{strictly} to the right of the one above it, so it fails, and the matrix is \emph{not in echelon form}. The replacement $R_3-R_2\to R_3$ gives $\begin{bmatrix}1&2&3\\0&1&4\\0&0&1\end{bmatrix}$, which is in echelon form, but not reduced: the leading $1$ in column~2 has a $2$ above it, and the leading $1$ in column~3 has $3$ and $4$ above it.
+
+(f)~The zero matrix has no nonzero rows, so there is no leading entry to violate any condition. Conditions~1--5 hold with nothing to check, and the zero matrix is in \emph{reduced echelon form}. A matrix with no leading entries has no pivot columns.
+
+\emph{Moral.} The tests concern only the \emph{positions} of the leading entries and the entries in their columns. The values elsewhere never matter for echelon form (compare~(a), where column~3 contains $2$ and $-3$). A zero row is harmless at the bottom and fatal anywhere else.
+\end{exmp}
+
+\subsection*{Bank: pivot positions and pivot columns}
+
+\begin{exmp}{Pivot positions in a matrix with a dependent row}{bankPivots}
+Find the pivot positions and pivot columns of
+\[
+A=\begin{bmatrix}1&2&-1&0&4\\2&4&-1&3&6\\-1&-2&2&4&-1\\1&2&1&7&5\end{bmatrix}.
+\]
+Which columns of $A$ have no pivot, and is the number of pivot columns the same as the number of nonzero rows of the echelon form?
+
+\textbf{Solution.} Pivot positions are defined through the reduced echelon form (Definition~\ref{def:pivot}), but by Theorem~\ref{thm:rref} we may find them from \emph{any} echelon form, because the positions of the leading entries do not depend on the choices made along the way. So we only run the forward phase of Procedure~\ref{proc:rowreduce}:
+\begin{align*}
+&\begin{bmatrix}1&2&-1&0&4\\2&4&-1&3&6\\-1&-2&2&4&-1\\1&2&1&7&5\end{bmatrix}
+\rops{R_2-2R_1,\ R_3+R_1,\ R_4-R_1}
+\begin{bmatrix}1&2&-1&0&4\\0&0&1&3&-2\\0&0&1&4&3\\0&0&2&7&1\end{bmatrix}\\[4pt]
+&
+\rops{R_3-R_2,\ R_4-2R_2}
+\begin{bmatrix}1&2&-1&0&4\\0&0&1&3&-2\\0&0&0&1&5\\0&0&0&1&5\end{bmatrix}\\[4pt]
+&
+\rops{R_4-R_3}
+\begin{bmatrix}1&2&-1&0&4\\0&0&1&3&-2\\0&0&0&1&5\\0&0&0&0&0\end{bmatrix}.
+\end{align*}
+The last row became zero. The leading entries of the echelon form are in positions $(1,1)$, $(2,3)$ and $(3,4)$ (row, column). These are the \emph{pivot positions}, and the \emph{pivot columns} of $A$ are columns $1$, $3$ and $4$. Columns $2$ and $5$ have no pivot: they contain nonzero entries, but no leading entry of the echelon form lies in them.
+
+\emph{Careful.} The pivot columns are columns of the \emph{original} matrix $A$: column~$3$ of $A$ is $(-1,-1,2,1)$ read downward, not the column $(-1,1,0,0)$ of the echelon form. The row operations change entries, and the pivot positions tell us where to look in $A$, not what is there.
+
+There are three pivot columns and three nonzero rows of the echelon form, so the two counts agree: each nonzero row of an echelon form has exactly one leading entry, and each leading entry lies in its own column. A matrix can have at most one pivot in each row and at most one in each column, so the number of pivots is at most $4$ here (rows) and at most $5$ (columns); in fact it is $3$. If we had continued to the backward phase, the reduced echelon form would be $\begin{bmatrix}1&2&0&0&-13\\0&0&1&0&-17\\0&0&0&1&5\\0&0&0&0&0\end{bmatrix}$, with the same pivot positions.
+
+\emph{Moral.} The zero row warns that one row of $A$ added nothing new: the fourth row of $A$ is the sum of rows~2 and~3. A zero row costs a pivot, and it is a count of pivots, not of rows, that decides existence and uniqueness.
+\end{exmp}
+
+\subsection*{Bank: reduce and write the general solution}
+
+\begin{exmp}{A skipped column: reduce and read the solution}{bankFull}
+Solve the system
+\[
+\begin{aligned}
+x_1+x_2+2x_3+3x_4&=0\\
+2x_3+3x_4&=1\\
+x_3+2x_4&=3,
+\end{aligned}
+\]
+and give the general solution with the basic and free variables identified.
+
+\textbf{Solution.} The first column has a leading $1$ in row~1 and zeros below it, so it is already finished. Below row~1, the second column has only zeros, so it has no pivot, and the next pivot is looked for in column~3. The entry $1$ in row~3 would avoid fractions, so interchange rows~2 and~3 before eliminating (forward phase), and then clear the columns above the pivots (backward phase):
+\begin{align*}
+&\begin{amat}{cccc|c}1&1&2&3&0\\0&0&2&3&1\\0&0&1&2&3\end{amat}
+\rops{R_2\leftrightarrow R_3,\ R_3-2R_2}
+\begin{amat}{cccc|c}1&1&2&3&0\\0&0&1&2&3\\0&0&0&-1&-5\end{amat}
+\rops{-R_3}
+\begin{amat}{cccc|c}1&1&2&3&0\\0&0&1&2&3\\0&0&0&1&5\end{amat}\\[4pt]
+&
+\rops{R_1-3R_3,\ R_2-2R_3}
+\begin{amat}{cccc|c}1&1&2&0&-15\\0&0&1&0&-7\\0&0&0&1&5\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{cccc|c}1&1&0&0&-1\\0&0&1&0&-7\\0&0&0&1&5\end{amat}.
+\end{align*}
+The last matrix is in reduced echelon form, with pivot columns $1$, $3$ and $4$. The basic variables are $x_1,x_3,x_4$ and the free variable is $x_2$. Reading the rows,
+\[
+x_1=-1-x_2,\qquad x_2\ \text{is free},\qquad x_3=-7,\qquad x_4=5.
+\]
+There are infinitely many solutions (Theorem~\ref{thm:existuniq}), one for each value of $x_2$.
+
+\textbf{Check} with $x_2=0$ and with $x_2=2$ in the \emph{original} equations. For $(-1,0,-7,5)$: $-1+0-14+15=0$, \ $-14+15=1$, \ $-7+10=3$. For $(-3,2,-7,5)$: $-3+2-14+15=0$, \ $-14+15=1$, \ $-7+10=3$. \ $\checkmark$
+
+\emph{Moral.} A free variable need not be the last one: the free variable is the one whose column has no pivot, and here that is $x_2$, in the middle. Notice also that $x_3$ and $x_4$ are \emph{determined} even though the system has infinitely many solutions: ``free variable'' does not mean ``every variable is free.''
+\end{exmp}
+
+\begin{exmp}{Two free variables and a redundant equation}{bankTwoFree}
+Solve
+\[
+\begin{aligned}
+x_1-2x_2+x_3-x_4&=4\\
+2x_1-4x_2+x_3+2x_4&=9\\
+-x_1+2x_2-3x_4&=-5
+\end{aligned}
+\]
+and describe the solution set. How many equations does it really have?
+
+\textbf{Solution.}
+\begin{align*}
+&\begin{amat}{cccc|c}1&-2&1&-1&4\\2&-4&1&2&9\\-1&2&0&-3&-5\end{amat}
+\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&-2&1&-1&4\\0&0&-1&4&1\\0&0&1&-4&-1\end{amat}\\[4pt]
+&
+\rops{-R_2,\ R_3-R_2}
+\begin{amat}{cccc|c}1&-2&1&-1&4\\0&0&1&-4&-1\\0&0&0&0&0\end{amat}\\[4pt]
+&
+\rops{R_1-R_2}
+\begin{amat}{cccc|c}1&-2&0&3&5\\0&0&1&-4&-1\\0&0&0&0&0\end{amat}.
+\end{align*}
+The third matrix has a zero last row: the equation $0=0$ carries no information, so the system has only \emph{two} equations' worth of information about four unknowns. The pivot columns of the final matrix are $1$ and $3$, so $x_1,x_3$ are basic and $x_2,x_4$ are free:
+\[
+x_1=5+2x_2-3x_4,\qquad x_2\ \text{free},\qquad x_3=-1+4x_4,\qquad x_4\ \text{free}.
+\]
+Both free variables may be given any values, separately, so the solution set is described by \emph{two} parameters. For example, $x_2=0,\ x_4=0$ gives $(5,0,-1,0)$ and $x_2=1,\ x_4=1$ gives $(4,1,3,1)$.
+
+\textbf{Check} of the second one in the original equations: $4-2+3-1=4$, \ $8-4+3+2=9$, \ $-4+2-3=-5$. \ $\checkmark$ The third equation of the original system is the first equation minus the second, which is why it produced a zero row: $(x_1-2x_2+x_3-x_4)-(2x_1-4x_2+x_3+2x_4)=-x_1+2x_2-3x_4$, and $4-9=-5$.
+
+\emph{Moral.} The number of free variables is the number of unknowns minus the number of pivots, here $4-2=2$, not the number of unknowns minus the number of equations, which would be $4-3=1$. A redundant equation does not remove a free variable.
+\end{exmp}
+
+\subsection*{Bank: read the pivots}
+
+\begin{exmp}{Consistent or not, and how many solutions, without finishing}{bankRead}
+Each matrix below is an \emph{echelon form} of the augmented matrix of a system. Decide whether the system is consistent and, if so, whether it has one solution or infinitely many. Do not row reduce further.
+\[
+\text{(i)}\begin{amat}{ccc|c}3&-1&2&4\\0&2&5&1\\0&0&-1&6\end{amat}\qquad
+\text{(ii)}\begin{amat}{cccc|c}1&2&0&3&5\\0&0&2&-1&4\\0&0&0&0&0\end{amat}\qquad
+\text{(iii)}\begin{amat}{ccc|c}2&-4&1&0\\0&0&3&2\\0&0&0&5\end{amat}
+\]
+
+\textbf{Solution.} By Theorem~\ref{thm:existuniq}, look at the last column first: the system is inconsistent exactly when it is a pivot column. If it is not, count the free variables, one for each coefficient column without a pivot.
+
+(i)~The leading entries are in columns $1,2,3$, all to the left of the bar. The last column is not a pivot column, so the system is consistent. There are three unknowns and three pivots, so no free variable: the solution is \emph{unique}. (We could even find it: the last row says $-x_3=6$.)
+
+(ii)~The leading entries are in columns $1$ and $3$. The last column is not a pivot column, and the zero row $[\,0\ 0\ 0\ 0\mid0\,]$ is the harmless equation $0=0$. Columns $2$ and $4$ are coefficient columns without a pivot, so $x_2$ and $x_4$ are free: the system is consistent with \emph{infinitely many} solutions.
+
+(iii)~The last row is $[\,0\ \ 0\ \ 0\mid5\,]$, a leading entry in the last column. The system contains the equation $0=5$ and is \emph{inconsistent}. This is so even though column~2 has no pivot: a free variable gives infinitely many solutions only when the system has at least one.
+
+\emph{Moral.} The three outcomes are read from where the leading entries are, with no need to know their values. The values would matter only for writing the solution.
+\end{exmp}
+
+\begin{exmp}{Which outcomes are possible when only the shape is known?}{bankShape}
+For each description of a system $[A\mid b]$, say which of ``no solution'', ``exactly one solution'' and ``infinitely many solutions'' can occur. Give a reason, and an example when an outcome occurs.
+
+(a)~$A$ is $4\times3$ with a pivot in every column. \quad (b)~$A$ is $3\times5$ with a pivot in every row. \quad (c)~$A$ is $4\times4$ with exactly three pivots. \quad (d)~$A$ is $3\times3$ with a pivot in every row.
+
+\textbf{Solution.} We use Theorem~\ref{thm:counting} and Theorem~\ref{thm:existuniq}. Throughout, ``consistent'' means that the last column of $[A\mid b]$ has no pivot.
+
+(a)~A pivot in every column means no free variable, so there is \emph{never} more than one solution. Both ``none'' and ``one'' can occur. With four equations there is room for a fourth row, so a row $[\,0\ 0\ 0\mid1\,]$ is possible: for instance $x_1=0,\ x_2=0,\ x_3=0,\ 0=1$ has none, and $x_1=0,\ x_2=0,\ x_3=0,\ 0=0$ has exactly one. ``Infinitely many'' cannot occur.
+
+(b)~A pivot in every row means no row of $A$ becomes zero, so no row $[\,0\ \cdots\ 0\mid b'\,]$ with $b'\neq0$ can appear: the system is consistent \emph{for every} $b$ (Theorem~\ref{thm:counting}(a)). There are $5$ unknowns and only $3$ pivots, so two variables are free. Only ``infinitely many'' occurs.
+
+(c)~Four unknowns and three pivots leave one free variable, so ``exactly one'' cannot occur. With four rows and only three pivots in $A$, one row of an echelon form of $A$ is zero, and the system is inconsistent or consistent depending on $b$. So ``none'' and ``infinitely many'' both occur. For instance, take $A=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&0\end{bmatrix}$: with $b=(0,0,0,1)$ the last equation is $0=1$ (none), and with $b=(0,0,0,0)$ the unknown $x_4$ is free (infinitely many).
+
+(d)~A pivot in every row of a $3\times3$ matrix means three pivots, and they lie in three different columns, so every column has a pivot as well. As in~(b) the system is consistent for every $b$, and with no free variable the solution is \emph{unique}. Only ``exactly one'' occurs.
+
+\emph{Moral.} A pivot in every \emph{row} controls existence, and a pivot in every \emph{column} controls uniqueness. They are different questions: (a) has uniqueness without existence, (b) has existence without uniqueness, and (d) has both.
+\end{exmp}
+
+\subsection*{Bank: a parameter in the matrix}
+
+\begin{exmp}{A parameter that makes a row vanish; two parameters and three outcomes}{bankParam}
+(a)~For which $h$ is the system with augmented matrix $\begin{amat}{ccc|c}1&2&-1&3\\2&4&h&6\\1&2&3&7\end{amat}$ consistent? When it is, describe the solutions. (b)~For which $h$ and $k$ does the system $x_1+3x_2=2$, \ $4x_1+hx_2=k$ have no solution, exactly one, or infinitely many?
+
+\textbf{Solution.} (a)~Row reduce, treating $h$ as an unspecified number. The first step clears column~1; then column~2 has no pivot. In column~3 we interchange rows~2 and~3, so that the simple entry $4$ is the pivot, multiply row~3 by $4$ to avoid a fraction, and subtract $h+2$ times row~2 from it:
+\begin{align*}
+&\begin{amat}{ccc|c}1&2&-1&3\\2&4&h&6\\1&2&3&7\end{amat}
+\rops{R_2-2R_1,\ R_3-R_1}
+\begin{amat}{ccc|c}1&2&-1&3\\0&0&h+2&0\\0&0&4&4\end{amat}
+\rops{R_2\leftrightarrow R_3}
+\begin{amat}{ccc|c}1&2&-1&3\\0&0&4&4\\0&0&h+2&0\end{amat}\\[4pt]
+&
+\rops{4R_3}
+\begin{amat}{ccc|c}1&2&-1&3\\0&0&4&4\\0&0&4h+8&0\end{amat}
+\rops{R_3-(h+2)R_2}
+\begin{amat}{ccc|c}1&2&-1&3\\0&0&4&4\\0&0&0&-4h-8\end{amat}.
+\end{align*}
+The last row is $[\,0\ \ 0\ \ 0\mid-4h-8\,]$. The system is consistent exactly when $-4h-8=0$, that is, when $h=-2$. In that case the third row says $4x_3=4$, so $x_3=1$, and the first row gives $x_1+2x_2=4$: the pivot columns are $1$ and $3$, $x_2$ is free, and $x_1=4-2x_2$. Check with $x_2=0$: $(4,0,1)$ gives $4-1=3$, \ $8+0-2=6$, \ $4+3=7$. \ $\checkmark$ For every $h\neq-2$ the system has no solution.
+
+(b)~Reduce:
+\begin{align*}
+&\begin{amat}{cc|c}1&3&2\\4&h&k\end{amat}
+\rops{R_2-4R_1}
+\begin{amat}{cc|c}1&3&2\\0&h-12&k-8\end{amat}.
+\end{align*}
+The last row says $(h-12)x_2=k-8$.
+\begin{itemize}
+  \item If $h\neq12$, there is a pivot in column~2, so the system has exactly one solution for every $k$. For example, $h=13$, $k=11$ gives $x_2=3$, $x_1=-7$; check: $4(-7)+13\cdot3=11$. \ $\checkmark$
+  \item If $h=12$ and $k=8$, the row is $0=0$, $x_2$ is free, and there are infinitely many solutions: $x_1=2-3x_2$.
+  \item If $h=12$ and $k\neq8$, the row is $0=k-8\neq0$: no solution.
+\end{itemize}
+
+\emph{Moral.} In~(a) one value of $h$ is special and it is the only value for which solutions \emph{exist}; in~(b) one value of $h$ is special and the answer then depends on a second number. A parameter should be followed through the reduction until it either becomes a pivot or becomes a row $[\,0\ \cdots\ 0\mid\ast\,]$; the condition for the second case is an equation in the parameter.
+\end{exmp}
+
+\subsection*{Bank: build a matrix to order}
+
+\begin{exmp}{Matrices with a prescribed pivot pattern}{bankDesign}
+(a)~Write an augmented matrix in reduced echelon form for a system of $3$ equations in $4$ unknowns, in which $x_3$ is the only free variable and $x_4=5$, and give its general solution. (b)~Is there an echelon form of the augmented matrix of a system of $3$ equations in $3$ unknowns that has a pivot in every coefficient column \emph{and} is inconsistent? (c)~Can a system with a free variable have no solution?
+
+\textbf{Solution.} (a)~A reduced echelon form has pivots in columns $1,2,4$ (the columns of the basic variables) and none in column~3, and the last row should say $x_4=5$. Put arbitrary numbers in the free column and the last column:
+\[
+\begin{amat}{cccc|c}1&0&2&0&4\\0&1&-3&0&1\\0&0&0&1&5\end{amat}.
+\]
+The rows say $x_1=4-2x_3$, \ $x_2=1+3x_3$, \ $x_3$ free, \ $x_4=5$. Check with $x_3=1$: the rows give $x_1=4-2\cdot1=2$, \ $x_2=1+3\cdot1=4$, \ $x_4=5$, and then $2+0+2\cdot1+0=4$, \ $0+4-3\cdot1+0=1$, \ $x_4=5$. \ $\checkmark$
+
+(b)~No. Three pivots in the three coefficient columns need three different rows, and there are only three rows. A row $[\,0\ 0\ 0\mid b\,]$ with $b\neq0$ would be a fourth row. Hence every row has its leading entry in a coefficient column, the last column has no pivot, and the system is consistent. (With a fourth equation it is possible: $\begin{amat}{ccc|c}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1\end{amat}$.)
+
+(c)~Yes. The matrix $\begin{amat}{cc|c}1&0&0\\0&0&1\end{amat}$ has no pivot in column~2, so $x_2$ is a free variable, but its second row says $0=1$, so the system has no solution at all. A consistent system with a free variable has infinitely many solutions (Theorem~\ref{thm:existuniq}); the word ``consistent'' cannot be dropped.
+
+\emph{Moral.} To build or to rule out a matrix, count: each pivot uses up a row and a column. The pattern of pivots determines the possible outcomes, and a free variable promises infinitely many solutions only after consistency has been shown.
+\end{exmp}
+
+\subsection*{Bank: basic proofs}
+
+A proof is a chain of reasons that convinces a reader that a statement is true in \emph{every} case it covers. The three examples below model the habits of a short proof: read the statement, name what is assumed and what is to be shown, and then write the argument in steps. They use only algebra and the definitions of this section and the previous one.
+
+\begin{exmp}{Checking a family of solutions: a ``for every'' statement}{bankFamily}
+\textbf{Statement.} For every real number $t$, the list $(x_1,x_2,x_3,x_4)=(-1+3t,\ 2-2t,\ t,\ -1)$ is a solution of the system
+\[
+2x_2+4x_3-2x_4=6,\quad x_1+2x_2+x_3=3,\quad 2x_1+4x_2+2x_3+x_4=5,\quad x_1+3x_2+3x_3-x_4=6.
+\]
+
+\textbf{What we are proving and how.} We use the definition of a solution (Definition~\ref{1.1-def:system}): a list is a solution if it satisfies \emph{every} equation. We substitute the list into each equation and simplify.
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Scope.} ``For every real number $t$'' means that $t$ must stay an unspecified number throughout. Checking $t=0$, $t=1$ and $t=2$ would show only that the claim is true for those three numbers.
+  \item \emph{Goal.} Four true equations, in which each $t$ cancels or leaves the stated constant.
+\end{itemize}
+
+\textbf{Proof.} Let $t$ be any real number.
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Substitute} into equation~1: $2(2-2t)+4t-2(-1)=4-4t+4t+2=6$.
+  \item Equation~2: $(-1+3t)+2(2-2t)+t=-1+3t+4-4t+t=3$.
+  \item Equation~3: $2(-1+3t)+4(2-2t)+2t+(-1)=-2+6t+8-8t+2t-1=5$.
+  \item Equation~4: $(-1+3t)+3(2-2t)+3t-(-1)=-1+3t+6-6t+3t+1=6$.
+  \item \emph{Conclude.} All four equations hold, whatever $t$ is, so the list satisfies every equation of the system and is a solution. \qquad$\blacksquare$
+\end{enumerate}
+\textbf{What the proof does \emph{not} show.} It shows that every list in the family is a solution. It does not show that every solution is in the family: that is the converse, and for it we row reduce, as in the general solution of Example~\ref{ex:rr}.
+\end{exmp}
+
+\begin{exmp}{Two different solutions force infinitely many}{bankLine}
+\textbf{Statement.} If $p=(p_1,\dots,p_n)$ and $q=(q_1,\dots,q_n)$ are two \emph{different} solutions of a system of linear equations, then the system has infinitely many solutions.
+
+\textbf{What we are proving and how.} We write down, for each real number $t$, a list $s(t)$ whose $i$th entry is $s_i(t)=p_i+t(q_i-p_i)$, show that every $s(t)$ is a solution, and show that different values of $t$ give different lists. Infinitely many values of $t$ then give infinitely many solutions. (Notice that $s(0)=p$ and $s(1)=q$.)
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Hypothesis} (what we may assume): $p$ and $q$ both satisfy \emph{every} equation of the system, and $p\neq q$.
+  \item \emph{Goal}: a source of infinitely many different solutions.
+  \item \emph{Scope.} The system is arbitrary, so we work with one general equation $a_1x_1+\cdots+a_nx_n=b$ and show that every $s(t)$ satisfies it. The same argument then applies to each equation of the system.
+\end{itemize}
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $a_1p_1+\cdots+a_np_n=b$ and $a_1q_1+\cdots+a_nq_n=b$, for each equation.
+  \item \emph{Compute.} Substituting $s(t)$ into the left side and collecting terms,
+  \[
+  \sum_i a_i\bigl(p_i+t(q_i-p_i)\bigr)=(1-t)\sum_i a_ip_i+t\sum_i a_iq_i=(1-t)b+tb=b.
+  \]
+  So $s(t)$ satisfies every equation, and it is a solution for every $t$.
+  \item \emph{Different $t$ give different lists.} Since $p\neq q$, there is an index $j$ with $q_j\neq p_j$. If $t\neq t'$, then $s_j(t)-s_j(t')=(t-t')(q_j-p_j)\neq0$, because both factors are nonzero. So $s(t)\neq s(t')$.
+  \item \emph{Conclude.} There is one solution for each real number $t$, and no two coincide. Hence there are infinitely many solutions. \qquad$\blacksquare$
+\end{enumerate}
+\textbf{Where $p\neq q$ was used.} In step~3 only. Without it the lists $s(t)$ all equal $p$, and the proof gives one solution, as it should. \textbf{Connection.} This is the heart of Theorem~\ref{1.1-thm:three}: a system with two solutions has infinitely many, so a system never has exactly two.
+\end{exmp}
+
+\begin{exmp}{Disproving a statement with one counterexample}{bankCounter}
+\textbf{Statement.} If a linear system has more unknowns than equations, then it has infinitely many solutions.
+
+\textbf{What we are doing and how.} A statement about \emph{every} system is disproved by a single system for which it fails. A counterexample must do two jobs: satisfy the hypothesis, and violate the conclusion.
+
+\textbf{Counterexample.} Take the system $x_1+x_2+x_3=1$, \ $x_1+x_2+x_3=2$.
+\begin{itemize}
+  \item \emph{The hypothesis holds.} There are $2$ equations and $3$ unknowns, so there are more unknowns than equations.
+  \item \emph{The conclusion fails.} Subtracting the equations gives $0=1$, so no list satisfies both; the system has no solution, not infinitely many.
+\end{itemize}
+So the statement is false. \qquad$\blacksquare$
+
+\textbf{What is true instead.} Theorem~\ref{thm:counting}(c) has the extra hypothesis that the system is \emph{consistent}, and the counterexample is exactly a system that is not. The counterexample also shows which hypothesis was missing: it is a system that has no solution to start from.
+
+\emph{Moral.} A counterexample need not be large: two equations were enough. It must be \emph{checked} in both parts: that $2<3$, and that there is no solution.
+\end{exmp}
+
+\begin{think}{Proof habits}{habits}
+\begin{enumerate}[label=(\arabic*)]
+  \item A student checks Example~\ref{ex:bankFamily} for $t=0$, $t=1$ and $t=2$ and concludes the statement is proved. What has been shown, and what is missing?
+  \item In Example~\ref{ex:bankLine}, suppose $p=q$. Which sentence of the proof stops working, and what does the argument then show?
+  \item A classmate says that the counterexample in Example~\ref{ex:bankCounter} ``disproves Theorem~\ref{thm:counting}(c).'' Respond.
+\end{enumerate}
+\end{think}
 
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
@@ -367,7 +704,7 @@ consistent, how many solutions does it have?
         reduced form is the same matrix no matter which echelon form we started from or which operations we used.
         Hence every echelon form of $A$ has its leading entries in the same positions, and these are the
         pivot positions of $A$.
-
+ 
         \emph{Pivots versus entries.} No. A pivot is the number that sits in the pivot position \emph{after}
         earlier row operations have changed it. For $A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$ the second pivot
         position holds $4$ in $A$, but after $R_2-3R_1\to R_2$ it holds $4-3\cdot2=-2$. If we then scaled row~2
@@ -392,6 +729,7 @@ consistent, how many solutions does it have?
                 $b$ the system has \emph{exactly one} solution. This is the first glimpse of what it means for
                 a square matrix to be ``invertible.''
         \end{enumerate}
+  \item[Pause and think \ref{think:habits}.] (1)~It shows that the claim is true for $t=0$, $1$ and $2$, three of infinitely many values. The statement is about \emph{every} real $t$, so the proof must keep $t$ unspecified, as in the algebra where the terms in $t$ cancel; that cancellation is the reason the claim holds for all $t$ at once. (2)~Step~3, the sentence that begins ``Since $p\neq q$, there is an index $j$ with $q_j\neq p_j$.'' If $p=q$ there is no such $j$, every $s(t)$ equals $p$, and the argument shows only that $p$ is a solution. (3)~The counterexample does not disprove the theorem. Theorem~\ref{thm:counting}(c) assumes that the system is consistent, and the counterexample is not consistent, so the theorem says nothing about it. What the counterexample does disprove is the statement without the word ``consistent.''
   \item[Before the next section.] (1)~An echelon form still leaves freedom: you may scale a row by any nonzero
         number, or add multiples of a lower pivot row to a higher row, and each choice gives a different echelon
         form. The extra conditions for reduced echelon form (leading entries equal to $1$, zeros above and below
@@ -401,5 +739,6 @@ consistent, how many solutions does it have?
         $4-2=2$ free variables ($x_2$ and $x_4$). (3)~False: $x_1+x_2=1,\ x_1+x_2=2$ reduces to
         $\begin{amat}{cc|c}1&1&1\\0&0&1\end{amat}$, which has a free variable $x_2$ and is inconsistent.
 \end{description}
-
+ 
 \end{document}
+ 
