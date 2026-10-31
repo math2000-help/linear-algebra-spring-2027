@@ -11,7 +11,7 @@ course:
   pacing: deferred   # lecture slots are intentionally unassigned until the instructor decides
   dropped_on_purpose: ["1.6", "1.10", "2.4", "2.6", "2.7", "2.8", "2.9", "4.7", "4.8", "5.5-5.9", "6.6", "6.8"]
   # 2.8/2.9 are omitted because Ch. 4 covers the same ideas in general form (Lay's own footnote).
-
+ 
 # status values: todo | in-progress | done | legacy  (legacy = delivered in Week 1, not yet converted to a module)
 # tested: false  =>  full notes/site page are built, but the section is excluded from exams (homework optional).
 # visibility: notes/worksheet/homework PDFs are public; instructor notes and solutions are private.
