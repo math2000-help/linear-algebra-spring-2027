@@ -453,6 +453,243 @@ solution with a negative weight be useful, and does the equation know about this
   \item True or false (justify): ``If $\bv{b}$ is in $\Span\{\bv{a}_1,\bv{a}_2\}$, then the weights are unique.''
 \end{enumerate}
 
+% =====================================================================
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Find the weights.} Read the weights of several points off a picture and confirm them by row reduction; find the weights as formulas that work for every target; find all the weights in a blending problem and use the context to cut them down.
+  \item \textbf{A parameter inside the vectors.} Decide for which values of $h$ a vector is in a span when $h$ sits in one of the spanning vectors, and see where the span collapses.
+  \item \textbf{The shape of a span.} Decide whether three vectors in $\R^3$ span a line, a plane or all of $\R^3$, and find the two equations that a vector in $\R^4$ must satisfy to lie in the span of two vectors.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: find the weights}
+
+\begin{exmp}{Weights read from a picture}{bankLattice}
+Let $\bv{u}=(2,1)$ and $\bv{v}=(-1,1)$. The picture shows the points $c_1\bv{u}+c_2\bv{v}$ whose weights are whole numbers (the corners of the slanted grid) and four marked points $P=(3,3)$, $Q=(0,3)$, $R=(5,1)$ and $S=(2,-1)$. (a)~Read from the picture the weights that produce $P$, $Q$ and $R$. (b)~Confirm them, and find the weights that produce $S$, by row reduction.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.72,>=stealth]
+  \begin{scope}
+    \clip (-3.4,-2.6) rectangle (6.4,4.6);
+    \begin{scope}[cm={2,1,-1,1,(0,0)}]
+      \foreach \k in {-6,...,6}{\draw[gray!60] (\k,-6)--(\k,6); \draw[gray!60] (-6,\k)--(6,\k);}
+    \end{scope}
+  \end{scope}
+  \draw[->,gray] (-3.4,0)--(6.6,0); \draw[->,gray] (0,-2.6)--(0,4.8);
+  \draw[dashed,thick] (0,0)--(4,2)--(3,3);
+  \draw[->,very thick,red!70!black] (0,0)--(2,1);
+  \draw[->,very thick,blue!70!black] (0,0)--(-1,1);
+  \foreach \p in {(3,3),(0,3),(5,1)}{\fill \p circle (3pt);}
+  \fill[orange!85!black] (2,-1) circle (3pt);
+  \node[below right] at (2,1) {$u$};
+  \node[above left] at (-1,1) {$v$};
+  \node[above right] at (3,3) {$P$};
+  \node[above left] at (0,3) {$Q$};
+  \node[above right] at (5,1) {$R$};
+  \node[below right] at (2,-1) {$S$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Solution.} (a)~The grid lines are parallel to $\bv{u}$ and $\bv{v}$, so the weights of a corner are the numbers of steps along $\bv{u}$ and along $\bv{v}$ needed to reach it. For $P$, go two steps along $\bv{u}$ (to $(4,2)$, dashed) and one step along $\bv{v}$ (to $(3,3)$): the weights are $2$ and $1$. For $Q$, one step along $\bv{u}$ and two along $\bv{v}$ give $(2,1)+2(-1,1)=(0,3)$: the weights are $1$ and $2$. For $R$, two steps along $\bv{u}$ and one step \emph{backward} along $\bv{v}$ give $(4,2)-(-1,1)=(5,1)$: the weights are $2$ and $-1$. The point $S$ is not a corner of the grid. It sits inside a cell, so its weights are not whole numbers, and the picture alone cannot give them accurately.
+
+(b)~By Theorem~\ref{thm:vecsys} each weight problem is a linear system with augmented matrix $[\bv{u}\ \bv{v}\ \bv{p}]$ for the point $\bv{p}$ in question. All four systems have the same coefficient matrix, so we row reduce once, with the four right-hand sides side by side:
+\begin{align*}
+&\begin{amat}{cc|cccc}2&-1&3&0&5&2\\1&1&3&3&1&-1\end{amat}
+\rops{R_1\leftrightarrow R_2}
+\begin{amat}{cc|cccc}1&1&3&3&1&-1\\2&-1&3&0&5&2\end{amat}\\[4pt]
+&\rops{R_2-2R_1}
+\begin{amat}{cc|cccc}1&1&3&3&1&-1\\0&-3&-3&-6&3&4\end{amat}
+\rops{-\frac13R_2}
+\begin{amat}{cc|cccc}1&1&3&3&1&-1\\0&1&1&2&-1&-\frac43\end{amat}\\[4pt]
+&\rops{R_1-R_2}
+\begin{amat}{cc|cccc}1&0&2&1&2&\frac13\\0&1&1&2&-1&-\frac43\end{amat}.
+\end{align*}
+Both columns on the left are pivot columns and no right-hand side column is a pivot column, so each of the four points is a linear combination of $\bv{u},\bv{v}$ with \emph{unique} weights. They are read from the columns on the right: $P$ has weights $(2,1)$, $Q$ has $(1,2)$, $R$ has $(2,-1)$, exactly as the picture suggested, and $S$ has $\bigl(\tfrac13,-\tfrac43\bigr)$. Check for $S$: $\tfrac13(2,1)-\tfrac43(-1,1)=\bigl(\tfrac23+\tfrac43,\ \tfrac13-\tfrac43\bigr)=(2,-1)$. \ $\checkmark$
+
+\emph{Moral.} A picture is a fast way to find ``nice'' weights and to see why the answer is plausible. Row reduction finds the weights of \emph{every} point, including the ones the grid does not make visible, and it settles whether they are unique.
+\end{exmp}
+
+\begin{exmp}{Weights as formulas in the target}{bankFormula}
+Let $\bv{a}_1=(2,3)$ and $\bv{a}_2=(1,2)$. (a)~Show that every vector $\bv{y}=(y_1,y_2)$ of $\R^2$ is a linear combination of $\bv{a}_1,\bv{a}_2$, and give the weights as formulas in $y_1$ and $y_2$. (b)~Use the formulas to write $(5,4)$ as a linear combination. (c)~What goes wrong if $\bv{a}_2$ is replaced by $(4,6)$?
+
+\textbf{Solution.} (a)~Instead of one target, keep the target as unspecified numbers and row reduce once for all targets at the same time. The first two steps make the first pivot equal to $1$ without introducing fractions:
+\begin{align*}
+\begin{amat}{cc|c}2&1&y_1\\3&2&y_2\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{cc|c}2&1&y_1\\1&1&y_2-y_1\end{amat}
+\rops{R_1\leftrightarrow R_2}
+\begin{amat}{cc|c}1&1&y_2-y_1\\2&1&y_1\end{amat}\\[4pt]
+&\rops{R_2-2R_1}
+\begin{amat}{cc|c}1&1&y_2-y_1\\0&-1&3y_1-2y_2\end{amat}
+\rops{-R_2}
+\begin{amat}{cc|c}1&1&y_2-y_1\\0&1&-3y_1+2y_2\end{amat}\\[4pt]
+&\rops{R_1-R_2}
+\begin{amat}{cc|c}1&0&2y_1-y_2\\0&1&-3y_1+2y_2\end{amat}.
+\end{align*}
+Both columns are pivot columns and no row of zeros appeared, whatever $y_1,y_2$ are. So the system is consistent for every $\bv{y}$ and the weights are unique:
+\[
+x_1=2y_1-y_2,\qquad x_2=-3y_1+2y_2 .
+\]
+In particular $\Span\{\bv{a}_1,\bv{a}_2\}=\R^2$.
+
+(b)~For $\bv{y}=(5,4)$ the formulas give $x_1=10-4=6$ and $x_2=-15+8=-7$. Check: $6(2,3)-7(1,2)=(12-7,\ 18-14)=(5,4)$. \ $\checkmark$
+
+(c)~Now take $\bv{a}_2=(4,6)$. The same method, with a scaling step to avoid fractions, gives
+\begin{align*}
+\begin{amat}{cc|c}2&4&y_1\\3&6&y_2\end{amat}
+&\rops{2R_2}
+\begin{amat}{cc|c}2&4&y_1\\6&12&2y_2\end{amat}
+\rops{R_2-3R_1}
+\begin{amat}{cc|c}2&4&y_1\\0&0&2y_2-3y_1\end{amat}.
+\end{align*}
+The system is consistent if and only if $3y_1-2y_2=0$, so only the vectors on this line are combinations of $\bv{a}_1$ and $(4,6)$. This is no surprise: $(4,6)=2\bv{a}_1$, so the second vector repeats the first and the span is the single line through $\bv{0}$ and $(2,3)$ (compare Knowledge Check~\ref{kc:spans}(b)). And now the weights are not unique even when they exist, since the second column is not a pivot column.
+
+\emph{Moral.} A row reduction with a symbolic target answers ``is \emph{every} target reachable?'' and ``what are the weights?'' in one pass. A zero row, with a condition on the $y_j$ attached to it, is what failure looks like.
+\end{exmp}
+
+\begin{exmp}{A blending problem with a free variable}{bankBlend}
+Three dry foods are measured per serving by their protein, fat and fiber (in grams) and their energy (in units of $10$ kilocalories):
+\[
+\bv{f}_1=\begin{bmatrix}4\\1\\2\\3\end{bmatrix},\qquad
+\bv{f}_2=\begin{bmatrix}1\\2\\3\\2\end{bmatrix},\qquad
+\bv{f}_3=\begin{bmatrix}6\\5\\8\\7\end{bmatrix}.
+\]
+A daily ration must supply $16$\,g of protein, $11$\,g of fat, $18$\,g of fiber and $170$ kilocalories, that is $\bv{t}=(16,11,18,17)$. (a)~Find \emph{all} lists $(x_1,x_2,x_3)$ of numbers of servings with $x_1\bv{f}_1+x_2\bv{f}_2+x_3\bv{f}_3=\bv{t}$. (b)~Servings cannot be negative; which of the solutions are usable? (c)~What is the largest number of servings of Food~3 that a usable ration can contain?
+
+\textbf{Solution.} (a)~By Theorem~\ref{thm:vecsys} we row reduce $[\bv{f}_1\ \bv{f}_2\ \bv{f}_3\ \bv{t}]$. There are four equations in three unknowns, but that does not decide anything by itself; the pivots do.
+\begin{align*}
+&\begin{amat}{ccc|c}4&1&6&16\\1&2&5&11\\2&3&8&18\\3&2&7&17\end{amat}
+\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|c}1&2&5&11\\4&1&6&16\\2&3&8&18\\3&2&7&17\end{amat}
+\\[4pt]
+&\rops{R_2-4R_1,\ R_3-2R_1,\ R_4-3R_1}
+\begin{amat}{ccc|c}1&2&5&11\\0&-7&-14&-28\\0&-1&-2&-4\\0&-4&-8&-16\end{amat}
+\rops{-\frac17R_2}
+\begin{amat}{ccc|c}1&2&5&11\\0&1&2&4\\0&-1&-2&-4\\0&-4&-8&-16\end{amat}\\[4pt]
+&\rops{R_3+R_2,\ R_4+4R_2}
+\begin{amat}{ccc|c}1&2&5&11\\0&1&2&4\\0&0&0&0\\0&0&0&0\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{ccc|c}1&0&1&3\\0&1&2&4\\0&0&0&0\\0&0&0&0\end{amat}.
+\end{align*}
+The last column is not a pivot column, so the target can be met. Column $3$ is not a pivot column either, so $x_3$ is free (Definition~\ref{1.2-def:basicfree}) and the general solution is
+\[
+x_1=3-x_3,\qquad x_2=4-2x_3,\qquad x_3\ \text{free}.
+\]
+Check with $x_3=1$: $2\bv{f}_1+2\bv{f}_2+\bv{f}_3=(8+2+6,\ 2+4+5,\ 4+6+8,\ 6+4+7)=(16,11,18,17)$. \ $\checkmark$
+
+(b)~The equations know nothing about the context, so we impose it: $x_1\ge0$ means $x_3\le3$, and $x_2\ge0$ means $x_3\le2$, and $x_3\ge0$ is required as well. All three hold exactly when $0\le x_3\le2$. So the usable rations are
+\[
+(x_1,x_2,x_3)=(3-t,\ 4-2t,\ t)\qquad\text{for }0\le t\le2 .
+\]
+For example $t=0$ gives $(3,4,0)$, $t=1$ gives $(2,2,1)$ and $t=2$ gives $(1,0,2)$. Values such as $t=2.5$ solve the \emph{equation} but give $x_2=-1$, which is not a ration.
+
+(c)~The largest usable value is $t=2$: a ration of $1$ serving of Food~1, none of Food~2 and $2$ servings of Food~3. Check: $\bv{f}_1+2\bv{f}_3=(4+12,\ 1+10,\ 2+16,\ 3+14)=(16,11,18,17)$. \ $\checkmark$
+
+\emph{Why there is a free variable.} Look at the foods themselves: $\bv{f}_1+2\bv{f}_2=(6,5,8,7)=\bv{f}_3$. Food~3 is a combination of the other two, so anything built with it can be built without it, at the price of changing the other weights. This is the situation of Pause and think~\ref{think:recipes}, now with four requirements instead of three. Four equations and three unknowns made it look overdetermined, yet the two zero rows in the reduction show that two of the equations were consequences of the others.
+\end{exmp}
+
+\subsection*{Bank: a parameter inside the vectors}
+
+\begin{exmp}{A parameter that collapses the span}{bankCollapse}
+Let $\bv{v}_1=(1,0,2)$ and $\bv{v}_2(h)=(1,h,2)$, which depends on a number $h$, and let $\bv{b}=(3,6,6)$, $\bv{c}=(3,0,6)$ and $\bv{d}=(3,6,7)$. For which values of $h$ is each of $\bv{b},\bv{c},\bv{d}$ in $\Span\{\bv{v}_1,\bv{v}_2(h)\}$? When are the weights unique?
+
+\textbf{Solution.} In Example~\ref{ex:param} the parameter was in the target. Here it sits in a spanning vector, so $h$ changes the span itself, and we must be ready to look at special values of $h$ separately. Put the three targets side by side and reduce, treating $h$ as a number that has not been chosen:
+\begin{align*}
+\begin{amat}{cc|ccc}1&1&3&3&3\\0&h&6&0&6\\2&2&6&6&7\end{amat}
+&\rops{R_3-2R_1}
+\begin{amat}{cc|ccc}1&1&3&3&3\\0&h&6&0&6\\0&0&0&0&1\end{amat}.
+\end{align*}
+We read the three systems one at a time. A system is inconsistent exactly when its right-hand side column has a nonzero entry in a row whose left part is zero.
+
+\emph{The vector $\bv{d}$.} Its column ends with the row $[\,0\ \ 0\mid1\,]$ whatever $h$ is, so $\bv{d}$ is in the span for \emph{no} value of $h$.
+
+\emph{The case $h\neq0$.} The left part has two pivots. The third row is zero for $\bv{b}$ and $\bv{c}$, so both are in the span, with unique weights: for $\bv{b}$, $x_2=\tfrac6h$ and $x_1=3-\tfrac6h$; for $\bv{c}$, $x_2=0$ and $x_1=3$. For instance with $h=2$, $\bv{b}=0\cdot\bv{v}_1+3\bv{v}_2(2)$, and indeed $3(1,2,2)=(3,6,6)$. \ $\checkmark$
+
+\emph{The case $h=0$.} Now $\bv{v}_2(0)=(1,0,2)=\bv{v}_1$ and the second row of the left part is zero. For $\bv{b}$ the second row reads $[\,0\ \ 0\mid6\,]$: inconsistent, so $\bv{b}$ is \emph{not} in the span. For $\bv{c}$ it reads $[\,0\ \ 0\mid0\,]$: consistent, with $x_2$ free ($x_1=3-x_2$), so $\bv{c}$ is in the span with infinitely many choices of weights, such as $(3,0)$ and $(2,1)$.
+
+So $\bv{b}$ is in the span for every $h\neq0$ and for no other $h$; $\bv{c}$ is in the span for every $h$, with unique weights exactly when $h\neq0$; $\bv{d}$ is never in the span.
+
+\emph{What is really going on.} Since $\bv{v}_2(h)-\bv{v}_1=(0,h,0)$, every combination $x_1\bv{v}_1+x_2\bv{v}_2(h)$ equals $(x_1+x_2)\bv{v}_1+x_2\,(0,h,0)$, and conversely. So for every $h\neq0$ the span is the \emph{same} plane, the one containing $(1,0,2)$ and $(0,1,0)$; its equation is $2y_1-y_3=0$. The vector $\bv{d}$ misses that plane ($2\cdot3-7=-1\neq0$) and the vectors $\bv{b},\bv{c}$ lie in it ($6-6=0$). At the single value $h=0$ the second vector stops pointing out of the line through $\bv{v}_1$ and the span collapses to that line. A parameter in a spanning vector usually matters only at the exceptional values where the span changes size.
+\end{exmp}
+
+\subsection*{Bank: the shape of a span}
+
+\begin{exmp}{A line, a plane or all of $\R^3$?}{bankClassify}
+Describe geometrically the span of each list of vectors in $\R^3$, and for the plane find its equation. (a)~$(1,2,-1),\ (2,4,-2),\ (-3,-6,3)$. \ (b)~$(1,0,2),\ (0,1,1),\ (2,3,7)$. \ (c)~$(1,1,0),\ (0,1,1),\ (1,0,1)$.
+
+\textbf{Solution.} In every case put the vectors into the columns of a matrix and count pivots. A column without a pivot is a combination of the columns before it, as in Pause and think~\ref{think:recipes}, so it adds nothing new to the span; the number of pivots counts the vectors that do.
+
+(a)~Each vector is a multiple of the first:
+\begin{align*}
+\begin{amat}{ccc}1&2&-3\\2&4&-6\\-1&-2&3\end{amat}
+&\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{ccc}1&2&-3\\0&0&0\\0&0&0\end{amat}.
+\end{align*}
+There is one pivot, in column $1$. The span is the line through the origin and $(1,2,-1)$.
+
+(b)~Reducing the matrix of the three vectors:
+\begin{align*}
+\begin{amat}{ccc}1&0&2\\0&1&3\\2&1&7\end{amat}
+&\rops{R_3-2R_1}
+\begin{amat}{ccc}1&0&2\\0&1&3\\0&1&3\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc}1&0&2\\0&1&3\\0&0&0\end{amat}.
+\end{align*}
+There are two pivots, in columns $1$ and $2$, so the third vector is a combination of the first two: indeed $(2,3,7)=2(1,0,2)+3(0,1,1)$. The span is the plane through the origin, $(1,0,2)$ and $(0,1,1)$. To find its equation, ask which $\bv{y}=(y_1,y_2,y_3)$ are combinations of just those two vectors, keeping $\bv{y}$ symbolic as in Example~\ref{ex:cond}:
+\begin{align*}
+\begin{amat}{cc|c}1&0&y_1\\0&1&y_2\\2&1&y_3\end{amat}
+&\rops{R_3-2R_1}
+\begin{amat}{cc|c}1&0&y_1\\0&1&y_2\\0&1&y_3-2y_1\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{cc|c}1&0&y_1\\0&1&y_2\\0&0&y_3-2y_1-y_2\end{amat}.
+\end{align*}
+The plane is $2y_1+y_2-y_3=0$. Check the third vector: $4+3-7=0$. \ $\checkmark$
+
+(c)~Reducing the matrix of the three vectors:
+\begin{align*}
+\begin{amat}{ccc}1&0&1\\1&1&0\\0&1&1\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{ccc}1&0&1\\0&1&-1\\0&1&1\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc}1&0&1\\0&1&-1\\0&0&2\end{amat}.
+\end{align*}
+There is a pivot in every column \emph{and} in every row. A pivot in every row means that, whatever the right-hand side, the last column is never a pivot column (Theorem~\ref{1.2-thm:existuniq}), so every $\bv{y}$ in $\R^3$ is a combination of the three vectors. The span is all of $\R^3$.
+
+\emph{Moral.} Three vectors in $\R^3$ can span a line, a plane or all of $\R^3$, and nothing in the list of numbers shows which. The pivots do: one, two or three.
+\end{exmp}
+
+\begin{exmp}{Two conditions on a vector in $\R^4$}{bankTwoCond}
+Let $\bv{w}_1=(1,2,0,1)$ and $\bv{w}_2=(0,1,1,-1)$ in $\R^4$. (a)~For which $\bv{y}=(y_1,y_2,y_3,y_4)$ is $\bv{y}$ in $\Span\{\bv{w}_1,\bv{w}_2\}$? (b)~Decide whether $\bv{p}=(2,7,3,-1)$, $\bv{q}=(1,2,0,0)$ and $\bv{r}=(1,2,5,1)$ are in the span, and give weights where they are. (c)~Why are there two conditions?
+
+\textbf{Solution.} (a)~Row reduce $[\bv{w}_1\ \bv{w}_2\ \bv{y}]$ with $\bv{y}$ left symbolic:
+\begin{align*}
+\begin{amat}{cc|c}1&0&y_1\\2&1&y_2\\0&1&y_3\\1&-1&y_4\end{amat}
+&\rops{R_2-2R_1,\ R_4-R_1}
+\begin{amat}{cc|c}1&0&y_1\\0&1&y_2-2y_1\\0&1&y_3\\0&-1&y_4-y_1\end{amat}\\[4pt]
+&\rops{R_3-R_2,\ R_4+R_2}
+\begin{amat}{cc|c}1&0&y_1\\0&1&y_2-2y_1\\0&0&y_3-y_2+2y_1\\0&0&y_4+y_2-3y_1\end{amat}.
+\end{align*}
+Both columns on the left are pivot columns, and the two rows below them are zero rows on the left. The system is consistent if and only if \emph{both} of the entries on the right vanish:
+\[
+2y_1-y_2+y_3=0\qquad\text{and}\qquad -3y_1+y_2+y_4=0 .
+\]
+When they hold, the first two rows give the weights: $x_1=y_1$ and $x_2=y_2-2y_1$.
+
+(b)~Test each vector against both equations.
+\begin{itemize}
+  \item $\bv{p}=(2,7,3,-1)$: $\ 4-7+3=0$ and $-6+7-1=0$. Both hold, so $\bv{p}$ is in the span, with weights $x_1=2$ and $x_2=7-4=3$. Check: $2(1,2,0,1)+3(0,1,1,-1)=(2,\ 7,\ 3,\ -1)$. \ $\checkmark$
+  \item $\bv{q}=(1,2,0,0)$: $\ 2-2+0=0$ holds, but $-3+2+0=-1\neq0$. Only the first condition holds, so $\bv{q}$ is \emph{not} in the span.
+  \item $\bv{r}=(1,2,5,1)$: $\ 2-2+5=5\neq0$, although $-3+2+1=0$. Only the second condition holds, so $\bv{r}$ is \emph{not} in the span.
+\end{itemize}
+So passing one test is not enough: each condition removes some vectors, and it takes both to describe the span.
+
+(c)~A vector in the span is $x_1\bv{w}_1+x_2\bv{w}_2=(x_1,\ 2x_1+x_2,\ x_2,\ x_1-x_2)$: two free numbers fill four coordinates, so two coordinates are determined by the others, and that is what two equations say. In terms of pivots: the matrix $[\bv{w}_1\ \bv{w}_2]$ has $4$ rows but only $2$ pivots, so $4-2=2$ rows end up as zero rows, and each gives one condition. In $\R^3$ the span of two vectors needed one condition (Example~\ref{ex:cond}); in $\R^4$ it needs two. (This is the idea behind Pause and think~\ref{think:howmany}: two vectors are far too few to fill $\R^4$.)
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:compute}.] $3\bv{u}+2\bv{v}=(6,-3)+(-2,6)=(4,3)$ and $\bv{u}-\bv{v}=(2-(-1),\,-1-3)=(3,-4)$.
