@@ -368,6 +368,415 @@ decide which of the outcomes \emph{no solution}, \emph{exactly one solution}, \e
   \item A $3\times2$ matrix has columns $\bv{e}_1,\bv{e}_2$. Show that $A\bv{x}=(1,1,0)$ has a unique solution, yet the equation is not solvable for every $\bv{b}$. Which pivot condition fails?
 \end{enumerate}
 
+% =====================================================================
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section, followed by a few short proofs. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Trivial or nontrivial solutions.} Decide from the shape of a matrix, from a zero or proportional column, or from an echelon form whether $A\bv{x}=\bv{0}$ has a nonzero solution, and see why a free variable always produces one.
+  \item \textbf{Parametric vector form of a homogeneous system.} One free variable in a system given as equations, and two free variables that are not the last unknowns, with the answer checked by a matrix product.
+  \item \textbf{A particular solution plus the homogeneous solutions.} Find a particular solution by inspection and reduce only the homogeneous part, and answer three right-hand sides with a single row reduction.
+  \item \textbf{Point, line, plane or nothing.} Four systems of three equations in three unknowns whose solution sets have four different shapes.
+  \item \textbf{A parameter that changes the solution set.} One parameter and two right-hand sides: how the shape of the solution set, and whether it exists, depend on the parameter.
+  \item \textbf{Balancing a chemical equation.} A reaction with five substances, where the two free variables are the freedom in the reaction.
+  \item \textbf{Basic proofs.} Read an ``if \dots\ then'' statement before proving it, show that a particular solution plus a homogeneous solution is a solution, and disprove a statement with a single counterexample.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: trivial or nontrivial solutions}
+
+\begin{exmp}{Trivial solution only, or more? Decide with little computation}{bankTrivial}
+Decide whether each homogeneous system $A\bv{x}=\bv{0}$ has a nontrivial solution. Do as little computation as you can, and whenever a nontrivial solution exists and can be found quickly, write it down and check it.
+\begin{enumerate}[label=(\alph*),itemsep=2pt]
+  \item $A=\begin{bmatrix}1&2&0&-1&3\\2&1&1&0&-2\\0&3&-1&4&1\end{bmatrix}$.
+  \item $B=\begin{bmatrix}1&0&2\\3&0&-1\\0&0&4\\2&0&5\end{bmatrix}$.
+  \item $D=\begin{bmatrix}1&0\\0&1\\2&3\\1&-1\\4&2\end{bmatrix}$ and $E=\begin{bmatrix}2&-6\\-1&3\\3&-9\\0&0\\5&-15\end{bmatrix}$.
+\end{enumerate}
+
+\textbf{Solution.} Recall Theorem~\ref{thm:nontriv}: a nontrivial solution exists exactly when some column of the matrix is not a pivot column, that is, when there is a free variable. Also recall (Definition~\ref{1.4-def:matvec}) that a solution is a list of weights $x_1,\dots,x_n$ that combines the columns to produce $\bv{0}$. Both views are useful here.
+
+(a)~The matrix $A$ has $3$ rows, so at most $3$ pivots, and it has $5$ columns. At least $5-3=2$ columns therefore have no pivot, so there are at least two free variables and a nontrivial solution exists. Counting proves that a nontrivial solution exists, but it does not tell us what it is; to find one we would have to row reduce.
+
+(b)~The second column of $B$ is the zero vector. The product $B\bv{x}$ is the combination of the columns with weights $x_1,x_2,x_3$, so the weights $(0,1,0)$ pick out the zero column:
+\[
+\begin{bmatrix}1&0&2\\3&0&-1\\0&0&4\\2&0&5\end{bmatrix}\begin{bmatrix}0\\1\\0\end{bmatrix}=\begin{bmatrix}0\\0\\0\\0\end{bmatrix}.
+\]
+So $(0,1,0)$ is a nontrivial solution, and no row reduction was needed. A zero column can never be a pivot column, so $x_2$ is a free variable.
+
+(c)~Both matrices have more rows than columns, and then counting settles nothing: there are at most $2$ pivots, and $2$ is also the number of columns, so there may or may not be a free variable. We look at the columns. In $D$, the first two rows of $D\bv{x}=\bv{0}$ read $x_1=0$ and $x_2=0$, so only the trivial solution is possible. (Both columns are pivot columns.) In $E$ the second column is $-3$ times the first, so $3\,(\text{column }1)+(\text{column }2)=\bv{0}$ and $(3,1)$ should be a solution. Check:
+\[
+\begin{bmatrix}2&-6\\-1&3\\3&-9\\0&0\\5&-15\end{bmatrix}\begin{bmatrix}3\\1\end{bmatrix}=\begin{bmatrix}0\\0\\0\\0\\0\end{bmatrix}.
+\]
+\emph{Moral.} A nontrivial solution is a recipe for producing $\bv{0}$ from the columns with weights that are not all zero. Spotting a zero column or a column that is a multiple of another gives such a recipe at once, while for a matrix with more rows than columns the size tells you nothing. Example~\ref{ex:bankFreeVar} shows how a free variable always produces a recipe.
+\end{exmp}
+
+\begin{exmp}{From a free variable to a nontrivial solution}{bankFreeVar}
+Row reduce $[A\ \bv{0}]$ for $A=\begin{bmatrix}1&0&2&1\\1&1&-1&-2\\0&1&-3&2\end{bmatrix}$ as far as is needed to see which variables are free, and use a free variable to write down a nontrivial solution. Explain why the solution you obtain cannot be $\bv{0}$, and what happens when the free variable is given the value $0$.
+
+\textbf{Solution.} We only need an echelon form, not the reduced one, because it already shows the pivot columns and allows back-substitution:
+\begin{align*}
+&\begin{amat}{cccc|c}1&0&2&1&0\\1&1&-1&-2&0\\0&1&-3&2&0\end{amat}
+\rops{R_2-R_1}
+\begin{amat}{cccc|c}1&0&2&1&0\\0&1&-3&-3&0\\0&1&-3&2&0\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccc|c}1&0&2&1&0\\0&1&-3&-3&0\\0&0&0&5&0\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$ and $4$, so $x_3$ is free. Solve from the bottom row upward, in terms of $x_3$. Row~3 says $5x_4=0$, so $x_4=0$. Row~2 says $x_2-3x_3-3x_4=0$, so $x_2=3x_3$. Row~1 says $x_1+2x_3+x_4=0$, so $x_1=-2x_3$. Hence
+\[
+\bv{x}=\begin{bmatrix}-2x_3\\3x_3\\x_3\\0\end{bmatrix}=x_3\begin{bmatrix}-2\\3\\1\\0\end{bmatrix}.
+\]
+Give the free variable the value $x_3=0$: every other entry is then forced to be $0$, and we get the trivial solution. Give it the value $x_3=1$: the third entry of $\bv{x}$ is $1$, so $\bv{x}=(-2,3,1,0)$ is not $\bv{0}$, whatever the other entries are. This is why a free variable forces a nontrivial solution: the free variable is allowed to be anything, in particular nonzero, and then the solution is nonzero in that position. Every multiple of $(-2,3,1,0)$ is also a solution, so there are infinitely many.
+
+Check in the original matrix:
+\[
+\begin{bmatrix}1&0&2&1\\1&1&-1&-2\\0&1&-3&2\end{bmatrix}\begin{bmatrix}-2\\3\\1\\0\end{bmatrix}=\begin{bmatrix}0\\0\\0\end{bmatrix}.
+\]
+Read as columns, this says $-2\bv{a}_1+3\bv{a}_2+\bv{a}_3=\bv{0}$, that is, $\bv{a}_3=2\bv{a}_1-3\bv{a}_2$: the non-pivot column is a combination of the pivot columns to its left.
+
+\emph{Moral.} ``There is a free variable'' and ``there is a nontrivial solution'' are two ways of saying one thing. The free variable is the one you may choose, and choosing it nonzero is what makes the solution nonzero.
+\end{exmp}
+
+\subsection*{Bank: parametric vector form of a homogeneous system}
+
+\begin{exmp}{One free variable, in a system given as equations}{bankPVF1}
+Describe all solutions of
+\[
+x_1-2x_4=0,\qquad x_1+x_2+x_4=0,\qquad x_2+x_3+2x_4=0
+\]
+in parametric vector form, say what the solution set is geometrically, and check your answer in the original equations.
+
+\textbf{Solution.} Some unknowns do not appear in some equations; their coefficients are $0$ and must be written into the matrix. The coefficient matrix has rows $(1,0,0,-2)$, $(1,1,0,1)$ and $(0,1,1,2)$:
+\begin{align*}
+&\begin{amat}{cccc|c}1&0&0&-2&0\\1&1&0&1&0\\0&1&1&2&0\end{amat}
+\rops{R_2-R_1}
+\begin{amat}{cccc|c}1&0&0&-2&0\\0&1&0&3&0\\0&1&1&2&0\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccc|c}1&0&0&-2&0\\0&1&0&3&0\\0&0&1&-1&0\end{amat}.
+\end{align*}
+This is reduced echelon form. Columns $1$, $2$, $3$ are pivot columns, so $x_4$ is the only free variable. The three rows say $x_1=2x_4$, \ $x_2=-3x_4$, \ $x_3=x_4$, so
+\[
+\bv{x}=\begin{bmatrix}2x_4\\-3x_4\\x_4\\x_4\end{bmatrix}=x_4\begin{bmatrix}2\\-3\\1\\1\end{bmatrix}.
+\]
+Geometrically, the solution set is the line through the origin of $\R^4$ in the direction $(2,-3,1,1)$. Check with $x_4=1$ in the \emph{original} equations: \ $2-2=0$, \ $2-3+1=0$, \ $-3+1+2=0$. \ $\checkmark$
+
+\emph{Moral.} Three equations in four unknowns leave at least one free variable, and here exactly one, because every equation contributes a pivot. The usual slip is to forget the zero coefficients of missing unknowns when the matrix is written down.
+\end{exmp}
+
+\begin{exmp}{Two free variables that are not the last unknowns}{bankPVF2}
+Find the parametric vector form of the solutions of $A\bv{x}=\bv{0}$ for
+\[
+A=\begin{bmatrix}1&2&0&-1&0\\1&2&1&2&0\\-1&-2&2&7&1\end{bmatrix},
+\]
+describe the solution set, and verify the answer by one matrix product.
+
+\textbf{Solution.}
+\begin{align*}
+&\begin{amat}{ccccc|c}1&2&0&-1&0&0\\1&2&1&2&0&0\\-1&-2&2&7&1&0\end{amat}
+\rops{R_2-R_1,\ R_3+R_1}
+\begin{amat}{ccccc|c}1&2&0&-1&0&0\\0&0&1&3&0&0\\0&0&2&6&1&0\end{amat}\\[4pt]
+&\rops{R_3-2R_2}
+\begin{amat}{ccccc|c}1&2&0&-1&0&0\\0&0&1&3&0&0\\0&0&0&0&1&0\end{amat}.
+\end{align*}
+This is reduced echelon form. The pivot columns are $1$, $3$ and $5$, so the free variables are $x_2$ and $x_4$, which are \emph{not} the last two unknowns: free variables are found from the pivot columns, not from the position. The rows say $x_1=-2x_2+x_4$, \ $x_3=-3x_4$ and $x_5=0$. Therefore
+\[
+\bv{x}=\begin{bmatrix}-2x_2+x_4\\x_2\\-3x_4\\x_4\\0\end{bmatrix}=x_2\begin{bmatrix}-2\\1\\0\\0\\0\end{bmatrix}+x_4\begin{bmatrix}1\\0\\-3\\1\\0\end{bmatrix}.
+\]
+Call the two vectors $\bv{u}$ and $\bv{v}$. Each comes from giving one free variable the value $1$ and the other the value $0$. Because $\bv{u}$ has a $1$ in position~$2$ where $\bv{v}$ has a $0$, and $\bv{v}$ has a $1$ in position~$4$ where $\bv{u}$ has a $0$, neither is a multiple of the other, so the solution set is a genuine plane through the origin of $\R^5$. The last entry is $0$ in every solution: $x_5$ is a basic variable with no free variable in its row.
+
+To check both vectors at once, multiply $A$ by the matrix whose columns are $\bv{u}$ and $\bv{v}$ (each column of the product is $A\bv{u}$ or $A\bv{v}$):
+\[
+\begin{bmatrix}1&2&0&-1&0\\1&2&1&2&0\\-1&-2&2&7&1\end{bmatrix}\begin{bmatrix}-2&1\\1&0\\0&-3\\0&1\\0&0\end{bmatrix}=\begin{bmatrix}0&0\\0&0\\0&0\end{bmatrix}.
+\]
+\emph{Moral.} Locate the free variables from the pivot columns, then read each direction vector from the reduced rows. The product above checks all directions with one multiplication.
+\end{exmp}
+
+\subsection*{Bank: a particular solution plus the homogeneous solutions}
+
+\begin{exmp}{Spot a particular solution, then reduce only the homogeneous system}{bankInspect}
+Let $A=\begin{bmatrix}1&-1&0&2\\2&-1&1&3\\-1&0&-1&-1\end{bmatrix}$ and $\bv{b}=(3,5,-2)$. Find all solutions of $A\bv{x}=\bv{b}$ without row reducing $[A\ \bv{b}]$ first, and then compare with the reduction of $[A\ \bv{b}]$.
+
+\textbf{Solution.} By Theorem~\ref{thm:translate} we need one particular solution and the solutions of $A\bv{x}=\bv{0}$.
+
+\emph{A particular solution by inspection.} A solution is a recipe that builds $\bv{b}$ from the columns, so try combinations of a few columns. The first column is $(1,2,-1)$ and the fourth is $(2,3,-1)$, and their sum is $(3,5,-2)=\bv{b}$. So $\bv{p}=(1,0,0,1)$ is a solution:
+\[
+\begin{bmatrix}1&-1&0&2\\2&-1&1&3\\-1&0&-1&-1\end{bmatrix}\begin{bmatrix}1\\0\\0\\1\end{bmatrix}=\begin{bmatrix}3\\5\\-2\end{bmatrix}.
+\]
+\emph{The homogeneous solutions.} Only the coefficient matrix matters here:
+\begin{align*}
+&\begin{amat}{cccc|c}1&-1&0&2&0\\2&-1&1&3&0\\-1&0&-1&-1&0\end{amat}
+\rops{R_2-2R_1,\ R_3+R_1}
+\begin{amat}{cccc|c}1&-1&0&2&0\\0&1&1&-1&0\\0&-1&-1&1&0\end{amat}\\[4pt]
+&\rops{R_3+R_2}
+\begin{amat}{cccc|c}1&-1&0&2&0\\0&1&1&-1&0\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1+R_2}
+\begin{amat}{cccc|c}1&0&1&1&0\\0&1&1&-1&0\\0&0&0&0&0\end{amat}.
+\end{align*}
+The free variables are $x_3$ and $x_4$, with $x_1=-x_3-x_4$ and $x_2=-x_3+x_4$. So the solutions of $A\bv{x}=\bv{0}$ are $x_3\bv{u}+x_4\bv{v}$ with $\bv{u}=(-1,-1,1,0)$ and $\bv{v}=(-1,1,0,1)$, and by the theorem the solutions of $A\bv{x}=\bv{b}$ are
+\[
+\bv{x}=\begin{bmatrix}1\\0\\0\\1\end{bmatrix}+x_3\begin{bmatrix}-1\\-1\\1\\0\end{bmatrix}+x_4\begin{bmatrix}-1\\1\\0\\1\end{bmatrix}.
+\]
+Check one more member, $x_3=1$, $x_4=0$, which is $\bv{p}+\bv{u}=(0,-1,1,1)$: \ $0+1+0+2=3$, \ $0+1+1+3=5$, \ $0+0-1-1=-2$. \ $\checkmark$
+
+\emph{Comparison with the reduction of $[A\ \bv{b}]$.} Applying the same three operations to the augmented matrix, with $\bv{b}$ as the extra column, gives
+\[
+\begin{amat}{cccc|c}1&0&1&1&2\\0&1&1&-1&-1\\0&0&0&0&0\end{amat},
+\]
+which says $x_1=2-x_3-x_4$ and $x_2=-1-x_3+x_4$. The particular solution that this reduction produces, with $x_3=x_4=0$, is $(2,-1,0,0)$, which is \emph{not} the vector $\bv{p}$ that we found by inspection. The difference is $\bv{p}-(2,-1,0,0)=(-1,1,0,1)=\bv{v}$, a solution of $A\bv{x}=\bv{0}$, so the two descriptions give the same set (compare Pause and think~\ref{think:partic}).
+
+\emph{Moral.} A particular solution can often be seen directly, and then only the homogeneous system needs row reduction. The vector $\bv{p}$ found by inspection is also a separate check on the reduction of $[A\ \bv{b}]$: it must differ from the reduction's particular solution by a homogeneous solution.
+\end{exmp}
+
+\begin{exmp}{One matrix, three right-hand sides, one row reduction}{bankSeveral}
+Let $A=\begin{bmatrix}1&1&2\\1&2&0\\-1&1&-6\end{bmatrix}$, $\ \bv{b}=(2,1,-4)$, $\ \bv{c}=(1,3,3)$ and $\bv{d}=(1,2,0)$. For each of the three right-hand sides decide whether $A\bv{x}$ equals it for some $\bv{x}$, and describe all solutions. Are the solution sets for $\bv{b}$ and $\bv{c}$ the same line?
+
+\textbf{Solution.} The three systems have the same coefficient matrix, and row operations act on each right-hand column separately. So we row reduce the matrix $[A\ \bv{b}\ \bv{c}\ \bv{d}]$ once, with three columns after the bar:
+\begin{align*}
+&\begin{amat}{ccc|ccc}1&1&2&2&1&1\\1&2&0&1&3&2\\-1&1&-6&-4&3&0\end{amat}
+\rops{R_2-R_1,\ R_3+R_1}
+\begin{amat}{ccc|ccc}1&1&2&2&1&1\\0&1&-2&-1&2&1\\0&2&-4&-2&4&1\end{amat}\\[4pt]
+&\rops{R_3-2R_2}
+\begin{amat}{ccc|ccc}1&1&2&2&1&1\\0&1&-2&-1&2&1\\0&0&0&0&0&-1\end{amat}\\[4pt]
+&\rops{-R_3}
+\begin{amat}{ccc|ccc}1&1&2&2&1&1\\0&1&-2&-1&2&1\\0&0&0&0&0&1\end{amat}\\[4pt]
+&\rops{R_1-R_3,\ R_2-R_3}
+\begin{amat}{ccc|ccc}1&1&2&2&1&0\\0&1&-2&-1&2&0\\0&0&0&0&0&1\end{amat}\\[4pt]
+&\rops{R_1-R_2}
+\begin{amat}{ccc|ccc}1&0&4&3&-1&0\\0&1&-2&-1&2&0\\0&0&0&0&0&1\end{amat}.
+\end{align*}
+The coefficient part has pivots in columns $1$ and $2$, so $x_3$ is free for \emph{all three} systems. Now read the three right-hand columns separately.
+
+\emph{For $\bv{b}$.} The last row reads $0=0$, so the system is consistent, with $x_1=3-4x_3$ and $x_2=-1+2x_3$: \ $\bv{x}=(3,-1,0)+x_3(-4,2,1)$.
+
+\emph{For $\bv{c}$.} The last row again reads $0=0$, with $x_1=-1-4x_3$ and $x_2=2+2x_3$: \ $\bv{x}=(-1,2,0)+x_3(-4,2,1)$.
+
+\emph{For $\bv{d}$.} The last row reads $0=1$: no solution.
+
+The direction vector $(-4,2,1)$ is the same for $\bv{b}$ and $\bv{c}$, and it is the direction of the solutions of $A\bv{x}=\bv{0}$, as Theorem~\ref{thm:translate} predicts. The two lines are parallel. They are the same line only if their particular solutions differ by a multiple of $(-4,2,1)$; the difference is $(-1,2,0)-(3,-1,0)=(-4,3,0)$, whose third entry is $0$, so it would have to be $0\cdot(-4,2,1)=\bv{0}$, which it is not. The lines are different. Check a particular solution of each consistent system:
+\[
+\begin{bmatrix}1&1&2\\1&2&0\\-1&1&-6\end{bmatrix}\begin{bmatrix}3&-1\\-1&2\\0&0\end{bmatrix}=\begin{bmatrix}2&1\\1&3\\-4&3\end{bmatrix}.
+\]
+The columns of the product are $\bv{b}$ and $\bv{c}$. \ $\checkmark$
+
+\emph{Why $\bv{d}$ fails.} The rows of $A$ satisfy $\text{row}_3=2\,\text{row}_2-3\,\text{row}_1$, so a right-hand side $(y_1,y_2,y_3)$ can only be consistent if $y_3=2y_2-3y_1$. For $\bv{b}$: \ $2\cdot1-3\cdot2=-4$. For $\bv{c}$: \ $2\cdot3-3\cdot1=3$. For $\bv{d}$: \ $2\cdot2-3\cdot1=1\neq0$.
+
+\emph{Moral.} Reduce once and read every right-hand side from the same matrix. The left part decides the directions (here a line, from the one free variable); each right-hand side only decides whether the translate exists, and where it is.
+\end{exmp}
+
+\subsection*{Bank: point, line, plane or nothing}
+
+\begin{exmp}{Four systems of three equations, four different shapes}{bankShapes}
+Each system has three equations in $x_1,x_2,x_3$. Each equation describes a plane in $\R^3$, and a solution is a point on all three planes. Find the solution set of each system and describe it geometrically.
+\begin{align*}
+&\text{(S1)}\quad x_1+x_2+x_3=2,\quad x_1-x_2+2x_3=5,\quad 2x_1+x_2-x_3=2;\\
+&\text{(S2)}\quad x_1+2x_2-x_3=3,\quad 2x_1+3x_2+x_3=4,\quad 3x_1+5x_2=7;\\
+&\text{(S3)}\quad x_1-2x_2+3x_3=4,\quad -2x_1+4x_2-6x_3=-8,\quad 3x_1-6x_2+9x_3=12;\\
+&\text{(S4)}\quad x_1+2x_2-x_3=1,\quad 2x_1+4x_2-2x_3=5,\quad x_1-x_2+x_3=0.
+\end{align*}
+
+\textbf{Solution.} In each case we row reduce the augmented matrix and count free variables and look at zero rows. A row of the form $[\,0\ 0\ 0\mid 0\,]$ says $0=0$ and drops out; a row $[\,0\ 0\ 0\mid c\,]$ with $c\neq0$ says $0=c$ and kills the system.
+
+(S1)~
+\begin{align*}
+&\begin{amat}{ccc|c}1&1&1&2\\1&-1&2&5\\2&1&-1&2\end{amat}
+\rops{R_2-R_1,\ R_3-2R_1}
+\begin{amat}{ccc|c}1&1&1&2\\0&-2&1&3\\0&-1&-3&-2\end{amat}
+\rops{R_2\leftrightarrow R_3,\ -R_2}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&3&2\\0&-2&1&3\end{amat}\\[4pt]
+&\rops{R_3+2R_2}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&3&2\\0&0&7&7\end{amat}
+\rops{\frac17R_3}
+\begin{amat}{ccc|c}1&1&1&2\\0&1&3&2\\0&0&1&1\end{amat}\\[4pt]
+&\rops{R_1-R_3,\ R_2-3R_3}
+\begin{amat}{ccc|c}1&1&0&1\\0&1&0&-1\\0&0&1&1\end{amat}
+\rops{R_1-R_2}
+\begin{amat}{ccc|c}1&0&0&2\\0&1&0&-1\\0&0&1&1\end{amat}.
+\end{align*}
+Every column is a pivot column and there is no zero row: the solution set is the single point $(2,-1,1)$. The three planes meet in one point. Check in the original equations: \ $2-1+1=2$, \ $2+1+2=5$, \ $4-1-1=2$. \ $\checkmark$
+
+(S2)~
+\begin{align*}
+&\begin{amat}{ccc|c}1&2&-1&3\\2&3&1&4\\3&5&0&7\end{amat}
+\rops{R_2-2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|c}1&2&-1&3\\0&-1&3&-2\\0&-1&3&-2\end{amat}
+\rops{-R_2}
+\begin{amat}{ccc|c}1&2&-1&3\\0&1&-3&2\\0&-1&3&-2\end{amat}\\[4pt]
+&\rops{R_3+R_2}
+\begin{amat}{ccc|c}1&2&-1&3\\0&1&-3&2\\0&0&0&0\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{ccc|c}1&0&5&-1\\0&1&-3&2\\0&0&0&0\end{amat}.
+\end{align*}
+There is one zero row, of the form $0=0$, and $x_3$ is free: $x_1=-1-5x_3$, \ $x_2=2+3x_3$, so $\bv{x}=(-1,2,0)+x_3(-5,3,1)$, a \emph{line}. The zero row appeared because the third equation is the sum of the first two (add the left sides: $3x_1+5x_2+0x_3$; add the right sides: $3+4=7$), so it says nothing new: the third plane contains the line in which the first two planes meet.
+
+(S3)~
+\begin{align*}
+&\begin{amat}{ccc|c}1&-2&3&4\\-2&4&-6&-8\\3&-6&9&12\end{amat}
+\rops{R_2+2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|c}1&-2&3&4\\0&0&0&0\\0&0&0&0\end{amat}.
+\end{align*}
+Two zero rows and one pivot: $x_2$ and $x_3$ are free and $x_1=4+2x_2-3x_3$, so $\bv{x}=(4,0,0)+x_2(2,1,0)+x_3(-3,0,1)$, a \emph{plane}. All three equations describe the same plane: the second and third are $-2$ times and $3$ times the first.
+
+(S4)~
+\begin{align*}
+&\begin{amat}{ccc|c}1&2&-1&1\\2&4&-2&5\\1&-1&1&0\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|c}1&2&-1&1\\0&0&0&3\\1&-1&1&0\end{amat}.
+\end{align*}
+The second row says $0=3$, so the system is inconsistent and the solution set is \emph{empty}. We can stop at once. The first two planes have left sides that are proportional and right sides that are not ($2\cdot1\neq5$): they are parallel and different, so no point lies on both, whatever the third plane does.
+
+\emph{Moral.} The same three-by-three shape produces a point, a line, a plane and nothing. The number of free variables is the number of directions ($0$, $1$, $2$), and a row $0=c$ with $c\neq0$ decides existence. The zero rows tell you that some equations were redundant.
+\end{exmp}
+
+\subsection*{Bank: a parameter that changes the solution set}
+
+\begin{exmp}{One parameter, three equations}{bankParam3}
+Let $A(h)=\begin{bmatrix}1&1&2\\2&3&h\\3&4&5\end{bmatrix}$, $\ \bv{b}=(2,1,3)$ and $\bv{c}=(2,1,4)$. For every real number $h$, describe the solution sets of $A(h)\bv{x}=\bv{0}$, of $A(h)\bv{x}=\bv{b}$ and of $A(h)\bv{x}=\bv{c}$: which are a point, a line, or empty?
+
+\textbf{Solution.} Row reduce $[A(h)\ \bv{b}\ \bv{c}]$ once, keeping $h$ as a symbol. The system $A(h)\bv{x}=\bv{0}$ needs no extra column, since a column of zeros never changes.
+\begin{align*}
+&\begin{amat}{ccc|cc}1&1&2&2&2\\2&3&h&1&1\\3&4&5&3&4\end{amat}
+\rops{R_2-2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|cc}1&1&2&2&2\\0&1&h-4&-3&-3\\0&1&-1&-3&-2\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{ccc|cc}1&1&2&2&2\\0&1&h-4&-3&-3\\0&0&3-h&0&1\end{amat}.
+\end{align*}
+The last row reads $(3-h)x_3=0$ for $\bv{b}$ and $(3-h)x_3=1$ for $\bv{c}$. Everything depends on whether $3-h$ is zero.
+
+\emph{Case $h\neq3$.} All three columns of $A(h)$ are pivot columns. The homogeneous system has only the trivial solution: the solution set is the single point $\bv{0}$. For $\bv{b}$ the last row gives $x_3=0$, then row~2 gives $x_2=-3$ and row~1 gives $x_1=2-x_2=5$: the unique solution is $(5,-3,0)$, the same for every $h\neq3$ (the entry $h$ multiplies $x_3=0$). For $\bv{c}$ the last row gives $x_3=\frac{1}{3-h}$, so there is again exactly one solution, but it depends on $h$. For example $h=2$ gives $x_3=1$; then row~2, $x_2+(h-4)x_3=-3$, gives $x_2=-3+2=-1$, and row~1, $x_1+x_2+2x_3=2$, gives $x_1=2+1-2=1$. Check that $(1,-1,1)$ solves $A(2)\bv{x}=\bv{c}$:
+\[
+\begin{bmatrix}1&1&2\\2&3&2\\3&4&5\end{bmatrix}\begin{bmatrix}1\\-1\\1\end{bmatrix}=\begin{bmatrix}2\\1\\4\end{bmatrix}.
+\]
+\emph{Case $h=3$.} Put $h=3$ in the last matrix and finish the reduction:
+\begin{align*}
+&\begin{amat}{ccc|cc}1&1&2&2&2\\0&1&-1&-3&-3\\0&0&0&0&1\end{amat}
+\rops{R_1-R_2}
+\begin{amat}{ccc|cc}1&0&3&5&5\\0&1&-1&-3&-3\\0&0&0&0&1\end{amat}.
+\end{align*}
+Column~3 is now a free column, with $x_1=-3x_3$ and $x_2=x_3$ for the homogeneous system. So $A(3)\bv{x}=\bv{0}$ has the line $x_3(-3,1,1)$. For $\bv{b}$ the last row is $0=0$ and the solutions are $\bv{x}=(5,-3,0)+x_3(-3,1,1)$, a line through $(5,-3,0)$ parallel to the first one. For $\bv{c}$ the last row is $0=1$: no solution.
+
+\begin{center}
+\begin{tabular}{lccc}\toprule
+ & $A(h)\bv{x}=\bv{0}$ & $A(h)\bv{x}=\bv{b}$ & $A(h)\bv{x}=\bv{c}$\\\midrule
+$h\neq3$ & a point (the origin) & a point & a point\\
+$h=3$ & a line & a line & empty\\\bottomrule
+\end{tabular}
+\end{center}
+\emph{Moral.} Whether there is more than one solution is decided by $A(h)$ alone: the value $h=3$ is the only one at which $A(h)\bv{x}=\bv{0}$ has a nonzero solution. Whether there is any solution at $h=3$ is decided by the right-hand side, and the same $h$ gives a line for $\bv{b}$ and nothing for $\bv{c}$. This is Theorem~\ref{thm:uniq} together with the existence question of Section~1.4.
+\end{exmp}
+
+\subsection*{Bank: balancing a chemical equation}
+
+\begin{exmp}{A reaction with two possible products}{bankAmmonia}
+Ammonia $\mathrm{NH_3}$ burns in oxygen $\mathrm{O_2}$ and produces water $\mathrm{H_2O}$ together with nitrogen monoxide $\mathrm{NO}$, nitrogen dioxide $\mathrm{NO_2}$, or a mixture of the two:
+\[
+x_1\,\mathrm{NH_3}+x_2\,\mathrm{O_2}\to x_3\,\mathrm{NO}+x_4\,\mathrm{NO_2}+x_5\,\mathrm{H_2O}.
+\]
+Find all balanced equations, in parametric vector form, and describe which ones make chemical sense.
+
+\textbf{Solution.} The numbers $x_1,\dots,x_5$ count molecules, and each kind of atom must be conserved, so we write one equation per element, with all unknowns on the left:
+\[
+\begin{aligned}
+\text{N:}&\quad x_1=x_3+x_4&&\Rightarrow\quad x_1-x_3-x_4=0,\\
+\text{O:}&\quad 2x_2=x_3+2x_4+x_5&&\Rightarrow\quad 2x_2-x_3-2x_4-x_5=0,\\
+\text{H:}&\quad 3x_1=2x_5&&\Rightarrow\quad 3x_1-2x_5=0.
+\end{aligned}
+\]
+This is a homogeneous system with $3$ equations and $5$ unknowns, so by Theorem~\ref{thm:nontriv} it has nontrivial solutions, with at least two free variables. Reduce (the equations are in the order N, O, H):
+\begin{align*}
+&\begin{amat}{ccccc|c}1&0&-1&-1&0&0\\0&2&-1&-2&-1&0\\3&0&0&0&-2&0\end{amat}
+\rops{R_3-3R_1}
+\begin{amat}{ccccc|c}1&0&-1&-1&0&0\\0&2&-1&-2&-1&0\\0&0&3&3&-2&0\end{amat}.
+\end{align*}
+This is an echelon form with pivots in columns $1$, $2$, $3$, so $x_4$ and $x_5$ are free. To avoid fractions in the back-substitution, give the free variables values that make the divisions come out even: write $x_4=2u$ and $x_5=6s$. Row~3 gives $3x_3=-3x_4+2x_5=-6u+12s$, so $x_3=4s-2u$. Row~2 gives $2x_2=x_3+2x_4+x_5=(4s-2u)+4u+6s=10s+2u$, so $x_2=5s+u$. Row~1 gives $x_1=x_3+x_4=(4s-2u)+2u=4s$. Hence
+\[
+\bv{x}=\begin{bmatrix}4s\\5s+u\\4s-2u\\2u\\6s\end{bmatrix}=s\begin{bmatrix}4\\5\\4\\0\\6\end{bmatrix}+u\begin{bmatrix}0\\1\\-2\\2\\0\end{bmatrix}.
+\]
+This is a plane through the origin in $\R^5$: the balanced equations form a two-parameter family.
+
+\emph{Which members make chemical sense?} Counts of molecules cannot be negative. The entries $4s$ and $6s$ force $s\ge0$ and the entry $2u$ forces $u\ge0$; the third entry $4s-2u\ge0$ forces $u\le2s$. So we need $0\le u\le2s$. The two ends of this range are the two ``pure'' reactions:
+\begin{align*}
+u=0,\ s=1:&\quad 4\,\mathrm{NH_3}+5\,\mathrm{O_2}\to4\,\mathrm{NO}+6\,\mathrm{H_2O},\\
+u=2,\ s=1:&\quad 4\,\mathrm{NH_3}+7\,\mathrm{O_2}\to4\,\mathrm{NO_2}+6\,\mathrm{H_2O},
+\end{align*}
+and every value of $u$ in between gives a mixture, such as $u=1$, $s=1$: \ $4\,\mathrm{NH_3}+6\,\mathrm{O_2}\to2\,\mathrm{NO}+2\,\mathrm{NO_2}+6\,\mathrm{H_2O}$. Taking $s=u=\tfrac12$ gives the smallest whole-number mixture $2\,\mathrm{NH_3}+3\,\mathrm{O_2}\to\mathrm{NO}+\mathrm{NO_2}+3\,\mathrm{H_2O}$. Check all three balanced equations with one product, whose columns are $(4,5,4,0,6)$, $(4,7,0,4,6)$ and $(2,3,1,1,3)$:
+\[
+\begin{bmatrix}1&0&-1&-1&0\\0&2&-1&-2&-1\\3&0&0&0&-2\end{bmatrix}\begin{bmatrix}4&4&2\\5&7&3\\4&0&1\\0&4&1\\6&6&3\end{bmatrix}=\begin{bmatrix}0&0&0\\0&0&0\\0&0&0\end{bmatrix}.
+\]
+\emph{Moral.} Balancing is a homogeneous system, and when a reaction has more substances than necessary the free variables are the choices the chemistry leaves open. The nonnegativity condition cuts the plane down to the mixtures of the two pure reactions.
+\end{exmp}
+
+\subsection*{Bank: basic proofs}
+
+A proof is a chain of reasons that convinces a reader that a statement is true in \emph{every} case that the statement covers. The three examples below model the habits of a short proof: read the statement, name what is assumed and what is to be shown, and write the argument in steps. They use only the rules for $A\bv{x}$ from Section~1.4.
+
+\begin{exmp}{Reading an ``if \dots\ then'' statement before proving it}{bankSum}
+\textbf{Statement.} If $\bv{u}$ and $\bv{v}$ are solutions of $A\bv{x}=\bv{0}$, then $\bv{u}+\bv{v}$ is also a solution of $A\bv{x}=\bv{0}$.
+
+\textbf{What we are proving and how.} We show that the solutions of a homogeneous equation can be added, using only the linearity rule of Theorem~\ref{1.4-thm:linear}.
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Hypothesis} (what we may assume): $A$ is a matrix and $\bv{u},\bv{v}$ are vectors with $A\bv{u}=\bv{0}$ and $A\bv{v}=\bv{0}$.
+  \item \emph{Goal} (what we must show): $A(\bv{u}+\bv{v})=\bv{0}$.
+  \item \emph{Scope.} The statement is about \emph{every} matrix $A$ and \emph{every} pair of solutions, including a solution added to itself or to $\bv{0}$. So the proof must use no entry of $A$ and no particular vectors.
+\end{itemize}
+A numerical test checks that we have read the statement correctly, but it is not a proof. Take $A=\begin{bmatrix}2&-1&3\end{bmatrix}$, $\bv{u}=(1,2,0)$ and $\bv{v}=(0,3,1)$. Then $A\bv{u}=2-2+0=0$ and $A\bv{v}=0-3+3=0$, and $\bv{u}+\bv{v}=(1,5,1)$ gives $2-5+3=0$.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $A\bv{u}=\bv{0}$ and $A\bv{v}=\bv{0}$.
+  \item \emph{Compute.} By Theorem~\ref{1.4-thm:linear}, $A(\bv{u}+\bv{v})=A\bv{u}+A\bv{v}$. By the assumption this equals $\bv{0}+\bv{0}=\bv{0}$.
+  \item \emph{Conclude.} Therefore $A(\bv{u}+\bv{v})=\bv{0}$, so $\bv{u}+\bv{v}$ is a solution of $A\bv{x}=\bv{0}$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} Only the rule $A(\bv{u}+\bv{v})=A\bv{u}+A\bv{v}$. That is why it covers every matrix at once. The same proof works for any equation that has this additive property, which is the idea behind the ``flat'' sets through the origin that solution sets of $A\bv{x}=\bv{0}$ are.
+\end{exmp}
+
+\begin{exmp}{A particular solution plus a homogeneous solution is a solution}{bankTranslate}
+\textbf{Statement.} If $A\bv{p}=\bv{b}$ and $A\bv{w}=\bv{0}$, then $A(\bv{p}+\bv{w})=\bv{b}$.
+
+\textbf{What we are proving and how.} This is the half of Theorem~\ref{thm:translate} that says every vector $\bv{p}+\bv{w}$ is a solution of $A\bv{x}=\bv{b}$. We prove it from the same linearity rule, and then point out where each hypothesis is used.
+
+\textbf{Read the statement first.} There are \emph{two} hypotheses, about two different vectors: $\bv{p}$ solves the equation with right-hand side $\bv{b}$, and $\bv{w}$ solves the equation with right-hand side $\bv{0}$. The goal is that the \emph{sum} solves the equation with right-hand side $\bv{b}$, not $\bv{0}$ and not $2\bv{b}$. Test with $A=\begin{bmatrix}1&-1&2\\3&0&1\end{bmatrix}$, $\bv{p}=(1,2,0)$, so $\bv{b}=A\bv{p}=(-1,3)$, and $\bv{w}=(1,-5,-3)$, for which $A\bv{w}=(1+5-6,\ 3-3)=(0,0)$. Then $\bv{p}+\bv{w}=(2,-3,-3)$ and
+\[
+\begin{bmatrix}1&-1&2\\3&0&1\end{bmatrix}\begin{bmatrix}2\\-3\\-3\end{bmatrix}=\begin{bmatrix}-1\\3\end{bmatrix}=\bv{b}.
+\]
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $A\bv{p}=\bv{b}$ and $A\bv{w}=\bv{0}$.
+  \item \emph{Compute.} By Theorem~\ref{1.4-thm:linear}, $A(\bv{p}+\bv{w})=A\bv{p}+A\bv{w}$. The first hypothesis replaces $A\bv{p}$ by $\bv{b}$ and the second replaces $A\bv{w}$ by $\bv{0}$, so $A\bv{p}+A\bv{w}=\bv{b}+\bv{0}=\bv{b}$.
+  \item \emph{Conclude.} Therefore $A(\bv{p}+\bv{w})=\bv{b}$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{Where each hypothesis was used.} The first hypothesis was used to turn $A\bv{p}$ into $\bv{b}$, and the second to turn $A\bv{w}$ into $\bv{0}$. If $\bv{w}$ were only known to satisfy $A\bv{w}=\bv{c}$ with $\bv{c}\neq\bv{0}$, the same computation would give $A(\bv{p}+\bv{w})=\bv{b}+\bv{c}$, which is not $\bv{b}$.
+\end{exmp}
+
+\begin{exmp}{Disproving a statement with one counterexample}{bankSumNonhom}
+\textbf{Statement.} If $\bv{u}$ and $\bv{v}$ are solutions of $A\bv{x}=\bv{b}$, then $\bv{u}+\bv{v}$ is also a solution of $A\bv{x}=\bv{b}$.
+
+\textbf{What we are doing and how.} The statement of Example~\ref{ex:bankSum} was about $\bv{b}=\bv{0}$. This one has the same shape with a general right-hand side, and it is false. To disprove a statement about \emph{every} system we need only \emph{one} system and one pair of solutions for which it fails. A counterexample must do two jobs: satisfy the hypothesis, and violate the conclusion.
+
+\textbf{Counterexample.} Take the single equation $2x_1+x_2=5$, that is $A=\begin{bmatrix}2&1\end{bmatrix}$ and $\bv{b}=(5)$, with $\bv{u}=(1,3)$ and $\bv{v}=(2,1)$.
+\begin{itemize}
+  \item \emph{The hypothesis holds.} $2\cdot1+3=5$ and $2\cdot2+1=5$, so both are solutions.
+  \item \emph{The conclusion fails.} $\bv{u}+\bv{v}=(3,4)$ and $2\cdot3+4=10\neq5$, so the sum is not a solution.
+\end{itemize}
+So the statement is false. \qquad$\blacksquare$
+
+\textbf{What is true instead.} The computation of Example~\ref{ex:bankSum} still works, but it ends differently: $A(\bv{u}+\bv{v})=A\bv{u}+A\bv{v}=\bv{b}+\bv{b}=2\bv{b}$. The sum solves the equation with right-hand side $2\bv{b}$, and that is the same equation as $A\bv{x}=\bv{b}$ only when $2\bv{b}=\bv{b}$, that is when $\bv{b}=\bv{0}$. In the counterexample $\bv{b}=5$ and $2\bv{b}=10$, which is the value we found.
+
+\emph{Moral.} A single example can \emph{disprove} a ``for every'' statement, and finding the counterexample shows what the correct statement should be. Here it explains why the solution set of $A\bv{x}=\bv{b}$ with $\bv{b}\neq\bv{0}$ is not closed under addition, and why a translate of a line is not a line through the origin.
+\end{exmp}
+
+\begin{think}{Proof habits}{habits}
+\begin{enumerate}[label=(\arabic*)]
+  \item A classmate ``proves'' the converse of Example~\ref{ex:bankSum} as follows: ``If $\bv{u}+\bv{v}$ is a solution of $A\bv{x}=\bv{0}$, then $A\bv{u}+A\bv{v}=\bv{0}$, so $A\bv{u}=\bv{0}$ and $A\bv{v}=\bv{0}$.'' Which step is wrong? Find a counterexample with one equation in two unknowns.
+  \item Use Example~\ref{ex:bankSum}, together with the rule $A(c\bv{u})=cA\bv{u}$, to show that if $\bv{u}$ and $\bv{v}$ solve $A\bv{x}=\bv{0}$, then so does $3\bv{u}-2\bv{v}$. Write it in the three steps assume, compute, conclude, without redoing a computation with $A$.
+  \item Example~\ref{ex:bankTranslate} proves one half of Theorem~\ref{thm:translate}. Which half? State the other half as an ``if \dots\ then'' sentence and prove it in three steps. Why do we need both halves before we can say that the solution set \emph{is} the set of all vectors $\bv{p}+\bv{w}$?
+\end{enumerate}
+\end{think}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Pause and think \ref{think:freecols}.] The nontrivial solution $(2,-1,1)$ says $2\bv{a}_1-\bv{a}_2+\bv{a}_3=\bv{0}$, equivalently $\bv{a}_3=-2\bv{a}_1+\bv{a}_2$. Any equation $c_1\bv{a}_1+c_2\bv{a}_2=\bv{0}$ would be a solution with $x_3=0$, but $x_3$ is free exactly because the first two columns (the pivot columns) are not related; with $x_3=0$ the reduced matrix forces $x_1=x_2=0$. The suggestion: the pivot columns are not combinations of earlier columns, while a nonpivot column is a combination of the pivot columns to its left, so the span of all the columns equals the span of the pivot columns.
@@ -380,6 +789,7 @@ decide which of the outcomes \emph{no solution}, \emph{exactly one solution}, \e
   \item[Pause and think \ref{think:partic}.] Yes, the same set: $(1,0,1)-(-1,1,0)=(2,-1,1)$, which is itself a homogeneous solution, so $(1,0,1)+x_3(2,-1,1)=(-1,1,0)+(x_3+1)(2,-1,1)$ is the same set with the parameter shifted by $1$. In general, if $\bv{p}$ and $\bv{p}'$ are both solutions, then $\bv{p}'-\bv{p}$ solves $A\bv{x}=\bv{0}$ and the theorem applies equally with either. So the parametric vector form is \emph{not} unique as an expression (the particular solution can be changed by any homogeneous solution, and direction vectors can be rescaled), but the \emph{set} it describes is.
   \item[Pause and think \ref{think:build}.] $(-1,1,1)$: $-1-2+3=0$, and $(2,1,0)$ and $(-1,1,1)$ are not multiples of each other. Any solution of the equation is a combination of $(2,1,0)$ and $(-3,0,1)$, and $(-3,0,1)=(-1,1,1)-(2,1,0)$, so the two sets of generators have the same span: the plane. For a vector that gives only a line take $(4,2,0)=2(2,1,0)$, which solves the equation ($4-4+0=0$). The decisive property: whether one of the two vectors is a multiple of the other. Two vectors in a plane span the plane exactly when neither is a multiple of the other (this is the idea of independence, Section~1.7).
   \item[Pause and think \ref{think:table}.] $\begin{bmatrix}1&0\\0&1\end{bmatrix}$: pivot in every row and column, exactly one solution for every $\bv{b}$. $\begin{bmatrix}1&1\end{bmatrix}$: pivot in the only row, none in column $2$; every $b$ has infinitely many solutions. $\begin{bmatrix}1\\1\end{bmatrix}$: pivot in the only column but not in row $2$; $x_1=b_1$ requires $b_1=b_2$, so exactly one solution or none. $\begin{bmatrix}1&1\\1&1\end{bmatrix}$: pivot in row $1$ only and column $1$ only; $b_1=b_2$ gives infinitely many solutions, otherwise none. A missing pivot in a row allows \emph{no solution} (Section~1.4); a missing pivot in a column allows \emph{many solutions} (Theorem~\ref{thm:uniq}); neither failure happens only with a pivot in every row \emph{and} column.
+  \item[Pause and think \ref{think:habits}.] (1)~The step ``$A\bv{u}+A\bv{v}=\bv{0}$, so $A\bv{u}=\bv{0}$ and $A\bv{v}=\bv{0}$'' is wrong: two vectors can add up to $\bv{0}$ without either being $\bv{0}$, just as $3+(-3)=0$. A counterexample: the equation $x_1-x_2=0$, that is $A=\begin{bmatrix}1&-1\end{bmatrix}$, with $\bv{u}=(1,0)$ and $\bv{v}=(0,1)$. Here $A\bv{u}=1$ and $A\bv{v}=-1$, so neither is a solution, but $\bv{u}+\bv{v}=(1,1)$ gives $1-1=0$, so the sum is. A statement and its converse are different statements, and proving one gives no information about the other. (2)~\emph{Assume} $A\bv{u}=\bv{0}$ and $A\bv{v}=\bv{0}$. \emph{Compute.} By the rule $A(c\bv{x})=cA\bv{x}$ (Theorem~\ref{1.4-thm:linear}) we have $A(3\bv{u})=3A\bv{u}=\bv{0}$, so $3\bv{u}$ is a solution, and in the same way $-2\bv{v}$ is a solution. By Example~\ref{ex:bankSum}, applied to the two solutions $3\bv{u}$ and $-2\bv{v}$, their sum is a solution. \emph{Conclude.} $3\bv{u}-2\bv{v}$ solves $A\bv{x}=\bv{0}$. The proof quotes a result that was already proved instead of repeating its computation, which is how longer proofs are built from short ones. The same argument gives every combination $c\bv{u}+d\bv{v}$. (3)~The example proves the half ``every vector $\bv{p}+\bv{w}$, with $A\bv{w}=\bv{0}$, is a solution of $A\bv{x}=\bv{b}$''. The other half is: \emph{if $A\bv{p}=\bv{b}$ and $A\bv{x}=\bv{b}$, then $\bv{w}=\bv{x}-\bv{p}$ satisfies $A\bv{w}=\bv{0}$} (so that $\bv{x}=\bv{p}+\bv{w}$). \emph{Assume} $A\bv{p}=\bv{b}$ and $A\bv{x}=\bv{b}$. \emph{Compute.} $A(\bv{x}-\bv{p})=A\bv{x}-A\bv{p}=\bv{b}-\bv{b}=\bv{0}$. \emph{Conclude.} $\bv{w}=\bv{x}-\bv{p}$ is a solution of $A\bv{x}=\bv{0}$ and $\bv{x}=\bv{p}+\bv{w}$. Two sets are equal only when each is contained in the other. The first half says that the vectors $\bv{p}+\bv{w}$ all lie in the solution set; the second says that every solution is of that form. With only the first half, there could be solutions that we have missed.
   \item[Before the next section.] (1)~A nontrivial solution says the columns satisfy $x_1\bv{a}_1+\cdots+x_n\bv{a}_n=\bv{0}$ with not all $x_j=0$, so some column is a combination of the others; if there is none, the only way to combine the columns to get $\bv{0}$ is with all weights $0$. (2)~Yes: if $A\bv{u}=A\bv{v}=\bv{0}$ then $A(\bv{u}+\bv{v})=\bv{0}$ and $A(c\bv{u})=\bv{0}$ (Theorem~\ref{1.4-thm:linear}); like a span, it contains $\bv{0}$, sums and multiples of its elements, which is why such sets are lines, planes and their higher-dimensional cousins through the origin. (3)~With columns $\bv{e}_1,\bv{e}_2$, $A\bv{x}=(x_1,x_2,0)$, so $x=(1,1)$ is the only solution of $A\bv{x}=(1,1,0)$; but $\bv{b}=(0,0,1)$ has no solution. Every column has a pivot, so the solution is unique, but row $3$ has no pivot (Theorem~\ref{1.4-thm:existence}).
 \end{description}
 
