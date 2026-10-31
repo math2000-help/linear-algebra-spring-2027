@@ -540,6 +540,555 @@ Let $A=\begin{bmatrix}2&-1\\0&3\end{bmatrix}$ and $B=\begin{bmatrix}1&4\\5&-2\en
   \item In Example~\ref{ex:zerodiv}, $A$ crushed the plane onto a line. Could any matrix undo $A$? What does this say about which matrices can be undone?
 \end{enumerate}
 
+% =====================================================================
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section, followed by a few short proofs. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Sizes and when a product is defined.} Which products of four matrices make sense and how big each is, and how to find a missing size.
+  \item \textbf{Computing a product.} A row times a column and a column times a row, a $3\times3$ times a $3\times2$ with a check, and a matrix whose columns are $\bv{e}_1,\bv{e}_2,\bv{e}_3$ in another order.
+  \item \textbf{$AB$ versus $BA$.} The expansion of $(A+B)^2$ and the gap it leaves, and all the matrices that commute with a given matrix, found by solving a system.
+  \item \textbf{Products that vanish or cancel wrongly.} Every $B$ with $AB=\mathbf{0}$, read off from the solutions of $A\bv{x}=\bv{0}$, and a matrix $C\neq B$ with $AC=AB$ built on purpose.
+  \item \textbf{Powers and a pattern.} A matrix whose powers repeat, one whose powers die out, and one whose powers are the Fibonacci numbers.
+  \item \textbf{The transpose.} $(AB)\T=B\T A\T$ for matrices that are not square, and the split of a square matrix into a symmetric part and a skew part.
+  \item \textbf{A parameter in a product.} A family whose square is always a multiple of $I$, and a parameter chosen so that a product is symmetric.
+  \item \textbf{Applications of the product.} A three-state weather model and two linear maps composed in both orders.
+  \item \textbf{Basic proofs.} Read a ``for every'' statement before proving it, prove $(AB)\T=B\T A\T$ for $2\times2$ matrices by computing both sides, and disprove a statement with one counterexample.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: sizes and when a product is defined}
+
+\begin{exmp}{Which products of four matrices make sense?}{bankSizes}
+Four matrices have sizes $P:\ 2\times5$, \ $Q:\ 5\times3$, \ $R:\ 3\times3$ and $S:\ 3\times2$.
+\begin{enumerate}[label=(\alph*),itemsep=2pt]
+  \item List every product $XY$ of two \emph{different} matrices from this list that is defined, with its size.
+  \item Which orders of all four letters, such as $PQRS$, give a defined product? What size does each have?
+  \item If $A$ is $4\times3$ and $AB$ is $4\times7$, what is the size of $B$? If $C$ is $7\times2$, which of $BC$ and $ABC$ are defined?
+\end{enumerate}
+
+\textbf{Solution.} The rule of the warning on sizes: $XY$ is defined exactly when the number of columns of $X$ equals the number of rows of $Y$, and then $XY$ has the rows of $X$ and the columns of $Y$. So write each size as (rows)$\times$(columns) and look for a match between the second number of the left factor and the first number of the right factor.
+
+(a)~$P$ has $5$ columns and only $Q$ has $5$ rows, so $PQ$ is defined, of size $2\times3$. $Q$ has $3$ columns and both $R$ and $S$ have $3$ rows: $QR$ is $5\times3$ and $QS$ is $5\times2$. $R$ has $3$ columns, which fits $S$: $RS$ is $3\times2$. ($RR$ is also defined, but the two factors are not different.) $S$ has $2$ columns and only $P$ has $2$ rows: $SP$ is $3\times5$. No other pair works; for example $PQ$ is defined but $QP$ is not, because $Q$ has $3$ columns and $P$ has $2$ rows.
+
+(b)~A product of four factors is defined when every pair of neighbours is defined. By part~(a) the allowed neighbours are $PQ$, $QR$, $QS$, $RS$, $SP$, so we look for a path through all four letters that follows these pairs. Starting at $P$ we must go to $Q$; from $Q$ we can go to $R$ or to $S$. Going to $S$ leaves only $P$ next, which is used, so we must go to $R$, then $S$: the order $PQRS$. Starting at $Q$: $Q\to R\to S\to P$ works, but $Q\to S\to P$ is stuck (the only successor of $P$ is $Q$). Starting at $R$: $R\to S\to P\to Q$. Starting at $S$: $S\to P\to Q\to R$. So exactly four orders are defined, and their sizes are found by keeping the outer numbers:
+\begin{align*}
+PQRS:&\ (2\times5)(5\times3)(3\times3)(3\times2)\to 2\times2, & QRSP:&\ (5\times3)(3\times3)(3\times2)(2\times5)\to 5\times5,\\
+RSPQ:&\ (3\times3)(3\times2)(2\times5)(5\times3)\to 3\times3, & SPQR:&\ (3\times2)(2\times5)(5\times3)(3\times3)\to 3\times3.
+\end{align*}
+The four orders are shifts of one another, yet the products have three different sizes, so they are certainly not equal.
+
+(c)~Since $A$ is $4\times3$, the matrix $B$ must have $3$ rows (the inner numbers match), and $AB$ has as many columns as $B$, so $B$ has $7$ columns: $B$ is $3\times7$. Then $BC$ is $(3\times7)(7\times2)$, defined, of size $3\times2$, and $ABC$ is $(4\times3)(3\times7)(7\times2)$, defined, of size $4\times2$.
+
+\emph{Moral.} Write the sizes under the letters and cross out the matching inner numbers; what is left is the size of the product, and a mismatch anywhere means that the product does not exist.
+\end{exmp}
+
+\subsection*{Bank: computing a product}
+
+\begin{exmp}{A row times a column and a column times a row}{bankDotOuter}
+Let $\bv{u}=(2,-1,3)$ and $\bv{v}=(1,4,-2)$, written as columns. Compute $\bv{u}\T\bv{v}$ and $\bv{u}\bv{v}\T$, give the size of each, and check that $(\bv{u}\bv{v}\T)\bv{x}=(\bv{v}\T\bv{x})\,\bv{u}$ for $\bv{x}=(1,1,1)$.
+
+\textbf{Solution.} Here $\bv{u}\T$ is $1\times3$ and $\bv{v}$ is $3\times1$, so $\bv{u}\T\bv{v}$ is $(1\times3)(3\times1)=1\times1$: a single number, the dot product,
+\[
+\begin{bmatrix}2&-1&3\end{bmatrix}\begin{bmatrix}1\\4\\-2\end{bmatrix}=\begin{bmatrix}-8\end{bmatrix}.
+\]
+In the other order, $\bv{u}$ is $3\times1$ and $\bv{v}\T$ is $1\times3$, so $\bv{u}\bv{v}\T$ is $(3\times1)(1\times3)=3\times3$. The row--column rule has only one term in each sum, so $(\bv{u}\bv{v}\T)_{ij}=u_iv_j$:
+\[
+\begin{bmatrix}2\\-1\\3\end{bmatrix}\begin{bmatrix}1&4&-2\end{bmatrix}=\begin{bmatrix}2&8&-4\\-1&-4&2\\3&12&-6\end{bmatrix}.
+\]
+Look at the result by columns: column $j$ is $v_j\bv{u}$, so the three columns are $1\bv{u}$, $4\bv{u}$ and $-2\bv{u}$. Every column is a multiple of $\bv{u}$. By the definition of the product as a combination of columns, for any $\bv{x}$
+\[
+(\bv{u}\bv{v}\T)\bv{x}=x_1(1\bv{u})+x_2(4\bv{u})+x_3(-2\bv{u})=(x_1+4x_2-2x_3)\,\bv{u}=(\bv{v}\T\bv{x})\,\bv{u}.
+\]
+For $\bv{x}=(1,1,1)$ the number $\bv{v}\T\bv{x}$ is $1+4-2=3$, so the output should be $3\bv{u}=(6,-3,9)$. Multiplying directly:
+\[
+\begin{bmatrix}2&8&-4\\-1&-4&2\\3&12&-6\end{bmatrix}\begin{bmatrix}1\\1\\1\end{bmatrix}=\begin{bmatrix}6\\-3\\9\end{bmatrix}.\ \checkmark
+\]
+\emph{Moral.} The same two vectors give a $1\times1$ matrix or a $3\times3$ matrix, according to which one is written first. In the second case every output of the map $\bv{x}\mapsto(\bv{u}\bv{v}\T)\bv{x}$ is a multiple of $\bv{u}$: the map squeezes all of $\R^3$ onto the line $\Span\{\bv{u}\}$.
+\end{exmp}
+
+\begin{exmp}{A product, with a check, of a $3\times3$ matrix and a $3\times2$ matrix}{bankColumns}
+Compute $AB$ for
+\[
+A=\begin{bmatrix}2&-1&0\\1&3&-2\\0&1&4\end{bmatrix},\qquad B=\begin{bmatrix}1&-2\\0&3\\-1&1\end{bmatrix}.
+\]
+Check one entry by the row--column rule, check the whole product with $\bv{x}=(2,1)$ by comparing $A(B\bv{x})$ with $(AB)\bv{x}$, and decide whether $BA$ is defined.
+
+\textbf{Solution.} The sizes are $(3\times3)(3\times2)$, so $AB$ is defined and is $3\times2$. Its columns are $A$ times the columns of $B$ (Definition~\ref{def:product}), each a combination of the columns of $A$:
+\begin{align*}
+A\begin{bmatrix}1\\0\\-1\end{bmatrix}&=1\begin{bmatrix}2\\1\\0\end{bmatrix}+0\begin{bmatrix}-1\\3\\1\end{bmatrix}-1\begin{bmatrix}0\\-2\\4\end{bmatrix}=\begin{bmatrix}2\\3\\-4\end{bmatrix},\\
+A\begin{bmatrix}-2\\3\\1\end{bmatrix}&=-2\begin{bmatrix}2\\1\\0\end{bmatrix}+3\begin{bmatrix}-1\\3\\1\end{bmatrix}+1\begin{bmatrix}0\\-2\\4\end{bmatrix}=\begin{bmatrix}-7\\5\\7\end{bmatrix}.
+\end{align*}
+Therefore
+\[
+\begin{bmatrix}2&-1&0\\1&3&-2\\0&1&4\end{bmatrix}\begin{bmatrix}1&-2\\0&3\\-1&1\end{bmatrix}=\begin{bmatrix}2&-7\\3&5\\-4&7\end{bmatrix}.
+\]
+\emph{One entry by the other rule.} The entry in row $3$ and column $2$ pairs row $3$ of $A$, namely $(0,1,4)$, with column $2$ of $B$, namely $(-2,3,1)$: $0\cdot(-2)+1\cdot3+4\cdot1=7$. \ $\checkmark$
+
+\emph{The whole product at once.} Take $\bv{x}=(2,1)$. First $B\bv{x}$, then $A$ applied to it:
+\[
+\begin{bmatrix}1&-2\\0&3\\-1&1\end{bmatrix}\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}0\\3\\-1\end{bmatrix},\qquad
+\begin{bmatrix}2&-1&0\\1&3&-2\\0&1&4\end{bmatrix}\begin{bmatrix}0\\3\\-1\end{bmatrix}=\begin{bmatrix}-3\\11\\-1\end{bmatrix}.
+\]
+And $(AB)\bv{x}$ directly:
+\[
+\begin{bmatrix}2&-7\\3&5\\-4&7\end{bmatrix}\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}-3\\11\\-1\end{bmatrix}.\ \checkmark
+\]
+The two routes agree, as Theorem~\ref{thm:composite} says they must. Finally $BA$ would be $(3\times2)(3\times3)$: the inner numbers $2$ and $3$ differ, so $BA$ is not defined.
+
+\emph{Moral.} Settle the size first, compute by columns, and keep a cheap independent check: the vector $\bv{x}=(2,1)$ tests all six entries at once, and an error in any single entry would almost certainly show.
+\end{exmp}
+
+\begin{exmp}{Multiplying by a matrix whose columns are $\bv{e}_1,\bv{e}_2,\bv{e}_3$ in another order}{bankShuffle}
+Let
+\[
+C=\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix},\qquad A=\begin{bmatrix}3&1&4\\1&5&9\\2&6&5\end{bmatrix}.
+\]
+The columns of $C$ are $\bv{e}_2,\bv{e}_3,\bv{e}_1$. Find $AC$ and $CA$ \emph{without} computing any sum of products, and then confirm both by multiplying out.
+
+\textbf{Solution.} \emph{The product $AC$.} The columns of $AC$ are $A$ times the columns of $C$, and $A\bv{e}_j$ is the $j$th column of $A$ (Example~\ref{1.4-ex:ei}). So the columns of $AC$ are column $2$, column $3$ and column $1$ of $A$, in that order. Multiplying on the right by $C$ \emph{rearranges the columns}:
+\[
+AC=\begin{bmatrix}1&4&3\\5&9&1\\6&5&2\end{bmatrix}.
+\]
+\emph{The product $CA$.} By Theorem~\ref{thm:rowview}, row $i$ of $CA$ is (row $i$ of $C$)$\,A$. Row $1$ of $C$ is $(0,0,1)$, which picks out row $3$ of $A$; row $2$ of $C$ is $(1,0,0)$, which picks out row $1$ of $A$; row $3$ of $C$ is $(0,1,0)$, which picks out row $2$ of $A$. Multiplying on the left by $C$ \emph{rearranges the rows}:
+\[
+CA=\begin{bmatrix}2&6&5\\3&1&4\\1&5&9\end{bmatrix}.
+\]
+Now multiply out to confirm:
+\[
+\begin{bmatrix}3&1&4\\1&5&9\\2&6&5\end{bmatrix}\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix}=\begin{bmatrix}1&4&3\\5&9&1\\6&5&2\end{bmatrix},\qquad
+\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix}\begin{bmatrix}3&1&4\\1&5&9\\2&6&5\end{bmatrix}=\begin{bmatrix}2&6&5\\3&1&4\\1&5&9\end{bmatrix}.
+\]
+\emph{Moral.} A matrix made of the vectors $\bv{e}_j$ is a rearrangement machine: on the right it permutes columns, on the left it permutes rows, and it permutes them differently, so $AC\neq CA$. This extends Example~\ref{ex:diag}, where a diagonal matrix scaled rows on the left and columns on the right.
+\end{exmp}
+
+\subsection*{Bank: $AB$ versus $BA$}
+
+\begin{exmp}{Expanding $(A+B)^2$ and measuring the gap}{bankExpand}
+Let $A=\begin{bmatrix}2&1\\-1&0\end{bmatrix}$ and $B=\begin{bmatrix}1&-1\\2&3\end{bmatrix}$. Compute $(A+B)^2$ and $A^2+2AB+B^2$. Are they equal? If not, express the difference in terms of $AB$ and $BA$.
+
+\textbf{Solution.} First the square of the sum. Here $A+B=\begin{bmatrix}3&0\\1&3\end{bmatrix}$ and
+\[
+\begin{bmatrix}3&0\\1&3\end{bmatrix}\begin{bmatrix}3&0\\1&3\end{bmatrix}=\begin{bmatrix}9&0\\6&9\end{bmatrix}.
+\]
+Now the three pieces of the other expression:
+\begin{align*}
+&\begin{bmatrix}2&1\\-1&0\end{bmatrix}\begin{bmatrix}2&1\\-1&0\end{bmatrix}=\begin{bmatrix}3&2\\-2&-1\end{bmatrix},\qquad
+\begin{bmatrix}2&1\\-1&0\end{bmatrix}\begin{bmatrix}1&-1\\2&3\end{bmatrix}=\begin{bmatrix}4&1\\-1&1\end{bmatrix},\\
+&\begin{bmatrix}1&-1\\2&3\end{bmatrix}\begin{bmatrix}1&-1\\2&3\end{bmatrix}=\begin{bmatrix}-1&-4\\8&7\end{bmatrix}.
+\end{align*}
+So $A^2+2AB+B^2=\begin{bmatrix}3&2\\-2&-1\end{bmatrix}+\begin{bmatrix}8&2\\-2&2\end{bmatrix}+\begin{bmatrix}-1&-4\\8&7\end{bmatrix}=\begin{bmatrix}10&0\\4&8\end{bmatrix}$, which is \emph{not} $(A+B)^2$.
+
+\emph{Why, and by how much.} Use the distributive laws (Theorem~\ref{thm:mulprops}) without ever changing the order of two factors:
+\[
+(A+B)(A+B)=A(A+B)+B(A+B)=A^2+AB+BA+B^2.
+\]
+The usual formula has $2AB$ in place of $AB+BA$, so the difference is $(A+B)^2-(A^2+2AB+B^2)=BA-AB$. Compute the other order,
+\[
+\begin{bmatrix}1&-1\\2&3\end{bmatrix}\begin{bmatrix}2&1\\-1&0\end{bmatrix}=\begin{bmatrix}3&1\\1&2\end{bmatrix},
+\]
+so $BA-AB=\begin{bmatrix}3&1\\1&2\end{bmatrix}-\begin{bmatrix}4&1\\-1&1\end{bmatrix}=\begin{bmatrix}-1&0\\2&1\end{bmatrix}$. Adding this to $\begin{bmatrix}10&0\\4&8\end{bmatrix}$ gives $\begin{bmatrix}9&0\\6&9\end{bmatrix}$. \ $\checkmark$
+
+\emph{Moral.} The formula $(A+B)^2=A^2+2AB+B^2$ secretly uses $AB=BA$. For matrices the error term is exactly $BA-AB$, which is zero only when $A$ and $B$ commute.
+\end{exmp}
+
+\begin{exmp}{All the matrices that commute with a given matrix}{bankCommute}
+Let $A=\begin{bmatrix}2&1\\0&3\end{bmatrix}$. Find every $2\times2$ matrix $B$ with $AB=BA$, and check one of them.
+
+\textbf{Solution.} Write $B=\begin{bmatrix}p&q\\r&s\end{bmatrix}$ with unknown entries. Both products can be computed in terms of the unknowns:
+\[
+AB=\begin{bmatrix}2p+r&2q+s\\3r&3s\end{bmatrix},\qquad BA=\begin{bmatrix}2p&p+3q\\2r&r+3s\end{bmatrix}.
+\]
+They are equal exactly when the four entries of $AB-BA$ vanish:
+\[
+AB-BA=\begin{bmatrix}r&-p-q+s\\r&-r\end{bmatrix}=\mathbf{0}.
+\]
+This is a homogeneous linear system in the four unknowns $p,q,r,s$ (Section~1.5): the equations are $r=0$, \ $-p-q+s=0$, \ $r=0$, \ $-r=0$. Write them in the order of the entries of $AB-BA$ and row reduce:
+\begin{align*}
+&\begin{amat}{cccc|c}0&0&1&0&0\\-1&-1&0&1&0\\0&0&1&0&0\\0&0&-1&0&0\end{amat}
+\rops{R_3-R_1}
+\begin{amat}{cccc|c}0&0&1&0&0\\-1&-1&0&1&0\\0&0&0&0&0\\0&0&-1&0&0\end{amat}\\[4pt]
+&\rops{R_4+R_1}
+\begin{amat}{cccc|c}0&0&1&0&0\\-1&-1&0&1&0\\0&0&0&0&0\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{cccc|c}-1&-1&0&1&0\\0&0&1&0&0\\0&0&0&0&0\\0&0&0&0&0\end{amat}\\[4pt]
+&\rops{-R_1}
+\begin{amat}{cccc|c}1&1&0&-1&0\\0&0&1&0&0\\0&0&0&0&0\\0&0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$ and $3$, so $q$ and $s$ are free, with $p=-q+s$ and $r=0$. In parametric vector form
+\[
+\begin{bmatrix}p\\q\\r\\s\end{bmatrix}=q\begin{bmatrix}-1\\1\\0\\0\end{bmatrix}+s\begin{bmatrix}1\\0\\0\\1\end{bmatrix},\qquad\text{that is}\qquad B=q\begin{bmatrix}-1&1\\0&0\end{bmatrix}+s\begin{bmatrix}1&0\\0&1\end{bmatrix}=\begin{bmatrix}s-q&q\\0&s\end{bmatrix}.
+\]
+Notice that $\begin{bmatrix}-1&1\\0&0\end{bmatrix}=A-3I$, so every matrix that commutes with $A$ has the form $sI+q(A-3I)$: a combination of $I$ and $A$.
+
+\emph{A check.} Take $q=2$ and $s=3$, so $B=\begin{bmatrix}1&2\\0&3\end{bmatrix}$. Then
+\[
+\begin{bmatrix}2&1\\0&3\end{bmatrix}\begin{bmatrix}1&2\\0&3\end{bmatrix}=\begin{bmatrix}2&7\\0&9\end{bmatrix}=\begin{bmatrix}1&2\\0&3\end{bmatrix}\begin{bmatrix}2&1\\0&3\end{bmatrix}.\ \checkmark
+\]
+\emph{Moral.} ``Commutes with $A$'' is a system of linear equations in the entries of $B$. Here it leaves two free parameters, so the answer is a two-parameter family and not all matrices, and not only the multiples of $I$.
+\end{exmp}
+
+\subsection*{Bank: products that vanish or cancel wrongly}
+
+\begin{exmp}{Every $B$ with $AB=\mathbf{0}$}{bankSolveZero}
+Let $A=\begin{bmatrix}1&-2&3\\2&-3&1\end{bmatrix}$. Find all $3\times2$ matrices $B$ with $AB=\mathbf{0}$. Give one that is not zero, and compute $BA$ for it.
+
+\textbf{Solution.} The columns of $AB$ are $A\bv{b}_1$ and $A\bv{b}_2$ (Definition~\ref{def:product}). The product is the zero matrix exactly when both columns are $\bv{0}$, that is, exactly when \emph{each column of $B$ is a solution of $A\bv{x}=\bv{0}$}. So we solve that one homogeneous system:
+\begin{align*}
+&\begin{amat}{ccc|c}1&-2&3&0\\2&-3&1&0\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|c}1&-2&3&0\\0&1&-5&0\end{amat}
+\rops{R_1+2R_2}
+\begin{amat}{ccc|c}1&0&-7&0\\0&1&-5&0\end{amat}.
+\end{align*}
+The pivot columns are $1$ and $2$, so $x_3$ is free, with $x_1=7x_3$ and $x_2=5x_3$. The solutions are the multiples of $\bv{v}=(7,5,1)$. Check: $7-10+3=0$ and $14-15+1=0$. \ $\checkmark$ Both columns of $B$ must be multiples of $\bv{v}$, so the matrices $B$ with $AB=\mathbf{0}$ are exactly $B=\begin{bmatrix}s\bv{v}&t\bv{v}\end{bmatrix}$ for any numbers $s,t$. With $s=1$ and $t=-2$:
+\[
+\begin{bmatrix}1&-2&3\\2&-3&1\end{bmatrix}\begin{bmatrix}7&-14\\5&-10\\1&-2\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix}.
+\]
+Both factors are nonzero. For the other order, $BA$ is $(3\times2)(2\times3)$, a $3\times3$ matrix, and
+\[
+\begin{bmatrix}7&-14\\5&-10\\1&-2\end{bmatrix}\begin{bmatrix}1&-2&3\\2&-3&1\end{bmatrix}=\begin{bmatrix}-21&28&7\\-15&20&5\\-3&4&1\end{bmatrix}\neq\mathbf{0}.
+\]
+\emph{Moral.} Nonzero matrices with $AB=\mathbf{0}$ exist exactly when $A\bv{x}=\bv{0}$ has a nonzero solution, because the columns of $B$ are such solutions (Theorem~\ref{1.4-thm:linear} is all that is behind it). Even then $AB=\mathbf{0}$ says nothing about $BA$.
+\end{exmp}
+
+\begin{exmp}{Building $C\neq B$ with $AC=AB$}{bankCancel}
+Let $A$ be the matrix of Example~\ref{ex:bankSolveZero} and $B=\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}$. Build a matrix $C\neq B$ with $AC=AB$, verify it, and describe all such $C$.
+
+\textbf{Solution.} By the distributive law, $AC=AB$ holds exactly when $A(C-B)=\mathbf{0}$. So $C-B$ may be \emph{any} matrix whose columns are solutions of $A\bv{x}=\bv{0}$, that is, any matrix $\begin{bmatrix}s\bv{v}&t\bv{v}\end{bmatrix}$ with $\bv{v}=(7,5,1)$ (Example~\ref{ex:bankSolveZero}). Choose $s=1$, $t=-2$ and put $C=B+\begin{bmatrix}\bv{v}&-2\bv{v}\end{bmatrix}$:
+\[
+C=\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}+\begin{bmatrix}7&-14\\5&-10\\1&-2\end{bmatrix}=\begin{bmatrix}8&-14\\7&-9\\1&1\end{bmatrix}.
+\]
+Now compute both products:
+\[
+\begin{bmatrix}1&-2&3\\2&-3&1\end{bmatrix}\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}=\begin{bmatrix}-3&7\\-4&0\end{bmatrix}=\begin{bmatrix}1&-2&3\\2&-3&1\end{bmatrix}\begin{bmatrix}8&-14\\7&-9\\1&1\end{bmatrix}.
+\]
+So $AB=AC$ although $B\neq C$. \ $\checkmark$ Every $C$ with $AC=AB$ arises this way, as $C=B+\begin{bmatrix}s\bv{v}&t\bv{v}\end{bmatrix}$.
+
+\emph{Moral.} Cancellation fails because $A$ sends the nonzero vector $\bv{v}$ to $\bv{0}$, and the difference $C-B$ can be built from copies of $\bv{v}$. If $A\bv{x}=\bv{0}$ had only the trivial solution, every column of $C-B$ would be $\bv{0}$, and then $AC=AB$ would force $C=B$. This is the general form of Example~\ref{ex:zerodiv}.
+\end{exmp}
+
+\subsection*{Bank: powers and a pattern}
+
+\begin{exmp}{A matrix whose powers repeat}{bankCycle}
+Let $C=\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix}$ be the matrix of Example~\ref{ex:bankShuffle}. (a)~Compute $C^2$ and $C^3$. (b)~Find $C^{100}$ and $C^{2027}$. (c)~Describe the orbit of $\bv{x}=(1,2,3)$.
+
+\textbf{Solution.} (a)~Multiply:
+\[
+\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix}\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix}=\begin{bmatrix}0&1&0\\0&0&1\\1&0&0\end{bmatrix},\qquad
+\begin{bmatrix}0&1&0\\0&0&1\\1&0&0\end{bmatrix}\begin{bmatrix}0&0&1\\1&0&0\\0&1&0\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}.
+\]
+The first product is $C^2$ and the second is $C^2C=C^3=I$.
+
+(b)~Since $C^3=I$, every power splits as $C^{3m+r}=(C^3)^mC^r=C^r$ for $r=0,1,2$. We have $100=3\cdot33+1$, so $C^{100}=C$, and $2027=3\cdot675+2$, so $C^{2027}=C^2$. No multiplication of $2027$ matrices is needed.
+
+(c)~For $\bv{x}=(x_1,x_2,x_3)$ we get $C\bv{x}=(x_3,x_1,x_2)$: the entries move one place down, and the last one goes to the top. The orbit of $(1,2,3)$ is
+\[
+(1,2,3)\ \longmapsto\ (3,1,2)\ \longmapsto\ (2,3,1)\ \longmapsto\ (1,2,3),
+\]
+and it repeats forever with period $3$. Applying $C$ twice and then once more returns every vector: $C(C^2\bv{x})=\bv{x}$.
+
+\emph{Moral.} Once some power $A^k$ equals $I$, only the remainder of the exponent on division by $k$ matters. This is the same idea as for the rotation by $90^\circ$ in Knowledge Check~\ref{kc:powers}, where $k=4$.
+\end{exmp}
+
+\begin{exmp}{A matrix whose powers die out, and the powers of $I+N$}{bankNilp}
+Let $N=\begin{bmatrix}0&1&2\\0&0&1\\0&0&0\end{bmatrix}$. (a)~Compute $N^2$ and $N^3$. (b)~Compute $(I+N)^2$ and $(I+N)^3$ with the distributive laws. (c)~Find a formula for $(I+N)^k$, and use it for $k=4$ and $k=10$.
+
+\textbf{Solution.} (a)~Multiply:
+\[
+\begin{bmatrix}0&1&2\\0&0&1\\0&0&0\end{bmatrix}\begin{bmatrix}0&1&2\\0&0&1\\0&0&0\end{bmatrix}=\begin{bmatrix}0&0&1\\0&0&0\\0&0&0\end{bmatrix},\qquad
+\begin{bmatrix}0&0&1\\0&0&0\\0&0&0\end{bmatrix}\begin{bmatrix}0&1&2\\0&0&1\\0&0&0\end{bmatrix}=\begin{bmatrix}0&0&0\\0&0&0\\0&0&0\end{bmatrix}.
+\]
+So $N^2$ has a single nonzero entry and $N^3=\mathbf{0}$: each multiplication by $N$ pushes the entries one step further into the corner, and finally they fall out. Every power from $N^3$ on is $\mathbf{0}$.
+
+(b)~The matrices $I$ and $N$ commute ($IN=N=NI$), so expanding does not require reordering anything:
+\begin{align*}
+&(I+N)^2=I+2N+N^2=\begin{bmatrix}1&2&5\\0&1&2\\0&0&1\end{bmatrix},\\
+&(I+N)^3=(I+N)^2(I+N)=I+3N+3N^2+N^3=I+3N+3N^2.
+\end{align*}
+The last matrix has $1$ on the diagonal, $3\cdot1=3$ above it, and $3\cdot2+3\cdot1=9$ in the corner. Check by multiplying $(I+N)^2$ by $I+N$:
+\[
+\begin{bmatrix}1&2&5\\0&1&2\\0&0&1\end{bmatrix}\begin{bmatrix}1&1&2\\0&1&1\\0&0&1\end{bmatrix}=\begin{bmatrix}1&3&9\\0&1&3\\0&0&1\end{bmatrix}.\ \checkmark
+\]
+(c)~Because $N^3=\mathbf{0}$, only three terms survive. Suppose $(I+N)^k=I+kN+c_kN^2$ for some number $c_k$. Multiplying by $I+N$ and discarding $N^3$,
+\[
+(I+kN+c_kN^2)(I+N)=I+(k+1)N+(c_k+k)N^2.
+\]
+So the pattern persists with $c_{k+1}=c_k+k$. It starts with $c_1=0$, hence $c_k=0+1+\cdots+(k-1)=\frac{k(k-1)}{2}$, and
+\[
+(I+N)^k=I+kN+\frac{k(k-1)}2\,N^2 .
+\]
+For $k=4$ this is $I+4N+6N^2$, with corner entry $4\cdot2+6\cdot1=14$; multiplying $(I+N)^3$ by $I+N$ confirms it:
+\[
+\begin{bmatrix}1&3&9\\0&1&3\\0&0&1\end{bmatrix}\begin{bmatrix}1&1&2\\0&1&1\\0&0&1\end{bmatrix}=\begin{bmatrix}1&4&14\\0&1&4\\0&0&1\end{bmatrix}.\ \checkmark
+\]
+For $k=10$ the formula gives $c_{10}=45$, the entries above the diagonal are $10$, and the corner is $10\cdot2+45=65$:
+\[
+(I+N)^{10}=\begin{bmatrix}1&10&65\\0&1&10\\0&0&1\end{bmatrix}.
+\]
+\emph{Moral.} A matrix such as $N$, whose powers die out, makes $I+N$ easy to raise to any power. Compare the shear $\begin{bmatrix}1&1\\0&1\end{bmatrix}=I+N'$ with $N'^2=\mathbf{0}$ in Example~\ref{ex:shearpowers}: its powers $I+kN'$ also grow steadily, without bound but without exploding.
+\end{exmp}
+
+\begin{exmp}{Guess the pattern for the powers of $\begin{bmatrix}1&1\\1&0\end{bmatrix}$, then prove it}{bankFib}
+Let $F=\begin{bmatrix}1&1\\1&0\end{bmatrix}$. (a)~Compute $F^2,F^3,F^4,F^5$, each from the previous power by one multiplication. (b)~Guess a formula for $F^k$. (c)~Show that the formula passes from $k$ to $k+1$. (d)~Find $F^{10}$ in two ways.
+
+\textbf{Solution.} (a)~Each power is the previous one times $F$:
+\begin{align*}
+&\begin{bmatrix}1&1\\1&0\end{bmatrix}\begin{bmatrix}1&1\\1&0\end{bmatrix}=\begin{bmatrix}2&1\\1&1\end{bmatrix},\qquad
+\begin{bmatrix}2&1\\1&1\end{bmatrix}\begin{bmatrix}1&1\\1&0\end{bmatrix}=\begin{bmatrix}3&2\\2&1\end{bmatrix},\\
+&\begin{bmatrix}3&2\\2&1\end{bmatrix}\begin{bmatrix}1&1\\1&0\end{bmatrix}=\begin{bmatrix}5&3\\3&2\end{bmatrix},\qquad
+\begin{bmatrix}5&3\\3&2\end{bmatrix}\begin{bmatrix}1&1\\1&0\end{bmatrix}=\begin{bmatrix}8&5\\5&3\end{bmatrix}.
+\end{align*}
+(b)~The entries $1,1,2,3,5,8$ are the Fibonacci numbers $f_1=1$, \ $f_2=1$, \ $f_{k+1}=f_k+f_{k-1}$, with $f_0=0$. The two diagonal entries and the off-diagonal entry of $F^k$ are consecutive ones, and the guess is
+\[
+F^k=\begin{bmatrix}f_{k+1}&f_k\\f_k&f_{k-1}\end{bmatrix}.
+\]
+For $k=1$ it says $F=\begin{bmatrix}f_2&f_1\\f_1&f_0\end{bmatrix}=\begin{bmatrix}1&1\\1&0\end{bmatrix}$, and for $k=2,\dots,5$ it matches part~(a).
+
+(c)~Suppose the formula holds for some $k$. Then
+\[
+F^{k+1}=F^kF=\begin{bmatrix}f_{k+1}&f_k\\f_k&f_{k-1}\end{bmatrix}\begin{bmatrix}1&1\\1&0\end{bmatrix}=\begin{bmatrix}f_{k+1}+f_k&f_{k+1}\\f_k+f_{k-1}&f_k\end{bmatrix}=\begin{bmatrix}f_{k+2}&f_{k+1}\\f_{k+1}&f_k\end{bmatrix},
+\]
+because $f_{k+2}=f_{k+1}+f_k$ and $f_{k+1}=f_k+f_{k-1}$. That is the formula for $k+1$. It holds for $k=1$ and passes from each $k$ to the next, so it holds for every $k\ge1$.
+
+(d)~With $f_9=34$, $f_{10}=55$, $f_{11}=89$ (continue $8,13,21,34,55,89$) the formula gives $F^{10}=\begin{bmatrix}89&55\\55&34\end{bmatrix}$. Second way, using $F^{10}=(F^5)^2$ from Definition~\ref{def:power}:
+\[
+\begin{bmatrix}8&5\\5&3\end{bmatrix}\begin{bmatrix}8&5\\5&3\end{bmatrix}=\begin{bmatrix}89&55\\55&34\end{bmatrix}.\ \checkmark
+\]
+\emph{Moral.} Find a pattern from small powers, and then prove it by showing that it passes from $k$ to $k+1$; the proof is one multiplication by the matrix. Squaring, $A^{2k}=(A^k)^2$, reaches high powers quickly.
+\end{exmp}
+
+\subsection*{Bank: the transpose}
+
+\begin{exmp}{The transpose of a product of matrices that are not square}{bankTransProd}
+Let $A=\begin{bmatrix}1&-1\\2&0\\3&2\end{bmatrix}$ and $B=\begin{bmatrix}2&0&1&-3\\1&4&-2&0\end{bmatrix}$. Find the sizes of $AB$, $(AB)\T$, $A\T$, $B\T$, decide which of $B\T A\T$ and $A\T B\T$ can equal $(AB)\T$, and verify.
+
+\textbf{Solution.} $A$ is $3\times2$ and $B$ is $2\times4$, so $AB$ is $3\times4$ and $(AB)\T$ is $4\times3$. The transposes are $A\T$ ($2\times3$) and $B\T$ ($4\times2$). The product $B\T A\T$ is $(4\times2)(2\times3)=4\times3$, which is the right size. The product $A\T B\T$ is $(2\times3)(4\times2)$ and is not even defined, since $3\neq4$. So only $B\T A\T$ can be $(AB)\T$.
+
+Compute $AB$ and transpose it:
+\[
+\begin{bmatrix}1&-1\\2&0\\3&2\end{bmatrix}\begin{bmatrix}2&0&1&-3\\1&4&-2&0\end{bmatrix}=\begin{bmatrix}1&-4&3&-3\\4&0&2&-6\\8&8&-1&-9\end{bmatrix},\qquad
+(AB)\T=\begin{bmatrix}1&4&8\\-4&0&8\\3&2&-1\\-3&-6&-9\end{bmatrix}.
+\]
+Now the product of the transposes in the reversed order:
+\[
+\begin{bmatrix}2&1\\0&4\\1&-2\\-3&0\end{bmatrix}\begin{bmatrix}1&2&3\\-1&0&2\end{bmatrix}=\begin{bmatrix}1&4&8\\-4&0&8\\3&2&-1\\-3&-6&-9\end{bmatrix}.\ \checkmark
+\]
+As a spot check on the indices, the entry in row $4$ and column $3$ of $(AB)\T$ is the entry in row $3$ and column $4$ of $AB$: row $3$ of $A$ with column $4$ of $B$ gives $3\cdot(-3)+2\cdot0=-9$. In $B\T A\T$ the same number is row $4$ of $B\T$ with column $3$ of $A\T$, and these are the same two lists, $(-3,0)$ and $(3,2)$.
+
+\emph{Moral.} The sizes already force the reversed order: for non-square matrices only $B\T A\T$ is even defined. The same list of numbers is multiplied in each entry, read from the other side.
+\end{exmp}
+
+\begin{exmp}{Splitting a square matrix into a symmetric part and a skew part}{bankSkew}
+A matrix $K$ is \emph{skew} if $K\T=-K$. Show that a square matrix $M$ can be written as $M=S+K$ with $S$ symmetric and $K$ skew in only one way, and find $S$ and $K$ for
+\[
+M=\begin{bmatrix}2&5&-1\\1&4&6\\3&0&7\end{bmatrix}.
+\]
+
+\textbf{Solution.} \emph{Only one way is possible.} Suppose $M=S+K$ with $S\T=S$ and $K\T=-K$. Transposing both sides (Theorem~\ref{thm:transprops}(b),(c)) gives $M\T=S\T+K\T=S-K$. Adding the equations $M=S+K$ and $M\T=S-K$ gives $M+M\T=2S$, and subtracting gives $M-M\T=2K$. So necessarily
+\[
+S=\tfrac12\,(M+M\T),\qquad K=\tfrac12\,(M-M\T).
+\]
+\emph{That way works.} For every square $M$ these matrices satisfy $S+K=M$, \ $S\T=\tfrac12(M\T+M)=S$ and $K\T=\tfrac12(M\T-M)=-K$.
+
+\emph{The numbers.} For our $M$ the transpose is $M\T=\begin{bmatrix}2&1&3\\5&4&0\\-1&6&7\end{bmatrix}$, and
+\[
+M+M\T=\begin{bmatrix}4&6&2\\6&8&6\\2&6&14\end{bmatrix},\qquad M-M\T=\begin{bmatrix}0&4&-4\\-4&0&6\\4&-6&0\end{bmatrix}.
+\]
+Halving gives
+\[
+S=\begin{bmatrix}2&3&1\\3&4&3\\1&3&7\end{bmatrix},\qquad K=\begin{bmatrix}0&2&-2\\-2&0&3\\2&-3&0\end{bmatrix}.
+\]
+$S$ is symmetric, $K\T=-K$, and adding entry by entry returns $M$: for instance $2+0=2$, \ $3+2=5$, \ $1+(-2)=-1$ in the first row. Notice that the diagonal of $K$ is zero: the equation $K\T=-K$ says $k_{ii}=-k_{ii}$.
+
+\emph{Moral.} Transposing both sides of a hypothetical decomposition forces the answer, so the decomposition exists and is unique; the same trick (assume the form, transpose, solve) works whenever the transpose appears in a condition.
+\end{exmp}
+
+\subsection*{Bank: a parameter in a product}
+
+\begin{exmp}{A family whose square is a multiple of $I$}{bankParamSq}
+Let $A(h)=\begin{bmatrix}2&h\\-1&-2\end{bmatrix}$. (a)~Compute $A(h)^2$ for every $h$. (b)~For which $h$ is $A(h)^2=\mathbf{0}$? For which $h$ is $A(h)^2=I$? (c)~Is there an $h$ with $A(h)^2=A(h)$?
+
+\textbf{Solution.} (a)~Keep $h$ as a symbol and use the row--column rule:
+\[
+A(h)^2=\begin{bmatrix}2\cdot2+h\cdot(-1)&2h+h\cdot(-2)\\(-1)\cdot2+(-2)(-1)&(-1)h+(-2)(-2)\end{bmatrix}=\begin{bmatrix}4-h&0\\0&4-h\end{bmatrix}=(4-h)\,I.
+\]
+So the square is a scalar multiple of $I$ for every $h$, although $A(h)$ itself is never a multiple of $I$ (its $(2,1)$ entry is $-1$).
+
+(b)~$A(h)^2=\mathbf{0}$ exactly when $4-h=0$, that is $h=4$. Then
+\[
+\begin{bmatrix}2&4\\-1&-2\end{bmatrix}\begin{bmatrix}2&4\\-1&-2\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix},
+\]
+a nonzero matrix whose square is zero. And $A(h)^2=I$ exactly when $4-h=1$, that is $h=3$:
+\[
+\begin{bmatrix}2&3\\-1&-2\end{bmatrix}\begin{bmatrix}2&3\\-1&-2\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}.
+\]
+For $h=3$ doing the map twice returns every vector to where it started.
+
+(c)~$A(h)^2=(4-h)I$ has $0$ in the $(2,1)$ position, while $A(h)$ has $-1$ there, so $A(h)^2\neq A(h)$ for every $h$.
+
+\emph{Moral.} Do the product once with the parameter in it, and every question about particular values becomes an equation in $h$. Impossibility can be read from a single entry, as in part~(c).
+\end{exmp}
+
+\begin{exmp}{A parameter chosen so that a product is symmetric}{bankParamSym}
+Let $A(h)=\begin{bmatrix}1&h\\3&-1\end{bmatrix}$ and $B=\begin{bmatrix}2&1\\-1&2\end{bmatrix}$. (a)~Compute $A(h)B$. (b)~For which $h$ is $A(h)B$ symmetric? (c)~Is there an $h$ for which $A(h)B=BA(h)$?
+
+\textbf{Solution.} (a)~Row $1$ of $A(h)$ with the columns of $B$ gives $1\cdot2+h(-1)=2-h$ and $1\cdot1+h\cdot2=1+2h$; row $2$ gives $3\cdot2+(-1)(-1)=7$ and $3\cdot1+(-1)\cdot2=1$:
+\[
+A(h)B=\begin{bmatrix}2-h&1+2h\\7&1\end{bmatrix}.
+\]
+(b)~A $2\times2$ matrix is symmetric when its two off-diagonal entries are equal: $1+2h=7$, so $h=3$. Check:
+\[
+\begin{bmatrix}1&3\\3&-1\end{bmatrix}\begin{bmatrix}2&1\\-1&2\end{bmatrix}=\begin{bmatrix}-1&7\\7&1\end{bmatrix},
+\]
+which is symmetric. \ $\checkmark$
+
+(c)~The other order is $BA(h)=\begin{bmatrix}2\cdot1+1\cdot3&2h+1\cdot(-1)\\-1\cdot1+2\cdot3&-h+2(-1)\end{bmatrix}=\begin{bmatrix}5&2h-1\\5&-h-2\end{bmatrix}$. If the two products were equal, their $(1,2)$ entries would agree: $1+2h=2h-1$, that is $1=-1$, which is false for every $h$. So no value of $h$ makes $A(h)$ and $B$ commute. (Their $(2,1)$ entries, $7$ and $5$, also disagree whatever $h$ is.)
+
+\emph{Moral.} A property of a product of a family of matrices becomes an equation or a contradiction in the parameter. One entry that cannot agree is enough to rule out all values at once.
+\end{exmp}
+
+\subsection*{Bank: applications of the product}
+
+\begin{exmp}{A weather model, one day and two days ahead}{bankMarkov}
+Each day is sunny, cloudy or rainy. After a sunny day the next day is sunny, cloudy or rainy with probabilities $0.7$, $0.2$, $0.1$. After a cloudy day the probabilities are $0.3$, $0.4$, $0.3$, and after a rainy day they are $0.2$, $0.3$, $0.5$. Let $\bv{x}_k$ be the vector of probabilities (sunny, cloudy, rainy) on day $k$. (a)~Write the matrix $P$ with $\bv{x}_{k+1}=P\bv{x}_k$. (b)~Today is sunny, $\bv{x}_0=(1,0,0)$: find $\bv{x}_1,\bv{x}_2,\bv{x}_3$. (c)~Find $P^2$. If today is cloudy, what is the probability that the day after tomorrow is rainy?
+
+\textbf{Solution.} (a)~Column $j$ of $P$ lists the probabilities for tomorrow, given today's weather $j$ (the first column describes a sunny day, as in Example~\ref{ex:migration}):
+\[
+P=\begin{bmatrix}0.7&0.3&0.2\\0.2&0.4&0.3\\0.1&0.3&0.5\end{bmatrix}.
+\]
+Each column adds up to $1$, since tomorrow must be one of the three kinds of day.
+
+(b)~$\bv{x}_1=P\bv{x}_0$ is the first column of $P$, namely $(0.7,0.2,0.1)$. Then
+\begin{align*}
+&\bv{x}_2=P\bv{x}_1=\begin{bmatrix}0.7&0.3&0.2\\0.2&0.4&0.3\\0.1&0.3&0.5\end{bmatrix}\begin{bmatrix}0.7\\0.2\\0.1\end{bmatrix}=\begin{bmatrix}0.57\\0.25\\0.18\end{bmatrix},\\
+&\bv{x}_3=P\bv{x}_2=\begin{bmatrix}0.7&0.3&0.2\\0.2&0.4&0.3\\0.1&0.3&0.5\end{bmatrix}\begin{bmatrix}0.57\\0.25\\0.18\end{bmatrix}=\begin{bmatrix}0.51\\0.268\\0.222\end{bmatrix}.
+\end{align*}
+The entries of $\bv{x}_2$ and of $\bv{x}_3$ still add up to $1$.
+
+(c)~Two days are two applications of $P$, so the matrix is $P^2$:
+\[
+P^2=\begin{bmatrix}0.7&0.3&0.2\\0.2&0.4&0.3\\0.1&0.3&0.5\end{bmatrix}\begin{bmatrix}0.7&0.3&0.2\\0.2&0.4&0.3\\0.1&0.3&0.5\end{bmatrix}=\begin{bmatrix}0.57&0.39&0.33\\0.25&0.31&0.31\\0.18&0.30&0.36\end{bmatrix}.
+\]
+Its first column is $\bv{x}_2$, as it must be, since $\bv{x}_0$ is the first column of $I$. If today is cloudy, the weather in two days is described by column $2$ of $P^2$, and ``rainy'' is row $3$: the probability is $(P^2)_{32}=0.30$. The row--column rule shows where this number comes from, by adding the probabilities of the three routes through tomorrow's weather:
+\[
+(P^2)_{32}=P_{31}P_{12}+P_{32}P_{22}+P_{33}P_{32}=0.1\cdot0.3+0.3\cdot0.4+0.5\cdot0.3=0.03+0.12+0.15=0.30 .
+\]
+\emph{Moral.} The entry $(i,j)$ of $P^2$ adds, over the possible weather tomorrow, the chance of going from $j$ to that weather and then on to $i$. The matrix product is exactly the bookkeeping of this sum, and two days is $P^2$, not $2P$.
+\end{exmp}
+
+\begin{exmp}{Two linear maps, composed in both orders}{bankTwoMaps}
+Let $T:\R^2\to\R^3$ and $S:\R^3\to\R^2$ be given by
+\[
+T(x_1,x_2)=(x_1+x_2,\ x_1-x_2,\ 2x_2),\qquad S(y_1,y_2,y_3)=(y_1+y_3,\ -y_1+2y_2).
+\]
+(a)~Find the standard matrices $B$ of $T$ and $A$ of $S$. (b)~Find the matrices of ``first $T$, then $S$'' and of ``first $S$, then $T$'', with their sizes. (c)~Check the first with $\bv{x}=(2,1)$.
+
+\textbf{Solution.} (a)~By Section~1.9 the columns of the standard matrix are the images of $\bv{e}_1,\bv{e}_2,\dots$. Here $T(\bv{e}_1)=(1,1,0)$ and $T(\bv{e}_2)=(1,-1,2)$, while $S(\bv{e}_1)=(1,-1)$, \ $S(\bv{e}_2)=(0,2)$, \ $S(\bv{e}_3)=(1,0)$:
+\[
+B=\begin{bmatrix}1&1\\1&-1\\0&2\end{bmatrix}\ (3\times2),\qquad A=\begin{bmatrix}1&0&1\\-1&2&0\end{bmatrix}\ (2\times3).
+\]
+(b)~First $T$ then $S$ is $\bv{x}\mapsto A(B\bv{x})$, whose matrix is $AB$ (Theorem~\ref{thm:composite}). It is $(2\times3)(3\times2)=2\times2$ and maps $\R^2\to\R^3\to\R^2$. First $S$ then $T$ has the matrix $BA$, of size $(3\times2)(2\times3)=3\times3$, and maps $\R^3\to\R^2\to\R^3$:
+\[
+AB=\begin{bmatrix}1&0&1\\-1&2&0\end{bmatrix}\begin{bmatrix}1&1\\1&-1\\0&2\end{bmatrix}=\begin{bmatrix}1&3\\1&-3\end{bmatrix},\qquad
+BA=\begin{bmatrix}1&1\\1&-1\\0&2\end{bmatrix}\begin{bmatrix}1&0&1\\-1&2&0\end{bmatrix}=\begin{bmatrix}0&2&1\\2&-2&1\\-2&4&0\end{bmatrix}.
+\]
+The two composites have different sizes because they act on different spaces; they cannot be compared at all.
+
+(c)~$T(2,1)=(3,1,2)$ and then $S(3,1,2)=(3+2,\ -3+2)=(5,-1)$. With the matrix:
+\[
+\begin{bmatrix}1&3\\1&-3\end{bmatrix}\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}5\\-1\end{bmatrix}.\ \checkmark
+\]
+The columns of $AB$ also show what the composite does to the unit square: $\bv{e}_1\mapsto(1,1)$ and $\bv{e}_2\mapsto(3,-3)$.
+
+\emph{Moral.} The matrix of a composite is the product of the matrices, written in the order opposite to the order of the steps, and the sizes of the matrices tell which composites exist. As in Section~1.9, follow $\bv{e}_1,\bv{e}_2$ through both maps to read off the columns.
+\end{exmp}
+
+\subsection*{Bank: basic proofs}
+
+A proof is a chain of reasons that convinces a reader that a statement is true in \emph{every} case that the statement covers. The three examples below, easiest first, model the habits of a short proof: read the statement, name what is assumed and what is to be shown, and write the argument in steps.
+
+\begin{exmp}{Reading a ``for every'' statement before proving it}{bankZeroRow}
+\textbf{Statement.} Let $A$ be an $m\times n$ matrix and $B$ an $n\times p$ matrix. If row $i$ of $A$ is zero, then row $i$ of $AB$ is zero.
+
+\textbf{What we are proving and how.} We show that a zero row of the left factor survives in the product, using only the row--column rule of Theorem~\ref{thm:rowcol}.
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Hypothesis} (what we may assume): the entries $a_{i1},a_{i2},\dots,a_{in}$ of row $i$ of $A$ are all $0$.
+  \item \emph{Goal} (what we must show): $(AB)_{ij}=0$ for every column $j=1,\dots,p$.
+  \item \emph{Scope.} The statement is about \emph{every} such $A$ and $B$, every row $i$, and every size, including $n=1$. We know nothing about $B$, so the proof must use no entry of $B$.
+\end{itemize}
+A numerical test checks that we have read the statement correctly, but it is not a proof. Take $A=\begin{bmatrix}1&2\\0&0\\3&-1\end{bmatrix}$, whose row $2$ is zero, and $B=\begin{bmatrix}2&1&0\\4&-1&3\end{bmatrix}$:
+\[
+\begin{bmatrix}1&2\\0&0\\3&-1\end{bmatrix}\begin{bmatrix}2&1&0\\4&-1&3\end{bmatrix}=\begin{bmatrix}10&-1&6\\0&0&0\\2&4&-3\end{bmatrix}.
+\]
+Row $2$ of the product is zero, as the statement predicts.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $a_{ik}=0$ for $k=1,\dots,n$.
+  \item \emph{Compute.} Fix a column $j$. By Theorem~\ref{thm:rowcol}, $(AB)_{ij}=a_{i1}b_{1j}+a_{i2}b_{2j}+\cdots+a_{in}b_{nj}=0\cdot b_{1j}+0\cdot b_{2j}+\cdots+0\cdot b_{nj}=0$.
+  \item \emph{Conclude.} The column $j$ was arbitrary, so every entry of row $i$ of $AB$ is $0$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} Only the row--column rule, and no entry of $B$; that is why it covers all $B$ at once. The same argument with the roles exchanged shows that a zero \emph{column} of $B$ gives a zero column of $AB$, since $(AB)_{ij}=\sum_ka_{ik}\cdot0$. Another way to see the statement is Theorem~\ref{thm:rowview}: row $i$ of $AB$ is (row $i$ of $A$)$\,B=\mathbf{0}\,B=\mathbf{0}$.
+\end{exmp}
+
+\begin{exmp}{Proving $(AB)\T=B\T A\T$ for $2\times2$ matrices by computing both sides}{bankTransGen}
+\textbf{Statement.} For all $2\times2$ matrices $A$ and $B$, \ $(AB)\T=B\T A\T$.
+
+\textbf{What we are proving and how.} Theorem~\ref{thm:transprops}(d) proves this for all sizes by comparing a typical entry. Here we prove the special case of $2\times2$ matrices by computing all four entries of both sides, with letters for the entries, so that no particular numbers are used.
+
+\textbf{Read the statement first.} \emph{Hypothesis:} $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$ and $B=\begin{bmatrix}p&q\\r&s\end{bmatrix}$ with arbitrary real entries. \emph{Goal:} the matrices $(AB)\T$ and $B\T A\T$ have equal entries in all four positions. \emph{Scope:} every choice of the eight numbers, so the proof may use the rules for real numbers (such as $ap=pa$) but must not assume that $AB=BA$.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $A$ and $B$ as above.
+  \item \emph{Compute.} The product is $AB=\begin{bmatrix}ap+br&aq+bs\\cp+dr&cq+ds\end{bmatrix}$, so
+  \[
+  (AB)\T=\begin{bmatrix}ap+br&cp+dr\\aq+bs&cq+ds\end{bmatrix}.
+  \]
+  On the other side $B\T=\begin{bmatrix}p&r\\q&s\end{bmatrix}$ and $A\T=\begin{bmatrix}a&c\\b&d\end{bmatrix}$, so
+  \[
+  B\T A\T=\begin{bmatrix}pa+rb&pc+rd\\qa+sb&qc+sd\end{bmatrix}.
+  \]
+  \item \emph{Conclude.} The four entries agree, because multiplication of real numbers is commutative: $pa+rb=ap+br$, \ $pc+rd=cp+dr$, \ $qa+sb=aq+bs$ and $qc+sd=cq+ds$. Hence $(AB)\T=B\T A\T$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used, and what it did not.} The commutativity used is that of the \emph{entries}, which are numbers; it never assumed $AB=BA$ for matrices. The proof covers $2\times2$ matrices only; it is the entrywise proof of the theorem that covers every size. The order matters: the other product is $A\T B\T=\begin{bmatrix}ap+cq&ar+cs\\bp+dq&br+ds\end{bmatrix}$, and for $A=\begin{bmatrix}1&2\\3&4\end{bmatrix}$, $B=\begin{bmatrix}5&6\\7&8\end{bmatrix}$ we get
+\[
+(AB)\T=\begin{bmatrix}19&43\\22&50\end{bmatrix}=B\T A\T,\qquad A\T B\T=\begin{bmatrix}23&31\\34&46\end{bmatrix}\neq(AB)\T .
+\]
+\end{exmp}
+
+\begin{exmp}{Disproving a statement with one counterexample}{bankSquareZero}
+\textbf{Statement.} If $A$ is a square matrix with $A^2=\mathbf{0}$, then $A=\mathbf{0}$.
+
+\textbf{What we are doing and how.} For numbers, $a^2=0$ forces $a=0$. For matrices the statement is false, and to disprove a statement about \emph{every} matrix it is enough to give \emph{one} matrix for which it fails. A counterexample has two jobs: satisfy the hypothesis, and violate the conclusion.
+
+\textbf{Counterexample.} Take $N=\begin{bmatrix}0&1\\0&0\end{bmatrix}$.
+\begin{itemize}
+  \item \emph{The hypothesis holds.} $\begin{bmatrix}0&1\\0&0\end{bmatrix}\begin{bmatrix}0&1\\0&0\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix}$, so $N^2=\mathbf{0}$.
+  \item \emph{The conclusion fails.} $N\neq\mathbf{0}$, since its $(1,2)$ entry is $1$.
+\end{itemize}
+So the statement is false. \qquad$\blacksquare$
+
+\textbf{What is true instead.} The statement is the case $B=A$ of ``$AB=\mathbf{0}$ implies $A=\mathbf{0}$ or $B=\mathbf{0}$'', which Example~\ref{ex:zerodiv} showed to fail. A version that does hold uses the transpose: \emph{if $A$ is a matrix of real numbers and $A\T A=\mathbf{0}$, then $A=\mathbf{0}$.} The $(j,j)$ entry of $A\T A$ is the sum of the squares of the entries of column $j$ of $A$ (Example~\ref{ex:ata}); a sum of squares of real numbers is $0$ only if every term is $0$, so every column of $A$ is zero. For $N$ above, $N\T N=\begin{bmatrix}0&0\\1&0\end{bmatrix}\begin{bmatrix}0&1\\0&0\end{bmatrix}=\begin{bmatrix}0&0\\0&1\end{bmatrix}\neq\mathbf{0}$, as the true statement predicts: its $(2,2)$ entry is the squared length $1^2=1$ of column $2$ of $N$.
+
+\emph{Moral.} A single example can \emph{disprove} a ``for every'' statement, and finding the counterexample often shows what the correct statement should be: here the product $A\cdot A$ is replaced by $A\T\cdot A$.
+\end{exmp}
+
+\begin{think}{Proof habits}{habits}
+\begin{enumerate}[label=(\arabic*)]
+  \item The converse of Example~\ref{ex:bankZeroRow} reads: ``if row $i$ of $AB$ is zero, then row $i$ of $A$ is zero.'' Is it true? Test it with $A=\begin{bmatrix}1&1\\2&0\end{bmatrix}$ and $B=\begin{bmatrix}1&2\\-1&-2\end{bmatrix}$, and say what a counterexample to a converse has to show.
+  \item Use Theorem~\ref{thm:transprops}(d) to prove, in the three steps assume, compute, conclude, that if $A$ is symmetric then $A^2$ is symmetric. What happens in the proof when you replace $A^2$ by a product $AB$ of two different symmetric matrices, and is that product always symmetric?
+  \item The ``what is true instead'' paragraph of Example~\ref{ex:bankSquareZero} claims that $A\T A=\mathbf{0}$ forces $A=\mathbf{0}$. Write the argument in the three steps assume, compute, conclude, and say which line would fail if the entries of $A$ were allowed to be arbitrary complex numbers.
+\end{enumerate}
+\end{think}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:addsizes}.] $P+Q$ is defined ($3\times2$). $P+R$ is not defined ($3\times2$ and $2\times3$). $3Q-P$ is defined ($3\times2$). $R-R$ is defined: it is the $2\times3$ zero matrix.
@@ -558,6 +1107,14 @@ Let $A=\begin{bmatrix}2&-1\\0&3\end{bmatrix}$ and $B=\begin{bmatrix}1&4\\5&-2\en
   \item[Pause and think \ref{think:assoccost}.] (a)~$AB$ costs $1000\cdot1000\cdot1000=10^9$ multiplications; then $(AB)\bv{x}$ costs another $1000\cdot1000\cdot1=10^6$: about $1.001\cdot10^9$ in all. $B\bv{x}$ costs $10^6$ and $A(B\bv{x})$ another $10^6$: only $2\cdot10^6$. The answers are equal; the second grouping is about $500$ times cheaper. (b)~If $AB$ is needed many times, computing $AB$ once ($10^9$) and then using $10^6$ per vector wins after about a thousand vectors; for a single vector, group from the right. Associativity gives us the freedom to choose.
   \item[Pause and think \ref{think:powers}.] Only the rotation: $A^8=I$ (eight steps of $45^\circ$ make a full turn). For the shear, $S^k$ has $k$ in the corner, which is never $0$ for $k\ge1$, so $S^k\neq I$; equivalently the point $(0,1)$ moves along a line without returning. For the stretch--squeeze, $D^k=\mathrm{diag}(2^k,2^{-k})$ has $2^k\neq1$. If $A^k=I$ then $A^k\bv{x}=\bv{x}$: the orbit comes back to its starting point after $k$ steps, so it is a closed loop that repeats.
   \item[Pause and think \ref{think:reverse}.] (a)~$AB$ is $2\times4$, so $(AB)\T$ is $4\times2$. $A\T$ is $3\times2$ and $B\T$ is $4\times3$. Then $B\T A\T$ is $(4\times3)(3\times2)=4\times2$, matching; $A\T B\T$ is $(3\times2)(4\times3)$, whose inner numbers $2\neq4$ differ: not defined. Only $B\T A\T$ can be the transpose. (b)~Socks go on before shoes, and come off in the reverse order: shoes first. The transpose of a product reverses the order too: $(ABC)\T=C\T B\T A\T$, by applying the rule for two factors twice, $(A(BC))\T=(BC)\T A\T=C\T B\T A\T$. (c)~$(M\T M)\T=M\T(M\T)\T=M\T M$, so it equals its own transpose.
+  \item[Pause and think \ref{think:habits}.] (1)~No, the converse is false. With these matrices
+\[
+AB=\begin{bmatrix}1\cdot1+1\cdot(-1)&1\cdot2+1\cdot(-2)\\2\cdot1+0&2\cdot2+0\end{bmatrix}=\begin{bmatrix}0&0\\2&4\end{bmatrix},
+\]
+so row $1$ of $AB$ is zero, but row $1$ of $A$ is $(1,1)\neq\mathbf{0}$. A counterexample to a converse must satisfy the \emph{hypothesis of the converse} (here: $AB$ has a zero row) and violate its conclusion (here: $A$ has no zero row in that position). The original statement and its converse are different statements, and proving one gives no information about the other. (2)~\emph{Assume} $A\T=A$. \emph{Compute.} By Theorem~\ref{thm:transprops}(d), $(A^2)\T=(AA)\T=A\T A\T=AA=A^2$, using $A\T=A$ twice. \emph{Conclude.} $A^2$ equals its own transpose, so it is symmetric. For two symmetric matrices the same computation gives $(AB)\T=B\T A\T=BA$, and the order reversal is now visible: $AB$ is symmetric exactly when $BA=AB$. It is not always symmetric: for $A=\begin{bmatrix}1&0\\0&2\end{bmatrix}$ and $B=\begin{bmatrix}1&1\\1&1\end{bmatrix}$, both symmetric,
+\[
+AB=\begin{bmatrix}1&1\\2&2\end{bmatrix}\ \text{is not symmetric, and}\ BA=\begin{bmatrix}1&2\\1&2\end{bmatrix}=(AB)\T .
+\] (3)~\emph{Assume} $A$ is a matrix of real numbers with $A\T A=\mathbf{0}$. \emph{Compute.} The $(j,j)$ entry of $A\T A$ is $a_{1j}^2+a_{2j}^2+\cdots+a_{mj}^2$, and by assumption it is $0$. \emph{Conclude.} Real squares are never negative, so a sum of them is $0$ only if each term is $0$; hence every $a_{ij}=0$ and $A=\mathbf{0}$. The step ``a sum of squares is $0$ only if each square is $0$'' fails for complex numbers, where $1^2+i^2=0$ with neither term zero; so the statement concerns real matrices.
 \end{description}
 
 \end{document}
