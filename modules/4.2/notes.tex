@@ -687,6 +687,378 @@ Decide whether each map is linear. If it is not, name the property that fails an
   \item If $A$ is $n\times n$ and $\Nul A=\{\bv{0}\}$, what is $\Col A$? (Use Theorem~\ref{2.3-thm:imt}.)
 \end{enumerate}
 
+\subsection*{Example bank: fourteen more worked examples}
+
+The examples above met each idea once. This bank gives them more room, grouped by the kind of problem, with the easiest examples first in every group. The examples continue the numbering (Examples~\ref{ex:b-zerocol} to~\ref{ex:b-tf}), and every solution says \emph{why} each step is taken, not only what it is. They use only what this section and the earlier ones provide: the null, column and row spaces (Definitions~\ref{def:nul}, \ref{def:col} and~\ref{def:row}), Procedures~\ref{proc:nulspan} and~\ref{proc:inrow}, Theorems~\ref{thm:colall} and~\ref{thm:rowops}, linear transformations with their kernel and range (Definitions~\ref{def:lintrans} and~\ref{def:kerrange}), and row reduction from Chapter 1. Work each problem before you read its solution.
+
+\textbf{What is in this bank}
+\begin{itemize}
+  \item \textbf{A. A spanning set for a null space} (Examples~\ref{ex:b-zerocol} and~\ref{ex:b-nulparam}): a matrix with a zero column, and a matrix with an unknown entry $h$ that decides whether the null space is $\{\bv{0}\}$.
+  \item \textbf{B. Which space does a vector belong to} (Example~\ref{ex:b-threespaces}): one matrix, three subspaces in two different $\R^k$; a nonzero vector from each, and the right test for each candidate vector.
+  \item \textbf{C. Describing a column space} (Examples~\ref{ex:b-colfour} and~\ref{ex:b-colh}): the two equations that cut out a column space in $\R^4$, and the values of $h$ for which the columns fill $\R^3$.
+  \item \textbf{D. Finding a matrix for a given set} (Examples~\ref{ex:b-bothways} and~\ref{ex:b-neither}): one subspace written both as $\Col A$ and as $\Nul B$, and four sets of which two are neither.
+  \item \textbf{E. The row space} (Example~\ref{ex:b-rowsame}): two matrices with the same row space, and a membership test with an unknown entry.
+  \item \textbf{F. Is the map linear, and what is its matrix} (Example~\ref{ex:b-matrixmap}): a map $\R^3\to\R^2$ with its matrix, and three maps that look similar but are not linear.
+  \item \textbf{G. Kernel and range on spaces of polynomials, matrices and functions} (Examples~\ref{ex:b-multint}, \ref{ex:b-commut} and~\ref{ex:b-diffop}): multiplication and integration, a commutator, and a differential operator.
+  \item \textbf{H. Structure arguments and true or false} (Examples~\ref{ex:b-images} and~\ref{ex:b-tf}): images and preimages of subspaces, and six statements to judge.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank A: A spanning set for a null space}
+
+\begin{exmp}{A null space with a zero column}{b-zerocol}
+Let $A=\begin{bmatrix}0&0&0&3&12\\0&2&4&1&-2\\0&-1&-2&2&11\end{bmatrix}$. Find a spanning set for $\Nul A$ and say in which $\R^k$ it lives.
+
+\textbf{Solution.} $A$ has $5$ columns, so $\Nul A$ is a subspace of $\R^5$. We follow Procedure~\ref{proc:nulspan} and row reduce $[A\ \bv{0}]$. The first column is zero, so no row operation can ever put a pivot there; keep an eye on it. The first column that can hold a pivot is column $2$, so we interchange rows to bring a row with a nonzero entry in column $2$ to the top, and scale it so that the pivot is $1$. Later a pivot $5$ appears in column $4$ and is scaled in the same way.
+\begin{align*}
+\begin{amat}{ccccc|c}0&0&0&3&12&0\\0&2&4&1&-2&0\\0&-1&-2&2&11&0\end{amat}
+&\rops{R_1\leftrightarrow R_3}
+\begin{amat}{ccccc|c}0&-1&-2&2&11&0\\0&2&4&1&-2&0\\0&0&0&3&12&0\end{amat}\\[4pt]
+&\rops{-R_1}
+\begin{amat}{ccccc|c}0&1&2&-2&-11&0\\0&2&4&1&-2&0\\0&0&0&3&12&0\end{amat}\\[4pt]
+&\rops{R_2-2R_1}
+\begin{amat}{ccccc|c}0&1&2&-2&-11&0\\0&0&0&5&20&0\\0&0&0&3&12&0\end{amat}\\[4pt]
+&\rops{\tfrac{1}{5}R_2}
+\begin{amat}{ccccc|c}0&1&2&-2&-11&0\\0&0&0&1&4&0\\0&0&0&3&12&0\end{amat}\\[4pt]
+&\rops{R_3-3R_2,\ R_1+2R_2}
+\begin{amat}{ccccc|c}0&1&2&0&-3&0\\0&0&0&1&4&0\\0&0&0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $2$ and $4$, so the free variables are $x_1$, $x_3$ and $x_5$. The basic variables are $x_2=-2x_3+3x_5$ and $x_4=-4x_5$, and $x_1$ appears in no equation at all. In parametric vector form
+\[
+\bv{x}=x_1\begin{bmatrix}1\\0\\0\\0\\0\end{bmatrix}+x_3\begin{bmatrix}0\\-2\\1\\0\\0\end{bmatrix}+x_5\begin{bmatrix}0\\3\\0\\-4\\1\end{bmatrix},
+\]
+so $\Nul A=\Span\{(1,0,0,0,0),\ (0,-2,1,0,0),\ (0,3,0,-4,1)\}$, a subspace of $\R^5$.
+
+\emph{Check.} The first vector is the first standard vector, and $A$ times it is the first column of $A$, which is $\bv{0}$. This is the meaning of a zero column: the variable $x_1$ multiplies nothing, so it can take any value. For the last vector
+\[
+\begin{bmatrix}0&0&0&3&12\\0&2&4&1&-2\\0&-1&-2&2&11\end{bmatrix}\begin{bmatrix}0\\3\\0\\-4\\1\end{bmatrix}=\begin{bmatrix}-12+12\\6-4-2\\-3-8+11\end{bmatrix}=\begin{bmatrix}0\\0\\0\end{bmatrix}.
+\]
+\ $\checkmark$ The middle vector works the same way: $2(-2)+4(1)=0$ in the second row and $(-1)(-2)+(-2)(1)=0$ in the third.
+\end{exmp}
+
+\begin{exmp}{An unknown entry decides whether the null space is zero}{b-nulparam}
+Let $A=\begin{bmatrix}1&2&1\\2&3&h\\1&5&4\end{bmatrix}$, where $h$ is a real number. (a)~For which $h$ is $\Nul A\neq\{\bv{0}\}$? (b)~For that $h$, find a spanning set for $\Nul A$.
+
+\textbf{Solution.} (a)~Row reduce $[A\ \bv{0}]$, keeping $h$ as a symbol. Every step below is a legal row operation for \emph{every} value of $h$, because we only add multiples of one row to another and never divide by an expression containing $h$.
+\begin{align*}
+\begin{amat}{ccc|c}1&2&1&0\\2&3&h&0\\1&5&4&0\end{amat}
+&\rops{R_2-2R_1,\ R_3-R_1}
+\begin{amat}{ccc|c}1&2&1&0\\0&-1&h-2&0\\0&3&3&0\end{amat}
+\rops{R_3+3R_2}
+\begin{amat}{ccc|c}1&2&1&0\\0&-1&h-2&0\\0&0&3h-3&0\end{amat}.
+\end{align*}
+The first two columns have pivots ($1$ and $-1$) whatever $h$ is. The third column has a pivot exactly when $3h-3\neq0$. By Procedure~\ref{proc:nulspan}, $\Nul A=\{\bv{0}\}$ when there is no free variable. So if $h\neq1$ all three columns are pivot columns and $\Nul A=\{\bv{0}\}$; and if $h=1$ the third column is not a pivot column, $x_3$ is free, and $\Nul A\neq\{\bv{0}\}$. The answer to (a) is $h=1$ only.
+
+(b)~Put $h=1$. The last row of the chain is zero, and we finish the reduction:
+\begin{align*}
+\begin{amat}{ccc|c}1&2&1&0\\0&-1&-1&0\\0&0&0&0\end{amat}
+&\rops{-R_2}
+\begin{amat}{ccc|c}1&2&1&0\\0&1&1&0\\0&0&0&0\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{ccc|c}1&0&-1&0\\0&1&1&0\\0&0&0&0\end{amat}.
+\end{align*}
+Then $x_1=x_3$ and $x_2=-x_3$, so $\bv{x}=x_3(1,-1,1)$ and $\Nul A=\Span\{(1,-1,1)\}$, a line in $\R^3$. Check with $h=1$: $A(1,-1,1)=(1-2+1,\ 2-3+1,\ 1-5+4)=(0,0,0)$. \ $\checkmark$ For any other $h$ the same vector is not a solution: the second row gives $2-3+h=h-1\neq0$.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank B: Which space does a vector belong to}
+
+\begin{exmp}{Three subspaces of one matrix, in two different spaces}{b-threespaces}
+Let $A=\begin{bmatrix}1&2&0&1\\0&1&-1&2\\1&3&-1&3\end{bmatrix}$. (a)~In which $\R^k$ do $\Nul A$, $\Col A$ and $\Row A$ live? (b)~Give a nonzero vector in each. (c)~For each of $\bv{p}=(1,1,1)$, $\bv{q}=(-2,1,1,0)$, $\bv{r}=(2,5,-1,4)$ and $\bv{s}=(3,-1)$, decide which of the three subspaces could contain it, and then which actually do.
+
+\textbf{Solution.} First reduce $A$, since the reduced form serves both $\Nul A$ and $\Row A$:
+\begin{align*}
+\begin{amat}{cccc}1&2&0&1\\0&1&-1&2\\1&3&-1&3\end{amat}
+&\rops{R_3-R_1}
+\begin{amat}{cccc}1&2&0&1\\0&1&-1&2\\0&1&-1&2\end{amat}
+\rops{R_3-R_2,\ R_1-2R_2}
+\begin{amat}{cccc}1&0&2&-3\\0&1&-1&2\\0&0&0&0\end{amat}.
+\end{align*}
+(a)~$A$ has $4$ columns and $3$ rows. A vector $\bv{x}$ must have $4$ entries for $A\bv{x}$ to be defined, so $\Nul A\subseteq\R^4$. The columns of $A$ have $3$ entries, so $\Col A\subseteq\R^3$. The rows of $A$ have $4$ entries, so $\Row A\subseteq\R^4$. Two of the three subspaces live in the same $\R^4$, and that is what makes part (c) interesting.
+
+(b)~The free variables are $x_3$ and $x_4$, with $x_1=-2x_3+3x_4$ and $x_2=x_3-2x_4$, so $\Nul A=\Span\{(-2,1,1,0),\ (3,-2,0,1)\}$ and $\bv{q}=(-2,1,1,0)$ is a nonzero vector of $\Nul A$. The first column $(1,0,1)$ of $A$ is a nonzero vector of $\Col A$. The first row $(1,2,0,1)$ of $A$ is a nonzero vector of $\Row A$. (Do not take a vector from the echelon form for $\Col A$; Example~\ref{ex:colchange} shows why.)
+
+(c)~\emph{Which spaces could contain it?} Look at the number of entries first. $\bv{p}$ has $3$ entries, so only $\Col A$ is possible. $\bv{q}$ and $\bv{r}$ have $4$ entries, so $\Nul A$ or $\Row A$ are possible, but not $\Col A$. $\bv{s}$ has $2$ entries and fits none of the three spaces, so it is in none of them.
+
+\emph{Which spaces do contain it?} Use the right test for each. For $\bv{p}\in\Col A$ the column space of $A$ is $\Span\{(1,0,1),(2,1,3)\}$ (the pivot columns $1$ and $2$ of $A$), the plane $b_3=b_1+b_2$; $\bv{p}=(1,1,1)$ has $1\neq1+1$, so $\bv{p}\notin\Col A$. For $\bv{q}$ multiply by $A$:
+\[
+\begin{bmatrix}1&2&0&1\\0&1&-1&2\\1&3&-1&3\end{bmatrix}\begin{bmatrix}-2\\1\\1\\0\end{bmatrix}=\begin{bmatrix}-2+2+0+0\\0+1-1+0\\-2+3-1+0\end{bmatrix}=\begin{bmatrix}0\\0\\0\end{bmatrix},
+\]
+so $\bv{q}\in\Nul A$. Is $\bv{q}$ also in $\Row A$? By Procedure~\ref{proc:inrow} the weights on the reduced rows $(1,0,2,-3)$ and $(0,1,-1,2)$ are the entries of $\bv{q}$ in the pivot columns $1$ and $2$, namely $-2$ and $1$, and $-2(1,0,2,-3)+1(0,1,-1,2)=(-2,1,-5,8)\neq\bv{q}$. So $\bv{q}\notin\Row A$. For $\bv{r}$ the weights are $2$ and $5$, and $2(1,0,2,-3)+5(0,1,-1,2)=(2,5,-1,4)=\bv{r}$, so $\bv{r}\in\Row A$. Is it in $\Nul A$? The second entry of $A\bv{r}$ is $5+1+8=14\neq0$, so $\bv{r}\notin\Nul A$.
+
+\emph{Summary.} $\bv{p}$: could be in $\Col A$, is not. $\bv{q}$: in $\Nul A$ and not in $\Row A$. $\bv{r}$: in $\Row A$ and not in $\Nul A$. $\bv{s}$: in none. The same size ($4$ entries) does not mean the same subspace.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank C: Describing a column space}
+
+\begin{exmp}{A column space in $\R^4$ cut out by two equations}{b-colfour}
+Let $A=\begin{bmatrix}1&0&1\\2&1&4\\0&1&2\\1&-1&-1\end{bmatrix}$. Describe $\Col A$ by equations in $b_1,b_2,b_3,b_4$, and decide whether $\bv{b}=(1,1,-1,2)$ and $\bv{c}=(1,1,-1,0)$ are in it.
+
+\textbf{Solution.} $A$ has $4$ rows, so $\Col A\subseteq\R^4$. As in Example~\ref{ex:colplane} we ask for which $\bv{b}=(b_1,b_2,b_3,b_4)$ the system $A\bv{x}=\bv{b}$ is consistent, and we keep $b_1,\dots,b_4$ as symbols:
+\begin{align*}
+\begin{amat}{ccc|c}1&0&1&b_1\\2&1&4&b_2\\0&1&2&b_3\\1&-1&-1&b_4\end{amat}
+&\rops{R_2-2R_1,\ R_4-R_1}
+\begin{amat}{ccc|c}1&0&1&b_1\\0&1&2&-2b_1+b_2\\0&1&2&b_3\\0&-1&-2&-b_1+b_4\end{amat}\\[4pt]
+&\rops{R_3-R_2,\ R_4+R_2}
+\begin{amat}{ccc|c}1&0&1&b_1\\0&1&2&-2b_1+b_2\\0&0&0&2b_1-b_2+b_3\\0&0&0&-3b_1+b_2+b_4\end{amat}.
+\end{align*}
+There are two zero rows on the left of the bar, so the system is consistent exactly when \emph{both} entries to the right of the bar are zero:
+\[
+2b_1-b_2+b_3=0,\qquad -3b_1+b_2+b_4=0.
+\]
+So $\Col A=\{\bv{b}\in\R^4:\ 2b_1-b_2+b_3=0\text{ and }-3b_1+b_2+b_4=0\}$. Two equations are needed here, where the plane in $\R^3$ of Example~\ref{ex:colplane} needed one; each zero row of the echelon form is one equation. Check on the third column $(1,4,2,-1)$: $2-4+2=0$ and $-3+4-1=0$. \ $\checkmark$ (The first column gives $2-2+0=0$ and $-3+2+1=0$.) This also shows that $\Col A=\Nul\begin{bmatrix}2&-1&1&0\\-3&1&0&1\end{bmatrix}$, so a column space can be written as a null space.
+
+\emph{Membership.} For $\bv{b}=(1,1,-1,2)$: $2-1-1=0$ and $-3+1+2=0$, so $\bv{b}\in\Col A$. The weights come from the first two rows of the chain with $x_3=0$: $x_2=b_2-2b_1=-1$ and $x_1=b_1=1$, and $\bv{a}_1-\bv{a}_2=(1,2,0,1)-(0,1,1,-1)=(1,1,-1,2)=\bv{b}$. \ $\checkmark$ For $\bv{c}=(1,1,-1,0)$ the first equation holds ($2-1-1=0$) but the second gives $-3+1+0=-2\neq0$, so $\bv{c}\notin\Col A$. Both equations must hold.
+\end{exmp}
+
+\begin{exmp}{For which $h$ do the columns fill $\R^3$?}{b-colh}
+Let $A=\begin{bmatrix}1&1&1\\1&2&h\\1&h&2\end{bmatrix}$. For which $h$ is $\Col A=\R^3$? For each $h$ where it is not, give a vector $\bv{b}$ that is not in $\Col A$.
+
+\textbf{Solution.} By Theorem~\ref{thm:colall}, $\Col A=\R^3$ if and only if $A$ has a pivot in every row. Row reduce $A$, again with $h$ as a symbol:
+\begin{align*}
+\begin{amat}{ccc}1&1&1\\1&2&h\\1&h&2\end{amat}
+&\rops{R_2-R_1,\ R_3-R_1}
+\begin{amat}{ccc}1&1&1\\0&1&h-1\\0&h-1&1\end{amat}
+\rops{R_3-(h-1)R_2}
+\begin{amat}{ccc}1&1&1\\0&1&h-1\\0&0&2h-h^2\end{amat}.
+\end{align*}
+The first two rows have pivots for every $h$. The third row has a pivot if and only if $2h-h^2=h(2-h)\neq0$. So $\Col A=\R^3$ exactly when $h\neq0$ and $h\neq2$. (For $h=1$, for example, the last pivot is $1$.)
+
+For $h=2$ and $h=0$ the third row becomes a zero row, so some $\bv{b}$ must make the system inconsistent. Take $\bv{b}=(0,0,1)$ in both cases. For $h=2$:
+\begin{align*}
+\begin{amat}{ccc|c}1&1&1&0\\1&2&2&0\\1&2&2&1\end{amat}
+&\rops{R_2-R_1,\ R_3-R_1}
+\begin{amat}{ccc|c}1&1&1&0\\0&1&1&0\\0&1&1&1\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|c}1&1&1&0\\0&1&1&0\\0&0&0&1\end{amat}.
+\end{align*}
+The last row reads $0=1$, so $\bv{b}\notin\Col A$ for $h=2$. For $h=0$:
+\begin{align*}
+\begin{amat}{ccc|c}1&1&1&0\\1&2&0&0\\1&0&2&1\end{amat}
+&\rops{R_2-R_1,\ R_3-R_1}
+\begin{amat}{ccc|c}1&1&1&0\\0&1&-1&0\\0&-1&1&1\end{amat}
+\rops{R_3+R_2}
+\begin{amat}{ccc|c}1&1&1&0\\0&1&-1&0\\0&0&0&1\end{amat}.
+\end{align*}
+Again $0=1$, so $\bv{b}\notin\Col A$ for $h=0$. In these two cases the columns span only a plane.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank D: Finding a matrix for a given set}
+
+\begin{exmp}{One plane as a column space and as a null space}{b-bothways}
+Let $W=\{(s,\ 2s+t,\ s+3t,\ t):\ s,t\in\R\}\subseteq\R^4$. (a)~Find a matrix $A$ with $W=\Col A$. (b)~Find a matrix $B$ with $W=\Nul B$.
+
+\textbf{Solution.} (a)~Split the parameters: $(s,\ 2s+t,\ s+3t,\ t)=s(1,2,1,0)+t(0,1,3,1)$, so $W$ is the span of two vectors, which is by definition the column space of
+\[
+A=\begin{bmatrix}1&0\\2&1\\1&3\\0&1\end{bmatrix}.
+\]
+(b)~$W=\Nul B$ means $W$ is the set of solutions of some homogeneous equations, so we need the equations. The equations that a vector $\bv{b}$ of $\R^4$ must satisfy to lie in $\Col A$ are exactly the zero rows of the reduction of $[A\ \bv{b}]$ (as in Example~\ref{ex:b-colfour}):
+\begin{align*}
+\begin{amat}{cc|c}1&0&b_1\\2&1&b_2\\1&3&b_3\\0&1&b_4\end{amat}
+&\rops{R_2-2R_1,\ R_3-R_1}
+\begin{amat}{cc|c}1&0&b_1\\0&1&-2b_1+b_2\\0&3&-b_1+b_3\\0&1&b_4\end{amat}\\[4pt]
+&\rops{R_3-3R_2,\ R_4-R_2}
+\begin{amat}{cc|c}1&0&b_1\\0&1&-2b_1+b_2\\0&0&5b_1-3b_2+b_3\\0&0&2b_1-b_2+b_4\end{amat}.
+\end{align*}
+So $W=\{\bv{b}:\ 5b_1-3b_2+b_3=0\text{ and }2b_1-b_2+b_4=0\}$, which is $\Nul B$ for
+\[
+B=\begin{bmatrix}5&-3&1&0\\2&-1&0&1\end{bmatrix}.
+\]
+\emph{Check 1: both spanning vectors of (a) satisfy the equations.} Multiply:
+\[
+\begin{bmatrix}5&-3&1&0\\2&-1&0&1\end{bmatrix}\begin{bmatrix}1&0\\2&1\\1&3\\0&1\end{bmatrix}=\begin{bmatrix}5-6+1&-3+3\\2-2&-1+1\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix}.
+\]
+So $\Col A\subseteq\Nul B$. \emph{Check 2: nothing else solves the equations.} Solve $B\bv{x}=\bv{0}$ by reducing $B$:
+\begin{align*}
+\begin{amat}{cccc}5&-3&1&0\\2&-1&0&1\end{amat}
+&\rops{R_1-2R_2}
+\begin{amat}{cccc}1&-1&1&-2\\2&-1&0&1\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{cccc}1&-1&1&-2\\0&1&-2&5\end{amat}\\[4pt]
+&\rops{R_1+R_2}
+\begin{amat}{cccc}1&0&-1&3\\0&1&-2&5\end{amat}.
+\end{align*}
+Then $x_1=x_3-3x_4$ and $x_2=2x_3-5x_4$, so $\Nul B=\Span\{(1,2,1,0),\ (-3,-5,0,1)\}$. The first vector is the first column of $A$, and the second is $-3(1,2,1,0)+1(0,1,3,1)=(-3,-5,0,1)$, so the two spanning sets give the same subspace. \ $\checkmark$ The same set can be written both ways; use $\Col$ when you want to \emph{produce} vectors and $\Nul$ when you want to \emph{test} a vector.
+\end{exmp}
+
+\begin{exmp}{Null space, column space or neither?}{b-neither}
+For each set decide whether it is $\Nul A$ for some matrix $A$, $\Col A$ for some matrix $A$, or neither. Give the matrix when there is one.
+\begin{enumerate}[label=(\alph*),itemsep=1pt]
+  \item $P=\{(2a-b,\ a+3b,\ 4a):\ a,b\in\R\}\subseteq\R^3$.
+  \item $Q=\{(x,y,z)\in\R^3:\ x+2y=z\text{ and }y=3x\}$.
+  \item $Y=\{(s+1,\ 2s,\ 3s-1):\ s\in\R\}\subseteq\R^3$.
+  \item $Z=\{(x,y,z)\in\R^3:\ xy=z\}$.
+\end{enumerate}
+
+\textbf{Solution.} A null space and a column space are always subspaces (Theorems~\ref{thm:nulsub} and~\ref{thm:colsub}), so a set that is not a subspace is neither. The first two sets are written in the two standard forms, and the last two are tests.
+
+(a)~Splitting the parameters, $(2a-b,\ a+3b,\ 4a)=a(2,1,4)+b(-1,3,0)$, so $P=\Col A$ with $A=\begin{bmatrix}2&-1\\1&3\\4&0\end{bmatrix}$.
+
+(b)~The two conditions are $x+2y-z=0$ and $3x-y=0$, so $Q=\Nul A$ with $A=\begin{bmatrix}1&2&-1\\3&-1&0\end{bmatrix}$. (Solving, $y=3x$ and $z=x+6x=7x$, so $Q=\Span\{(1,3,7)\}$ is a line, which is also the column space of the $3\times1$ matrix with that column. A set can be both.)
+
+(c)~$Y$ is a line, but it does not contain $\bv{0}$: the first entry $s+1$ is $0$ only for $s=-1$, and then the second entry is $2s=-2\neq0$. Every null space and every column space contains $\bv{0}$, so $Y$ is neither. (It is the line $\Span\{(1,2,3)\}$ shifted by $(1,0,-1)$.)
+
+(d)~$Z$ contains $\bv{0}$, so that test does not help. But $(1,1,1)$ and $(1,2,2)$ are in $Z$ ($1\cdot1=1$ and $1\cdot2=2$), while their sum $(2,3,3)$ is not: $2\cdot3=6\neq3$. So $Z$ is not closed under addition, it is not a subspace, and it is neither. The condition $xy=z$ is not a linear equation, which is why no matrix describes it.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank E: The row space}
+
+\begin{exmp}{Two matrices with the same row space}{b-rowsame}
+Let $A=\begin{bmatrix}1&1&-1&5\\1&2&0&3\\3&1&-5&19\end{bmatrix}$ and $B=\begin{bmatrix}2&1&-3&12\\1&-1&-3&9\\4&3&-5&22\end{bmatrix}$. (a)~Show that $\Row A=\Row B$. (b)~For which $k$ is $\bv{v}=(2,3,k,8)$ in $\Row A$?
+
+\textbf{Solution.} (a)~Row operations do not change the row space (Theorem~\ref{thm:rowops}), so if we can reduce \emph{both} matrices to the same matrix $E$, then $\Row A=\Row E=\Row B$. Reduce $A$:
+\begin{align*}
+\begin{amat}{cccc}1&1&-1&5\\1&2&0&3\\3&1&-5&19\end{amat}
+&\rops{R_2-R_1,\ R_3-3R_1}
+\begin{amat}{cccc}1&1&-1&5\\0&1&1&-2\\0&-2&-2&4\end{amat}\\[4pt]
+&\rops{R_3+2R_2,\ R_1-R_2}
+\begin{amat}{cccc}1&0&-2&7\\0&1&1&-2\\0&0&0&0\end{amat}.
+\end{align*}
+and reduce $B$:
+\begin{align*}
+\begin{amat}{cccc}2&1&-3&12\\1&-1&-3&9\\4&3&-5&22\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{cccc}1&-1&-3&9\\2&1&-3&12\\4&3&-5&22\end{amat}
+\rops{R_2-2R_1,\ R_3-4R_1}
+\begin{amat}{cccc}1&-1&-3&9\\0&3&3&-6\\0&7&7&-14\end{amat}\\[4pt]
+&\rops{\tfrac{1}{3}R_2}
+\begin{amat}{cccc}1&-1&-3&9\\0&1&1&-2\\0&7&7&-14\end{amat}
+\rops{R_3-7R_2,\ R_1+R_2}
+\begin{amat}{cccc}1&0&-2&7\\0&1&1&-2\\0&0&0&0\end{amat}.
+\end{align*}
+Both reductions end at the same reduced echelon form $E=\begin{bmatrix}1&0&-2&7\\0&1&1&-2\\0&0&0&0\end{bmatrix}$, so $\Row A=\Row E=\Row B=\Span\{(1,0,-2,7),\ (0,1,1,-2)\}$. The rows of $A$ and $B$ look quite different, and only the reduction shows that they span the same subspace of $\R^4$.
+
+(b)~Use Procedure~\ref{proc:inrow} with the reduced rows of $E$. The pivot columns are $1$ and $2$, so the weights are the first two entries of $\bv{v}$, namely $2$ and $3$:
+\[
+2(1,0,-2,7)+3(0,1,1,-2)=(2,3,-4+3,\ 14-6)=(2,3,-1,8).
+\]
+The combination agrees with $\bv{v}=(2,3,k,8)$ in the first, second and fourth positions, and in the third position it requires $k=-1$. So $\bv{v}\in\Row A$ if and only if $k=-1$. (The fourth entry $8$ matched without any condition on $k$; that is because the numbers were chosen so, and in general the comparison must be made in every position.) For $k=0$, say, the vector $(2,3,0,8)$ is not in $\Row A$.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank F: Is the map linear, and what is its matrix}
+
+\begin{exmp}{A map from $\R^3$ to $\R^2$, and three maps that look similar}{b-matrixmap}
+Let $S:\R^3\to\R^2$ be $S(x_1,x_2,x_3)=(3x_1-x_3,\ 2x_2+x_3)$. (a)~Show that $S$ is linear by finding a matrix $A$ with $S(\bv{x})=A\bv{x}$, then find $\ker S$ and the range of $S$. (b)~Decide whether each of the following is linear:
+\begin{align*}
+T_1(\bv{x})&=(3x_1-x_3+1,\ 2x_2+x_3),\\
+T_2(\bv{x})&=(3x_1-x_3,\ x_2x_3),\\
+T_3(\bv{x})&=(3|x_1|-x_3,\ 2x_2+x_3).
+\end{align*}
+
+\textbf{Solution.} (a)~The columns of a matrix map are the images of the standard vectors: $S(1,0,0)=(3,0)$, $S(0,1,0)=(0,2)$ and $S(0,0,1)=(-1,1)$, so
+\[
+A=\begin{bmatrix}3&0&-1\\0&2&1\end{bmatrix},\qquad A\begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix}=\begin{bmatrix}3x_1-x_3\\2x_2+x_3\end{bmatrix}=S(\bv{x}).
+\]
+A map of the form $\bv{x}\mapsto A\bv{x}$ is linear, as recorded in Example~\ref{ex:matmap}. By that example, $\ker S=\Nul A$ and $\operatorname{range}S=\Col A$. Solving $A\bv{x}=\bv{0}$: $x_1=\tfrac13x_3$ and $x_2=-\tfrac12x_3$, so with $x_3=6$ we get $\ker S=\Span\{(2,-3,6)\}$, a line in $\R^3$. Check: $S(2,-3,6)=(6-6,\ -6+6)=(0,0)$. \ $\checkmark$ The matrix $A$ is already in echelon form with a pivot in each of its two rows, so $\Col A=\R^2$ by Theorem~\ref{thm:colall}, and $S$ is onto. It is not one-to-one, because $\ker S\neq\{\bv{0}\}$ (Theorem~\ref{thm:onetoone}).
+
+(b)~\emph{$T_1$:} $T_1(\bv{0})=(1,0)\neq\bv{0}$, so $T_1$ is not linear (Theorem~\ref{thm:ltbasic}(a)). The constant $+1$ is the culprit. \emph{$T_2$:} the zero test passes, $T_2(\bv{0})=\bv{0}$, but the product $x_2x_3$ breaks scalar multiples: $T_2(0,2,2)=(-2,4)$ while $2\,T_2(0,1,1)=2(-1,1)=(-2,2)$, so (ii) of Definition~\ref{def:lintrans} fails. \emph{$T_3$:} again $T_3(\bv{0})=\bv{0}$, but with $c=-1$ we have $T_3(-1,0,0)=(3,0)$ while $(-1)\,T_3(1,0,0)=(-3,0)$, so (ii) fails. The rule of thumb: every output entry must be a combination $c_1x_1+c_2x_2+c_3x_3$ with \emph{no} constant, product, power or absolute value; then the map is $\bv{x}\mapsto A\bv{x}$, and conversely a map that is not of that form is not linear.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank G: Kernel and range}
+
+\begin{exmp}{Two ways to raise the degree}{b-multint}
+Define $M,J:\mathbb{P}_2\to\mathbb{P}_3$ by $M(p)=(t-2)\,p(t)$ and $J(p)(t)=\int_0^tp(s)\,ds$. Show that both are linear and find the kernel and the range of each.
+
+\textbf{Solution.} \emph{Linearity.} $M(p+q)=(t-2)(p+q)=(t-2)p+(t-2)q=M(p)+M(q)$ and $M(cp)=(t-2)(cp)=c\,M(p)$. For $J$, the integral of a sum is the sum of the integrals and a constant factor comes out of the integral, so $J(p+q)=J(p)+J(q)$ and $J(cp)=c\,J(p)$. Both outputs are in $\mathbb{P}_3$: multiplying by a polynomial of degree $1$ raises the degree by one, and integrating $t^k$ gives $t^{k+1}/(k+1)$.
+
+\emph{The map $M$.} For $p=a_0+a_1t+a_2t^2$,
+\[
+M(p)=(t-2)(a_0+a_1t+a_2t^2)=-2a_0+(a_0-2a_1)t+(a_1-2a_2)t^2+a_2t^3.
+\]
+\emph{Kernel.} If $M(p)$ is the zero polynomial then $(t-2)p(t)=0$ for every $t$, so $p(t)=0$ for every $t\neq2$. A polynomial with infinitely many zeros is the zero polynomial, so $p=\bv{0}$ and $\ker M=\{\bv{0}\}$; $M$ is one-to-one (Theorem~\ref{thm:onetoone}). \emph{Range.} Every value $M(p)$ is zero at $t=2$, because of the factor $t-2$. Conversely, if $q$ is in $\mathbb{P}_3$ and $q(2)=0$, then $t-2$ divides $q$ (the factor theorem), $q=(t-2)p$, and $p$ has degree at most $2$, so $q=M(p)$. Hence
+\[
+\operatorname{range}M=\{q\in\mathbb{P}_3:\ q(2)=0\}=\Span\{t-2,\ t(t-2),\ t^2(t-2)\}.
+\]
+\emph{The map $J$.} $J(a_0+a_1t+a_2t^2)=a_0t+\tfrac12a_1t^2+\tfrac13a_2t^3$. \emph{Kernel.} This is zero only if $a_0=a_1=a_2=0$, so $\ker J=\{\bv{0}\}$ and $J$ is one-to-one. \emph{Range.} The values are the polynomials with no constant term, and each of those is reached (take $a_0=c_1$, $a_1=2c_2$, $a_2=3c_3$ for $c_1t+c_2t^2+c_3t^3$), so $\operatorname{range}J=\{q\in\mathbb{P}_3:\ q(0)=0\}=\Span\{t,t^2,t^3\}$.
+
+Both maps are one-to-one and neither is onto $\mathbb{P}_3$, but the ranges are different subspaces of $\mathbb{P}_3$: the polynomials that vanish at $2$ for $M$, and the polynomials that vanish at $0$ for $J$. For instance $t-2$ is in the range of $M$ and not in the range of $J$.
+\end{exmp}
+
+\begin{exmp}{The commutator with a fixed matrix}{b-commut}
+Let $F=\begin{bmatrix}1&1\\0&1\end{bmatrix}$ and define $C:M_{2\times2}\to M_{2\times2}$ by $C(X)=XF-FX$. Show that $C$ is linear and find its kernel and range.
+
+\textbf{Solution.} \emph{Linearity.} Matrix multiplication distributes over addition and scalars pass through it, so $C(X+Y)=(X+Y)F-F(X+Y)=(XF-FX)+(YF-FY)=C(X)+C(Y)$ and $C(cX)=(cX)F-F(cX)=c\,C(X)$.
+
+\emph{A formula for $C$.} Let $X=\begin{bmatrix}a&b\\c&d\end{bmatrix}$. Compute both products:
+\[
+\begin{bmatrix}a&b\\c&d\end{bmatrix}\begin{bmatrix}1&1\\0&1\end{bmatrix}=\begin{bmatrix}a&a+b\\c&c+d\end{bmatrix},\qquad
+\begin{bmatrix}1&1\\0&1\end{bmatrix}\begin{bmatrix}a&b\\c&d\end{bmatrix}=\begin{bmatrix}a+c&b+d\\c&d\end{bmatrix}.
+\]
+Subtracting, $C(X)=\begin{bmatrix}-c&a-d\\0&c\end{bmatrix}$.
+
+\emph{Kernel.} $C(X)=\mathbf{0}$ means $-c=0$, $a-d=0$ and $c=0$, so $c=0$ and $d=a$:
+\[
+\ker C=\left\{\begin{bmatrix}a&b\\0&a\end{bmatrix}\right\}=\Span\left\{\begin{bmatrix}1&0\\0&1\end{bmatrix},\begin{bmatrix}0&1\\0&0\end{bmatrix}\right\}.
+\]
+These are exactly the matrices that commute with $F$ ($XF=FX$). \emph{Range.} Every value $C(X)$ has the form $\begin{bmatrix}p&q\\0&-p\end{bmatrix}$ with $p=-c$ and $q=a-d$. Conversely, any such matrix is reached: take $c=-p$, $a=q$, $d=0$ and $b$ arbitrary. So
+\[
+\operatorname{range}C=\left\{\begin{bmatrix}p&q\\0&-p\end{bmatrix}\right\}=\Span\left\{\begin{bmatrix}1&0\\0&-1\end{bmatrix},\begin{bmatrix}0&1\\0&0\end{bmatrix}\right\}.
+\]
+The kernel is not $\{\mathbf{0}\}$, so $C$ is not one-to-one, and the range is not all of $M_{2\times2}$ (it needs a zero in the lower left corner), so $C$ is not onto. Notice that the matrix $\begin{bmatrix}0&1\\0&0\end{bmatrix}$ lies in both the kernel and the range. The domain and the codomain are the same space here, so the kernel and the range are two subspaces of the same $M_{2\times2}$, and nothing forces them to be disjoint.
+\end{exmp}
+
+\begin{exmp}{A differential operator on functions}{b-diffop}
+Let $\mathcal{D}$ be the space of functions $f:\R\to\R$ with a continuous derivative, let $\mathcal{C}$ be the space of continuous functions $\R\to\R$, and let $T:\mathcal{D}\to\mathcal{C}$ be $T(f)=f'-2f$. Show that $T$ is linear, find $\ker T$, show that $T$ is onto, and describe all solutions of $f'-2f=3t$.
+
+\textbf{Solution.} \emph{Linearity.} $(f+g)'-2(f+g)=(f'-2f)+(g'-2g)$ and $(cf)'-2(cf)=c(f'-2f)$, because derivatives of sums and constant multiples behave in the same way. So $T$ is linear.
+
+\emph{Kernel.} We must solve $f'=2f$. Multiply by $e^{-2t}$ and use the product rule: $\bigl(e^{-2t}f\bigr)'=e^{-2t}f'-2e^{-2t}f=e^{-2t}\bigl(f'-2f\bigr)$. For $f$ in the kernel this derivative is $0$, so $e^{-2t}f$ is a constant $c$ and $f(t)=c\,e^{2t}$. Conversely $T(e^{2t})=2e^{2t}-2e^{2t}=0$, so every multiple of $e^{2t}$ is in the kernel. Hence $\ker T=\Span\{e^{2t}\}$, a line in $\mathcal{D}$. In particular $T$ is not one-to-one (Theorem~\ref{thm:onetoone}).
+
+\emph{Range.} Given a continuous $g$, define $f(t)=e^{2t}\int_0^te^{-2s}g(s)\,ds$. By the product rule and the fundamental theorem of calculus, $f'(t)=2f(t)+e^{2t}e^{-2t}g(t)=2f(t)+g(t)$, so $T(f)=g$. Every $g$ in $\mathcal{C}$ is a value of $T$, so $\operatorname{range}T=\mathcal{C}$ and $T$ is onto.
+
+\emph{The equation $f'-2f=3t$.} A particular solution is $f_p(t)=-\tfrac32t-\tfrac34$: indeed $f_p'-2f_p=-\tfrac32+3t+\tfrac32=3t$. \ $\checkmark$ If $f$ is any solution, then $T(f-f_p)=3t-3t=0$, so $f-f_p$ is in the kernel; and conversely adding a kernel element to $f_p$ gives a solution. Therefore the solutions are exactly
+\[
+f(t)=-\tfrac32t-\tfrac34+c\,e^{2t},\qquad c\in\R.
+\]
+This is the pattern of Figure~1 (a particular solution plus the null space) in a space of functions: the solutions of $T(f)=g$ are a particular solution plus the kernel.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank H: Structure arguments and true or false}
+
+\begin{exmp}{Images and preimages of subspaces}{b-images}
+Let $T:V\to W$ be a linear transformation, let $H$ be a subspace of $V$ and let $K$ be a subspace of $W$. Show that (a)~$T(H)=\{T(\bv{h}):\ \bv{h}\in H\}$ is a subspace of $W$ and (b)~$T^{-1}(K)=\{\bv{v}\in V:\ T(\bv{v})\in K\}$ is a subspace of $V$. Then (c)~say which special cases give the range and the kernel, and (d)~look at one instance.
+
+\textbf{Solution.} Both parts use the Subspace Test: contain the zero vector, and be closed under sums and scalar multiples. The proofs only use that $T$ is linear and that $H$ and $K$ are subspaces.
+
+(a)~\emph{Zero.} $\bv{0}$ is in $H$, so $T(\bv{0})=\bv{0}$ is in $T(H)$ (Theorem~\ref{thm:ltbasic}(a)). \emph{Sums.} Two elements of $T(H)$ have the form $T(\bv{h}_1)$ and $T(\bv{h}_2)$ with $\bv{h}_1,\bv{h}_2$ in $H$. Then $T(\bv{h}_1)+T(\bv{h}_2)=T(\bv{h}_1+\bv{h}_2)$, and $\bv{h}_1+\bv{h}_2$ is in $H$ because $H$ is closed under addition; so the sum is in $T(H)$. \emph{Scalar multiples.} $c\,T(\bv{h}_1)=T(c\bv{h}_1)$ with $c\bv{h}_1$ in $H$.
+
+(b)~\emph{Zero.} $T(\bv{0})=\bv{0}$ is in $K$ because $K$ is a subspace, so $\bv{0}\in T^{-1}(K)$. \emph{Sums.} If $T(\bv{u})$ and $T(\bv{v})$ are in $K$, then $T(\bv{u}+\bv{v})=T(\bv{u})+T(\bv{v})$ is in $K$ because $K$ is closed under addition, so $\bv{u}+\bv{v}\in T^{-1}(K)$. \emph{Scalar multiples.} $T(c\bv{u})=c\,T(\bv{u})$ is in $K$, so $c\bv{u}\in T^{-1}(K)$.
+
+(c)~Taking $H=V$ gives $T(V)=\operatorname{range}T$, and taking $K=\{\bv{0}\}$ gives $T^{-1}(\{\bv{0}\})=\ker T$. So Theorem~\ref{thm:kersub} is the special case of this example. Note that $T^{-1}(K)$ is a set of vectors of $V$; it does not mean that $T$ has an inverse.
+
+(d)~Let $T(\bv{x})=A\bv{x}$ with $A=\begin{bmatrix}1&2&0\\0&1&1\end{bmatrix}$, let $H=\Span\{(1,1,1)\}$ and $K=\Span\{(1,0)\}$. Then $A(1,1,1)=(3,2)$, so $T(H)=\Span\{(3,2)\}$, a line in $\R^2$. And $A\bv{x}$ lies on the horizontal axis $K$ exactly when its second entry $x_2+x_3$ is $0$, so $T^{-1}(K)=\{\bv{x}:\ x_2+x_3=0\}=\Span\{(1,0,0),(0,1,-1)\}$, a plane in $\R^3$. It contains $\Nul A=\Span\{(2,-1,1)\}$, as it must: $\ker T=T^{-1}(\{\bv{0}\})\subseteq T^{-1}(K)$ because $\{\bv{0}\}\subseteq K$.
+\end{exmp}
+
+\begin{exmp}{Six true or false statements}{b-tf}
+Decide whether each statement is true in all cases or false in at least one, and give a reason.
+\begin{enumerate}[label=(\arabic*),itemsep=1pt]
+  \item If $A$ is $4\times6$, then $\Nul A\neq\{\bv{0}\}$.
+  \item If $A$ and $B$ are $2\times2$ matrices with $\Nul A=\Nul B$, then $\Col A=\Col B$.
+  \item If $A$ is $3\times5$ and $\Col A=\R^3$, then $\Nul A\neq\{\bv{0}\}$.
+  \item If $T$ is linear and $T(\bv{u})=T(\bv{v})$, then $\bv{u}-\bv{v}$ is in $\ker T$.
+  \item No linear transformation $T:\R^2\to\R^3$ is onto.
+  \item If $A$ is $3\times4$, the set of all $\bv{b}$ for which $A\bv{x}=\bv{b}$ is consistent is a subspace of $\R^4$.
+\end{enumerate}
+
+\textbf{Solution.} \textbf{(1) True.} A $4\times6$ matrix has at most $4$ pivots, one per row, but $6$ columns, so at least $2$ columns have no pivot. There is a free variable, so $A\bv{x}=\bv{0}$ has a nonzero solution (Procedure~\ref{proc:nulspan}).
+
+\textbf{(2) False.} Take $A=\begin{bmatrix}1&1\\1&1\end{bmatrix}$ and $B=\begin{bmatrix}1&1\\2&2\end{bmatrix}$. Both have $x_1+x_2=0$ as the only condition on $\bv{x}$, so $\Nul A=\Nul B=\Span\{(1,-1)\}$. But $\Col A=\Span\{(1,1)\}$ and $\Col B=\Span\{(1,2)\}$, two different lines. (This is the idea of Example~\ref{ex:colchange}: matrices with the same null space can have different column spaces.)
+
+\textbf{(3) True.} $\Col A=\R^3$ means a pivot in every one of the $3$ rows (Theorem~\ref{thm:colall}), so exactly $3$ pivots. The $5$ columns therefore leave $2$ free variables, and $\Nul A$ contains nonzero vectors.
+
+\textbf{(4) True.} By Theorem~\ref{thm:ltbasic}(c), $T(\bv{u}-\bv{v})=T(\bv{u})-T(\bv{v})=\bv{0}$, which says that $\bv{u}-\bv{v}\in\ker T$. This is the step in the proof of Theorem~\ref{thm:onetoone}.
+
+\textbf{(5) True.} A linear transformation $\R^2\to\R^3$ has the form $T(\bv{x})=A\bv{x}$ for a $3\times2$ matrix $A$ (Section 1.9), and its range is $\Col A$. A $3\times2$ matrix has at most $2$ pivots but $3$ rows, so some row has no pivot and $\Col A\neq\R^3$ (Theorem~\ref{thm:colall}).
+
+\textbf{(6) False.} The set of $\bv{b}$ for which $A\bv{x}=\bv{b}$ is consistent is $\Col A$ (Theorem~\ref{thm:colsub}(c)). The vectors $\bv{b}$ have $3$ entries (one per row), so $\Col A$ is a subspace of $\R^3$, not of $\R^4$; a vector of $\R^4$ is never a right-hand side for this $A$. The statement would be true with $\R^3$ in place of $\R^4$.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:shapes}.] The null space lives in $\R^n$ ($n$ columns) and the column space in $\R^m$ ($m$ rows). (a)~$3\times5$: $\Nul A\subseteq\R^5$, $\Col A\subseteq\R^3$. (b)~$4\times2$: $\Nul A\subseteq\R^2$, $\Col A\subseteq\R^4$. (c)~$6\times6$: both in $\R^6$. (d)~$1\times7$: $\Nul A\subseteq\R^7$, $\Col A\subseteq\R^1=\R$.
