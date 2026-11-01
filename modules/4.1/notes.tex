@@ -639,6 +639,382 @@ The last column is a pivot column: inconsistent, so $D$ is not in the span. This
   \item Can a vector space have exactly two vectors? Can it have exactly one? (Hint: if $\bv{u}\neq\bv{0}$, how many different vectors $c\bv{u}$ are there?)
 \end{enumerate}
 
+\subsection*{Example bank: sixteen more worked examples}
+
+The examples above met each idea once. This bank gives them more room, grouped by the kind of problem, with the easiest examples first in every group. The examples continue the numbering (Examples~\ref{ex:b-shiftline} to~\ref{ex:b-judge}), and every solution says \emph{why} each step is taken, not only what it is. They use only what this section and the earlier ones provide: the ten axioms (Definition~\ref{def:vspace}), the first consequences (Theorem~\ref{thm:conseq}), the Subspace Test (Theorem~\ref{thm:subtest}), spans (Theorem~\ref{thm:spansub}), Procedure~\ref{proc:member}, and row reduction from Chapter 1. Work each problem before you read its solution.
+
+\textbf{What is in this bank}
+\begin{itemize}
+  \item \textbf{A. Unusual operations} (Examples~\ref{ex:b-shiftline} and~\ref{ex:b-twist}): find the zero vector and the negative first and then check all ten axioms; a system in which several axioms fail, and exactly which ones.
+  \item \textbf{B. Prove it from the axioms} (Examples~\ref{ex:b-negneg} and~\ref{ex:b-zeroprod}): every equality names the axiom or theorem that justifies it.
+  \item \textbf{C. The Subspace Test in $\R^n$} (Examples~\ref{ex:b-twoeqline}, \ref{ex:b-allk} and~\ref{ex:b-cone}): a line cut out by two equations (a full proof), the values of a parameter $k$ for which a set is a subspace, and a set defined with absolute values (a counterexample).
+  \item \textbf{D. The Subspace Test in spaces of matrices, polynomials and functions} (Examples~\ref{ex:b-leftann}, \ref{ex:b-commute} and~\ref{ex:b-calcfn}): sets defined by a matrix equation, and by conditions from calculus.
+  \item \textbf{E. Rewrite a set as a span} (Examples~\ref{ex:b-redundant} and~\ref{ex:b-tri3}): three parameters with a redundant generator, and a set of matrices described by conditions.
+  \item \textbf{F. Is a vector in a span, does a set span} (Examples~\ref{ex:b-hpoly} and~\ref{ex:b-spanr3}): an unknown $h$ in a polynomial, a matrix test with two targets, and the values of $h$ for which three vectors span $\R^3$.
+  \item \textbf{G. Intersections and sums} (Example~\ref{ex:b-planes}): two planes in $\R^3$, their intersection and their sum, each as a span.
+  \item \textbf{H. Judge the statements} (Example~\ref{ex:b-judge}): six statements, each true or false, with a reason.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank A: Unusual operations}
+
+\begin{exmp}{A shifted copy of the real line}{b-shiftline}
+Let $V$ be the set of all real numbers, with the new operations
+\[
+x\oplus y=x+y-2,\qquad c\odot x=cx-2c+2.
+\]
+Find the zero vector and the negative of $x$, and decide whether $V$ is a vector space.
+
+\textbf{Solution.} \emph{The zero vector comes first,} because the other axioms refer to it. Axiom (4) asks for a vector $z$ with $x\oplus z=x$ for every $x$. Here $x\oplus z=x+z-2$, and $x+z-2=x$ forces $z=2$. So the zero vector of $V$ is the \emph{number $2$}, not the number $0$ (compare the remark after Definition~\ref{def:vspace}). Check: $5\oplus2=5+2-2=5$. \ $\checkmark$
+
+\emph{The negative.} Axiom (5) asks for $w$ with $x\oplus w=\bv{0}=2$, that is $x+w-2=2$, so $w=4-x$. Check: $5\oplus(-1)=5-1-2=2$. \ $\checkmark$
+
+\emph{The axioms.} Closure, axioms (1) and (6), holds because the formulas produce real numbers. For the others we compute both sides.
+\begin{align*}
+&(2)\ \ x\oplus y=x+y-2=y\oplus x.\\
+&(3)\ \ (x\oplus y)\oplus w=x+y+w-4=x\oplus(y\oplus w).\\
+&(7)\ \ c\odot(x\oplus y)=c(x+y-2)-2c+2=cx+cy-4c+2,\\
+&\qquad\ \ c\odot x\oplus c\odot y=(cx-2c+2)+(cy-2c+2)-2=cx+cy-4c+2.\\
+&(8)\ \ (c+d)\odot x=(c+d)x-2c-2d+2,\\
+&\qquad\ \ c\odot x\oplus d\odot x=(cx-2c+2)+(dx-2d+2)-2=(c+d)x-2c-2d+2.\\
+&(9)\ \ c\odot(d\odot x)=c(dx-2d+2)-2c+2=cdx-2cd+2=(cd)\odot x.\\
+&(10)\ 1\odot x=x-2+2=x.
+\end{align*}
+All ten axioms hold, so $V$ is a vector space. \emph{Why does this work?} Subtract $2$ from every number. Then $(x\oplus y)-2=(x-2)+(y-2)$ and $(c\odot x)-2=c\,(x-2)$: after the shift by $2$, the new operations are the ordinary ones, and the number $2$ plays the role of $0$. Theorem~\ref{thm:conseq} agrees: $0\odot x=2$ is the zero vector, and $(-1)\odot x=-x+2+2=4-x$ is the negative of $x$. A numerical check: $3\oplus5=6$, $2\odot5=10-4+2=8$ and $(-1)\odot5=-1=4-5$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{A twisted scalar multiplication: name every axiom that fails}{b-twist}
+On $\R^2$ keep the usual addition and define
+\[
+c\odot(u_1,u_2)=(cu_1,\ cu_2+c-1).
+\]
+Decide which of the ten axioms hold.
+
+\textbf{Solution.} The addition is the usual one, so axioms (1) to (5) hold, with $\bv{0}=(0,0)$ and $-\bv{u}=(-u_1,-u_2)$. Axiom (6) holds because $c\odot\bv{u}$ is a vector of $\R^2$. That leaves the four scalar axioms, and for each of them we compute both sides.
+
+\emph{Axiom (10).} $1\odot\bv{u}=(u_1,\ u_2+1-1)=\bv{u}$. It holds.
+
+\emph{Axiom (9).} $c\odot(d\odot\bv{u})=c\odot(du_1,\ du_2+d-1)=(cdu_1,\ c(du_2+d-1)+c-1)=(cdu_1,\ cdu_2+cd-1)=(cd)\odot\bv{u}$. It holds.
+
+\emph{Axiom (8).} For the left side, $(c+d)\odot\bv{u}=\bigl((c+d)u_1,\ (c+d)u_2+c+d-1\bigr)$. For the right side,
+\[
+c\odot\bv{u}+d\odot\bv{u}=\bigl((c+d)u_1,\ (c+d)u_2+c+d-2\bigr).
+\]
+The second entries differ by exactly $1$, whatever $c,d,\bv{u}$ are. So (8) fails every time. A specific instance: $c=2$, $d=3$, $\bv{u}=(1,0)$ gives $5\odot\bv{u}=(5,4)$ but $2\odot\bv{u}+3\odot\bv{u}=(2,1)+(3,2)=(5,3)$.
+
+\emph{Axiom (7).} The left side is $c\odot(\bv{u}+\bv{v})=\bigl(c(u_1+v_1),\ c(u_2+v_2)+c-1\bigr)$ and the right side is $c\odot\bv{u}+c\odot\bv{v}=\bigl(c(u_1+v_1),\ c(u_2+v_2)+2c-2\bigr)$. The second entries differ by $1-c$, so (7) holds when $c=1$ and fails for every other $c$. A specific instance: $c=2$, $\bv{u}=(1,0)$, $\bv{v}=(0,1)$ gives $2\odot(1,1)=(2,3)$ but $2\odot(1,0)+2\odot(0,1)=(2,1)+(0,3)=(2,4)$.
+
+\textbf{Conclusion.} Exactly axioms (7) and (8) fail; the other eight hold. So this is not a vector space, and the first consequences of the axioms are no longer guaranteed: $0\odot\bv{u}=(0,\ -1)$, which is not the zero vector $(0,0)$ (compare Theorem~\ref{thm:conseq}(c) and Example~\ref{ex:strange}). Notice that the system passes axioms (9) and (10), the two that look the most ``obvious''; naming the failures needs a computation of every axiom, not a quick look.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank B: Prove it from the axioms}
+
+\begin{exmp}{The negative of a negative}{b-negneg}
+Let $V$ be a vector space and $\bv{u}$ a vector in $V$. Prove that $-(-\bv{u})=\bv{u}$.
+
+\textbf{Solution.} We may use only the ten axioms and Theorem~\ref{thm:conseq}. Write $\bv{w}=-(-\bv{u})$. By axiom (5) applied to the vector $-\bv{u}$, we know $(-\bv{u})+\bv{w}=\bv{0}$. We also know $(-\bv{u})+\bv{u}=\bv{0}$, because $\bv{u}+(-\bv{u})=\bv{0}$ is axiom (5) and the order of a sum does not matter by axiom (2). The goal is to show $\bv{w}=\bv{u}$. Begin with $\bv{w}$ and bring in the sum $(-\bv{u})+\bv{u}$, which equals $\bv{0}$, so that the equality chain can use the two facts above:
+\begin{align*}
+\bv{w}&=\bv{w}+\bv{0} &&\text{(A4)}\\
+&=\bv{w}+\bigl((-\bv{u})+\bv{u}\bigr) &&\text{(A5) and (A2): } (-\bv{u})+\bv{u}=\bv{0}\\
+&=\bigl(\bv{w}+(-\bv{u})\bigr)+\bv{u} &&\text{(A3)}\\
+&=\bigl((-\bv{u})+\bv{w}\bigr)+\bv{u} &&\text{(A2)}\\
+&=\bv{0}+\bv{u} &&\text{(A5) for the vector } -\bv{u}\\
+&=\bv{u}+\bv{0} &&\text{(A2)}\\
+&=\bv{u} &&\text{(A4)}.
+\end{align*}
+So $-(-\bv{u})=\bv{u}$. \ $\blacksquare$
+
+\emph{A shorter route.} Theorem~\ref{thm:conseq}(b) says that if $\bv{x}+\bv{y}=\bv{0}$ then $\bv{y}=-\bv{x}$. Take $\bv{x}=-\bv{u}$ and $\bv{y}=\bv{u}$: since $(-\bv{u})+\bv{u}=\bv{0}$, we get $\bv{u}=-(-\bv{u})$. The long chain above is the proof of Theorem~\ref{thm:conseq}(b) written out for this case; the theorem saves us from repeating it.
+
+\emph{A consequence.} By Theorem~\ref{thm:conseq}(e), $(-1)\bv{u}=-\bv{u}$, hence $(-1)\bigl((-1)\bv{u}\bigr)=(-1)(-\bv{u})=-(-\bv{u})=\bv{u}$: multiplying twice by $-1$ gives the vector back. As a numerical illustration take $\mathbb{P}_2$ and $\bv{u}=2-t+3t^2$. Then $-\bv{u}=-2+t-3t^2$ and $-(-\bv{u})=2-t+3t^2=\bv{u}$. \ $\checkmark$ An example never replaces the proof, but a wrong statement would fail it.
+\end{exmp}
+
+\begin{exmp}{A product that is zero}{b-zeroprod}
+Let $V$ be a vector space, $c$ a scalar and $\bv{u}$ a vector. Prove: if $c\bv{u}=\bv{0}$, then $c=0$ or $\bv{u}=\bv{0}$. Then use the result to prove that if $\bv{u}\neq\bv{0}$ and $c\bv{u}=d\bv{u}$, then $c=d$.
+
+\textbf{Solution.} The claim says ``at least one of two things is true''. If $c=0$ there is nothing to prove. So assume $c\neq0$ and show that $\bv{u}=\bv{0}$. Because $c\neq0$ the number $\tfrac1c$ exists, and we can scale by it:
+\begin{align*}
+\bv{u}&=1\bv{u} &&\text{(A10)}\\
+&=\bigl(\tfrac1c\cdot c\bigr)\bv{u} &&\text{arithmetic of numbers: } \tfrac1c\cdot c=1\\
+&=\tfrac1c\,(c\bv{u}) &&\text{(A9)}\\
+&=\tfrac1c\,\bv{0} &&\text{hypothesis } c\bv{u}=\bv{0}\\
+&=\bv{0} &&\text{first consequences, part (d)}.
+\end{align*}
+So $c\neq0$ forces $\bv{u}=\bv{0}$, and the statement is proved. \ $\blacksquare$ (The converse is Theorem~\ref{thm:conseq}(c) and (d): $0\bv{u}=\bv{0}$ and $c\bv{0}=\bv{0}$.)
+
+\emph{The application.} Suppose $\bv{u}\neq\bv{0}$ and $c\bv{u}=d\bv{u}$. By axiom (8), $d\bv{u}+(-d)\bv{u}=(d-d)\bv{u}=0\bv{u}=\bv{0}$, so $(-d)\bv{u}$ is the negative of $d\bv{u}$ (Theorem~\ref{thm:conseq}(b)). Adding $(-d)\bv{u}$ to both sides of $c\bv{u}=d\bv{u}$ gives $c\bv{u}+(-d)\bv{u}=\bv{0}$, that is $(c-d)\bv{u}=\bv{0}$ by (A8). Since $\bv{u}\neq\bv{0}$, the first part forces $c-d=0$, so $c=d$. \ $\blacksquare$
+
+A numerical illustration in $M_{2\times2}$ with $A=\begin{bmatrix}1&-2\\0&3\end{bmatrix}\neq\mathbf{0}$: the equation $cA=\mathbf{0}$ says $c=0$, $-2c=0$, $3c=0$, whose only solution is $c=0$; and $cA=dA$ forces $c=d$ in the same way. In words: in any vector space, different scalars give different multiples of a nonzero vector.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank C: The Subspace Test in $\R^n$}
+
+\begin{exmp}{A line cut out by two equations}{b-twoeqline}
+Let $L=\{(x_1,x_2,x_3)\in\R^3:\ 2x_1+x_2=0\ \text{and}\ x_2-3x_3=0\}$. Prove that $L$ is a subspace of $\R^3$, and then write $L$ as a span.
+
+\textbf{Solution.} Apply the Subspace Test (Theorem~\ref{thm:subtest}). A vector is in $L$ when it satisfies \emph{both} equations, so each property has to be checked for both.
+
+(a)~The zero vector $(0,0,0)$ satisfies $2\cdot0+0=0$ and $0-3\cdot0=0$.
+
+(b)~Let $\bv{u}=(x_1,x_2,x_3)$ and $\bv{v}=(y_1,y_2,y_3)$ be in $L$. Then
+\begin{align*}
+2(x_1+y_1)+(x_2+y_2)&=(2x_1+x_2)+(2y_1+y_2)=0+0=0,\\
+(x_2+y_2)-3(x_3+y_3)&=(x_2-3x_3)+(y_2-3y_3)=0+0=0,
+\end{align*}
+so $\bv{u}+\bv{v}$ is in $L$.
+
+(c)~For a scalar $r$: $2(rx_1)+rx_2=r(2x_1+x_2)=0$ and $rx_2-3(rx_3)=r(x_2-3x_3)=0$, so $r\bv{u}$ is in $L$.
+
+Hence $L$ is a subspace. \emph{Now a spanning set.} The first equation gives $x_2=-2x_1$ and the second gives $x_3=\tfrac13x_2=-\tfrac23x_1$. Only $x_1$ is free; to avoid fractions write $x_1=3s$. Then
+\[
+(x_1,x_2,x_3)=(3s,\ -6s,\ -2s)=s\,(3,-6,-2),
+\]
+so $L=\Span\{(3,-6,-2)\}$, a line through the origin. Check in the equations: $2\cdot3+(-6)=0$ and $-6-3(-2)=0$. \ $\checkmark$ Each equation alone describes a plane through the origin; $L$ is where the two planes meet, and the proof above went through because every condition was a homogeneous linear equation.
+\end{exmp}
+
+\begin{exmp}{For which $k$ is the set a subspace?}{b-allk}
+For each real number $k$ let $S_k=\{(x_1,x_2,x_3)\in\R^3:\ 2x_1-x_2+4x_3=k^2-5k+6\}$. For which values of $k$ is $S_k$ a subspace of $\R^3$?
+
+\textbf{Solution.} Test the zero vector first, since it is the quickest way to rule values out. The vector $(0,0,0)$ is in $S_k$ exactly when $0=k^2-5k+6=(k-2)(k-3)$, that is, when $k=2$ or $k=3$. For every other $k$ the zero vector is missing and $S_k$ is not a subspace. For example, $k=0$ gives the right side $6$ and $k=1$ gives $2$, and neither is $0$.
+
+For $k=2$ and $k=3$ the right side is $0$ and $S_k$ is the plane $H=\{2x_1-x_2+4x_3=0\}$, the \emph{same} set for both values. It passes the test just as in Example~\ref{ex:plane}: $\bv{0}$ is in $H$; if $2x_1-x_2+4x_3=0$ and $2y_1-y_2+4y_3=0$ then $2(x_1+y_1)-(x_2+y_2)+4(x_3+y_3)=0+0=0$; and $2(rx_1)-rx_2+4(rx_3)=r\cdot0=0$.
+
+\textbf{Answer:} $S_k$ is a subspace if and only if $k=2$ or $k=3$. The zero test found the candidates, and a short computation confirmed that they work: finding the two values of $k$ is not enough until the other two properties have been checked.
+\end{exmp}
+
+\begin{exmp}{A set with absolute values: closed under scalars, not under sums}{b-cone}
+Let $S=\{(x,y,z)\in\R^3:\ |x|+|y|=|z|\}$. Is $S$ a subspace of $\R^3$?
+
+\textbf{Solution.} The zero vector satisfies $0+0=0$. Scalar multiples also work, for every scalar, negative ones included: if $(x,y,z)$ is in $S$, then $|cx|+|cy|=|c|\,(|x|+|y|)=|c|\,|z|=|cz|$. So the first two properties hold, and a proof of ``subspace'' would still need closure under addition. To look for a failure, ask what sum could break $|x|+|y|=|z|$. The left side can \emph{shrink} when two entries of opposite signs are added, while the right side can \emph{grow} when two entries of the same sign are added. So take vectors with opposite $x$ and equal $z$:
+\[
+\bv{u}=(1,0,1)\ \ (1+0=1),\qquad \bv{v}=(-1,0,1)\ \ (1+0=1),\qquad \bv{u}+\bv{v}=(0,0,2).
+\]
+For the sum, $|0|+|0|=0$ but $|2|=2$, so $\bv{u}+\bv{v}$ is not in $S$. Hence $S$ is \textbf{not} a subspace.
+
+The set $S$ is a double cone with the $z$-axis as its axis. Every line through the origin that lies on the cone stays on the cone, which is why scalar multiples work; but $\bv{u}$ and $\bv{v}$ lie on opposite sides of the cone and their sum falls on the axis, inside the cone. This is the same pattern as the two axes of Example~\ref{ex:shapes}(c): closure under scalars does not give closure under sums.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank D: The Subspace Test for matrices, polynomials and functions}
+
+\begin{exmp}{Matrices that are annihilated by $F$}{b-leftann}
+Let $F=\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}$ and $W=\{A\in M_{2\times3}:\ AF=\mathbf{0}\}$, where $\mathbf{0}$ is the $2\times2$ zero matrix. Prove that $W$ is a subspace of $M_{2\times3}$, and describe its elements.
+
+\textbf{Solution.} The vectors here are $2\times3$ matrices, and $AF$ is a $2\times2$ matrix. We use the Subspace Test and the rules of matrix multiplication, without looking at entries.
+
+(a)~The zero vector of $M_{2\times3}$ is the zero matrix, and $\mathbf{0}F=\mathbf{0}$.
+
+(b)~If $AF=\mathbf{0}$ and $BF=\mathbf{0}$, then $(A+B)F=AF+BF=\mathbf{0}+\mathbf{0}=\mathbf{0}$, by the distributive law for matrices.
+
+(c)~If $AF=\mathbf{0}$ and $c$ is a scalar, then $(cA)F=c\,(AF)=c\,\mathbf{0}=\mathbf{0}$.
+
+So $W$ is a subspace; the argument works for any matrix $F$ of the right shape. \emph{Describing $W$.} Write $A=\begin{bmatrix}a&b&c\\d&e&f\end{bmatrix}$. Then
+\[
+AF=\begin{bmatrix}a+2b&b+3c\\d+2e&e+3f\end{bmatrix}=\mathbf{0}
+\]
+gives $b=-3c$ and $a=-2b=6c$ in the first row, and $e=-3f$ and $d=6f$ in the second. Each row of $A$ is therefore a multiple of $(6,-3,1)$, and
+\[
+A=c\begin{bmatrix}6&-3&1\\0&0&0\end{bmatrix}+f\begin{bmatrix}0&0&0\\6&-3&1\end{bmatrix},\qquad c,f\in\R,
+\]
+so $W$ is the span of these two matrices. Check by multiplying (these are the matrices with $(c,f)=(1,0)$ and $(0,2)$):
+\[
+\begin{bmatrix}6&-3&1\\0&0&0\end{bmatrix}\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix},\qquad
+\begin{bmatrix}0&0&0\\12&-6&2\end{bmatrix}\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix}.
+\]
+Their sum is again in $W$:
+\[
+\begin{bmatrix}6&-3&1\\0&0&0\end{bmatrix}+\begin{bmatrix}0&0&0\\12&-6&2\end{bmatrix}=\begin{bmatrix}6&-3&1\\12&-6&2\end{bmatrix},\qquad
+\begin{bmatrix}6&-3&1\\12&-6&2\end{bmatrix}\begin{bmatrix}1&0\\2&1\\0&3\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix}.
+\]
+\end{exmp}
+
+\begin{exmp}{Matrices that commute with a given matrix}{b-commute}
+Let $B=\begin{bmatrix}1&2\\0&3\end{bmatrix}$ and $C=\{X\in M_{2\times2}:\ XB=BX\}$. Show that $C$ is a subspace, and find all of its elements.
+
+\textbf{Solution.} (a)~$\mathbf{0}B=\mathbf{0}=B\mathbf{0}$, so the zero matrix is in $C$. (b)~If $X$ and $Y$ are in $C$, then $(X+Y)B=XB+YB=BX+BY=B(X+Y)$. (c)~If $X$ is in $C$ then $(cX)B=c(XB)=c(BX)=B(cX)$. So $C$ is a subspace.
+
+\emph{Which matrices are in $C$?} Not all of them. For $X=\begin{bmatrix}a&b\\c&d\end{bmatrix}$,
+\[
+XB=\begin{bmatrix}a&2a+3b\\c&2c+3d\end{bmatrix},\qquad BX=\begin{bmatrix}a+2c&b+2d\\3c&3d\end{bmatrix}.
+\]
+Equating entries: $a=a+2c$ gives $c=0$; $2a+3b=b+2d$ gives $d=a+b$; $2c+3d=3d$ gives $c=0$ again. So
+\[
+X=\begin{bmatrix}a&b\\0&a+b\end{bmatrix}=a\begin{bmatrix}1&0\\0&1\end{bmatrix}+b\begin{bmatrix}0&1\\0&1\end{bmatrix},
+\]
+and $C$ is a span of two matrices. Check with $a=2$, $b=1$:
+\[
+\begin{bmatrix}2&1\\0&3\end{bmatrix}\begin{bmatrix}1&2\\0&3\end{bmatrix}=\begin{bmatrix}2&7\\0&9\end{bmatrix}=\begin{bmatrix}1&2\\0&3\end{bmatrix}\begin{bmatrix}2&1\\0&3\end{bmatrix}.
+\]
+A matrix that is \emph{not} in $C$ is $E=\begin{bmatrix}0&0\\1&0\end{bmatrix}$:
+\[
+EB=\begin{bmatrix}0&0\\1&0\end{bmatrix}\begin{bmatrix}1&2\\0&3\end{bmatrix}=\begin{bmatrix}0&0\\1&2\end{bmatrix},\qquad
+BE=\begin{bmatrix}1&2\\0&3\end{bmatrix}\begin{bmatrix}0&0\\1&0\end{bmatrix}=\begin{bmatrix}2&0\\3&0\end{bmatrix}.
+\]
+They are different, so $EB\neq BE$: matrix multiplication is not commutative, and $C$ is a small subspace of $M_{2\times2}$ that is picked out by the choice of $B$.
+\end{exmp}
+
+\begin{exmp}{Conditions from calculus}{b-calcfn}
+Decide whether each set is a subspace. \textbf{(a)} $P=\{p\in\mathbb{P}_2:\ \int_0^1p(t)\,dt=0\}$. \textbf{(b)} $G=\{f\in\mathcal{F}[0,1]:\ f(0)=f(1)\}$, where $\mathcal{F}[0,1]$ is the space of all real-valued functions on $[0,1]$. \textbf{(c)} $K=\{f\in\mathcal{F}[0,1]:\ f(0)=f(1)^2\}$.
+
+\textbf{Solution.} \textbf{(a)} For $p(t)=a_0+a_1t+a_2t^2$ we get $\int_0^1p(t)\,dt=a_0+\tfrac12a_1+\tfrac13a_2$. The condition is one \emph{homogeneous linear equation in the coefficients}, and it passes the test as in Example~\ref{ex:plane}: the zero polynomial has integral $0$, and since the integral of a sum is the sum of the integrals and constants can be pulled out of an integral, $\int_0^1(p+q)\,dt=0+0$ and $\int_0^1cp\,dt=c\cdot0$. So $P$ is a subspace. Solving for $a_0=-\tfrac12a_1-\tfrac13a_2$,
+\[
+p(t)=a_1\bigl(t-\tfrac12\bigr)+a_2\bigl(t^2-\tfrac13\bigr),\qquad P=\Span\bigl\{t-\tfrac12,\ t^2-\tfrac13\bigr\}.
+\]
+Check: $\int_0^1(t-\tfrac12)\,dt=\tfrac12-\tfrac12=0$ and $\int_0^1(t^2-\tfrac13)\,dt=\tfrac13-\tfrac13=0$. \ $\checkmark$ The polynomials $1-6t+6t^2$ and $3-6t$ are in $P$ (integrals $1-3+2=0$ and $3-3=0$), and so is their sum $4-12t+6t^2$ ($4-6+2=0$).
+
+\textbf{(b)} The zero function has $0=0$. If $f(0)=f(1)$ and $g(0)=g(1)$, then $(f+g)(0)=f(0)+g(0)=f(1)+g(1)=(f+g)(1)$, and $(cf)(0)=c\,f(0)=c\,f(1)=(cf)(1)$. So $G$ is a subspace. For instance $f(t)=t(1-t)$ (values $0$ and $0$) and $g(t)=\cos2\pi t$ (values $1$ and $1$) are in $G$ and so is $f+g$, whose two values are $1$ and $1$; the function $h(t)=t$ is not in $G$.
+
+\textbf{(c)} The zero function satisfies $0=0^2$, and the constant function $f(t)=1$ is in $K$ because $1=1^2$. But $2f$ is the constant function $2$, with $(2f)(0)=2$ and $\bigl((2f)(1)\bigr)^2=4$. So $2f$ is not in $K$, and $K$ is \textbf{not} a subspace even though it contains $\bv{0}$. The condition is not linear: the square of $f(1)$ does not scale with $f$ (compare Example~\ref{ex:layfind}(c), where the product $ab$ did the same).
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank E: Rewrite a set as a span}
+
+\begin{exmp}{Three parameters and a redundant generator}{b-redundant}
+Let $W=\{(a+b+c,\ 2a-b+5c,\ a+2b,\ b-c):\ a,b,c\in\R\}\subset\R^4$. Write $W$ as a span, remove any generator that is not needed, and describe $W$ by equations.
+
+\textbf{Solution.} Split the vector by the parameters:
+\[
+(a+b+c,\ 2a-b+5c,\ a+2b,\ b-c)=a\,(1,2,1,0)+b\,(1,-1,2,1)+c\,(1,5,0,-1),
+\]
+so $W=\Span\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ with $\bv{v}_1=(1,2,1,0)$, $\bv{v}_2=(1,-1,2,1)$, $\bv{v}_3=(1,5,0,-1)$, and $W$ is a subspace of $\R^4$ by Theorem~\ref{thm:spansub}. \emph{Is every generator needed?} Try $\bv{v}_3=x\bv{v}_1+y\bv{v}_2$ and compare entries: $1=x+y$, $5=2x-y$, $0=x+2y$, $-1=y$. The last two give $y=-1$ and $x=2$, and these also fit the first two ($2-1=1$ and $4+1=5$). So $\bv{v}_3=2\bv{v}_1-\bv{v}_2$. Then every vector of $W$ is
+\[
+a\bv{v}_1+b\bv{v}_2+c(2\bv{v}_1-\bv{v}_2)=(a+2c)\,\bv{v}_1+(b-c)\,\bv{v}_2,
+\]
+a combination of $\bv{v}_1$ and $\bv{v}_2$ alone; and conversely, $\Span\{\bv{v}_1,\bv{v}_2\}$ is inside $W$ (take $c=0$). So $W=\Span\{\bv{v}_1,\bv{v}_2\}$: the generator $\bv{v}_3$ adds nothing.
+
+\emph{Equations.} A vector in $W$ has the form $(\alpha+\beta,\ 2\alpha-\beta,\ \alpha+2\beta,\ \beta)$ with $\alpha=a+2c$ and $\beta=b-c$. Its fourth entry is $\beta$, and the first minus the fourth is $\alpha$, so $\alpha=x_1-x_4$. Then $x_2=2\alpha-\beta=2x_1-3x_4$ and $x_3=\alpha+2\beta=x_1+x_4$. Hence
+\[
+W=\{(x_1,x_2,x_3,x_4):\ 2x_1-x_2-3x_4=0,\ \ x_1-x_3+x_4=0\}.
+\]
+Check the three generators: $\bv{v}_1$: $2-2-0=0$ and $1-1+0=0$; $\bv{v}_2$: $2+1-3=0$ and $1-2+1=0$; $\bv{v}_3$: $2-5+3=0$ and $1-0-1=0$. \ $\checkmark$ And with $a=1$, $b=2$, $c=-1$ the vector $(2,-5,5,3)$ satisfies both: $4+5-9=0$ and $2-5+3=0$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{A set of matrices described by conditions}{b-tri3}
+Let $T$ be the set of $3\times3$ matrices $A=[a_{ij}]$ that are upper triangular (all entries below the diagonal are $0$), have trace $0$ ($a_{11}+a_{22}+a_{33}=0$), and satisfy $a_{12}=a_{23}$. Write $T$ as a span.
+
+\textbf{Solution.} Name the free entries. The entries below the diagonal are $0$. Put $a_{11}=a$, $a_{22}=b$; the trace condition forces $a_{33}=-a-b$. Put $a_{12}=a_{23}=c$ (the third condition ties them together) and $a_{13}=d$. So the general matrix of $T$ is
+\[
+\begin{bmatrix}a&c&d\\0&b&c\\0&0&-a-b\end{bmatrix}=a\begin{bmatrix}1&0&0\\0&0&0\\0&0&-1\end{bmatrix}+b\begin{bmatrix}0&0&0\\0&1&0\\0&0&-1\end{bmatrix}+c\begin{bmatrix}0&1&0\\0&0&1\\0&0&0\end{bmatrix}+d\begin{bmatrix}0&0&1\\0&0&0\\0&0&0\end{bmatrix},
+\]
+where $a,b,c,d$ are arbitrary. Each of the four matrices satisfies all three conditions (the traces are $1-1$, $1-1$, $0$, $0$, and $a_{12}=a_{23}$ in the third), and every matrix of $T$ is such a combination, so $T$ is the span of these four matrices and is a subspace of $M_{3\times3}$ by Theorem~\ref{thm:spansub}. A numerical check: $a=2$, $b=-3$, $c=1$, $d=5$ gives
+\[
+2\begin{bmatrix}1&0&0\\0&0&0\\0&0&-1\end{bmatrix}-3\begin{bmatrix}0&0&0\\0&1&0\\0&0&-1\end{bmatrix}+\begin{bmatrix}0&1&0\\0&0&1\\0&0&0\end{bmatrix}+5\begin{bmatrix}0&0&1\\0&0&0\\0&0&0\end{bmatrix}=\begin{bmatrix}2&1&5\\0&-3&1\\0&0&1\end{bmatrix},
+\]
+which has trace $2-3+1=0$ and $a_{12}=a_{23}=1$. \ $\checkmark$
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank F: Is a vector in a span, does a set span}
+
+\begin{exmp}{An unknown coefficient, in polynomials and in matrices}{b-hpoly}
+\textbf{(a)} Let $p_1(t)=1+2t$ and $p_2(t)=-1+t+t^2$. For which $h$ is $q(t)=5+ht+3t^2$ in $\Span\{p_1,p_2\}$? \textbf{(b)} Let $B_1=\begin{bmatrix}1&2\\0&1\end{bmatrix}$ and $B_2=\begin{bmatrix}0&1\\1&1\end{bmatrix}$. Which of $C=\begin{bmatrix}3&8\\2&5\end{bmatrix}$ and $D=\begin{bmatrix}3&8\\2&6\end{bmatrix}$ are in $\Span\{B_1,B_2\}$?
+
+\textbf{Solution.} \textbf{(a)} Use Procedure~\ref{proc:member}. Record the coefficients of $1,t,t^2$: $p_1\leftrightarrow(1,2,0)$, $p_2\leftrightarrow(-1,1,1)$, $q\leftrightarrow(5,h,3)$. The augmented matrix has columns $p_1,p_2,q$:
+\begin{align*}
+\begin{amat}{cc|c}1&-1&5\\2&1&h\\0&1&3\end{amat}
+&\rops{R_2-2R_1}
+\begin{amat}{cc|c}1&-1&5\\0&3&h-10\\0&1&3\end{amat}\\
+&\rops{R_2\leftrightarrow R_3}
+\begin{amat}{cc|c}1&-1&5\\0&1&3\\0&3&h-10\end{amat}
+\rops{R_3-3R_2}
+\begin{amat}{cc|c}1&-1&5\\0&1&3\\0&0&h-19\end{amat}.
+\end{align*}
+The last row says $0=h-19$, so the system is consistent exactly when $h=19$. Then $x_2=3$ and $x_1=5+3=8$, and indeed $8(1+2t)+3(-1+t+t^2)=5+19t+3t^2$. \ $\checkmark$ In words: the $t^2$-coefficient of $q$ can come only from $p_2$, which forces the weight $3$; the constant term then forces the weight $8$ on $p_1$; and after that the $t$-coefficient has no freedom left, it must be $19$.
+
+\textbf{(b)} A combination is $x_1B_1+x_2B_2=\begin{bmatrix}x_1&2x_1+x_2\\x_2&x_1+x_2\end{bmatrix}$. List the entries in the order $(1,1),(1,2),(2,1),(2,2)$ and put both targets into one augmented matrix, with $C$ in the third column and $D$ in the fourth:
+\begin{align*}
+\begin{amat}{cc|cc}1&0&3&3\\2&1&8&8\\0&1&2&2\\1&1&5&6\end{amat}
+&\rops{R_2-2R_1,\ R_4-R_1}
+\begin{amat}{cc|cc}1&0&3&3\\0&1&2&2\\0&1&2&2\\0&1&2&3\end{amat}
+\rops{R_3-R_2,\ R_4-R_2}
+\begin{amat}{cc|cc}1&0&3&3\\0&1&2&2\\0&0&0&0\\0&0&0&1\end{amat}.
+\end{align*}
+In the column of $C$ the last two rows read $0=0$ and $0=0$, so $C$ is in the span with $x_1=3$, $x_2=2$; in the column of $D$ the last row reads $0=1$, so $D$ is not. Check: $3B_1+2B_2=\begin{bmatrix}3&6\\0&3\end{bmatrix}+\begin{bmatrix}0&2\\2&2\end{bmatrix}=\begin{bmatrix}3&8\\2&5\end{bmatrix}$. \ $\checkmark$ Using one augmented matrix for several targets does the elimination only once.
+\end{exmp}
+
+\begin{exmp}{For which $h$ do three vectors span $\R^3$?}{b-spanr3}
+Let $\bv{v}_1=(1,0,2)$, $\bv{v}_2=(2,1,3)$ and $\bv{v}_3=(1,2,h)$. For which values of $h$ is $\Span\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}=\R^3$?
+
+\textbf{Solution.} By Section 1.4, the span of the columns of a matrix is all of $\R^3$ exactly when the matrix has a pivot in every row. So row reduce the matrix with columns $\bv{v}_1,\bv{v}_2,\bv{v}_3$, keeping $h$ as a symbol:
+\begin{align*}
+\begin{bmatrix}1&2&1\\0&1&2\\2&3&h\end{bmatrix}
+&\rops{R_3-2R_1}
+\begin{bmatrix}1&2&1\\0&1&2\\0&-1&h-2\end{bmatrix}
+\rops{R_3+R_2}
+\begin{bmatrix}1&2&1\\0&1&2\\0&0&h\end{bmatrix}.
+\end{align*}
+There are pivots in the first two rows whatever $h$ is. The third row has a pivot exactly when $h\neq0$. So the three vectors span $\R^3$ if and only if $h\neq0$.
+
+\emph{What happens at $h=0$?} The third row becomes zero and the span is smaller than $\R^3$. In fact $\bv{v}_3=(1,2,0)=-3\bv{v}_1+2\bv{v}_2$, so $\bv{v}_3$ adds nothing, and the span is the plane through $\bv{v}_1$ and $\bv{v}_2$, which has the equation $-2x_1+x_2+x_3=0$ (check: $-2+0+2=0$, $-4+1+3=0$, $-2+2+0=0$). The vector $(1,0,0)$ gives $-2\neq0$, so it is not in this span. \ $\checkmark$
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank G: Intersections and sums}
+
+\begin{exmp}{Two planes: their intersection and their sum}{b-planes}
+Let $H=\{(x_1,x_2,x_3):\ 2x_1-x_2+x_3=0\}$ and $K=\{(x_1,x_2,x_3):\ x_1+x_2-3x_3=0\}$, two planes in $\R^3$. \textbf{(a)} Write $H\cap K$ as a span. \textbf{(b)} Write $H+K=\{\bv{h}+\bv{k}:\ \bv{h}\in H,\ \bv{k}\in K\}$ as a span, and describe it.
+
+\textbf{Solution.} \textbf{(a)} A vector is in $H\cap K$ when it satisfies both equations, so row reduce the homogeneous system:
+\begin{align*}
+\begin{amat}{ccc|c}2&-1&1&0\\1&1&-3&0\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|c}1&1&-3&0\\2&-1&1&0\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|c}1&1&-3&0\\0&-3&7&0\end{amat}.
+\end{align*}
+The variable $x_3$ is free. The second row gives $x_2=\tfrac73x_3$ and the first gives $x_1=-x_2+3x_3=\tfrac23x_3$. Writing $x_3=3s$,
+\[
+(x_1,x_2,x_3)=(2s,\ 7s,\ 3s)=s\,(2,7,3),\qquad H\cap K=\Span\{(2,7,3)\}.
+\]
+Check: $2\cdot2-7+3=0$ and $2+7-3\cdot3=0$. \ $\checkmark$ The two planes meet in a line, and the intersection is a subspace, as Pause and think~\ref{think:inter} predicts.
+
+\textbf{(b)} First give each plane a spanning set by solving for one variable. In $H$, $x_2=2x_1+x_3$, so $(x_1,\ 2x_1+x_3,\ x_3)=x_1(1,2,0)+x_3(0,1,1)$. In $K$, $x_1=3x_3-x_2$, so $(3x_3-x_2,\ x_2,\ x_3)=x_2(-1,1,0)+x_3(3,0,1)$. A vector of $H+K$ is a vector of $H$ plus a vector of $K$, and adding two combinations gives one longer combination, so
+\[
+H+K=\Span\bigl\{(1,2,0),\ (0,1,1),\ (-1,1,0),\ (3,0,1)\bigr\}.
+\]
+Does this set span all of $\R^3$? Reduce the matrix whose columns are these four vectors:
+\begin{align*}
+\begin{bmatrix}1&0&-1&3\\2&1&1&0\\0&1&0&1\end{bmatrix}
+&\rops{R_2-2R_1}
+\begin{bmatrix}1&0&-1&3\\0&1&3&-6\\0&1&0&1\end{bmatrix}
+\rops{R_3-R_2}
+\begin{bmatrix}1&0&-1&3\\0&1&3&-6\\0&0&-3&7\end{bmatrix}.
+\end{align*}
+There is a pivot in every row, so $H+K=\R^3$: every vector of $\R^3$ is the sum of a vector of $H$ and a vector of $K$. For example $(1,0,0)=\bigl(\tfrac13,\tfrac23,0\bigr)+\bigl(\tfrac23,-\tfrac23,0\bigr)$, where the first vector satisfies $2\cdot\tfrac13-\tfrac23+0=0$ and the second satisfies $\tfrac23-\tfrac23-0=0$. \ $\checkmark$
+
+\emph{The three sets compared.} The intersection $H\cap K$ is a line, the sum $H+K$ is all of $\R^3$, and the union $H\cup K$ is not a subspace at all (Pause and think~\ref{think:inter}): $(1,2,0)$ is in $H$ and $(-1,1,0)$ is in $K$, but their sum $(0,3,0)$ gives $2\cdot0-3+0=-3\neq0$ and $0+3-0=3\neq0$, so it is in neither plane.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank H: Judge the statements}
+
+\begin{exmp}{True or false, with a reason}{b-judge}
+Decide whether each statement is true for all vector spaces and subspaces, or false in at least one case. Give a reason for each, and a specific counterexample for each false one.
+\begin{enumerate}
+  \item A nonempty subset $S$ of a vector space $V$ with the property ``$c\bv{u}+d\bv{v}$ is in $S$ whenever $\bv{u},\bv{v}$ are in $S$ and $c,d$ are scalars'' is a subspace of $V$.
+  \item A subset $S$ of a vector space $V$ with the property ``$c\bv{u}+d\bv{v}$ is in $S$ whenever $\bv{u},\bv{v}$ are in $S$ and $c,d$ are scalars'' is a subspace of $V$.
+  \item If $H$ is a subspace of $V$ and $\bv{u}$ is a vector of $V$ that is not in $H$, then $-\bv{u}$ is not in $H$.
+  \item If $H$ and $K$ are subspaces of $V$ and $H\subseteq K$, then $H\cup K$ is a subspace of $V$.
+  \item The set $\{p\in\mathbb{P}_2:\ p(2)=3\}$ is a subspace of $\mathbb{P}_2$.
+  \item If $\Span\{\bv{u},\bv{v}\}=\Span\{\bv{u},\bv{w}\}$, then $\bv{v}=\bv{w}$.
+\end{enumerate}
+
+\textbf{Solution.} \textbf{1. True.} Since $S$ is nonempty, pick $\bv{u}$ in $S$. Taking $c=d=0$ gives $0\bv{u}+0\bv{u}=\bv{0}$ (Theorem~\ref{thm:conseq}(c)), so $\bv{0}$ is in $S$. Taking $c=d=1$ gives $\bv{u}+\bv{v}$ in $S$. Taking $d=0$ gives $c\bv{u}+0\bv{v}=c\bv{u}$ in $S$. The three properties of the Subspace Test hold.
+
+\textbf{2. False.} The empty set $S=\emptyset$ has the property, because there are no vectors $\bv{u},\bv{v}$ in $S$ for which anything has to be checked. But $\emptyset$ does not contain $\bv{0}$, so it is not a subspace. The word ``nonempty'' in statement~1 is doing real work; this is the reason why property (a) of Definition~\ref{def:subspace} (or ``nonempty'') cannot be dropped.
+
+\textbf{3. True.} Suppose $-\bv{u}$ were in $H$. Then $(-1)(-\bv{u})$ would be in $H$ since $H$ is closed under scalar multiples, and $(-1)(-\bv{u})=-(-\bv{u})=\bv{u}$ by Theorem~\ref{thm:conseq}(e) and Example~\ref{ex:b-negneg}. So $\bv{u}$ would be in $H$, contrary to the assumption. (Example: $H=\Span\{(1,1)\}$ in $\R^2$, $\bv{u}=(1,0)$ and $-\bv{u}=(-1,0)$; neither is on the line $x_2=x_1$.)
+
+\textbf{4. True.} If $H\subseteq K$ then $H\cup K=K$, which is a subspace. (Compare Pause and think~\ref{think:inter}(c): the union of two subspaces is a subspace \emph{only} when one contains the other.)
+
+\textbf{5. False.} The zero polynomial has $p(2)=0\neq3$, so the zero vector is not in the set.
+
+\textbf{6. False.} Take $\bv{u}=(1,0)$, $\bv{v}=(0,1)$, $\bv{w}=(0,2)$ in $\R^2$. Both spans are $\R^2$ (the vector $(x,y)$ equals $x\bv{u}+y\bv{v}$ and also $x\bv{u}+\tfrac y2\bv{w}$), yet $\bv{v}\neq\bv{w}$. A span remembers which vectors can be reached, not which generators were used.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:newworlds}.] (a)~$(2+1)+(1-3)t+(-1+4)t^2=3-2t+3t^2$. (b)~$\begin{bmatrix}3&0\\6&-3\end{bmatrix}-\begin{bmatrix}0&1\\1&1\end{bmatrix}=\begin{bmatrix}3&-1\\5&-4\end{bmatrix}$. (c)~$(f-2g)(t)=1+t-2t^2$; at $t=2$ this is $1+2-8=-5$; and $f(2)-2g(2)=3-2\cdot4=-5$. The same number arises both ways, as the definition of the operations requires.
