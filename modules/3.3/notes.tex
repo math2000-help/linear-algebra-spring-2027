@@ -473,6 +473,419 @@ Let $A=\begin{bmatrix}1&1\\0&1\end{bmatrix}$ (a shear) and $B=\begin{bmatrix}1&0
   \item The image of the unit disk under $\bv{x}\mapsto A\bv{x}$ is an ellipse of area $\pi|\det A|$. When is that ellipse a circle? Experiment with a rotation, a stretch and a shear.
 \end{enumerate}
 
+\subsection*{Example bank: seventeen more worked examples}
+
+The examples above met each idea once. This bank gives them more room, grouped by the kind of problem, with the easiest examples first in every group. The examples continue the numbering (Examples~\ref{ex:b-twoeq} to~\ref{ex:b-tetra}), and every solution says \emph{why} each step is taken, not only what it is. They use only what this section and the earlier ones provide: Cramer's Rule (Theorem~\ref{thm:cramer}), the adjugate formula for the inverse (Theorem~\ref{thm:inverse}), determinants as areas and volumes (Theorem~\ref{thm:area}), the scale factor of a linear map (Theorem~\ref{thm:scale}), and the rules for computing and using determinants from Sections 3.1 and~3.2. Work each problem before you read its solution.
+
+\textbf{What is in this bank}
+\begin{itemize}
+  \item \textbf{A. Cramer's Rule for $2\times2$ systems} (Examples~\ref{ex:b-twoeq} and~\ref{ex:b-tickets}): put the equations in standard form first; a negative determinant; a system from a story.
+  \item \textbf{B. Cramer's Rule for $3\times3$ systems} (Examples~\ref{ex:b-three} and~\ref{ex:b-oneunk}): all three unknowns, and the case where only one unknown is wanted.
+  \item \textbf{C. Parameters and right-hand sides} (Examples~\ref{ex:b-hrule} and~\ref{ex:b-linb}): the values of $h$ for which the rule applies and the solution as a function of $h$; each unknown as a linear function of $\bv{b}$.
+  \item \textbf{D. When $\det A=0$} (Examples~\ref{ex:b-twob} and~\ref{ex:b-allzero}): what the numerators tell you, and what they cannot tell you.
+  \item \textbf{E. The adjugate and the inverse} (Examples~\ref{ex:b-adj3}, \ref{ex:b-entry4} and~\ref{ex:b-adjsing}): a full $3\times3$ adjugate, one entry of a $4\times4$ inverse, and the adjugate of a singular matrix.
+  \item \textbf{F. Area and volume} (Examples~\ref{ex:b-parall}, \ref{ex:b-pentagon} and~\ref{ex:b-prism}): a parallelogram and a collinearity test, a pentagon cut into triangles (figure), and a parallelepiped with an unknown entry.
+  \item \textbf{G. Images under a linear map} (Examples~\ref{ex:b-imgtri} and~\ref{ex:b-solveh}): the area of an image, a preimage, a composite, and an unknown $h$.
+  \item \textbf{H. A tetrahedron} (Example~\ref{ex:b-tetra}): volume from four vertices, and what the sign records (figure).
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank A: Cramer's Rule for $2\times2$ systems}
+
+\begin{exmp}{Put the equations in standard form first}{b-twoeq}
+Solve $x_2=2x_1-3$ and $3x_1+4=5x_2$ by Cramer's Rule.
+
+\textbf{Solution.} The rule is stated for $A\bv{x}=\bv{b}$: the unknowns, in the order $x_1,x_2$, stand on the left and the constants on the right. The equations as given are not in that form, so we rearrange them before touching a determinant:
+\begin{align*}
+-2x_1+x_2&=-3,\\
+3x_1-5x_2&=-4.
+\end{align*}
+Now $A=\begin{bmatrix}-2&1\\3&-5\end{bmatrix}$, $\bv{b}=(-3,-4)$ and $\det A=(-2)(-5)-(1)(3)=7\neq0$, so the rule applies. Replace column $1$, then column $2$, of the \emph{original} $A$ by $\bv{b}$:
+\[
+\det A_1(\bv{b})=\begin{vmatrix}-3&1\\-4&-5\end{vmatrix}=15+4=19,\qquad
+\det A_2(\bv{b})=\begin{vmatrix}-2&-3\\3&-4\end{vmatrix}=8+9=17.
+\]
+Hence $x_1=\frac{19}7$ and $x_2=\frac{17}7$. Check in the original equations: $2x_1-3=\frac{38}7-\frac{21}7=\frac{17}7=x_2$, and $3x_1+4=\frac{57}7+\frac{28}7=\frac{85}7=5x_2$. \ $\checkmark$ The common denominator $7$ is $\det A$: whenever the data are integers, every unknown is an integer divided by $\det A$.
+\end{exmp}
+
+\begin{exmp}{A negative determinant and a system from a story}{b-tickets}
+One school buys $3$ adult tickets and $5$ student tickets for $\$46$. Another school buys $4$ adult tickets and $2$ student tickets for $\$38$. What does each kind of ticket cost?
+
+\textbf{Solution.} Let $x_1$ be the price of an adult ticket and $x_2$ the price of a student ticket, in dollars. Then $3x_1+5x_2=46$ and $4x_1+2x_2=38$, so
+\[
+A=\begin{bmatrix}3&5\\4&2\end{bmatrix},\qquad\bv{b}=\begin{bmatrix}46\\38\end{bmatrix},\qquad\det A=6-20=-14.
+\]
+The determinant is negative, and that is no obstacle: the rule needs $\det A\neq0$, not $\det A>0$. Then
+\[
+\det A_1(\bv{b})=\begin{vmatrix}46&5\\38&2\end{vmatrix}=92-190=-98,\qquad
+\det A_2(\bv{b})=\begin{vmatrix}3&46\\4&38\end{vmatrix}=114-184=-70,
+\]
+and $x_1=\frac{-98}{-14}=7$, $x_2=\frac{-70}{-14}=5$. An adult ticket costs $\$7$ and a student ticket $\$5$. Check: $3\cdot7+5\cdot5=46$ and $4\cdot7+2\cdot5=38$. \ $\checkmark$ The two negative numerators and the negative denominator cancel; the sign of $\det A$ says nothing about the signs of the unknowns.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank B: Cramer's Rule for $3\times3$ systems}
+
+\begin{exmp}{All three unknowns}{b-three}
+Solve $2x_1-x_2+3x_3=9$, \ $x_1+4x_2-2x_3=-7$, \ $5x_2+x_3=-3$.
+
+\textbf{Solution.} The coefficient matrix and the right-hand side are
+\[
+A=\begin{bmatrix}2&-1&3\\1&4&-2\\0&5&1\end{bmatrix},\qquad\bv{b}=\begin{bmatrix}9\\-7\\-3\end{bmatrix}.
+\]
+Column $1$ of $A$ contains a $0$, so we expand $\det A$ down it (signs $+,-,+$; the last term vanishes):
+\[
+\det A=2\begin{vmatrix}4&-2\\5&1\end{vmatrix}-1\begin{vmatrix}-1&3\\5&1\end{vmatrix}=2(14)-(-16)=44.
+\]
+This is not $0$, so the rule applies, and we need three more determinants, each built from the original $A$. For $A_1(\bv{b})$ no column has a zero, so we expand along row $1$; for $A_2(\bv{b})$ and $A_3(\bv{b})$ the $0$ in position $(3,1)$ survives, so we expand down column $1$:
+\begin{align*}
+\det A_1(\bv{b})&=\begin{vmatrix}9&-1&3\\-7&4&-2\\-3&5&1\end{vmatrix}\\
+&=9\begin{vmatrix}4&-2\\5&1\end{vmatrix}+1\begin{vmatrix}-7&-2\\-3&1\end{vmatrix}+3\begin{vmatrix}-7&4\\-3&5\end{vmatrix}=9(14)+(-13)+3(-23)=44,\\
+\det A_2(\bv{b})&=\begin{vmatrix}2&9&3\\1&-7&-2\\0&-3&1\end{vmatrix}=2\begin{vmatrix}-7&-2\\-3&1\end{vmatrix}-1\begin{vmatrix}9&3\\-3&1\end{vmatrix}=2(-13)-18=-44,\\
+\det A_3(\bv{b})&=\begin{vmatrix}2&-1&9\\1&4&-7\\0&5&-3\end{vmatrix}=2\begin{vmatrix}4&-7\\5&-3\end{vmatrix}-1\begin{vmatrix}-1&9\\5&-3\end{vmatrix}=2(23)-(-42)=88.
+\end{align*}
+Therefore $x_1=\frac{44}{44}=1$, \ $x_2=\frac{-44}{44}=-1$, \ $x_3=\frac{88}{44}=2$. Check: $2+1+6=9$, \ $1-4-4=-7$, \ $-5+2=-3$. \ $\checkmark$ Four $3\times3$ determinants were needed. The numbers were chosen to give integer answers, but the method does not need that.
+\end{exmp}
+
+\begin{exmp}{Only one unknown is wanted}{b-oneunk}
+For the system $3x_1+x_2+2x_3=11$, \ $x_1+4x_2=14$, \ $2x_1+5x_3=9$, find $x_2$ only.
+
+\textbf{Solution.} This is where Cramer's Rule is at its best: it gives one unknown without computing the others. Here
+\[
+A=\begin{bmatrix}3&1&2\\1&4&0\\2&0&5\end{bmatrix},\qquad\bv{b}=\begin{bmatrix}11\\14\\9\end{bmatrix},\qquad A_2(\bv{b})=\begin{bmatrix}3&11&2\\1&14&0\\2&9&5\end{bmatrix}.
+\]
+Row $2$ of $A$ and of $A_2(\bv{b})$ has a $0$ in the last place, so we expand both determinants along row $2$ (signs $-,+,-$):
+\begin{align*}
+\det A&=-1\begin{vmatrix}1&2\\0&5\end{vmatrix}+4\begin{vmatrix}3&2\\2&5\end{vmatrix}=-5+4(11)=39,\\
+\det A_2(\bv{b})&=-1\begin{vmatrix}11&2\\9&5\end{vmatrix}+14\begin{vmatrix}3&2\\2&5\end{vmatrix}=-37+14(11)=117.
+\end{align*}
+So $x_2=\frac{117}{39}=3$. The other two unknowns were not computed, but a check is still possible: the second equation gives $x_1=14-4x_2=2$, the third gives $x_3=\frac{9-2x_1}5=1$, and the first equation then holds, $3\cdot2+3+2\cdot1=11$. \ $\checkmark$ Only two determinants were needed, against four for the whole solution. For an $n\times n$ system it is two determinants against $n+1$, which is why the rule is attractive when a single unknown matters.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank C: Parameters and right-hand sides}
+
+\begin{exmp}{The values of $h$ for which the rule applies, and the solution}{b-hrule}
+For which $h$ does Cramer's Rule apply to $2x_1+hx_2=1$, \ $x_1+hx_2+x_3=0$, \ $2x_2+hx_3=2$? Find the solution when it does, and say what happens for the excluded values.
+
+\textbf{Solution.} The coefficient matrix and right-hand side are
+\[
+A(h)=\begin{bmatrix}2&h&0\\1&h&1\\0&2&h\end{bmatrix},\qquad\bv{b}=\begin{bmatrix}1\\0\\2\end{bmatrix}.
+\]
+Expanding along row $1$, whose last entry is $0$:
+\[
+\det A(h)=2\begin{vmatrix}h&1\\2&h\end{vmatrix}-h\begin{vmatrix}1&1\\0&h\end{vmatrix}=2(h^2-2)-h\cdot h=h^2-4=(h-2)(h+2).
+\]
+The rule applies exactly when $h\neq2$ and $h\neq-2$. For those $h$ we need the three numerators; replace one column at a time, always in the original $A(h)$:
+\begin{align*}
+\det A_1(\bv{b})&=\begin{vmatrix}1&h&0\\0&h&1\\2&2&h\end{vmatrix}=1\begin{vmatrix}h&1\\2&h\end{vmatrix}+2\begin{vmatrix}h&0\\h&1\end{vmatrix}=(h^2-2)+2h=h^2+2h-2,\\
+\det A_2(\bv{b})&=\begin{vmatrix}2&1&0\\1&0&1\\0&2&h\end{vmatrix}=2\begin{vmatrix}0&1\\2&h\end{vmatrix}-1\begin{vmatrix}1&1\\0&h\end{vmatrix}=2(-2)-h=-h-4,\\
+\det A_3(\bv{b})&=\begin{vmatrix}2&h&1\\1&h&0\\0&2&2\end{vmatrix}=2\begin{vmatrix}h&0\\2&2\end{vmatrix}-1\begin{vmatrix}h&1\\2&2\end{vmatrix}=2(2h)-(2h-2)=2h+2.
+\end{align*}
+Hence, for $h\neq\pm2$,
+\[
+x_1=\frac{h^2+2h-2}{h^2-4},\qquad x_2=\frac{-h-4}{h^2-4},\qquad x_3=\frac{2h+2}{h^2-4}.
+\]
+Check with $h=0$: the system is $2x_1=1$, $x_1+x_3=0$, $2x_2=2$, with solution $(\tfrac12,1,-\tfrac12)$, and the formulas give $\frac{-2}{-4}$, $\frac{-4}{-4}$ and $\frac2{-4}$. \ $\checkmark$
+
+The rule says nothing about $h=2$ and $h=-2$, but the numerators do. For $h=2$ they are $6,-6,6$ and for $h=-2$ they are $-2,-2,-2$. In both cases some numerator is not $0$ while $\det A=0$, so the system has \emph{no} solution for either value (Pause and think~\ref{think:hyp}). Compare Example~\ref{ex:param}, where one excluded value gave no solution and the other gave infinitely many: the excluded values of a parameter must be examined one by one.
+\end{exmp}
+
+\begin{exmp}{Each unknown as a linear function of the right-hand side}{b-linb}
+Let $A=\begin{bmatrix}1&1&0\\1&2&1\\0&1&3\end{bmatrix}$ and let $\bv{b}=(b_1,b_2,b_3)$ be arbitrary. (a)~Find $x_3$ as a function of $b_1,b_2,b_3$. (b)~For which $\bv{b}$ is $x_3=0$? (c)~Use the result to solve $A\bv{x}=(2,3,5)$.
+
+\textbf{Solution.} (a)~Expanding along row $1$, $\det A=1(6-1)-1(3-0)=2\neq0$, so the rule applies for every $\bv{b}$. Replace column $3$ by $\bv{b}$ and expand down that new column (signs $+,-,+$), which keeps the letters $b_i$ as coefficients:
+\[
+\det A_3(\bv{b})=\begin{vmatrix}1&1&b_1\\1&2&b_2\\0&1&b_3\end{vmatrix}=b_1\begin{vmatrix}1&2\\0&1\end{vmatrix}-b_2\begin{vmatrix}1&1\\0&1\end{vmatrix}+b_3\begin{vmatrix}1&1\\1&2\end{vmatrix}=b_1-b_2+b_3.
+\]
+So $x_3=\tfrac12(b_1-b_2+b_3)$: a \emph{linear function} of $\bv{b}$, as it must be.
+
+(b)~$x_3=0$ exactly when $b_1-b_2+b_3=0$. For instance $\bv{b}=(1,2,1)$ works: solving $A\bv{x}=(1,2,1)$ gives $x_3=0$. The vectors $\bv{b}$ with $x_3=0$ form a plane through the origin in $\R^3$.
+
+(c)~For $\bv{b}=(2,3,5)$ we get $x_3=\frac12(2-3+5)=2$. The other two unknowns come the same way, from $\det A_1(\bv{b})=5b_1-3b_2+b_3=6$ and $\det A_2(\bv{b})=-3b_1+3b_2-b_3=-2$ (expand down the new column again: the coefficients of the $b_i$ are cofactors of $A$), so $x_1=3$ and $x_2=-1$. Check: $3-1=2$, \ $3-2+2=3$, \ $-1+6=5$. \ $\checkmark$
+
+The coefficients $\tfrac12,-\tfrac12,\tfrac12$ of $b_1,b_2,b_3$ in $x_3$ are the third row of $A^{-1}$: by Theorem~\ref{thm:inverse} the entries of that row are $C_{13}/2$, $C_{23}/2$, $C_{33}/2$, and the three cofactors are $1,-1,1$, exactly the numbers we found. The formula $\bv{x}=A^{-1}\bv{b}$ and Cramer's Rule are the same statement.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank D: When $\det A=0$}
+
+\begin{exmp}{One matrix, two right-hand sides}{b-twob}
+Let $A=\begin{bmatrix}1&2&1\\2&1&-1\\3&3&0\end{bmatrix}$. Show that Cramer's Rule does not apply, and use the numerators to decide whether $A\bv{x}=\bv{b}$ has a solution for (a)~$\bv{b}=(3,1,4)$ and (b)~$\bv{b}=(3,1,5)$.
+
+\textbf{Solution.} Row $3$ is the sum of rows $1$ and $2$, so the replacement $R_3-R_1-R_2$ produces a zero row; by Theorem~\ref{3.2-thm:rowops} and Theorem~\ref{3.1-thm:zero}, $\det A=0$. The rule does not apply.
+
+(a)~With $\bv{b}=(3,1,4)$ the numerators are $\det A_1(\bv{b})=\det A_2(\bv{b})=\det A_3(\bv{b})=0$. There is a reason for this, not an accident: $4=3+1$, so row $3$ of every $A_i(\bv{b})$ is still the sum of rows $1$ and $2$, and each of these determinants is $0$. Zero numerators prove nothing by themselves, so we row reduce:
+\begin{align*}
+\begin{amat}{ccc|c}1&2&1&3\\2&1&-1&1\\3&3&0&4\end{amat}
+&\rops{R_2-2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|c}1&2&1&3\\0&-3&-3&-5\\0&-3&-3&-5\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|c}1&2&1&3\\0&-3&-3&-5\\0&0&0&0\end{amat}.
+\end{align*}
+The system is consistent, with $x_3=t$ free: $x_2=\tfrac53-t$ and $x_1=3-2x_2-x_3=-\tfrac13+t$. Check in the first two equations: $(-\tfrac13+t)+2(\tfrac53-t)+t=3$ and $2(-\tfrac13+t)+(\tfrac53-t)-t=1$. \ $\checkmark$
+
+(b)~With $\bv{b}=(3,1,5)$ the numerators are $\det A_1(\bv{b})=-3$, \ $\det A_2(\bv{b})=3$, \ $\det A_3(\bv{b})=-3$. They are not $0$, so there is no solution: a solution would give $0\cdot x_i=\det A_i(\bv{b})\neq0$. Row reduction agrees:
+\begin{align*}
+\begin{amat}{ccc|c}1&2&1&3\\2&1&-1&1\\3&3&0&5\end{amat}
+&\rops{R_2-2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|c}1&2&1&3\\0&-3&-3&-5\\0&-3&-3&-4\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|c}1&2&1&3\\0&-3&-3&-5\\0&0&0&1\end{amat}.
+\end{align*}
+The last row says $0=1$. The two right-hand sides differ only in one entry, $b_3=4$ against $b_3=5$, and that entry decides everything: the numerators detect whether $\bv{b}$ keeps the dependence among the rows of $A$.
+\end{exmp}
+
+\begin{exmp}{All numerators zero, and still no solution}{b-allzero}
+Let $A=\begin{bmatrix}1&-2&3\\-2&4&-6\\3&-6&9\end{bmatrix}$ and $\bv{b}=(1,0,0)$. Compute the three numerators. What do they tell you? Does $A\bv{x}=\bv{b}$ have a solution?
+
+\textbf{Solution.} Row $2$ is $-2$ times row $1$ and row $3$ is $3$ times row $1$, so $\det A=0$ (Theorem~\ref{3.2-thm:equalrows}). The columns are proportional too: column $2$ is $-2$ times column $1$ and column $3$ is $3$ times column $1$. Now look at the matrices $A_i(\bv{b})$:
+\begin{itemize}
+  \item $A_1(\bv{b})$ keeps columns $2$ and $3$ of $A$, which are proportional;
+  \item $A_2(\bv{b})$ keeps columns $1$ and $3$, which are proportional;
+  \item $A_3(\bv{b})$ keeps columns $1$ and $2$, which are proportional.
+\end{itemize}
+A matrix with two proportional columns has determinant $0$ (Theorem~\ref{3.2-thm:equalrows} applied to the transpose, Theorem~\ref{3.2-thm:transpose}). So all three numerators are $0$, \emph{whatever} $\bv{b}$ is. For $\bv{b}=(1,0,0)$, for instance, $\det A_1(\bv{b})=\begin{vmatrix}1&-2&3\\0&4&-6\\0&-6&9\end{vmatrix}=1(36-36)=0$.
+
+The numerators therefore tell us nothing, and we must row reduce:
+\begin{align*}
+\begin{amat}{ccc|c}1&-2&3&1\\-2&4&-6&0\\3&-6&9&0\end{amat}
+&\rops{R_2+2R_1,\ R_3-3R_1}
+\begin{amat}{ccc|c}1&-2&3&1\\0&0&0&2\\0&0&0&-3\end{amat}.
+\end{align*}
+The second row says $0=2$: there is no solution. So the system is inconsistent although every numerator is $0$. This is the converse that Pause and think~\ref{think:hyp} warned about: a nonzero numerator proves that there is no solution, but zero numerators prove nothing. For the right-hand side $\bv{b}=(1,-2,3)$, which is column $1$ of $A$, all numerators are again $0$, and now there are infinitely many solutions, for example $\bv{x}=(1,0,0)$. Cramer's Rule cannot tell the two cases apart.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank E: The adjugate and the inverse}
+
+\begin{exmp}{The adjugate and inverse of a $3\times3$ matrix with fractions}{b-adj3}
+Find $\operatorname{adj}A$ and $A^{-1}$ for $A=\begin{bmatrix}1&-2&0\\3&1&2\\0&2&1\end{bmatrix}$, and check the result by multiplying.
+
+\textbf{Solution.} First the nine cofactors, row by row. The sign of $C_{ij}$ is $(-1)^{i+j}$, so the signs are $+,-,+$ in rows $1$ and $3$ and $-,+,-$ in row $2$:
+\begin{align*}
+C_{11}&=+\begin{vmatrix}1&2\\2&1\end{vmatrix}=-3, & C_{12}&=-\begin{vmatrix}3&2\\0&1\end{vmatrix}=-3, & C_{13}&=+\begin{vmatrix}3&1\\0&2\end{vmatrix}=6,\\
+C_{21}&=-\begin{vmatrix}-2&0\\2&1\end{vmatrix}=2, & C_{22}&=+\begin{vmatrix}1&0\\0&1\end{vmatrix}=1, & C_{23}&=-\begin{vmatrix}1&-2\\0&2\end{vmatrix}=-2,\\
+C_{31}&=+\begin{vmatrix}-2&0\\1&2\end{vmatrix}=-4, & C_{32}&=-\begin{vmatrix}1&0\\3&2\end{vmatrix}=-2, & C_{33}&=+\begin{vmatrix}1&-2\\3&1\end{vmatrix}=7.
+\end{align*}
+Expanding along row $1$ (the entry in position $(1,3)$ is $0$): $\det A=1(-3)+(-2)(-3)+0\cdot6=3$. The cofactor matrix and the adjugate, its \emph{transpose}, are
+\[
+C=\begin{bmatrix}-3&-3&6\\2&1&-2\\-4&-2&7\end{bmatrix},\qquad
+\operatorname{adj}A=C\T=\begin{bmatrix}-3&2&-4\\-3&1&-2\\6&-2&7\end{bmatrix},
+\]
+so $A^{-1}=\frac13\operatorname{adj}A$, with entries $-1,\tfrac23,-\tfrac43$ in the first row. Check that $A\operatorname{adj}A=(\det A)I$:
+\[
+\begin{bmatrix}1&-2&0\\3&1&2\\0&2&1\end{bmatrix}\begin{bmatrix}-3&2&-4\\-3&1&-2\\6&-2&7\end{bmatrix}=\begin{bmatrix}3&0&0\\0&3&0\\0&0&3\end{bmatrix}.
+\]
+The off-diagonal zeros are the real test: they say, for example, that row $1$ of $A$ times column $2$ of $\operatorname{adj}A$ is $1\cdot2+(-2)\cdot1+0\cdot(-2)=0$, which is a row of $A$ combined with cofactors of a \emph{different} row. A wrong sign in a cofactor, or a forgotten transpose, shows up there immediately.
+\end{exmp}
+
+\begin{exmp}{One entry of a $4\times4$ inverse}{b-entry4}
+Let $A=\begin{bmatrix}1&2&0&0\\0&1&3&0\\2&0&1&1\\0&0&2&1\end{bmatrix}$. Find the $(2,4)$ entry of $A^{-1}$ without computing the rest of the inverse.
+
+\textbf{Solution.} By Theorem~\ref{thm:inverse}, $(A^{-1})_{ij}=C_{ji}/\det A$. The indices are swapped: the $(2,4)$ entry of the inverse needs the cofactor $C_{42}$, not $C_{24}$. We need $\det A$ and one $3\times3$ determinant.
+
+\emph{The determinant.} Expand along row $1$, which has two zeros:
+\[
+\det A=1\,C_{11}+2\,C_{12}=1\begin{vmatrix}1&3&0\\0&1&1\\0&2&1\end{vmatrix}-2\begin{vmatrix}0&3&0\\2&1&1\\0&1&1\end{vmatrix}.
+\]
+The first determinant is $1(1-2)=-1$ (expand down column $1$). The second is $-3\begin{vmatrix}2&1\\0&1\end{vmatrix}=-6$ (expand along row $1$, where the entry $3$ has sign $-$). Hence $\det A=-1-2(-6)=11$.
+
+\emph{The cofactor.} Delete row $4$ and column $2$ of $A$:
+\[
+A_{42}=\begin{bmatrix}1&0&0\\0&3&0\\2&1&1\end{bmatrix},\qquad\det A_{42}=1\cdot3\cdot1=3
+\]
+because the matrix is lower triangular (Theorem~\ref{3.1-thm:triangular}). The sign is $(-1)^{4+2}=+1$, so $C_{42}=3$ and
+\[
+(A^{-1})_{24}=\frac{C_{42}}{\det A}=\frac3{11}.
+\]
+A second route confirms it. The fourth column of $A^{-1}$ solves $A\bv{x}=\bv{e}_4$, and Cramer's Rule gives $x_2=\det A_2(\bv{e}_4)/\det A$, with
+\[
+\det A_2(\bv{e}_4)=\begin{vmatrix}1&0&0&0\\0&0&3&0\\2&0&1&1\\0&1&2&1\end{vmatrix}=1\begin{vmatrix}0&3&0\\0&1&1\\1&2&1\end{vmatrix}=1\begin{vmatrix}3&0\\1&1\end{vmatrix}=3.
+\]
+So $x_2=\frac3{11}$ again. \ $\checkmark$ This is the proof of Theorem~\ref{thm:inverse} at work: $A_2(\bv{e}_4)$ is the matrix whose determinant, by expansion along its new column, is $C_{42}$.
+\end{exmp}
+
+\begin{exmp}{The adjugate of a singular matrix}{b-adjsing}
+Let $A=\begin{bmatrix}1&2&3\\2&1&0\\3&3&3\end{bmatrix}$. Find $\operatorname{adj}A$ and compute $A\operatorname{adj}A$. What do the columns of $\operatorname{adj}A$ have to do with the equation $A\bv{x}=\bv{0}$?
+
+\textbf{Solution.} Row $3$ is the sum of rows $1$ and $2$, so $\det A=0$ and $A$ has no inverse. The adjugate is defined all the same, because it uses only cofactors:
+\begin{align*}
+C_{11}&=+\begin{vmatrix}1&0\\3&3\end{vmatrix}=3, & C_{12}&=-\begin{vmatrix}2&0\\3&3\end{vmatrix}=-6, & C_{13}&=+\begin{vmatrix}2&1\\3&3\end{vmatrix}=3,\\
+C_{21}&=-\begin{vmatrix}2&3\\3&3\end{vmatrix}=3, & C_{22}&=+\begin{vmatrix}1&3\\3&3\end{vmatrix}=-6, & C_{23}&=-\begin{vmatrix}1&2\\3&3\end{vmatrix}=3,\\
+C_{31}&=+\begin{vmatrix}2&3\\1&0\end{vmatrix}=-3, & C_{32}&=-\begin{vmatrix}1&3\\2&0\end{vmatrix}=6, & C_{33}&=+\begin{vmatrix}1&2\\2&1\end{vmatrix}=-3.
+\end{align*}
+Expanding along row $1$ confirms the determinant: $1(3)+2(-6)+3(3)=0$. Transposing the cofactor matrix,
+\[
+\operatorname{adj}A=\begin{bmatrix}3&3&-3\\-6&-6&6\\3&3&-3\end{bmatrix}\neq0,
+\]
+and the product is
+\[
+\begin{bmatrix}1&2&3\\2&1&0\\3&3&3\end{bmatrix}\begin{bmatrix}3&3&-3\\-6&-6&6\\3&3&-3\end{bmatrix}=\begin{bmatrix}0&0&0\\0&0&0\\0&0&0\end{bmatrix}.
+\]
+This is $A\operatorname{adj}A=(\det A)I$ with $\det A=0$, the case mentioned at the end of Example~\ref{ex:adjthree}. Read it column by column: each column $\bv{c}$ of $\operatorname{adj}A$ satisfies $A\bv{c}=\bv{0}$. All three columns are multiples of $(1,-2,1)$, namely $3(1,-2,1)$, \ $3(1,-2,1)$ and $-3(1,-2,1)$, and indeed $A(1,-2,1)=(1-4+3,\ 2-2+0,\ 3-6+3)=\bv{0}$. So for a singular matrix the adjugate does not give an inverse, but it hands us a nonzero solution of $A\bv{x}=\bv{0}$, which an invertible matrix never has (Theorem~\ref{2.3-thm:imt}). Since the first two rows of $A$ are not proportional, row reduction produces two pivots and one free variable, so every solution of $A\bv{x}=\bv{0}$ is a multiple of $(1,-2,1)$: here the adjugate found all of them.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank F: Area and volume}
+
+\begin{exmp}{A parallelogram from its vertices, and a collinearity test}{b-parall}
+(a)~The points $(-1,2)$, $(3,3)$, $(5,8)$, $(1,7)$ are the vertices, in order, of a parallelogram. Find its area. (b)~For which $k$ do $(1,2)$, $(4,k)$ and $(7,10)$ lie on one line?
+
+\textbf{Solution.} (a)~Theorem~\ref{thm:area} needs the two edges that leave \emph{one} vertex. From $P_0=(-1,2)$ the neighbours are $(3,3)$ and $(1,7)$, giving $\bv{u}=(4,1)$ and $\bv{v}=(2,5)$. (We can confirm the figure is a parallelogram: $P_0+\bv{u}+\bv{v}=(5,8)$ is the opposite vertex.) Therefore
+\[
+\operatorname{area}=\left|\det\begin{bmatrix}4&2\\1&5\end{bmatrix}\right|=|20-2|=18.
+\]
+As a check on the idea: the diagonal from $P_0$ to the opposite vertex is $(6,6)$, and the triangle $P_0P_1P_2$ has area $\tfrac12\left|\det\begin{bmatrix}4&6\\1&6\end{bmatrix}\right|=\tfrac12\cdot18=9$, half of the parallelogram, because the diagonal cuts the parallelogram into two congruent triangles. A frequent slip is to report the triangle's area $9$ as the parallelogram's. The safe rule: use two edges that start at the same vertex.
+
+(b)~Three points are collinear exactly when the triangle they span has area $0$ (Example~\ref{ex:triangle}). Take $P_0=(1,2)$, so $\bv{u}=(3,k-2)$ and $\bv{v}=(6,8)$ and
+\[
+\det\begin{bmatrix}3&6\\k-2&8\end{bmatrix}=24-6(k-2)=36-6k .
+\]
+This is $0$ exactly when $k=6$. Check: the points $(1,2)$, $(4,6)$, $(7,10)$ go up $4$ for every $3$ across. \ $\checkmark$ In terms of columns, $\bv{v}=2\bv{u}$ when $k=6$: the second edge points along the first.
+\end{exmp}
+
+\begin{exmp}{The area of a pentagon by cutting it into triangles}{b-pentagon}
+Find the area of the pentagon with vertices $V_1=(0,0)$, $V_2=(5,0)$, $V_3=(6,3)$, $V_4=(3,6)$, $V_5=(-1,4)$, listed counterclockwise.
+
+\textbf{Solution.} We know how to find the area of a triangle (Example~\ref{ex:triangle}), so cut the pentagon into triangles by drawing every diagonal from one vertex, here $V_1$, as in the figure below the example. This gives three triangles $T_1=V_1V_2V_3$, \ $T_2=V_1V_3V_4$ and $T_3=V_1V_4V_5$. For each, the two edges from $V_1$ are the columns of a $2\times2$ matrix:
+\begin{align*}
+\operatorname{area}(T_1)&=\tfrac12\left|\det\begin{bmatrix}5&6\\0&3\end{bmatrix}\right|=\tfrac12\cdot15=\tfrac{15}2,\\
+\operatorname{area}(T_2)&=\tfrac12\left|\det\begin{bmatrix}6&3\\3&6\end{bmatrix}\right|=\tfrac12\cdot27=\tfrac{27}2,\\
+\operatorname{area}(T_3)&=\tfrac12\left|\det\begin{bmatrix}3&-1\\6&4\end{bmatrix}\right|=\tfrac12\cdot18=9.
+\end{align*}
+The three triangles do not overlap and fill the pentagon, so the area is $\tfrac{15}2+\tfrac{27}2+9=30$.
+
+\emph{Check by a different method.} The pentagon sits in the rectangle $[-1,6]\times[0,6]$ of area $7\cdot6=42$. The four corner triangles outside it have areas $\tfrac12\cdot1\cdot4=2$ (lower left), $\tfrac12\cdot1\cdot3=\tfrac32$ (lower right), $\tfrac12\cdot3\cdot3=\tfrac92$ (upper right) and $\tfrac12\cdot4\cdot2=4$ (upper left), which total $12$, and $42-12=30$. \ $\checkmark$
+
+Two remarks. The cut from $V_1$ works here because the pentagon is convex, so every diagonal from $V_1$ lies inside it; for a pentagon with a dent, a diagonal could leave the polygon and the three triangles would not fill it. And each determinant above was positive because the vertices run counterclockwise (compare Pause and think~\ref{think:sign}); listing them clockwise would make all three negative, which is why the absolute value is taken.
+\end{exmp}
+
+\begin{center}
+\begin{tikzpicture}[x=0.55cm,y=0.55cm,>=stealth]
+  \draw[gray!45] (-2,-1) grid[step=1] (7,7);
+  \draw[->,gray] (-2.2,0)--(7.4,0);
+  \draw[->,gray] (0,-1.2)--(0,7.4);
+  \fill[blue!20] (0,0)--(5,0)--(6,3)--cycle;
+  \fill[green!25] (0,0)--(6,3)--(3,6)--cycle;
+  \fill[orange!25] (0,0)--(3,6)--(-1,4)--cycle;
+  \draw[thick,blue!70!black] (0,0)--(5,0)--(6,3)--(3,6)--(-1,4)--cycle;
+  \draw[dashed,thick,blue!70!black] (0,0)--(6,3);
+  \draw[dashed,thick,blue!70!black] (0,0)--(3,6);
+  \node[below left] at (0,0) {$V_1$};
+  \node[below right] at (5,0) {$V_2$};
+  \node[right] at (6,3) {$V_3$};
+  \node[above right] at (3,6) {$V_4$};
+  \node[left] at (-1,4) {$V_5$};
+  \node at (3.6,1) {$T_1$};
+  \node at (3,3) {$T_2$};
+  \node at (0.7,3.3) {$T_3$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Figure.} The pentagon of Example~\ref{ex:b-pentagon}, cut along the dashed diagonals from $V_1$ into the triangles $T_1,T_2,T_3$ of areas $\tfrac{15}2$, $\tfrac{27}2$ and $9$.
+
+\begin{exmp}{A parallelepiped with an unknown entry}{b-prism}
+The parallelepiped spanned by $(2,1,0)$, $(0,3,1)$ and $(1,h,2)$ has volume $7$. Find $h$. For which $h$ is the parallelepiped flat?
+
+\textbf{Solution.} By Theorem~\ref{thm:area} the volume is $|\det A|$ for the matrix whose columns are the three edges:
+\[
+A=\begin{bmatrix}2&0&1\\1&3&h\\0&1&2\end{bmatrix}.
+\]
+Expand along row $1$, where the middle entry is $0$:
+\[
+\det A=2\begin{vmatrix}3&h\\1&2\end{vmatrix}+1\begin{vmatrix}1&3\\0&1\end{vmatrix}=2(6-h)+1=13-2h.
+\]
+The volume is $|13-2h|$, so we must solve $|13-2h|=7$, which means two equations: $13-2h=7$ gives $h=3$, and $13-2h=-7$ gives $h=10$. Both are correct; the absolute value is why there are two answers. For $h=3$ the determinant is $+7$ and for $h=10$ it is $-7$, and the two parallelepipeds have opposite orientations but equal volume.
+
+The parallelepiped is flat when the volume is $0$, that is when $13-2h=0$, \ $h=\tfrac{13}2$. Then the third edge is a combination of the first two: $(1,\tfrac{13}2,2)=\tfrac12(2,1,0)+2(0,3,1)$, so all three edges lie in one plane, as in the last paragraph of Example~\ref{ex:volume}.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank G: Images under a linear map}
+
+\begin{exmp}{The area of an image, a preimage and a composite}{b-imgtri}
+Let $A=\begin{bmatrix}2&1\\-1&3\end{bmatrix}$ and $T(\bv{x})=A\bv{x}$. (a)~The triangle $S$ has vertices $(1,0)$, $(4,0)$ and $(1,5)$. Find the area of $T(S)$ by Theorem~\ref{thm:scale}, and confirm it from the vertices of the image. (b)~A region $R$ is carried by $T$ onto a region of area $56$. What is the area of $R$? (c)~The map $U(\bv{x})=B\bv{x}$ has $B=\begin{bmatrix}1&2\\0&-3\end{bmatrix}$. By what factor does ``first $T$, then $U$'' multiply areas, and does it preserve orientation?
+
+\textbf{Solution.} (a)~$\det A=6+1=7$, and $S$ is a right triangle with legs $3$ and $5$, so $\operatorname{area}(S)=\tfrac12\cdot3\cdot5=\tfrac{15}2$. The theorem predicts $\operatorname{area}(T(S))=7\cdot\tfrac{15}2=\tfrac{105}2$. To confirm, apply $A$ to the vertices:
+\[
+A\begin{bmatrix}1\\0\end{bmatrix}=\begin{bmatrix}2\\-1\end{bmatrix},\qquad
+A\begin{bmatrix}4\\0\end{bmatrix}=\begin{bmatrix}8\\-4\end{bmatrix},\qquad
+A\begin{bmatrix}1\\5\end{bmatrix}=\begin{bmatrix}7\\14\end{bmatrix}.
+\]
+The image is a triangle (a linear map sends line segments to line segments), with edges $(8,-4)-(2,-1)=(6,-3)$ and $(7,14)-(2,-1)=(5,15)$ from the first vertex, so by Example~\ref{ex:triangle}
+\[
+\operatorname{area}=\tfrac12\left|\det\begin{bmatrix}6&5\\-3&15\end{bmatrix}\right|=\tfrac12|90+15|=\tfrac{105}2.\ \checkmark
+\]
+
+(b)~Theorem~\ref{thm:scale} says $\operatorname{area}(T(R))=7\operatorname{area}(R)$. The area of the image is $56$, so $\operatorname{area}(R)=56/7=8$. Going from the image back to the region \emph{divides} by $|\det A|$.
+
+(c)~The composite sends $\bv{x}$ to $U(T(\bv{x}))=B(A\bv{x})=(BA)\bv{x}$, so its matrix is the product in this order:
+\[
+\begin{bmatrix}1&2\\0&-3\end{bmatrix}\begin{bmatrix}2&1\\-1&3\end{bmatrix}=\begin{bmatrix}0&7\\3&-9\end{bmatrix},\qquad\det\begin{bmatrix}0&7\\3&-9\end{bmatrix}=0-21=-21.
+\]
+The area factor is $|-21|=21=|\det B|\,|\det A|=3\cdot7$, as in Pause and think~\ref{think:compose}. The composite sends $S$ to a triangle of area $21\cdot\tfrac{15}2=\tfrac{315}2$. The determinant $-21$ is negative, so the composite reverses orientation (Pause and think~\ref{think:sign}): $T$ keeps it ($\det A=7>0$) and $U$ reverses it ($\det B=-3<0$). The inverse of the composite multiplies areas by $\tfrac1{21}$.
+\end{exmp}
+
+\begin{exmp}{For which $h$ does a map multiply areas by $5$?}{b-solveh}
+Let $A(h)=\begin{bmatrix}h&2\\3&h\end{bmatrix}$. A region of area $6$ is mapped by $\bv{x}\mapsto A(h)\bv{x}$ to a region of area $30$. Find every possible $h$. For which $h$ is the image flat?
+
+\textbf{Solution.} The area is multiplied by $|\det A(h)|$ (Theorem~\ref{thm:scale}), and $\det A(h)=h^2-6$. The factor is $\frac{30}6=5$, so $|h^2-6|=5$. An absolute value gives two equations:
+\[
+h^2-6=5\ \Rightarrow\ h^2=11\ \Rightarrow\ h=\pm\sqrt{11},\qquad
+h^2-6=-5\ \Rightarrow\ h^2=1\ \Rightarrow\ h=\pm1.
+\]
+There are four values: $h=\pm\sqrt{11}$ and $h=\pm1$. The first two give $\det A(h)=5$ and keep orientation; the last two give $\det A(h)=-5$ and reverse it. Check $h=1$: $\det\begin{bmatrix}1&2\\3&1\end{bmatrix}=1-6=-5$, and $5\cdot6=30$. \ $\checkmark$
+
+The image is flat, with area $0$, exactly when $\det A(h)=0$, that is $h^2=6$ and $h=\pm\sqrt6$; the matrix is then not invertible, and the whole plane is flattened onto a line. Notice that the original area $6$ plays no role in finding $h$: only the ratio $30/6$ matters.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank H: A tetrahedron}
+
+\begin{exmp}{The volume of a tetrahedron, and what the sign records}{b-tetra}
+Find the volume of the tetrahedron with vertices $P_0=(1,1,0)$, $P_1=(3,2,1)$, $P_2=(2,4,-1)$ and $P_3=(0,2,3)$. What changes if the vertices are listed in the order $P_0,P_2,P_1,P_3$?
+
+\textbf{Solution.} A tetrahedron is a pyramid on a triangular base, so its volume is $\tfrac13\cdot(\text{area of the base})\cdot(\text{height})$. Take the base to be the triangle $P_0P_1P_2$ and let $\bv{u}=P_1-P_0$, \ $\bv{v}=P_2-P_0$, \ $\bv{w}=P_3-P_0$. The triangle is half the parallelogram spanned by $\bv{u}$ and $\bv{v}$ (Example~\ref{ex:triangle}), and the parallelepiped spanned by $\bv{u},\bv{v},\bv{w}$ has the same height above the plane of $\bv{u}$ and $\bv{v}$ as $P_3$ has above the base. Hence
+\[
+\operatorname{vol}(\text{tetrahedron})=\tfrac13\cdot\tfrac12\,\bigl(\text{parallelogram}\bigr)\cdot(\text{height})=\tfrac16\,\operatorname{vol}(\text{parallelepiped})=\tfrac16\left|\det[\bv{u}\ \ \bv{v}\ \ \bv{w}]\right|
+\]
+by Theorem~\ref{thm:area}.
+
+The figure below the example shows the edges. Now the numbers. $\bv{u}=(2,1,1)$, \ $\bv{v}=(1,3,-1)$ and $\bv{w}=(-1,1,3)$, so
+\[
+\det\begin{bmatrix}2&1&-1\\1&3&1\\1&-1&3\end{bmatrix}=2\begin{vmatrix}3&1\\-1&3\end{vmatrix}-1\begin{vmatrix}1&1\\1&3\end{vmatrix}+(-1)\begin{vmatrix}1&3\\1&-1\end{vmatrix}=2(10)-2-(-4)=22,
+\]
+expanding along row $1$. The volume is $\tfrac16\cdot22=\tfrac{11}3$.
+
+\emph{The order of the vertices.} Listing the vertices as $P_0,P_2,P_1,P_3$ interchanges the first two columns, to $[\bv{v}\ \ \bv{u}\ \ \bv{w}]$, and by Theorem~\ref{3.2-thm:rowops} (for columns, Theorem~\ref{3.2-thm:colops}) the determinant changes sign: it is $-22$. The tetrahedron is the same solid and its volume is still $\tfrac{22}6=\tfrac{11}3$. What changed is the sign, which records orientation: the identity matrix, whose columns $\bv{e}_1,\bv{e}_2,\bv{e}_3$ span a cube of determinant $+1$, has the same handedness as the edges in the first order, and the opposite handedness as the edges in the second, exactly as the sign of $\det A$ recorded the direction of the turn in the plane (Pause and think~\ref{think:sign}). The volume is $\tfrac16|\det|$ in both orders, and the determinant is $0$, a flat tetrahedron, when the four vertices lie in one plane.
+\end{exmp}
+
+\begin{center}
+\begin{tikzpicture}[>=stealth]
+  \coordinate (P0) at (0,0);
+  \coordinate (P1) at (4,0.3);
+  \coordinate (P2) at (1.8,1.5);
+  \coordinate (P3) at (1.6,3.6);
+  \fill[blue!10] (P0)--(P1)--(P3)--cycle;
+  \draw[thick,blue!70!black] (P0)--(P1)--(P3)--cycle;
+  \draw[thick,blue!70!black] (P1)--(P2)--(P3);
+  \draw[dashed,thick,blue!70!black] (P0)--(P2);
+  \draw[->,very thick,red!70!black] (P0)--(2.4,0.18);
+  \draw[->,very thick,green!50!black] (P0)--(1.1,0.9);
+  \draw[->,very thick,blue!70!black] (P0)--(0.9,2.0);
+  \node[below left] at (P0) {$P_0$};
+  \node[below right] at (P1) {$P_1$};
+  \node[right] at (P2) {$P_2$};
+  \node[above] at (P3) {$P_3$};
+  \node[below] at (2.4,0.1) {$u$};
+  \node[above left] at (1.1,0.9) {$v$};
+  \node[left] at (0.9,2.0) {$w$};
+\end{tikzpicture}
+\end{center}
+
+\textbf{Figure.} The tetrahedron of Example~\ref{ex:b-tetra}, with the three edge vectors $u,v,w$ drawn from $P_0$. The hidden edge $P_0P_2$ is dashed. The picture is a sketch, not drawn to scale.
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:replace}.] (a)~$A_2(\bv{b})=\begin{bmatrix}1&1&7\\2&0&8\\3&2&10\end{bmatrix}$ and $A_3(\bv{b})=\begin{bmatrix}1&4&1\\2&5&0\\3&6&2\end{bmatrix}$: column $2$ (respectively column $3$) of $A$ is replaced by $\bv{b}$, and the other columns are those of $A$. (b)~The denominator is $\det A=-3$ for all three unknowns. (c)~$A_1(\bv{b})=\begin{bmatrix}1&4&7\\0&5&8\\2&6&10\end{bmatrix}$. Expanding down column $1$ (entries $1,0,2$): $\det A_1(\bv{b})=1(50-48)+2(32-35)=2-6=-4$, so $x_1=\frac{-4}{-3}=\frac43$. (For completeness, $\det A_2(\bv{b})=16$ and $\det A_3(\bv{b})=-9$, so $\bv{x}=(\tfrac43,-\tfrac{16}3,3)$; check the third equation: $4-32+30=2$.)
