@@ -512,6 +512,455 @@ Let $A$ be a square matrix for which $A\bv{x}=\bv{0}$ has only the trivial solut
   \item The columns of an invertible $n\times n$ matrix are independent and span $\R^n$. Does \emph{every} point of $\R^n$ then have a unique description as a combination of those columns? What would you call such a set of columns?
 \end{enumerate}
 
+\subsection*{Example bank}
+
+The examples below are extra practice with the problem types of this section, followed by a few short proofs. They use only ideas available so far, and nothing later in the course depends on them.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{First look and the cheapest test.} Five matrices decided by five different shortcuts, and a $4\times4$ matrix where no shortcut applies and the pivots must be counted.
+  \item \textbf{Pivots and shape.} One pair of rectangular matrices with the same entries, and a square system with exactly one solution for one right-hand side.
+  \item \textbf{Witnesses for a singular matrix.} Three witnesses from one reduction, and a hidden dependence among the columns that is forced by a visible one among the rows.
+  \item \textbf{A parameter decides.} Two families read off at a glance, and a $3\times3$ family where the parameter enters the elimination.
+  \item \textbf{One product is enough, and products of matrices.} A check of one product, an inverse from a cubic equation, and a singular factor that spoils both products.
+  \item \textbf{Inverses of transformations.} A formula for $T^{-1}$ on $\R^3$, and a map that cannot be undone, with two composites.
+  \item \textbf{Modeling.} Blending three feeds, and a small change in the data of a nearly singular system.
+  \item \textbf{Which descriptions can occur?} Six descriptions of a matrix: the ones that contradict the theorem, and the ones that do not.
+  \item \textbf{Basic proofs.} Read an ``if \dots\ then'' statement for three matrices before proving it, prove a statement about $A\T A$ for a matrix that need not be square, and disprove a statement about singular products with a counterexample.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: first look and the cheapest test}
+
+\begin{exmp}{Five matrices, five first looks}{bankLooks}
+Decide which of the following matrices are invertible, and name the cheapest test that settles each one.
+\[
+\textbf{(a)}\ \begin{bmatrix}7&5\\4&3\end{bmatrix}\qquad
+\textbf{(b)}\ \begin{bmatrix}2&0&0&0\\-1&3&0&0\\5&0&-4&0\\1&2&7&6\end{bmatrix}\qquad
+\textbf{(c)}\ \begin{bmatrix}1&0&2\\3&0&5\\4&0&7\end{bmatrix}
+\]
+\[
+\textbf{(d)}\ \begin{bmatrix}1&2&0\\3&1&4\\4&3&4\end{bmatrix}\qquad
+\textbf{(e)}\ \begin{bmatrix}2&0&0\\7&0&0\\1&4&3\end{bmatrix}
+\]
+
+\textbf{Solution.} \textbf{(a)}~A $2\times2$ matrix, so use $ad-bc=7\cdot3-5\cdot4=21-20=1\neq0$ (Theorem~\ref{2.2-thm:twobytwo}). Invertible.
+
+\textbf{(b)}~Lower triangular with diagonal entries $2,3,-4,6$, all nonzero. By Theorem~\ref{thm:triangular} it is invertible; no arithmetic with the other entries is needed.
+
+\textbf{(c)}~The second column is the zero vector, so $A\bv{e}_2=\bv{0}$ with $\bv{e}_2\neq\bv{0}$: statement (d) fails and the matrix is singular. (No pivot can appear in column~$2$.)
+
+\textbf{(d)}~No column is a multiple of another, but the rows are dependent: $(1,2,0)+(3,1,4)=(4,3,4)$, so row~$3$ is row~$1$ plus row~$2$. Then the columns of $A\T$ are dependent, so $A\T$ is singular, and by statement (l) so is $A$.
+
+\textbf{(e)}~Lower triangular, but the diagonal entries are $2,0,3$. By Theorem~\ref{thm:triangular} it is singular. (Indeed columns $2$ and $3$ are $(0,0,4)$ and $(0,0,3)$, multiples of one another.)
+
+\emph{Moral.} Each matrix gave up its answer to a different glance: a formula, a diagonal, a zero column, a row relation, a zero on the diagonal. Row reduction is the test to use when none of the glances works, as in the next example.
+\end{exmp}
+
+\begin{exmp}{No shortcut applies: count the pivots}{bankFour}
+Is $A=\begin{bmatrix}1&-1&-2&-2\\3&-2&-1&0\\2&0&4&1\\1&-1&-2&0\end{bmatrix}$ invertible? If so, what does that say about $A\bv{x}=\bv{b}$?
+
+\textbf{Solution.} The matrix is not triangular, has no zero row or column, and no two rows or columns are proportional at a glance. So we row reduce $A$ itself (not $[A\ \ I]$), one replacement at a time, and count pivots:
+\begin{align*}
+&\begin{bmatrix}1&-1&-2&-2\\3&-2&-1&0\\2&0&4&1\\1&-1&-2&0\end{bmatrix}
+\rops{R_2-3R_1}
+\begin{bmatrix}1&-1&-2&-2\\0&1&5&6\\2&0&4&1\\1&-1&-2&0\end{bmatrix}\\[4pt]
+&\rops{R_3-2R_1}
+\begin{bmatrix}1&-1&-2&-2\\0&1&5&6\\0&2&8&5\\1&-1&-2&0\end{bmatrix}\\[4pt]
+&\rops{R_4-R_1}
+\begin{bmatrix}1&-1&-2&-2\\0&1&5&6\\0&2&8&5\\0&0&0&2\end{bmatrix}\\[4pt]
+&\rops{R_3-2R_2}
+\begin{bmatrix}1&-1&-2&-2\\0&1&5&6\\0&0&-2&-7\\0&0&0&2\end{bmatrix}
+\end{align*}
+The last matrix is in echelon form with pivots in positions $(1,1),(2,2),(3,3),(4,4)$ (the entries $1,1,-2,2$). There are $4$ pivot positions for a $4\times4$ matrix, so statement (c) holds and $A$ is invertible. By the theorem, all twelve statements hold. In particular, for every $\bv{b}$ in $\R^4$ the equation $A\bv{x}=\bv{b}$ has a solution (statement (g)) and, since $A\bv{x}=\bv{0}$ has only the trivial solution (statement (d)), exactly one.
+
+\emph{Moral.} The count of four pivots was the only fact needed. We did not compute $A^{-1}$, and we did not look at any right-hand side: invertibility is a statement about $A$ alone.
+\end{exmp}
+
+\subsection*{Bank: pivots and shape}
+
+\begin{exmp}{Same entries, two shapes}{bankRect}
+Let $B=\begin{bmatrix}1&1&2\\0&1&1\\1&1&3\\2&2&0\end{bmatrix}$, a $4\times3$ matrix, and let $B\T$ be its transpose, a $3\times4$ matrix. For each of $B$ and $B\T$ decide which of the following hold: a pivot in every column; a pivot in every row; the equation $M\bv{x}=\bv{0}$ has only the trivial solution; $M\bv{x}=\bv{b}$ is solvable for every $\bv{b}$. Is the Invertible Matrix Theorem available?
+
+\textbf{Solution.} Reduce $B$:
+\begin{align*}
+&\begin{bmatrix}1&1&2\\0&1&1\\1&1&3\\2&2&0\end{bmatrix}
+\rops{R_3-R_1}
+\begin{bmatrix}1&1&2\\0&1&1\\0&0&1\\2&2&0\end{bmatrix}\\[4pt]
+&\rops{R_4-2R_1}
+\begin{bmatrix}1&1&2\\0&1&1\\0&0&1\\0&0&-4\end{bmatrix}\\[4pt]
+&\rops{R_4+4R_3}
+\begin{bmatrix}1&1&2\\0&1&1\\0&0&1\\0&0&0\end{bmatrix}
+\end{align*}
+There are pivots in columns $1,2,3$, so $B$ has a pivot in \emph{every column}: the equation $B\bv{x}=\bv{0}$ has only the trivial solution and the map is one-to-one. But the last row of the echelon form is zero, so there is \emph{no pivot in row~$4$}, and $B\bv{x}=\bv{b}$ is not solvable for every $\bv{b}$. Carrying $\bv{b}$ along through the same three operations, the last row becomes $(0,0,0\ \mid\ b_4+4b_3-6b_1)$, so $B\bv{x}=\bv{b}$ is solvable only when $b_4+4b_3-6b_1=0$. For example $\bv{b}=(0,0,0,1)$ is not reached.
+
+Now reduce $B\T=\begin{bmatrix}1&0&1&2\\1&1&1&2\\2&1&3&0\end{bmatrix}$:
+\begin{align*}
+&\begin{bmatrix}1&0&1&2\\1&1&1&2\\2&1&3&0\end{bmatrix}
+\rops{R_2-R_1}
+\begin{bmatrix}1&0&1&2\\0&1&0&0\\2&1&3&0\end{bmatrix}
+\rops{R_3-2R_1}
+\begin{bmatrix}1&0&1&2\\0&1&0&0\\0&1&1&-4\end{bmatrix}\\[4pt]
+&\rops{R_3-R_2}
+\begin{bmatrix}1&0&1&2\\0&1&0&0\\0&0&1&-4\end{bmatrix}
+\end{align*}
+Pivots in columns $1,2,3$ occupy all three rows, so $B\T$ has a pivot in \emph{every row}: $B\T\bv{x}=\bv{b}$ is solvable for every $\bv{b}$ in $\R^3$ and the map is onto. But column~$4$ has no pivot, so $x_4$ is free and $B\T\bv{x}=\bv{0}$ has nonzero solutions. From the echelon form, $x_2=0$, $x_3=4x_4$ and $x_1=-x_3-2x_4=-6x_4$, so $\bv{x}=(-6,0,4,1)$ is one. Check: $1(-6)+0+1\cdot4+2\cdot1=0$, \ $1(-6)+0+4+2=0$, \ $2(-6)+0+3\cdot4+0=0$.
+
+Neither matrix is square, so the Invertible Matrix Theorem does not apply. The table is
+\[
+\begin{array}{l|c|c}
+ & B\ (4\times3) & B\T\ (3\times4)\\\hline
+\text{pivot in every column (one-to-one)} & \text{yes} & \text{no}\\
+\text{pivot in every row (onto)} & \text{no} & \text{yes}
+\end{array}
+\]
+\emph{Moral.} For a rectangular matrix the two kinds of pivot counts are different questions with different answers, and a matrix can pass one test and fail the other. Only when the matrix is square (Theorem~\ref{thm:squarecount}) do they become the same question.
+\end{exmp}
+
+\begin{exmp}{One right-hand side with exactly one solution}{bankUnique}
+Let $A=\begin{bmatrix}1&2&1\\2&5&3\\1&3&4\end{bmatrix}$ and $\bv{b}=(4,9,3)$. Show that $A\bv{x}=\bv{b}$ has exactly one solution, and use this single fact to decide whether $A\bv{x}=\bv{c}$ is solvable for \emph{every} $\bv{c}$ in $\R^3$.
+
+\textbf{Solution.} Row reduce the augmented matrix:
+\begin{align*}
+&\begin{amat}{ccc|c}1&2&1&4\\2&5&3&9\\1&3&4&3\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|c}1&2&1&4\\0&1&1&1\\1&3&4&3\end{amat}
+\rops{R_3-R_1}
+\begin{amat}{ccc|c}1&2&1&4\\0&1&1&1\\0&1&3&-1\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{ccc|c}1&2&1&4\\0&1&1&1\\0&0&2&-2\end{amat}
+\end{align*}
+The echelon form has a pivot in each of the three coefficient columns, so there is no free variable. Back substitution: the last row says $2x_3=-2$, so $x_3=-1$; the second says $x_2+x_3=1$, so $x_2=2$; the first says $x_1+2x_2+x_3=4$, so $x_1=1$. The unique solution is $\bv{x}=(1,2,-1)$. Check: $1+4-1=4$, \ $2+10-3=9$, \ $1+6-4=3$.
+
+Now the reasoning. Having exactly one solution for this $\bv{b}$ means that there is no free variable, hence a pivot in each of the $3$ columns of $A$. Since $A$ is $3\times3$, Theorem~\ref{thm:squarecount} turns ``a pivot in every column'' into ``a pivot in every row''. Pivots in every row mean that no row of $[A\ \ \bv{c}]$ can become $(0,0,0\ \mid\ \text{nonzero})$, whatever $\bv{c}$ is. So $A\bv{x}=\bv{c}$ has a solution for every $\bv{c}$ (statement (g)), and in fact the matrix is invertible.
+
+\emph{Moral.} The square shape lets one uniquely solved system carry the news about all the others. For the $4\times3$ matrix $B$ of the previous example the equation $B\bv{x}=(1,0,1,2)$ also has exactly one solution, namely $\bv{x}=(1,0,0)$, yet $B\bv{x}=(0,0,0,1)$ has none.
+\end{exmp}
+
+\subsection*{Bank: witnesses for a singular matrix}
+
+\begin{exmp}{Three witnesses from one reduction}{bankWitness}
+Let $A=\begin{bmatrix}1&2&-1\\2&3&1\\3&5&0\end{bmatrix}$. Show that $A$ is singular, and give a witness for each of the following failures: a nonzero $\bv{x}$ with $A\bv{x}=\bv{0}$; a vector $\bv{b}$ for which $A\bv{x}=\bv{b}$ has no solution; two different vectors with the same image.
+
+\textbf{Solution.} Reduce all the way to reduced echelon form, so that the nonzero solutions can be read off:
+\begin{align*}
+&\begin{bmatrix}1&2&-1\\2&3&1\\3&5&0\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}1&2&-1\\0&-1&3\\3&5&0\end{bmatrix}
+\rops{R_3-3R_1}
+\begin{bmatrix}1&2&-1\\0&-1&3\\0&-1&3\end{bmatrix}\\[4pt]
+&\rops{R_3-R_2}
+\begin{bmatrix}1&2&-1\\0&-1&3\\0&0&0\end{bmatrix}
+\rops{-R_2}
+\begin{bmatrix}1&2&-1\\0&1&-3\\0&0&0\end{bmatrix}\\[4pt]
+&\rops{R_1-2R_2}
+\begin{bmatrix}1&0&5\\0&1&-3\\0&0&0\end{bmatrix}
+\end{align*}
+Only $2$ pivots, in a $3\times3$ matrix: $A$ is singular. Column~$3$ has no pivot, so $x_3=t$ is free, with $x_1=-5t$ and $x_2=3t$. Taking $t=1$:
+
+\emph{(i)~A nonzero vector sent to $\bv{0}$:} $\bv{x}=(-5,3,1)$, and $A\bv{x}=(-5+6-1,\ -10+9+1,\ -15+15+0)=(0,0,0)$. This is a dependence relation among the columns: $-5\bv{c}_1+3\bv{c}_2+\bv{c}_3=\bv{0}$.
+
+\emph{(ii)~A vector that is not reached:} the rows satisfy $\text{row}_1+\text{row}_2-\text{row}_3=\bv{0}$, since $(1,2,-1)+(2,3,1)=(3,5,0)$. So for every $\bv{x}$ the output $A\bv{x}=(y_1,y_2,y_3)$ has $y_1+y_2-y_3=0$, because that combination of the three row--column products is $(\text{row}_1+\text{row}_2-\text{row}_3)\cdot\bv{x}=0$. The vector $\bv{b}=(1,0,0)$ has $1+0-0=1\neq0$, so $A\bv{x}=(1,0,0)$ has no solution. The vector $\bv{y}=(1,1,-1)$ satisfies $A\T\bv{y}=\bv{0}$, as statement (l) predicts for a singular matrix.
+
+\emph{(iii)~Two inputs with one output:} $A\bv{0}=\bv{0}$ and $A(-5,3,1)=\bv{0}$. More generally, $\bv{u}$ and $\bv{u}+(-5,3,1)$ have the same image for every $\bv{u}$.
+
+\emph{Moral.} One reduction supplied the witness for (d) and (e); the relation among the rows supplied the witness for (g). A singular matrix fails \emph{all} the statements at once, and each failure has its own certificate.
+\end{exmp}
+
+\begin{exmp}{A visible relation among rows forces a hidden relation among columns}{bankHidden}
+Let $M=\begin{bmatrix}1&4&2&3\\1&4&2&3\\0&0&-1&1\\-1&0&0&3\end{bmatrix}$. (a)~Find a vector $\bv{b}$ for which $M\bv{x}=\bv{b}$ has no solution. (b)~The Invertible Matrix Theorem now promises a nonzero $\bv{x}$ with $M\bv{x}=\bv{0}$, although no column is a multiple of another. Find one.
+
+\textbf{Solution.} (a)~Rows $1$ and $2$ are equal. For $\bv{b}=(1,0,0,0)$ the first two equations would say that the same combination $x_1+4x_2+2x_3+3x_4$ equals $1$ and equals $0$. Impossible, so $M\bv{x}=(1,0,0,0)$ has no solution, the map is not onto, and (by the theorem) $M$ is singular.
+
+(b)~Statement (g) fails, so statement (d) fails: some nonzero $\bv{x}$ has $M\bv{x}=\bv{0}$. To find it, row reduce, leaving out the repeated row $2$ (it would only produce a row of zeros):
+\begin{align*}
+&\begin{bmatrix}1&4&2&3\\0&0&-1&1\\-1&0&0&3\end{bmatrix}
+\rops{R_3+R_1}
+\begin{bmatrix}1&4&2&3\\0&0&-1&1\\0&4&2&6\end{bmatrix}
+\rops{R_2\leftrightarrow R_3}
+\begin{bmatrix}1&4&2&3\\0&4&2&6\\0&0&-1&1\end{bmatrix}
+\end{align*}
+There are $3$ pivots, in columns $1,2,3$, and $x_4$ is free. Back substitution gives $-x_3+x_4=0$, so $x_3=x_4$; then $4x_2+2x_3+6x_4=0$ gives $x_2=-2x_4$; then $x_1+4x_2+2x_3+3x_4=0$ gives $x_1=3x_4$. With $x_4=1$: $\bv{x}=(3,-2,1,1)$. Check against \emph{all four} rows of $M$: $3-8+2+3=0$, \ $3-8+2+3=0$, \ $-1+1=0$, \ $-3+3=0$. So $3\bv{c}_1-2\bv{c}_2+\bv{c}_3+\bv{c}_4=\bv{0}$.
+
+\emph{Moral.} The hidden dependence among four columns was forced by the visible repetition among the rows. The theorem is what links the two, and it works only because $M$ is square.
+\end{exmp}
+
+\subsection*{Bank: a parameter decides}
+
+\begin{exmp}{Two families read off at a glance}{bankFamily}
+For which values of $k$ is each matrix singular?
+\[
+\textbf{(a)}\ \begin{bmatrix}k&4\\1&k\end{bmatrix}\qquad\qquad
+\textbf{(b)}\ \begin{bmatrix}2&1&5\\0&k-3&7\\0&0&k+1\end{bmatrix}
+\]
+
+\textbf{Solution.} \textbf{(a)}~By Theorem~\ref{2.2-thm:twobytwo} the matrix is singular exactly when $ad-bc=k\cdot k-4\cdot1=k^2-4=(k-2)(k+2)$ is $0$, that is, for $k=2$ and $k=-2$. At $k=2$ the matrix is $\begin{bmatrix}2&4\\1&2\end{bmatrix}$, which sends $(-2,1)$ to $(-4+4,\ -2+2)=\bv{0}$.
+
+\textbf{(b)}~The matrix is upper triangular with diagonal entries $2$, $k-3$ and $k+1$. By Theorem~\ref{thm:triangular} it is singular exactly when one of them is $0$: $k-3=0$ gives $k=3$, and $k+1=0$ gives $k=-1$. For every other $k$ it is invertible, and no row reduction was done.
+
+\emph{Moral.} When the entries are written in factored form (or the matrix is triangular) the singular values of the parameter can be read off.
+\end{exmp}
+
+\begin{exmp}{A parameter inside the elimination}{bankElimH}
+For which values of $h$ is $A(h)=\begin{bmatrix}1&2&3\\2&5&h\\1&3&6\end{bmatrix}$ invertible? For the bad value of $h$, find a nonzero $\bv{x}$ with $A(h)\bv{x}=\bv{0}$.
+
+\textbf{Solution.} Row reduce with $h$ carried along:
+\begin{align*}
+&\begin{bmatrix}1&2&3\\2&5&h\\1&3&6\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}1&2&3\\0&1&h-6\\1&3&6\end{bmatrix}
+\rops{R_3-R_1}
+\begin{bmatrix}1&2&3\\0&1&h-6\\0&1&3\end{bmatrix}\\[4pt]
+&\rops{R_3-R_2}
+\begin{bmatrix}1&2&3\\0&1&h-6\\0&0&9-h\end{bmatrix}
+\end{align*}
+The first two pivots, $1$ and $1$, do not depend on $h$. The third diagonal entry is $9-h$. If $h\neq9$ there are $3$ pivots and $A(h)$ is invertible. If $h=9$ the third row is zero, there are only $2$ pivots, and $A(9)$ is singular. So the answer is: invertible for every $h$ except $h=9$.
+
+For $h=9$ the echelon form is $\begin{bmatrix}1&2&3\\0&1&3\\0&0&0\end{bmatrix}$, with $x_3$ free. The second row gives $x_2=-3x_3$ and the first gives $x_1=-2x_2-3x_3=3x_3$. With $x_3=1$, $\bv{x}=(3,-3,1)$. Check: $A(9)\bv{x}=(3-6+3,\ 6-15+9,\ 3-9+6)=(0,0,0)$.
+
+\emph{Moral.} Carry the parameter through the elimination and ask where a pivot can vanish. Here only the last diagonal position can, and it vanishes for one value.
+\end{exmp}
+
+\subsection*{Bank: one product is enough, and products of matrices}
+
+\begin{exmp}{Check one product, then use the inverse}{bankOneProd}
+Let $A=\begin{bmatrix}1&2&1\\2&3&3\\2&3&2\end{bmatrix}$ and $B=\begin{bmatrix}-3&-1&3\\2&0&-1\\0&1&-1\end{bmatrix}$. Show that $B=A^{-1}$ by computing only \emph{one} product, and use $B$ to solve $A\bv{x}=(4,7,6)$.
+
+\textbf{Solution.} Compute $AB$ (row--column rule, one entry at a time):
+\[
+AB=\begin{bmatrix}1&2&1\\2&3&3\\2&3&2\end{bmatrix}\begin{bmatrix}-3&-1&3\\2&0&-1\\0&1&-1\end{bmatrix}
+=\begin{bmatrix}-3+4+0&-1+0+1&3-2-1\\-6+6+0&-2+0+3&6-3-3\\-6+6+0&-2+0+2&6-3-2\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}.
+\]
+Both matrices are $3\times3$, so Theorem~\ref{thm:onesided} gives $BA=I$ without any further arithmetic, and $B=A^{-1}$. (The definition of inverse asks for two products, and for square matrices the second comes free.)
+
+By Theorem~\ref{2.2-thm:solve}, the solution of $A\bv{x}=\bv{b}$ is $\bv{x}=A^{-1}\bv{b}=B\bv{b}$:
+\[
+\bv{x}=\begin{bmatrix}-3&-1&3\\2&0&-1\\0&1&-1\end{bmatrix}\begin{bmatrix}4\\7\\6\end{bmatrix}=\begin{bmatrix}-12-7+18\\8+0-6\\0+7-6\end{bmatrix}=\begin{bmatrix}-1\\2\\1\end{bmatrix}.
+\]
+Check in the original equation: $-1+4+1=4$, \ $-2+6+3=7$, \ $-2+6+2=6$.
+
+\emph{Moral.} A claimed inverse costs one product to confirm, not two, but only when the matrices are square.
+\end{exmp}
+
+\begin{exmp}{A cubic equation gives an inverse}{bankCubic}
+Let $C=\begin{bmatrix}0&0&1\\1&0&1\\0&1&0\end{bmatrix}$. Show that $C^3=C+I$, and use this equation to find $C^{-1}$ without row reduction.
+
+\textbf{Solution.} Compute the powers one product at a time:
+\begin{align*}
+C^2&=\begin{bmatrix}0&0&1\\1&0&1\\0&1&0\end{bmatrix}\begin{bmatrix}0&0&1\\1&0&1\\0&1&0\end{bmatrix}=\begin{bmatrix}0&1&0\\0&1&1\\1&0&1\end{bmatrix},\\
+C^3&=C^2C=\begin{bmatrix}0&1&0\\0&1&1\\1&0&1\end{bmatrix}\begin{bmatrix}0&0&1\\1&0&1\\0&1&0\end{bmatrix}=\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\end{bmatrix}=C+I.
+\end{align*}
+The last equality compares with $C+I=\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\end{bmatrix}$. Now rearrange $C^3=C+I$ into $C^3-C=I$ and factor $C$ out on the left: $C(C^2-I)=I$. So $D=C^2-I$ is a right inverse of $C$. Since $C$ is square, Theorem~\ref{thm:onesided} says that $C$ is invertible and $C^{-1}=D$:
+\[
+C^{-1}=C^2-I=\begin{bmatrix}0&1&0\\0&1&1\\1&0&1\end{bmatrix}-\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}=\begin{bmatrix}-1&1&0\\0&0&1\\1&0&0\end{bmatrix}.
+\]
+Check one product: $\begin{bmatrix}0&0&1\\1&0&1\\0&1&0\end{bmatrix}\begin{bmatrix}-1&1&0\\0&0&1\\1&0&0\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}$.
+
+\emph{Moral.} A polynomial equation in $C$ whose constant term is nonzero can be rearranged to $C\cdot(\text{something})=I$. The something is the inverse, and the theorem about one product supplies the other half.
+\end{exmp}
+
+\begin{exmp}{A singular factor spoils both products}{bankSingFactor}
+Let $A=\begin{bmatrix}1&1&2\\2&1&3\\1&0&1\end{bmatrix}$ and $B=\begin{bmatrix}1&1&0\\0&1&1\\0&0&1\end{bmatrix}$. Decide whether $AB$ and $BA$ are invertible, and find a nonzero vector sent to $\bv{0}$ by each product.
+
+\textbf{Solution.} The matrix $B$ is upper triangular with diagonal entries $1,1,1$, so it is invertible (Theorem~\ref{thm:triangular}). The third column of $A$ is the sum of the first two ($(2,3,1)=(1,2,1)+(1,1,0)$), so $A(1,1,-1)=\bv{0}$ and $A$ is singular. By Theorem~\ref{thm:products} a product is invertible only if \emph{both} factors are, so $AB$ and $BA$ are both singular. Indeed
+\[
+AB=\begin{bmatrix}1&2&3\\2&3&4\\1&1&1\end{bmatrix},\qquad BA=\begin{bmatrix}3&2&5\\3&1&4\\1&0&1\end{bmatrix}.
+\]
+\emph{A vector for $BA$.} Let $\bv{w}=(1,1,-1)$, so $A\bv{w}=\bv{0}$. Then $(BA)\bv{w}=B(A\bv{w})=B\bv{0}=\bv{0}$. Direct check: $(3+2-5,\ 3+1-4,\ 1+0-1)=(0,0,0)$.
+
+\emph{A vector for $AB$.} We need $B\bv{x}=\bv{w}$ so that $A(B\bv{x})=A\bv{w}=\bv{0}$; that is, $\bv{x}=B^{-1}\bv{w}$. Solving from the bottom, $x_3=-1$, $x_2+x_3=1$ gives $x_2=2$, and $x_1+x_2=1$ gives $x_1=-1$: $\bv{x}=(-1,2,-1)$. Direct check: $(AB)\bv{x}=(-1+4-3,\ -2+6-4,\ -1+2-1)=(0,0,0)$.
+
+\emph{Moral.} A squashed direction of $A$ stays squashed by a product on either side: $B$ can move it to a new position (for $AB$ the witness is $B^{-1}\bv{w}$, not $\bv{w}$), but cannot remove it.
+\end{exmp}
+
+\subsection*{Bank: inverses of transformations}
+
+\begin{exmp}{A formula for $T^{-1}$ on $\R^3$}{bankInvMap}
+Let $T:\R^3\to\R^3$ be $T(x_1,x_2,x_3)=(x_1+x_2+2x_3,\ 2x_1+3x_2+5x_3,\ x_1+2x_2+4x_3)$. Show that $T$ is invertible, find a formula for $T^{-1}$, and check it on one vector.
+
+\textbf{Solution.} The columns of the standard matrix are $T(\bv{e}_1)=(1,2,1)$, $T(\bv{e}_2)=(1,3,2)$ and $T(\bv{e}_3)=(2,5,4)$ (Definition~\ref{1.9-def:stdmat}), so $A=\begin{bmatrix}1&1&2\\2&3&5\\1&2&4\end{bmatrix}$. By Theorem~\ref{thm:invtrans} the map is invertible exactly when $A$ is, and $T^{-1}$ is multiplication by $A^{-1}$. Row reduce $[A\ \ I]$ (Theorem~\ref{2.2-thm:algorithm}):
+\begin{align*}
+&\begin{amat}{ccc|ccc}1&1&2&1&0&0\\2&3&5&0&1&0\\1&2&4&0&0&1\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|ccc}1&1&2&1&0&0\\0&1&1&-2&1&0\\1&2&4&0&0&1\end{amat}\\[4pt]
+&\rops{R_3-R_1}
+\begin{amat}{ccc|ccc}1&1&2&1&0&0\\0&1&1&-2&1&0\\0&1&2&-1&0&1\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{ccc|ccc}1&1&2&1&0&0\\0&1&1&-2&1&0\\0&0&1&1&-1&1\end{amat}\\[4pt]
+&\rops{R_1-R_2}
+\begin{amat}{ccc|ccc}1&0&1&3&-1&0\\0&1&1&-2&1&0\\0&0&1&1&-1&1\end{amat}\\[4pt]
+&\rops{R_1-R_3}
+\begin{amat}{ccc|ccc}1&0&0&2&0&-1\\0&1&1&-2&1&0\\0&0&1&1&-1&1\end{amat}\\[4pt]
+&\rops{R_2-R_3}
+\begin{amat}{ccc|ccc}1&0&0&2&0&-1\\0&1&0&-3&2&-1\\0&0&1&1&-1&1\end{amat}
+\end{align*}
+The left half became $I$, so $A$ is invertible and $A^{-1}=\begin{bmatrix}2&0&-1\\-3&2&-1\\1&-1&1\end{bmatrix}$. Therefore
+\[
+T^{-1}(y_1,y_2,y_3)=(2y_1-y_3,\ \ -3y_1+2y_2-y_3,\ \ y_1-y_2+y_3).
+\]
+Check on $\bv{x}=(1,1,1)$: $T(\bv{x})=(4,10,7)$, and $T^{-1}(4,10,7)=(8-7,\ -12+20-7,\ 4-10+7)=(1,1,1)$. \ $\checkmark$
+
+\emph{Moral.} Finding $T^{-1}$ is finding $A^{-1}$; the formula is the rows of $A^{-1}$ written out.
+\end{exmp}
+
+\begin{exmp}{Differences cannot be undone, and no composite repairs them}{bankNoUndo}
+Let $T(x_1,x_2,x_3)=(x_1-x_2,\ x_2-x_3,\ x_3-x_1)$ and $S(y_1,y_2,y_3)=(y_1+y_2,\ y_2,\ y_3)$. (a)~Show that $T$ is not invertible by exhibiting a failure of one-to-one and a failure of onto. (b)~Show that $S$ is invertible. (c)~Are $S\circ T$ and $T\circ S$ invertible?
+
+\textbf{Solution.} (a)~The standard matrix of $T$ is $\begin{bmatrix}1&-1&0\\0&1&-1\\-1&0&1\end{bmatrix}$. Since $T(1,1,1)=(0,0,0)$, the nonzero vector $(1,1,1)$ is sent to $\bv{0}$: $T$ is not one-to-one. The three outputs always add to $(x_1-x_2)+(x_2-x_3)+(x_3-x_1)=0$, so $(1,0,0)$ is not an output: $T$ is not onto. By Theorem~\ref{thm:invtrans}, $T$ is not invertible; both failures had to occur together.
+
+(b)~The standard matrix of $S$ is $\begin{bmatrix}1&1&0\\0&1&0\\0&0&1\end{bmatrix}$, upper triangular with diagonal $1,1,1$, so $S$ is invertible, with $S^{-1}(y_1,y_2,y_3)=(y_1-y_2,\ y_2,\ y_3)$.
+
+(c)~The composite $S\circ T$ has matrix (Theorem~\ref{2.1-thm:composite}) $ST$, and $T\circ S$ has matrix $TS$:
+\begin{align*}
+ST&=\begin{bmatrix}1&1&0\\0&1&0\\0&0&1\end{bmatrix}\begin{bmatrix}1&-1&0\\0&1&-1\\-1&0&1\end{bmatrix}=\begin{bmatrix}1&0&-1\\0&1&-1\\-1&0&1\end{bmatrix},\\[4pt]
+TS&=\begin{bmatrix}1&-1&0\\0&1&-1\\-1&0&1\end{bmatrix}\begin{bmatrix}1&1&0\\0&1&0\\0&0&1\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&-1\\-1&-1&1\end{bmatrix}.
+\end{align*}
+(Here $S$ and $T$ also denote the standard matrices.) Neither is invertible, by Theorem~\ref{thm:products}, since the factor $T$ is singular. Witnesses: $(ST)(1,1,1)=S(\bv{0})=\bv{0}$, and $(TS)(0,1,1)=T(S(0,1,1))=T(1,1,1)=\bv{0}$. Direct check of the second: $(TS)(0,1,1)=(0,\ 1-1,\ -1+1)=(0,0,0)$.
+
+\emph{Moral.} Composing with an invertible map (here $S$, which shears the plane) changes where the squashed direction sits, but it cannot unsquash it.
+\end{exmp}
+
+\subsection*{Bank: modeling}
+
+\begin{exmp}{Blending three feeds}{bankFeeds}
+Three feeds contain protein, fibre and minerals (in grams per kilogram) as the columns of $A=\begin{bmatrix}1&3&2\\2&4&2\\0&2&3\end{bmatrix}$: feed $1$ is $(1,2,0)$, feed $2$ is $(3,4,2)$ and feed $3$ is $(2,2,3)$. (a)~How many kilograms of each feed give exactly $(16,22,12)$ grams of the three nutrients? (b)~A lab report lists, instead of minerals, the \emph{combined} protein and fibre for the same feeds. Can every target now be reached?
+
+\textbf{Solution.} (a)~We solve $A\bv{x}=\bv{b}$ with $\bv{b}=(16,22,12)$:
+\begin{align*}
+&\begin{amat}{ccc|c}1&3&2&16\\2&4&2&22\\0&2&3&12\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|c}1&3&2&16\\0&-2&-2&-10\\0&2&3&12\end{amat}
+\rops{R_3+R_2}
+\begin{amat}{ccc|c}1&3&2&16\\0&-2&-2&-10\\0&0&1&2\end{amat}
+\end{align*}
+The last row says $x_3=2$. The second says $-2x_2-2x_3=-10$, so $x_2=3$. The first says $x_1+3x_2+2x_3=16$, so $x_1=3$. The blend is $(3,3,2)$ kilograms. Check: $3(1,2,0)+3(3,4,2)+2(2,2,3)=(3+9+4,\ 6+12+4,\ 0+6+6)=(16,22,12)$.
+
+(b)~For the same feeds the new rows are protein, fibre and protein plus fibre, so the new matrix is $A'=\begin{bmatrix}1&3&2\\2&4&2\\3&7&4\end{bmatrix}$ with $\text{row}_3=\text{row}_1+\text{row}_2$. Every blend therefore produces a third entry equal to the sum of the first two ($\bv{y}=(1,1,-1)$ has $(A')\T\bv{y}=\bv{0}$), and a target such as $(16,22,39)$, with $16+22=38\neq39$, is out of reach. The matrix $A'$ is singular, so (g) fails and, by the theorem, (d) fails as well: $A'(1,-1,1)=(1-3+2,\ 2-4+2,\ 3-7+4)=\bv{0}$, so a target that can be reached, such as $(16,22,38)$, can be reached in infinitely many ways.
+
+\emph{Moral.} Whether \emph{every} target can be reached depends only on the matrix: three independent nutrient rows give a unique blend for each target, while a redundant row removes some targets and creates ambiguity for the rest.
+\end{exmp}
+
+\begin{exmp}{A small change in the data, a large change in the solution}{bankNearly}
+Let $A=\begin{bmatrix}1&3\\2&6.02\end{bmatrix}$. Show that $A$ is invertible, find $A^{-1}$, and solve $A\bv{x}=(4,\ 8.02)$ and $A\bv{x}=(4,\ 8.04)$. Compare the change in the data with the change in the solution.
+
+\textbf{Solution.} The matrix is $2\times2$ with $ad-bc=1\cdot6.02-3\cdot2=0.02\neq0$, so it is invertible, and by Theorem~\ref{2.2-thm:twobytwo}
+\[
+A^{-1}=\frac1{0.02}\begin{bmatrix}6.02&-3\\-2&1\end{bmatrix}=\begin{bmatrix}301&-150\\-100&50\end{bmatrix}.
+\]
+Then, with $\bv{x}=A^{-1}\bv{b}$:
+\begin{align*}
+&\begin{bmatrix}301&-150\\-100&50\end{bmatrix}\begin{bmatrix}4\\8.02\end{bmatrix}=\begin{bmatrix}1204-1203\\-400+401\end{bmatrix}=\begin{bmatrix}1\\1\end{bmatrix},\\[4pt]
+&\begin{bmatrix}301&-150\\-100&50\end{bmatrix}\begin{bmatrix}4\\8.04\end{bmatrix}=\begin{bmatrix}1204-1206\\-400+402\end{bmatrix}=\begin{bmatrix}-2\\2\end{bmatrix}.
+\end{align*}
+The second data entry changed by $0.02$, from $8.02$ to $8.04$ (about $0.25\%$), and the solution moved from $(1,1)$ to $(-2,2)$. The change in the solution is $A^{-1}(0,0.02)=(0.02\cdot(-150),\ 0.02\cdot50)=(-3,1)$: the large entries of $A^{-1}$ multiply the small change in the data. If a program rounded $6.02$ to $6$, the matrix would become $\begin{bmatrix}1&3\\2&6\end{bmatrix}$ with $ad-bc=0$, which is singular.
+
+\emph{Moral.} A matrix can be invertible and still be so close to a singular one that its inverse has huge entries; then small errors in the data are magnified in the solution.
+\end{exmp}
+
+\subsection*{Bank: which descriptions can occur?}
+
+\begin{exmp}{Sorting possible from impossible}{bankClaims}
+For each description decide whether such a matrix can exist. If it can, give an example; if not, say which statement or theorem rules it out.
+\begin{enumerate}[label=(\alph*),itemsep=2pt]
+  \item $A$ is $4\times4$, the equation $A\bv{x}=\bv{0}$ has only the trivial solution, and the columns of $A$ do not span $\R^4$.
+  \item $A$ is $4\times4$ with three pivot positions, and the columns of $A$ are linearly independent.
+  \item $A$ is $5\times4$, the columns of $A$ are linearly independent, and $A\bv{x}=\bv{b}$ is solvable for every $\bv{b}$ in $\R^5$.
+  \item $A$ is $3\times4$, the columns of $A$ span $\R^3$, and $A\bv{x}=\bv{0}$ has a nonzero solution.
+  \item $A$ is $3\times2$, there is a $2\times3$ matrix $C$ with $CA=I_2$, but there is no $3\times2$ matrix $D$ with $AD=I_3$.
+  \item $A$ is $3\times3$, there is a $3\times3$ matrix $C$ with $CA=I_3$, but no $3\times3$ matrix $D$ with $AD=I_3$.
+\end{enumerate}
+
+\textbf{Solution.} (a)~\emph{Impossible.} A $4\times4$ matrix is square, and (d) and (h) of the Invertible Matrix Theorem are equivalent: only the trivial solution forces the columns to span $\R^4$.
+
+(b)~\emph{Impossible.} Independent columns mean that $A\bv{x}=\bv{0}$ has no free variable, so there is a pivot in each of the $4$ columns, hence $4$ pivot positions, not $3$. (Three pivots in four columns leave a free variable and dependent columns.)
+
+(c)~\emph{Impossible.} Independent columns give a pivot in each of the $4$ columns, hence at most $4$ pivot positions. Solvable for every $\bv{b}$ needs a pivot in each of the $5$ rows (Theorem~\ref{1.4-thm:existence}), hence $5$ pivot positions. The matrix is not square, so nothing can reconcile the two.
+
+(d)~\emph{Possible.} $A=\begin{bmatrix}1&0&0&1\\0&1&0&1\\0&0&1&1\end{bmatrix}$ has a pivot in every row, so its columns span $\R^3$, and $A(-1,-1,-1,1)=(-1+1,\ -1+1,\ -1+1)=\bv{0}$.
+
+(e)~\emph{Possible.} Take $A=\begin{bmatrix}1&0\\0&1\\0&0\end{bmatrix}$ and $C=\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}$. Then $CA=\begin{bmatrix}1&0\\0&1\end{bmatrix}=I_2$. No $D$ can give $AD=I_3$, because the last row of $AD$ is the last row of $A$ (which is $\bv{0}$) times $D$, so it is $\bv{0}$ and not $(0,0,1)$. Statements (j) and (k) are equivalent only for square matrices.
+
+(f)~\emph{Impossible.} For a $3\times3$ matrix, statements (j) and (k) are equivalent: a left inverse exists exactly when a right inverse exists. Both are then the inverse.
+
+\emph{Moral.} Descriptions (a), (b) and (f) are ruled out by the equivalences of the theorem for a square matrix; (c) is ruled out by a pivot count alone; and the possible ones, (d) and (e), are rectangular matrices, where those equivalences are not available.
+\end{exmp}
+
+\subsection*{Bank: basic proofs}
+
+A proof is a short argument that holds for every case the statement covers; the three examples below, easiest first, show how to read a statement, prove it in named steps, and disprove a false one.
+
+\begin{exmp}{Reading an ``if \dots\ then'' statement for three matrices}{bankABC}
+\textbf{Statement.} Let $A$, $B$, $C$ be $n\times n$ matrices. If $ABC$ is invertible, then $B$ is invertible.
+
+\textbf{What we are proving and how.} The main text proves that $AB$ invertible forces $A$ and $B$ to be invertible (Theorem~\ref{thm:products}). Here is a variant with three factors, and the middle one is the target. We use Theorem~\ref{thm:onesided} (a right inverse of a square matrix is the inverse) twice.
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Hypotheses:} $A,B,C$ are all $n\times n$ (the same $n$), and $ABC$ has an inverse.
+  \item \emph{Goal:} $B$ has an inverse.
+  \item \emph{Scope:} every $n$ and every triple of such matrices. Nothing is assumed about $A$ or $C$ separately.
+\end{itemize}
+A numerical test: $A=\begin{bmatrix}1&1\\0&1\end{bmatrix}$, $B=\begin{bmatrix}2&1\\1&1\end{bmatrix}$, $C=\begin{bmatrix}1&0\\1&1\end{bmatrix}$ give $ABC=\begin{bmatrix}5&2\\2&1\end{bmatrix}$, and $5\cdot1-2\cdot2=1\neq0$, so $ABC$ is invertible; and $B$ is invertible, since $2\cdot1-1\cdot1=1\neq0$.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $ABC$ is invertible, and let $D=(ABC)^{-1}$, so $(ABC)D=I$.
+  \item \emph{Compute.} Regroup: $A(BCD)=(ABC)D=I$. So $BCD$ is a right inverse of the square matrix $A$, and by Theorem~\ref{thm:onesided} $A$ is invertible and $BCD=A^{-1}$. Multiply this equation on the right by $A$:
+  \[
+  B(CDA)=(BCD)A=A^{-1}A=I.
+  \]
+  \item \emph{Conclude.} The square matrix $B$ has a right inverse, namely $CDA$. By Theorem~\ref{thm:onesided} again, $B$ is invertible, and $B^{-1}=CDA$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} Associativity, to regroup without moving any factor; and, twice, the fact that for \emph{square} matrices a right inverse is a full inverse. In the numerical test, $D=\begin{bmatrix}1&-2\\-2&5\end{bmatrix}$ and
+\[
+CDA=\begin{bmatrix}1&0\\1&1\end{bmatrix}\begin{bmatrix}1&-2\\-2&5\end{bmatrix}\begin{bmatrix}1&1\\0&1\end{bmatrix}=\begin{bmatrix}1&-2\\-1&3\end{bmatrix}\begin{bmatrix}1&1\\0&1\end{bmatrix}=\begin{bmatrix}1&-1\\-1&2\end{bmatrix},
+\]
+and this is $B^{-1}$, since $\begin{bmatrix}2&1\\1&1\end{bmatrix}\begin{bmatrix}1&-1\\-1&2\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}$. The same proof, with the roles of the factors exchanged, shows that $A$ and $C$ are invertible too.
+\end{exmp}
+
+\begin{exmp}{Using the theorem on a square matrix built from a rectangular one}{bankATA}
+\textbf{Statement.} Let $A$ be an $m\times n$ matrix, not necessarily square. If $A\T A$ is invertible, then $A\bv{x}=\bv{0}$ has only the trivial solution.
+
+\textbf{What we are proving and how.} The matrix $A$ is allowed to be rectangular, so the Invertible Matrix Theorem cannot be applied to $A$. But $A\T$ is $n\times m$ and $A$ is $m\times n$, so $A\T A$ is $n\times n$, always square. We apply the theorem to $A\T A$.
+
+\textbf{Read the statement first.} \emph{Hypotheses:} $A$ is $m\times n$ for any $m$ and $n$, and $A\T A$ is invertible. \emph{Goal:} if $A\bv{x}=\bv{0}$ then $\bv{x}=\bv{0}$. \emph{Scope:} every such $A$. A numerical test: for $A=\begin{bmatrix}1&0\\1&1\\0&1\end{bmatrix}$ we get $A\T A=\begin{bmatrix}2&1\\1&2\end{bmatrix}$ with $ad-bc=3\neq0$, and indeed $A\bv{x}=(x_1,\ x_1+x_2,\ x_2)=\bv{0}$ forces $\bv{x}=\bv{0}$. For $A=\begin{bmatrix}1&2&0\\0&1&1\end{bmatrix}$ the hypothesis should fail, since $A(2,-1,1)=\bv{0}$; and it does: $A\T A=\begin{bmatrix}1&2&0\\2&5&1\\0&1&1\end{bmatrix}$ sends $(2,-1,1)$ to $(2-2,\ 4-5+1,\ -1+1)=\bv{0}$, so it is singular.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $A\T A$ is invertible, and let $\bv{x}$ be any vector with $A\bv{x}=\bv{0}$. We must show $\bv{x}=\bv{0}$.
+  \item \emph{Compute.} By associativity, $(A\T A)\bv{x}=A\T(A\bv{x})=A\T\bv{0}=\bv{0}$.
+  \item \emph{Conclude.} So $\bv{x}$ solves $(A\T A)\bv{x}=\bv{0}$. The matrix $A\T A$ is square and invertible, so by statement (d) of the Invertible Matrix Theorem this equation has only the trivial solution. Hence $\bv{x}=\bv{0}$. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} Squareness of $A\T A$ (always true) and statement (d) for it. The proof never needed $A$ to be square, and it shows in particular that $A$ cannot have more columns than rows: a $2\times3$ matrix always has a free column, so its $A\T A$ is never invertible. The converse (if $A\bv{x}=\bv{0}$ has only the trivial solution, then $A\T A$ is invertible) is also true for matrices of real numbers, but its proof needs a fact about sums of squares like the one in Example~\ref{2.1-ex:bankSquareZero}, so we do not prove it here.
+\end{exmp}
+
+\begin{exmp}{Disproving a statement about singular products}{bankABsing}
+\textbf{Statement.} If $A$ and $B$ are $n\times n$ matrices and $AB$ is singular, then $A$ and $B$ are both singular.
+
+\textbf{What we are doing and how.} Theorem~\ref{thm:products} says $AB$ is invertible only if both factors are, and this statement looks like its mirror image. To disprove a statement about all pairs of matrices we need one pair that satisfies the hypothesis (here: $AB$ is singular) and breaks the conclusion (here: not both are singular).
+
+\textbf{Counterexample.} Take $A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$ and $B=\begin{bmatrix}1&1\\0&1\end{bmatrix}$.
+\begin{itemize}
+  \item \emph{The hypothesis holds.} $AB=\begin{bmatrix}1&3\\2&6\end{bmatrix}$, and $ad-bc=6-6=0$, so $AB$ is singular.
+  \item \emph{The conclusion fails.} $B$ has $ad-bc=1-0=1\neq0$, so $B$ is invertible. (The matrix $A$ is singular, with $ad-bc=4-4=0$.)
+\end{itemize}
+So the statement is false. \qquad$\blacksquare$
+
+\textbf{What is true instead.} If $AB$ is singular then \emph{at least one} of $A$ and $B$ is singular. This is Theorem~\ref{thm:products} read backwards: if both were invertible, $AB$ would be invertible. The counterexample has the singular factor on the left; taking $A=I$ and $B=\begin{bmatrix}1&2\\2&4\end{bmatrix}$ puts it on the right, and in neither case are both singular.
+
+\emph{Moral.} The statement ``a product is invertible only if both factors are'' does not turn around into ``a product is singular only if both factors are''. Writing the negation of a statement correctly (``at least one'' versus ``both'') is half the work.
+\end{exmp}
+
+\begin{think}{Proof habits}{habits}
+\begin{enumerate}[label=(\arabic*)]
+  \item Take $A=\begin{bmatrix}1&2&0\\0&1&1\end{bmatrix}$ in Example~\ref{ex:bankATA}. Which hypothesis of the statement fails? Compute the other product $AA\T$, decide whether it is invertible, and say which version of the statement it supports when the proof is run with $A\T$ in place of $A$.
+  \item The statement ``if $AB$ is singular, then $A$ or $B$ is singular'' is true. Prove it, with the steps labelled assume, compute and conclude, by assuming that $A$ and $B$ are \emph{both} invertible and using Theorem~\ref{2.2-thm:invprops}(b). Why is this a proof of the statement and not of its converse?
+  \item Let $A$ and $B$ be $n\times n$. Prove, in the three steps, that if $AB$ is invertible, then $BA$ is invertible. Then take $A=\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}$ and $B=\begin{bmatrix}1&0\\0&1\\0&0\end{bmatrix}$ and compute $AB$ and $BA$. Which step of your proof breaks, and why?
+\end{enumerate}
+\end{think}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:pivotcount}.] (a)~Five pivots (one per column). With five rows they fill every row, so $A\bv{x}=\bv{b}$ is solvable for every $\bv{b}$, and $A\bv{x}=\bv{0}$ has only the trivial solution. (b)~Five pivots, one in each of the five rows, so $A\bv{x}=\bv{b}$ is solvable for every $\bv{b}$; but only five of the seven columns have a pivot, so there are two free variables and $A\bv{x}=\bv{0}$ has nonzero solutions. (c)~Five pivots in five columns, so $A\bv{x}=\bv{0}$ has only the trivial solution; but there are seven rows, so two rows have no pivot and $A\bv{x}=\bv{b}$ is not solvable for every $\bv{b}$.
@@ -547,6 +996,7 @@ Let $A$ be a square matrix for which $A\bv{x}=\bv{0}$ has only the trivial solut
   \item[Pause and think \ref{think:ontoinv}.] Yes. Let $A$ and $B$ be the standard matrices of $T$ and $U$. The standard matrix of $T\circ U$ is $AB$ (Theorem~\ref{2.1-thm:composite}), and $T(U(\bv{x}))=\bv{x}$ for all $\bv{x}$ means $AB\bv{x}=\bv{x}$ for all $\bv{x}$, so $AB=I$. By Theorem~\ref{thm:onesided}, $BA=I$, that is, $U(T(\bv{x}))=\bv{x}$ for all $\bv{x}$.
   \item[Pause and think \ref{think:sensitivity}.] (a)~The data changed by $0.0001$ in one entry of $(2,\ 2.0001)$, which has length about $2.83$: roughly $0.0035\%$ (or $0.005\%$ of the entry). The solution moved from $(1,1)$ to $(0,2)$, by $(-1,1)$, whose length $\sqrt2$ equals the length of $(1,1)$: a $100\%$ change. (b)~The entries of $A^{-1}$ are of size $10^4$. An error $\Delta\bv{b}$ in the data produces the error $A^{-1}\Delta\bv{b}$ in the solution. (c)~With $1.0001$ rounded to $1.000$ the matrix would look like $\begin{bmatrix}1&1\\1&1\end{bmatrix}$ with $ad-bc=0$, which is singular: the computer would find only one pivot. The theorem says that such a matrix has no inverse and that $A\bv{x}=\bv{b}$ fails to have a unique solution. The exact matrix is invertible but only barely; the numerical answer cannot be trusted.
   \item[Pause and think \ref{think:explain}.] No free variables means that every column has a pivot, so there are $n$ pivots in an $n\times n$ matrix. But $n$ pivots in $n$ rows fill every row, so no echelon form of $[A\ \ \bv{b}]$ has a row $[\,0\ \cdots\ 0\mid\ast\,]$ with $\ast\neq0$, and every system is consistent. For a $5\times3$ matrix, three pivots in three columns fill the columns but only three of the five rows: two rows have no pivot, and some $\bv{b}$ makes the system inconsistent. The argument needs ``columns $=$ rows''.
+  \item[Pause and think \ref{think:habits}.] (1)~The hypothesis fails: $A\T A$ is singular (it sends $(2,-1,1)$ to $\bv{0}$), as it must be, since $A\bv{x}=\bv{0}$ has the nonzero solution $(2,-1,1)$. The other product is $AA\T=\begin{bmatrix}1&2&0\\0&1&1\end{bmatrix}\begin{bmatrix}1&0\\2&1\\0&1\end{bmatrix}=\begin{bmatrix}1+4+0&0+2+0\\0+2+0&0+1+1\end{bmatrix}=\begin{bmatrix}5&2\\2&2\end{bmatrix}$, with $ad-bc=10-4=6\neq0$, so it is invertible. Running the proof with $A\T$ in place of $A$ (the matrix $(A\T)\T A\T=AA\T$ plays the role of $A\T A$) shows that $A\T\bv{x}=\bv{0}$ has only the trivial solution, that is, the columns of $A\T$, which are the rows of $A$, are linearly independent. Check: $A\T\bv{x}=(x_1,\ 2x_1+x_2,\ x_2)=\bv{0}$ forces $\bv{x}=\bv{0}$. It says nothing about $A\bv{x}=\bv{0}$. (2)~\emph{Assume} $A$ and $B$ are both invertible. \emph{Compute.} By Theorem~\ref{2.2-thm:invprops}(b), $AB$ is invertible, with $(AB)^{-1}=B^{-1}A^{-1}$. \emph{Conclude.} So $AB$ is not singular. We have shown: if $A$ and $B$ are both invertible, then $AB$ is invertible. This is the contrapositive of the statement (``if $AB$ is singular, then not both are invertible'') and is logically equivalent to it. It is not the converse, which would be ``if $A$ or $B$ is singular, then $AB$ is singular''; the converse is also true, but it is the other half of Theorem~\ref{thm:products} and needs the argument with one-sided inverses. (3)~\emph{Assume} $A$ and $B$ are $n\times n$ and $AB$ is invertible. \emph{Compute.} By Theorem~\ref{thm:products}, $A$ and $B$ are both invertible; so by Theorem~\ref{2.2-thm:invprops}(b), $BA$ is a product of invertible matrices and is invertible, with $(BA)^{-1}=A^{-1}B^{-1}$. \emph{Conclude.} $BA$ is invertible. For the rectangular pair, $AB=\begin{bmatrix}1&0\\0&1\end{bmatrix}=I_2$ is invertible, but $BA=\begin{bmatrix}1&0&0\\0&1&0\\0&0&0\end{bmatrix}$ has a zero row and is singular. The step that breaks is ``$A$ and $B$ are both invertible'': $A$ and $B$ are not square, so they have no inverses, and Theorem~\ref{thm:products} is a theorem about square matrices. (Here $B$ is a right inverse of $A$, but $A$ has no left inverse; compare the warning about rectangular matrices.)
   \item[Before the next section.] (1)~There is: the determinant, a single number computed from the entries, which is $0$ exactly for singular matrices. In $\R^3$ it should measure the volume of the image of the unit cube (compare $|ad-bc|$ as the area for $2\times2$). (2)~$A-\lambda I=\begin{bmatrix}2-\lambda&0\\0&3-\lambda\end{bmatrix}$ is singular exactly for $\lambda=2$ and $\lambda=3$. A nonzero solution of $(A-\lambda I)\bv{x}=\bv{0}$ means $A\bv{x}=\lambda\bv{x}$: $A$ only stretches $\bv{x}$ by $\lambda$. (3)~Yes: statement (g) gives existence and (e) uniqueness of the weights, so every point is a unique combination of the columns.
 \end{description}
 
