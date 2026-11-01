@@ -796,6 +796,454 @@ Let $\mathcal{B}=\{\bv{b}_1,\dots,\bv{b}_p\}$ be independent and let $\bv{v}$ no
   \item Is it possible for a basis of a space to contain the zero vector? Why not?
 \end{enumerate}
 
+\subsection*{Example bank: sixteen more worked examples}
+
+The examples above met each idea once. This bank gives them more room, grouped by the kind of problem, with the easiest examples first in every group. The examples continue the numbering (Examples~\ref{ex:b-fivecols} to~\ref{ex:b-judge}), and every solution says \emph{why} each step is taken, not only what it is. They use only what this section and the earlier ones provide: independence (Definition~\ref{def:indepV} and Theorems~\ref{thm:easy} and~\ref{thm:criterion}), bases (Definition~\ref{def:basis}), the Spanning Set Theorem (Theorem~\ref{thm:sst}), the bases for $\Nul A$, $\Col A$ and $\Row A$ (Theorems~\ref{thm:nulbasis}, \ref{thm:colbasis} and~\ref{thm:rowbasis}), Procedure~\ref{proc:cond}, and row reduction from Chapter 1. Work each problem before you read its solution.
+
+\textbf{What is in this bank}
+\begin{itemize}
+  \item \textbf{A. Independence of columns} (Example~\ref{ex:b-fivecols}): five vectors in $\R^3$, every dependence relation among them, and two different bases chosen from them.
+  \item \textbf{B. Independence in other spaces} (Examples~\ref{ex:b-polyparam}, \ref{ex:b-matparam} and~\ref{ex:b-fnsdomain}): polynomials with a parameter, $2\times2$ matrices with a parameter, and functions whose independence depends on the interval.
+  \item \textbf{C. Is it a basis?} (Examples~\ref{ex:b-basish} and~\ref{ex:b-hidden}): the values of $h$ for which three vectors form a basis, and two sets of four, one in $\mathbb{P}_3$ and one in $M_{2\times2}$, with a hidden dependence.
+  \item \textbf{D. Shrinking a spanning set} (Examples~\ref{ex:b-shrinkR4} and~\ref{ex:b-shrinkrel}): five vectors in $\R^4$, and five polynomials whose dependence relations are given.
+  \item \textbf{E. Bases for the three subspaces of a matrix} (Examples~\ref{ex:b-threemat} and~\ref{ex:b-nulzero}): a $4\times6$ matrix, and a matrix whose null space is $\{\bv{0}\}$.
+  \item \textbf{F. Bases for subspaces given by a condition} (Examples~\ref{ex:b-twoconds} and~\ref{ex:b-zerosums}): two conditions on the polynomials of degree at most $3$, and the $3\times3$ matrices whose rows and columns all add up to $0$.
+  \item \textbf{G. Extending an independent set} (Example~\ref{ex:b-extend}): two independent vectors in $\R^4$ completed to a basis.
+  \item \textbf{H. Two subspaces, their sum and their intersection} (Example~\ref{ex:b-sumint}): bases for $H$, $K$, $H+K$ and $H\cap K$.
+  \item \textbf{I. Justifying statements about bases} (Examples~\ref{ex:b-newbasis} and~\ref{ex:b-judge}): a new basis built from an old one, and six statements to judge.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank A: Independence of columns}
+
+\begin{exmp}{Five vectors in $\R^3$: every dependence relation}{b-fivecols}
+Let $\bv{v}_1=(3,-2,-2)$, $\bv{v}_2=(0,0,-1)$, $\bv{v}_3=(-3,2,3)$, $\bv{v}_4=(-2,2,2)$ and $\bv{v}_5=(1,-2,1)$. (a)~Explain, without any row reduction, why $\{\bv{v}_1,\dots,\bv{v}_5\}$ is dependent. (b)~Find \emph{every} dependence relation among the five vectors. (c)~Use the relations to shrink the set to a basis for $\R^3$ in two different ways.
+
+\textbf{Solution.} (a)~Let $A$ have the $\bv{v}_j$ as columns. A dependence relation $c_1\bv{v}_1+\cdots+c_5\bv{v}_5=\bv{0}$ is a solution of $A\bv{c}=\bv{0}$, and $A$ has $3$ rows and $5$ columns. A matrix with $3$ rows has at most $3$ pivots, so at least two of the five columns are not pivot columns. Their variables are free, and a free variable gives a nontrivial solution. So the set is dependent.
+
+(b)~Every dependence relation is a solution of $A\bv{c}=\bv{0}$, so we row reduce $[A\ \bv{0}]$. The first move adds row $2$ to row $1$, which turns the leading $3$ into a $1$ without fractions. Then we clear column $1$ below it, interchange rows so that the row with its leading entry in column $2$ comes before the one with its leading entry in column $4$, scale both, and clear above the last pivot.
+\begin{align*}
+\begin{amat}{ccccc|c}3&0&-3&-2&1&0\\-2&0&2&2&-2&0\\-2&-1&3&2&1&0\end{amat}
+&\rops{R_1+R_2}
+\begin{amat}{ccccc|c}1&0&-1&0&-1&0\\-2&0&2&2&-2&0\\-2&-1&3&2&1&0\end{amat}\\[4pt]
+&\rops{R_2+2R_1,\ R_3+2R_1}
+\begin{amat}{ccccc|c}1&0&-1&0&-1&0\\0&0&0&2&-4&0\\0&-1&1&2&-1&0\end{amat}\\[4pt]
+&\rops{R_2\leftrightarrow R_3}
+\begin{amat}{ccccc|c}1&0&-1&0&-1&0\\0&-1&1&2&-1&0\\0&0&0&2&-4&0\end{amat}\\[4pt]
+&\rops{-R_2,\ \tfrac{1}{2}R_3}
+\begin{amat}{ccccc|c}1&0&-1&0&-1&0\\0&1&-1&-2&1&0\\0&0&0&1&-2&0\end{amat}\\[4pt]
+&\rops{R_2+2R_3}
+\begin{amat}{ccccc|c}1&0&-1&0&-1&0\\0&1&-1&0&-3&0\\0&0&0&1&-2&0\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$ and $4$, and $c_3$, $c_5$ are free. The basic variables are $c_1=c_3+c_5$, $c_2=c_3+3c_5$ and $c_4=2c_5$, so
+\[
+\bv{c}=c_3\begin{bmatrix}1\\1\\1\\0\\0\end{bmatrix}+c_5\begin{bmatrix}1\\3\\0\\2\\1\end{bmatrix}.
+\]
+The two vectors on the right are two particular dependence relations,
+\[
+\bv{v}_1+\bv{v}_2+\bv{v}_3=\bv{0}\qquad\text{and}\qquad \bv{v}_1+3\bv{v}_2+2\bv{v}_4+\bv{v}_5=\bv{0},
+\]
+and \emph{every} dependence relation is a combination of these two. For instance $c_3=1$, $c_5=-1$ gives $0\cdot\bv{v}_1-2\bv{v}_2+\bv{v}_3-2\bv{v}_4-\bv{v}_5=\bv{0}$.
+
+(c)~By Theorem~\ref{thm:criterion}, a vector whose weight in a relation is nonzero is a combination of the others and may be removed (Theorem~\ref{thm:sst}). The first relation gives $\bv{v}_3=-\bv{v}_1-\bv{v}_2$, the second gives $\bv{v}_5=-\bv{v}_1-3\bv{v}_2-2\bv{v}_4$. Remove $\bv{v}_3$ and $\bv{v}_5$, one at a time: what is left is $\{\bv{v}_1,\bv{v}_2,\bv{v}_4\}$, the pivot columns of $A$. These are independent, and they span $\R^3$ because $A$ has a pivot in each of its three rows. So $\{\bv{v}_1,\bv{v}_2,\bv{v}_4\}$ is a basis for $\R^3$.
+
+A second way: use the first relation to remove $\bv{v}_1=-\bv{v}_2-\bv{v}_3$. Substituting this into the second relation gives $2\bv{v}_2-\bv{v}_3+2\bv{v}_4+\bv{v}_5=\bv{0}$, a relation among the vectors that remain, in which $\bv{v}_5$ has weight $1$. So $\bv{v}_5$ may go as well, and we are left with $\{\bv{v}_2,\bv{v}_3,\bv{v}_4\}$. To see that it is a basis, row reduce the matrix with these columns:
+\begin{align*}
+\begin{amat}{ccc}0&-3&-2\\0&2&2\\-1&3&2\end{amat}
+&\rops{R_1\leftrightarrow R_3}
+\begin{amat}{ccc}-1&3&2\\0&2&2\\0&-3&-2\end{amat}
+\rops{-R_1}
+\begin{amat}{ccc}1&-3&-2\\0&2&2\\0&-3&-2\end{amat}
+\rops{\tfrac{1}{2}R_2}
+\begin{amat}{ccc}1&-3&-2\\0&1&1\\0&-3&-2\end{amat}\\[4pt]
+&\rops{R_1+3R_2,\ R_3+3R_2}
+\begin{amat}{ccc}1&0&1\\0&1&1\\0&0&1\end{amat}
+\rops{R_1-R_3,\ R_2-R_3}
+\begin{amat}{ccc}1&0&0\\0&1&0\\0&0&1\end{amat}.
+\end{align*}
+There is a pivot in every row and every column, so the three vectors are independent and span $\R^3$. We have found two different bases for $\R^3$ inside the same set of five vectors.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank B: Independence in other spaces}
+
+\begin{exmp}{Three polynomials with a parameter}{b-polyparam}
+In $\mathbb{P}_3$ let $\bv{q}_1=1+t^2+t^3$, $\bv{q}_2=2+ht^2+2t^3$ and $\bv{q}_3=1+ht-2t^2+t^3$, where $h$ is a real number. For which $h$ is $\{\bv{q}_1,\bv{q}_2,\bv{q}_3\}$ linearly independent? For each $h$ that fails, give a dependence relation.
+
+\textbf{Solution.} A polynomial is determined by its coefficients of $1,t,t^2,t^3$, and a combination of polynomials has the combined coefficients, so a relation among the $\bv{q}_j$ is a relation among their coefficient lists. Row reduce the matrix whose columns are these lists; the rows belong to $1,t,t^2,t^3$ from top to bottom. Row $4$ is a copy of row $1$, so it disappears at once.
+\begin{align*}
+\begin{amat}{ccc}1&2&1\\0&0&h\\1&h&-2\\1&2&1\end{amat}
+&\rops{R_3-R_1,\ R_4-R_1}
+\begin{amat}{ccc}1&2&1\\0&0&h\\0&h-2&-3\\0&0&0\end{amat}
+\rops{R_2\leftrightarrow R_3}
+\begin{amat}{ccc}1&2&1\\0&h-2&-3\\0&0&h\\0&0&0\end{amat}.
+\end{align*}
+The pivots are $1$, $h-2$ and $h$, and the arithmetic used no division by $h$, so the chain is valid for every $h$. All three columns are pivot columns exactly when $h-2\neq0$ and $h\neq0$. By Definition~\ref{def:indepV}, the set is independent if $h\neq2$ and $h\neq0$, and dependent for $h=2$ and for $h=0$.
+
+For $h=2$ we see it directly: $\bv{q}_2=2+2t^2+2t^3=2\bv{q}_1$, so $2\bv{q}_1-\bv{q}_2+0\,\bv{q}_3=0$. For $h=0$ the last pivot is missing. The echelon matrix has rows $(1,2,1)$, $(0,-2,-3)$ and $(0,0,0)$, so $-2c_2-3c_3=0$ and $c_1=-2c_2-c_3$. Taking $c_3=2$ gives $c_2=-3$ and $c_1=4$:
+\[
+4(1+t^2+t^3)-3(2+2t^3)+2(1-2t^2+t^3)=(4-6+2)+(4-4)t^2+(4-6+2)t^3=0.
+\]
+So $4\bv{q}_1-3\bv{q}_2+2\bv{q}_3=0$ when $h=0$.
+\end{exmp}
+
+\begin{exmp}{Four $2\times2$ matrices with a parameter}{b-matparam}
+Let $A_1=\begin{bmatrix}-1&h\\0&-1\end{bmatrix}$, $A_2=\begin{bmatrix}1&-1\\1&-1\end{bmatrix}$, $A_3=\begin{bmatrix}1&-1\\0&h\end{bmatrix}$ and $A_4=\begin{bmatrix}-1&1\\0&2\end{bmatrix}$ in $M_{2\times2}$. Find all $h$ for which $\{A_1,A_2,A_3,A_4\}$ is dependent, and a dependence relation for each of them.
+
+\textbf{Solution.} Suppose $c_1A_1+c_2A_2+c_3A_3+c_4A_4=0$. Matrices are equal when their four entries are equal, so this is one equation for each entry:
+\begin{align*}
+\text{entry }(1,1):\quad & -c_1+c_2+c_3-c_4=0,\\
+\text{entry }(1,2):\quad & hc_1-c_2-c_3+c_4=0,\\
+\text{entry }(2,1):\quad & c_2=0,\\
+\text{entry }(2,2):\quad & -c_1-c_2+hc_3+2c_4=0.
+\end{align*}
+The third equation says $c_2=0$. Adding the first two equations then gives $(h-1)c_1=0$, and the first says $c_3-c_4=c_1$.
+
+\emph{If $h\neq1$:} then $c_1=0$, so $c_3=c_4$, and the fourth equation becomes $(h+2)c_3=0$. Hence $c_3=c_4=0$ unless $h=-2$. So for $h\neq1$ and $h\neq-2$ only the trivial relation exists and the set is independent.
+
+\emph{If $h=1$:} $c_1$ may be anything. The first equation gives $c_3=c_1+c_4$, and the fourth, $-c_1+c_3+2c_4=0$, then gives $3c_4=0$. So $c_4=0$ and $c_3=c_1$. With $c_1=1$ this is $A_1+A_3=0$, and indeed for $h=1$ we have $A_3=-A_1$.
+
+\emph{If $h=-2$:} the relation is $c_1=0$ and $c_3=c_4$, that is $A_3+A_4=0$, and indeed for $h=-2$ we have $A_4=-A_3$.
+
+So the set is dependent exactly for $h=1$ and $h=-2$.
+\end{exmp}
+
+\begin{exmp}{Functions: the interval matters}{b-fnsdomain}
+(a)~Is $\{t,\ |t|\}$ independent as a set of functions on all of $\R$? On the interval $[0,1]$? (b)~Is $\{e^t,\ e^{t+2},\ e^{2t}\}$ independent? (c)~Is $\{1,\ \cos t,\ \cos2t\}$ independent?
+
+\textbf{Solution.} (a)~Suppose $c_1t+c_2|t|=0$ for all $t$ in the interval. On all of $\R$ we may evaluate at $t=1$ and $t=-1$ (Pause and think~\ref{think:evalpts} reminds us that evaluation can prove independence but never dependence):
+\begin{align*}
+t=1:&\quad c_1+c_2=0,\\
+t=-1:&\quad -c_1+c_2=0.
+\end{align*}
+Adding gives $c_2=0$, and then $c_1=0$. So the set is independent on $\R$. On $[0,1]$ every $t$ satisfies $|t|=t$, so $t-|t|=0$ for all $t$ in the interval, a nontrivial relation, and the set is \emph{dependent} there. The same two formulas give an independent set on one domain and a dependent set on another.
+
+(b)~The law of exponents gives $e^{t+2}=e^2e^t$ for all $t$, so $e^2\cdot e^t-1\cdot e^{t+2}+0\cdot e^{2t}=0$ is a relation whose weights $e^2$, $-1$, $0$ are not all zero. The set is dependent: $e^{t+2}$ is a constant multiple of $e^t$ (Theorem~\ref{thm:easy}(c)), although the formulas do not look alike. No evaluation at points could have shown this; it needs the law of exponents. Removing $e^{t+2}$ leaves $\{e^t,\ e^{2t}\}$, which is independent by Example~\ref{ex:moreF}(b).
+
+(c)~Suppose $c_1+c_2\cos t+c_3\cos2t=0$ for all $t$. Evaluate at $t=0$, $\tfrac{\pi}{2}$ and $\pi$, where $\cos t=1,0,-1$ and $\cos2t=1,-1,1$:
+\begin{align*}
+t=0:&\quad c_1+c_2+c_3=0,\\
+t=\tfrac{\pi}{2}:&\quad c_1-c_3=0,\\
+t=\pi:&\quad c_1-c_2+c_3=0.
+\end{align*}
+Subtracting the third equation from the first gives $2c_2=0$. Then $c_1=c_3$ from the second, and the first becomes $2c_1=0$. So $c_1=c_2=c_3=0$ and the set is independent.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank C: Is it a basis?}
+
+\begin{exmp}{Three vectors in $\R^3$ and a parameter}{b-basish}
+Let $\bv{v}_1=(-1,3,1)$, $\bv{v}_2=(-1,-2,0)$ and $\bv{v}_3=(-1,h,2)$. (a)~For which $h$ is $\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ a basis for $\R^3$? (b)~For the other value of $h$, find a basis for $\Span\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ and say what kind of set that span is.
+
+\textbf{Solution.} (a)~Row reduce the matrix with columns $\bv{v}_1,\bv{v}_2,\bv{v}_3$, keeping $h$ as a symbol. We use only replacements and one interchange, so no step divides by an expression with $h$.
+\begin{align*}
+\begin{amat}{ccc}-1&-1&-1\\3&-2&h\\1&0&2\end{amat}
+&\rops{R_2+3R_1,\ R_3+R_1}
+\begin{amat}{ccc}-1&-1&-1\\0&-5&h-3\\0&-1&1\end{amat}
+\rops{R_2\leftrightarrow R_3}
+\begin{amat}{ccc}-1&-1&-1\\0&-1&1\\0&-5&h-3\end{amat}\\[4pt]
+&\rops{R_3-5R_2}
+\begin{amat}{ccc}-1&-1&-1\\0&-1&1\\0&0&h-8\end{amat}.
+\end{align*}
+The pivots are $-1$, $-1$ and $h-8$. If $h\neq8$ there is a pivot in every column, so the vectors are independent, and a pivot in every row, so they span $\R^3$. By Definition~\ref{def:basis} the set is a basis for $\R^3$. If $h=8$, the last row is zero, the third column has no pivot, and the set is dependent, so it is not a basis for anything. The answer to (a) is: all $h\neq8$.
+
+(b)~Put $h=8$. The last row of the chain is zero and column $3$ has no pivot, so $x_3$ is free. The equations $-x_2+x_3=0$ and $-x_1-x_2-x_3=0$ of the chain give $x_2=x_3$ and $x_1=-2x_3$, so one relation is $-2\bv{v}_1+\bv{v}_2+\bv{v}_3=\bv{0}$. Check with $h=8$: $(2,-6,-2)+(-1,-2,0)+(-1,8,2)=(0,0,0)$. \ $\checkmark$ The weight of $\bv{v}_3$ is nonzero, so $\bv{v}_3$ may be removed (Theorem~\ref{thm:sst}), and $\{\bv{v}_1,\bv{v}_2\}$ is a basis for $\Span\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$: it is independent because neither vector is a multiple of the other. The span is a plane through the origin in $\R^3$, not all of $\R^3$.
+\end{exmp}
+
+\begin{exmp}{Four polynomials, four matrices}{b-hidden}
+(a)~Is $\{1+t,\ 1-t^2,\ t+t^2+t^3,\ 1+t^2-t^3\}$ a basis for $\mathbb{P}_3$? (b)~Is $\left\{\begin{bmatrix}1&0\\1&1\end{bmatrix},\begin{bmatrix}0&1\\1&2\end{bmatrix},\begin{bmatrix}2&1\\0&-1\end{bmatrix},\begin{bmatrix}4&0\\1&-1\end{bmatrix}\right\}$ a basis for $M_{2\times2}$? If not, what is wrong?
+
+\textbf{Solution.} (a)~Write each polynomial as its list of coefficients of $1,t,t^2,t^3$ and row reduce the matrix with these four columns:
+\begin{align*}
+\begin{amat}{cccc}1&1&0&1\\1&0&1&0\\0&-1&1&1\\0&0&1&-1\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{cccc}1&1&0&1\\0&-1&1&-1\\0&-1&1&1\\0&0&1&-1\end{amat}
+\rops{-R_2}
+\begin{amat}{cccc}1&1&0&1\\0&1&-1&1\\0&-1&1&1\\0&0&1&-1\end{amat}\\[4pt]
+&\rops{R_1-R_2,\ R_3+R_2}
+\begin{amat}{cccc}1&0&1&0\\0&1&-1&1\\0&0&0&2\\0&0&1&-1\end{amat}
+\rops{R_3\leftrightarrow R_4}
+\begin{amat}{cccc}1&0&1&0\\0&1&-1&1\\0&0&1&-1\\0&0&0&2\end{amat}\\[4pt]
+&\rops{R_1-R_3,\ R_2+R_3}
+\begin{amat}{cccc}1&0&0&1\\0&1&0&0\\0&0&1&-1\\0&0&0&2\end{amat}
+\rops{\tfrac{1}{2}R_4}
+\begin{amat}{cccc}1&0&0&1\\0&1&0&0\\0&0&1&-1\\0&0&0&1\end{amat}\\[4pt]
+&\rops{R_1-R_4,\ R_3+R_4}
+\begin{amat}{cccc}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1\end{amat}.
+\end{align*}
+There is a pivot in every row and every column. By independence (a pivot in every column) and spanning (a pivot in every row, so every coefficient list is a combination) the four polynomials form a basis for $\mathbb{P}_3$.
+
+(b)~Now list the entries of each matrix in the order $(1,1),(1,2),(2,1),(2,2)$ and row reduce the matrix with these four columns:
+\begin{align*}
+\begin{amat}{cccc}1&0&2&4\\0&1&1&0\\1&1&0&1\\1&2&-1&-1\end{amat}
+&\rops{R_3-R_1,\ R_4-R_1}
+\begin{amat}{cccc}1&0&2&4\\0&1&1&0\\0&1&-2&-3\\0&2&-3&-5\end{amat}
+\rops{R_3-R_2,\ R_4-2R_2}
+\begin{amat}{cccc}1&0&2&4\\0&1&1&0\\0&0&-3&-3\\0&0&-5&-5\end{amat}\\[4pt]
+&\rops{-\tfrac{1}{3}R_3}
+\begin{amat}{cccc}1&0&2&4\\0&1&1&0\\0&0&1&1\\0&0&-5&-5\end{amat}
+\rops{R_1-2R_3,\ R_2-R_3,\ R_4+5R_3}
+\begin{amat}{cccc}1&0&0&2\\0&1&0&-1\\0&0&1&1\\0&0&0&0\end{amat}.
+\end{align*}
+The fourth column is not a pivot column, so the four matrices are dependent: it is $2$ times column $1$, minus column $2$, plus column $3$. In matrix form,
+\[
+\begin{bmatrix}4&0\\1&-1\end{bmatrix}=2\begin{bmatrix}1&0\\1&1\end{bmatrix}-\begin{bmatrix}0&1\\1&2\end{bmatrix}+\begin{bmatrix}2&1\\0&-1\end{bmatrix}.
+\]
+The fourth matrix is a combination of the others, so the set is not independent and cannot be a basis. The dependence was hidden: nothing in the four matrices suggests it. The first three matrices are independent (they are pivot columns), so they form a basis for the span of all four. That span is not all of $M_{2\times2}$: the reduced matrix has a row of zeros, so it does not have a pivot in every row, and for some target matrix the system with these four columns is inconsistent (Section~1.4).
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank D: Shrinking a spanning set}
+
+\begin{exmp}{Five vectors in $\R^4$}{b-shrinkR4}
+Let $\bv{a}_1=(1,0,2,1)$, $\bv{a}_2=(0,1,1,-1)$, $\bv{a}_3=(2,-1,3,3)$, $\bv{a}_4=(0,1,-1,2)$ and $\bv{a}_5=(0,2,0,1)$, and let $H=\Span\{\bv{a}_1,\dots,\bv{a}_5\}$. Find a basis for $H$ that consists of some of the $\bv{a}_j$, and write each of the other $\bv{a}_j$ as a combination of the basis vectors.
+
+\textbf{Solution.} The $\bv{a}_j$ are the columns of the matrix $A$ below. By Theorem~\ref{thm:colbasis} the pivot columns of $A$ form a basis for $\Col A=H$, and the reduced echelon form tells us which columns are pivot columns and how the others depend on them.
+\begin{align*}
+\begin{amat}{ccccc}1&0&2&0&0\\0&1&-1&1&2\\2&1&3&-1&0\\1&-1&3&2&1\end{amat}
+&\rops{R_3-2R_1,\ R_4-R_1}
+\begin{amat}{ccccc}1&0&2&0&0\\0&1&-1&1&2\\0&1&-1&-1&0\\0&-1&1&2&1\end{amat}\\[4pt]
+&\rops{R_3-R_2,\ R_4+R_2}
+\begin{amat}{ccccc}1&0&2&0&0\\0&1&-1&1&2\\0&0&0&-2&-2\\0&0&0&3&3\end{amat}\\[4pt]
+&\rops{-\tfrac{1}{2}R_3}
+\begin{amat}{ccccc}1&0&2&0&0\\0&1&-1&1&2\\0&0&0&1&1\\0&0&0&3&3\end{amat}\\[4pt]
+&\rops{R_2-R_3,\ R_4-3R_3}
+\begin{amat}{ccccc}1&0&2&0&0\\0&1&-1&0&1\\0&0&0&1&1\\0&0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$ and $4$. So $\{\bv{a}_1,\bv{a}_2,\bv{a}_4\}$ is a basis for $H$, taken from the columns of $A$ itself, \emph{not} from the reduced matrix. Reading the other two columns of the reduced matrix as weights on the pivot columns:
+\[
+\bv{a}_3=2\bv{a}_1-\bv{a}_2,\qquad \bv{a}_5=\bv{a}_2+\bv{a}_4.
+\]
+(The reason is the one in the proof of Theorem~\ref{thm:colbasis}: a relation among the columns of the reduced matrix is a relation among the same columns of $A$.) Check: $2(1,0,2,1)-(0,1,1,-1)=(2,-1,3,3)=\bv{a}_3$, and $(0,1,1,-1)+(0,1,-1,2)=(0,2,0,1)=\bv{a}_5$. \ $\checkmark$ So $\bv{a}_3$ and $\bv{a}_5$ may be removed, one at a time, without changing $H$.
+\end{exmp}
+
+\begin{exmp}{Five polynomials whose relations are given}{b-shrinkrel}
+In $\mathbb{P}_3$ let $\bv{p}_1=1+2t-t^3$, $\bv{p}_2=t+t^2$, $\bv{p}_3=2+t-3t^2-2t^3$, $\bv{p}_4=2-t^2+t^3$ and $\bv{p}_5=3+2t-t^2$, and let $H=\Span\{\bv{p}_1,\dots,\bv{p}_5\}$. You are told that
+\[
+2\bv{p}_1-3\bv{p}_2-\bv{p}_3=0\qquad\text{and}\qquad \bv{p}_1+\bv{p}_4-\bv{p}_5=0.
+\]
+(a)~Check that these are dependence relations. (b)~Which of the five polynomials can be removed without changing $H$? (c)~Find two different bases for $H$ chosen from the five polynomials. (d)~Explain why $\bv{p}_2$ and $\bv{p}_3$ may \emph{not} both be removed.
+
+\textbf{Solution.} (a)~$2\bv{p}_1-3\bv{p}_2=2+4t-2t^3-3t-3t^2=2+t-3t^2-2t^3=\bv{p}_3$, and $\bv{p}_1+\bv{p}_4=3+2t-t^2=\bv{p}_5$. \ $\checkmark$
+
+(b)~In the first relation $\bv{p}_1$, $\bv{p}_2$ and $\bv{p}_3$ have nonzero weights; in the second, $\bv{p}_1$, $\bv{p}_4$ and $\bv{p}_5$ do. By Theorem~\ref{thm:criterion} each of these vectors is a combination of the others, so \emph{each of the five} can be removed on its own without changing $H$.
+
+(c)~We need to know that the two relations are all there is, so we row reduce the coefficient matrix (rows for $1,t,t^2,t^3$, columns for $\bv{p}_1,\dots,\bv{p}_5$):
+\begin{align*}
+\begin{amat}{ccccc}1&0&2&2&3\\2&1&1&0&2\\0&1&-3&-1&-1\\-1&0&-2&1&0\end{amat}
+&\rops{R_2-2R_1,\ R_4+R_1}
+\begin{amat}{ccccc}1&0&2&2&3\\0&1&-3&-4&-4\\0&1&-3&-1&-1\\0&0&0&3&3\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{ccccc}1&0&2&2&3\\0&1&-3&-4&-4\\0&0&0&3&3\\0&0&0&3&3\end{amat}\\[4pt]
+&\rops{\tfrac{1}{3}R_3}
+\begin{amat}{ccccc}1&0&2&2&3\\0&1&-3&-4&-4\\0&0&0&1&1\\0&0&0&3&3\end{amat}\\[4pt]
+&\rops{R_1-2R_3,\ R_2+4R_3,\ R_4-3R_3}
+\begin{amat}{ccccc}1&0&2&0&1\\0&1&-3&0&0\\0&0&0&1&1\\0&0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$ and $4$, so $\{\bv{p}_1,\bv{p}_2,\bv{p}_4\}$ is a basis for $H$ (Theorem~\ref{thm:colbasis}); it is the set left after removing $\bv{p}_3$ and $\bv{p}_5$. The third and fifth columns show $\bv{p}_3=2\bv{p}_1-3\bv{p}_2$ and $\bv{p}_5=\bv{p}_1+\bv{p}_4$, and there are no other relations. For a second basis, use the first relation to remove $\bv{p}_1=\tfrac32\bv{p}_2+\tfrac12\bv{p}_3$. Then the second relation becomes $\tfrac32\bv{p}_2+\tfrac12\bv{p}_3+\bv{p}_4-\bv{p}_5=0$, which lets us remove $\bv{p}_5$. The set $\{\bv{p}_2,\bv{p}_3,\bv{p}_4\}$ remains, and it is a basis for $H$: it spans $H$ because we only removed vectors that were combinations of the others. It is independent: the reduced matrix gives the general dependence relation among all five, with free weights $c_3$ and $c_5$ and $c_1=-2c_3-c_5$, $c_2=3c_3$, $c_4=-c_5$. A relation among $\bv{p}_2,\bv{p}_3,\bv{p}_4$ alone has weight $0$ on $\bv{p}_1$ and on $\bv{p}_5$, so $c_5=0$ and then $-2c_3=0$, giving $c_3=0$ and finally $c_2=c_4=0$. Only the trivial relation remains.
+
+(d)~Remove $\bv{p}_2$ and $\bv{p}_3$ together and $\{\bv{p}_1,\bv{p}_4,\bv{p}_5\}$ is left, and this set is dependent by the second relation. Its span is smaller than $H$: it does not contain $\bv{p}_2$. Indeed the relation $2\bv{p}_1-3\bv{p}_2-\bv{p}_3=0$ was the only thing that connected $\bv{p}_2$ and $\bv{p}_3$ to the rest, and after both are gone nothing is left to rebuild them. This is the warning of ``Remove one vector at a time'': each removal needs a relation that is still available when it is made.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank E: Bases for the three subspaces of a matrix}
+
+\begin{exmp}{A $4\times6$ matrix}{b-threemat}
+Let $A=\begin{bmatrix}1&2&0&1&0&3\\1&2&1&0&1&0\\0&0&1&1&3&1\\2&4&0&-1&-3&0\end{bmatrix}$. Find a basis for $\Nul A$, a basis for $\Col A$ and a basis for $\Row A$, and write the first row of $A$ as a combination of the basis vectors of $\Row A$.
+
+\textbf{Solution.} Row reduce $A$ completely, since the reduced form serves all three tasks.
+\begin{align*}
+\begin{amat}{cccccc}1&2&0&1&0&3\\1&2&1&0&1&0\\0&0&1&1&3&1\\2&4&0&-1&-3&0\end{amat}
+&\rops{R_2-R_1,\ R_4-2R_1}
+\begin{amat}{cccccc}1&2&0&1&0&3\\0&0&1&-1&1&-3\\0&0&1&1&3&1\\0&0&0&-3&-3&-6\end{amat}\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{cccccc}1&2&0&1&0&3\\0&0&1&-1&1&-3\\0&0&0&2&2&4\\0&0&0&-3&-3&-6\end{amat}\\[4pt]
+&\rops{\tfrac{1}{2}R_3}
+\begin{amat}{cccccc}1&2&0&1&0&3\\0&0&1&-1&1&-3\\0&0&0&1&1&2\\0&0&0&-3&-3&-6\end{amat}\\[4pt]
+&\rops{R_1-R_3,\ R_2+R_3,\ R_4+3R_3}
+\begin{amat}{cccccc}1&2&0&0&-1&1\\0&0&1&0&2&-1\\0&0&0&1&1&2\\0&0&0&0&0&0\end{amat}.
+\end{align*}
+\emph{Null space.} The pivot columns are $1$, $3$ and $4$; the free variables are $x_2$, $x_5$ and $x_6$. The basic variables are $x_1=-2x_2+x_5-x_6$, $x_3=-2x_5+x_6$ and $x_4=-x_5-2x_6$, so in parametric vector form
+\[
+\bv{x}=x_2\begin{bmatrix}-2\\1\\0\\0\\0\\0\end{bmatrix}+x_5\begin{bmatrix}1\\0\\-2\\-1\\1\\0\end{bmatrix}+x_6\begin{bmatrix}-1\\0\\1\\-2\\0\\1\end{bmatrix}.
+\]
+By Theorem~\ref{thm:nulbasis} these three vectors are a basis for $\Nul A$: each free variable is the entry at its own place, which makes the three independent.
+
+\emph{Column space.} By Theorem~\ref{thm:colbasis} the pivot columns of $A$, that is columns $1$, $3$ and $4$ of $A$ itself, form a basis for $\Col A$: $(1,1,0,2)$, $(0,1,1,0)$ and $(1,0,1,-1)$. (The pivot columns of the reduced matrix would be the wrong vectors. For example, the first one, $(1,0,0,0)$, is not in $\Col A$: every column of $A$ satisfies $-x_1-3x_2+3x_3+2x_4=0$, hence so does every vector of $\Col A$, and $(1,0,0,0)$ does not.)
+
+\emph{Row space.} By Theorem~\ref{thm:rowbasis} the nonzero rows of the echelon form form a basis for $\Row A$: $(1,2,0,0,-1,1)$, $(0,0,1,0,2,-1)$ and $(0,0,0,1,1,2)$.
+
+\emph{The first row of $A$.} Call the three basis rows $\bv{r}_1,\bv{r}_2,\bv{r}_3$. The first row of $A$ is $(1,2,0,1,0,3)$. Its first entry forces the weight of $\bv{r}_1$ to be $1$; its third entry forces the weight of $\bv{r}_2$ to be $0$; its fourth entry forces the weight of $\bv{r}_3$ to be $1$. So the row should be $\bv{r}_1+\bv{r}_3$, and indeed $(1,2,0,0,-1,1)+(0,0,0,1,1,2)=(1,2,0,1,0,3)$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{When the null space is only the zero vector}{b-nulzero}
+Let $A=\begin{bmatrix}1&2&0\\0&1&3\\2&-1&1\\1&0&-2\end{bmatrix}$. Find bases for $\Nul A$, $\Col A$ and $\Row A$, and decide whether $\Col A$ is all of $\R^4$.
+
+\textbf{Solution.} Row reduce $A$:
+\begin{align*}
+\begin{amat}{ccc}1&2&0\\0&1&3\\2&-1&1\\1&0&-2\end{amat}
+&\rops{R_3-2R_1,\ R_4-R_1}
+\begin{amat}{ccc}1&2&0\\0&1&3\\0&-5&1\\0&-2&-2\end{amat}
+\rops{R_1-2R_2,\ R_3+5R_2,\ R_4+2R_2}
+\begin{amat}{ccc}1&0&-6\\0&1&3\\0&0&16\\0&0&4\end{amat}\\[4pt]
+&\rops{\tfrac{1}{16}R_3}
+\begin{amat}{ccc}1&0&-6\\0&1&3\\0&0&1\\0&0&4\end{amat}
+\rops{R_1+6R_3,\ R_2-3R_3,\ R_4-4R_3}
+\begin{amat}{ccc}1&0&0\\0&1&0\\0&0&1\\0&0&0\end{amat}.
+\end{align*}
+\emph{Null space.} Every column of $A$ is a pivot column, so $A\bv{x}=\bv{0}$ has no free variable and only the solution $\bv{x}=\bv{0}$. Thus $\Nul A=\{\bv{0}\}$. Theorem~\ref{thm:nulbasis} does not apply: it needs a free variable, and here there is none. By the remark on $\{\bv{0}\}$ above, the empty set is regarded as a basis for $\{\bv{0}\}$, and that is all that can be said.
+
+\emph{Column space.} All three columns are pivot columns, so all three columns of $A$ form a basis for $\Col A$: $(1,0,2,1)$, $(2,1,-1,0)$ and $(0,3,1,-2)$. They are independent because $A\bv{x}=\bv{0}$ has only the trivial solution, which is the same statement as $\Nul A=\{\bv{0}\}$.
+
+\emph{Row space.} The nonzero rows of the echelon form are $(1,0,0)$, $(0,1,0)$ and $(0,0,1)$, which form a basis for $\Row A$ (Theorem~\ref{thm:rowbasis}). It is the standard basis of $\R^3$, so $\Row A=\R^3$: the reduction has shown that every vector of $\R^3$ is a combination of the rows of $A$.
+
+\emph{Is $\Col A=\R^4$?} No. The reduced matrix has a row without a pivot, namely its fourth row. By the theory of Section~1.4, $A\bv{x}=\bv{b}$ is then inconsistent for some $\bv{b}\in\R^4$, and that $\bv{b}$ is not in $\Col A$. Notice the contrast: $\Row A$ is all of $\R^3$ but $\Col A$ is only a proper subspace of $\R^4$.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank F: Bases for subspaces given by a condition}
+
+\begin{exmp}{Two conditions on polynomials of degree at most $3$}{b-twoconds}
+Let $H$ be the set of polynomials $p$ in $\mathbb{P}_3$ with $p(-1)=p(1)$ and $\int_0^1p(t)\,dt=0$. Find a basis for $H$.
+
+\textbf{Solution.} We follow Procedure~\ref{proc:cond}. (1)~The general element is $p(t)=a_0+a_1t+a_2t^2+a_3t^3$. (2)~Translate the conditions into equations on the coefficients. Since
+\[
+p(1)-p(-1)=(a_0+a_1+a_2+a_3)-(a_0-a_1+a_2-a_3)=2a_1+2a_3,
+\]
+the first condition says $a_3=-a_1$. The integral is $\int_0^1p(t)\,dt=a_0+\tfrac12a_1+\tfrac13a_2+\tfrac14a_3$, so with $a_3=-a_1$ the second condition says $a_0+\tfrac14a_1+\tfrac13a_2=0$, that is $a_0=-\tfrac14a_1-\tfrac13a_2$. Both conditions are linear equations on $a_0,\dots,a_3$, so $H$ is a subspace, and $a_1$, $a_2$ are free. (3)~Split by the free parameters:
+\[
+p(t)=a_1\left(-\tfrac14+t-t^3\right)+a_2\left(-\tfrac13+t^2\right).
+\]
+Multiplying the two polynomials by $4$ and $3$ clears the fractions without changing their spans: $H=\Span\{-1+4t-4t^3,\ -1+3t^2\}$. (4)~These two are independent: neither is a multiple of the other, since the first has a term in $t$ and the second does not. So
+\[
+\{-1+4t-4t^3,\ -1+3t^2\}
+\]
+is a basis for $H$. Check: for $q=-1+4t-4t^3$ we have $q(-1)=-1-4+4=-1=q(1)$ and $\int_0^1q\,dt=-1+2-1=0$; for $r=-1+3t^2$ we have $r(-1)=2=r(1)$ and $\int_0^1r\,dt=-1+1=0$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{Matrices whose rows and columns all add up to zero}{b-zerosums}
+Let $H$ be the set of $3\times3$ matrices in which every row and every column has sum $0$. Show that $H$ is a subspace and find a basis for it.
+
+\textbf{Solution.} A sum of two such matrices, and a scalar multiple of one, again has all row and column sums $0$, and the zero matrix is in $H$, so $H$ is a subspace of $M_{3\times3}$. To find a basis, call the entries $m_{ij}$ and choose $a=m_{11}$, $b=m_{12}$, $c=m_{21}$ and $d=m_{22}$ freely. The first two row sums are $0$, so $m_{13}=-a-b$ and $m_{23}=-c-d$. The first two column sums are $0$, so $m_{31}=-a-c$ and $m_{32}=-b-d$. Finally $m_{33}$ is fixed by the last row sum, $m_{33}=-m_{31}-m_{32}=a+b+c+d$, and the last column sum asks for $m_{33}=-m_{13}-m_{23}=a+b+c+d$ as well, the same value. So all six conditions hold, and
+\begin{align*}
+\begin{bmatrix}a&b&-a-b\\c&d&-c-d\\-a-c&-b-d&a+b+c+d\end{bmatrix}
+&=a\begin{bmatrix}1&0&-1\\0&0&0\\-1&0&1\end{bmatrix}
++b\begin{bmatrix}0&1&-1\\0&0&0\\0&-1&1\end{bmatrix}\\
+&\quad+c\begin{bmatrix}0&0&0\\1&0&-1\\-1&0&1\end{bmatrix}
++d\begin{bmatrix}0&0&0\\0&1&-1\\0&-1&1\end{bmatrix}.
+\end{align*}
+The four matrices on the right span $H$. They are independent: the entry in position $(1,1)$ is $1$ in the first matrix and $0$ in the others, the entry in position $(1,2)$ is $1$ in the second and $0$ in the others, and so on for positions $(2,1)$ and $(2,2)$, so in a combination $a\,(\cdot)+b\,(\cdot)+c\,(\cdot)+d\,(\cdot)=0$ the four entries at these positions are $a$, $b$, $c$ and $d$, and all four must be $0$. So these four matrices are a basis for $H$.
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank G: Extending an independent set}
+
+\begin{exmp}{Two independent vectors in $\R^4$, completed to a basis}{b-extend}
+The vectors $\bv{u}_1=(1,0,1,-1)$ and $\bv{u}_2=(1,-1,0,0)$ are independent, because neither is a multiple of the other. Find vectors that can be added to $\{\bv{u}_1,\bv{u}_2\}$ to make a basis for $\R^4$.
+
+\textbf{Solution.} The columns of the matrix $[\bv{u}_1\ \bv{u}_2\ \bv{e}_1\ \bv{e}_2\ \bv{e}_3\ \bv{e}_4]$ span $\R^4$, because the standard vectors already do. So by Theorem~\ref{thm:colbasis} its pivot columns are a basis for $\R^4$. The first two columns are independent, so neither can be a combination of earlier columns, and both are pivot columns. The pivot columns therefore start with $\bv{u}_1,\bv{u}_2$, and the reduction tells us which standard vectors complete them.
+\begin{align*}
+\begin{amat}{cccccc}1&1&1&0&0&0\\0&-1&0&1&0&0\\1&0&0&0&1&0\\-1&0&0&0&0&1\end{amat}
+&\rops{R_3-R_1,\ R_4+R_1}
+\begin{amat}{cccccc}1&1&1&0&0&0\\0&-1&0&1&0&0\\0&-1&-1&0&1&0\\0&1&1&0&0&1\end{amat}\\[4pt]
+&\rops{-R_2}
+\begin{amat}{cccccc}1&1&1&0&0&0\\0&1&0&-1&0&0\\0&-1&-1&0&1&0\\0&1&1&0&0&1\end{amat}\\[4pt]
+&\rops{R_1-R_2,\ R_3+R_2,\ R_4-R_2}
+\begin{amat}{cccccc}1&0&1&1&0&0\\0&1&0&-1&0&0\\0&0&-1&-1&1&0\\0&0&1&1&0&1\end{amat}\\[4pt]
+&\rops{-R_3}
+\begin{amat}{cccccc}1&0&1&1&0&0\\0&1&0&-1&0&0\\0&0&1&1&-1&0\\0&0&1&1&0&1\end{amat}\\[4pt]
+&\rops{R_1-R_3,\ R_4-R_3}
+\begin{amat}{cccccc}1&0&0&0&1&0\\0&1&0&-1&0&0\\0&0&1&1&-1&0\\0&0&0&0&1&1\end{amat}\\[4pt]
+&\rops{R_1-R_4,\ R_3+R_4}
+\begin{amat}{cccccc}1&0&0&0&0&-1\\0&1&0&-1&0&0\\0&0&1&1&0&1\\0&0&0&0&1&1\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$, $3$ and $5$, so $\{\bv{u}_1,\bv{u}_2,\bv{e}_1,\bv{e}_3\}$ is a basis for $\R^4$. The standard vectors $\bv{e}_2$ and $\bv{e}_4$ were left out, and the reduced matrix says why: its fourth column is $(0,-1,1,0)$, so $\bv{e}_2=-\bv{u}_2+\bv{e}_1$, and its sixth column is $(-1,0,1,1)$, so $\bv{e}_4=-\bv{u}_1+\bv{e}_1+\bv{e}_3$. Check: $-(1,-1,0,0)+(1,0,0,0)=(0,1,0,0)$, and $-(1,0,1,-1)+(1,0,0,0)+(0,0,1,0)=(0,0,0,1)$. \ $\checkmark$ The completion is not unique, and not every choice works: $\{\bv{u}_1,\bv{u}_2,\bv{e}_1,\bv{e}_2\}$ is not a basis, because $\bv{e}_2=-\bv{u}_2+\bv{e}_1$ is a combination of the other three, whereas $\{\bv{u}_1,\bv{u}_2,\bv{e}_2,\bv{e}_3\}$ is a basis (row reduce to check).
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank H: Two subspaces, their sum and their intersection}
+
+\begin{exmp}{Bases for $H$, $K$, $H+K$ and $H\cap K$}{b-sumint}
+In $\R^4$ let $H=\Span\{\bv{h}_1,\bv{h}_2\}$ with $\bv{h}_1=(1,1,0,0)$ and $\bv{h}_2=(0,1,1,1)$, and let $K$ be the set of $\bv{x}$ with $x_1-x_2+x_4=0$ and $x_2+x_3=0$. (a)~Find a basis for $H$ and a basis for $K$. (b)~The set $H+K$ of all sums $\bv{h}+\bv{k}$ with $\bv{h}$ in $H$ and $\bv{k}$ in $K$ is a subspace; find a basis for it. (c)~Find a basis for the intersection $H\cap K$.
+
+\textbf{Solution.} (a)~$\bv{h}_1,\bv{h}_2$ are independent, since neither is a multiple of the other, and they span $H$ by definition. So $\{\bv{h}_1,\bv{h}_2\}$ is a basis for $H$. For $K$ we follow Procedure~\ref{proc:cond}: $K=\Nul B$, where $B=\begin{bmatrix}1&-1&0&1\\0&1&1&0\end{bmatrix}$ is the coefficient matrix of the two equations. Row reduce it:
+\begin{align*}
+\begin{amat}{cccc}1&-1&0&1\\0&1&1&0\end{amat}
+&\rops{R_1+R_2}
+\begin{amat}{cccc}1&0&1&1\\0&1&1&0\end{amat}.
+\end{align*}
+Then $x_1=-x_3-x_4$ and $x_2=-x_3$, so $\bv{x}=x_3(-1,-1,1,0)+x_4(-1,0,0,1)$. A basis for $K$ is $\{\bv{k}_1,\bv{k}_2\}$ with $\bv{k}_1=(-1,-1,1,0)$ and $\bv{k}_2=(-1,0,0,1)$.
+
+(b)~Every vector of $H+K$ is a combination of $\bv{h}_1,\bv{h}_2,\bv{k}_1,\bv{k}_2$, and every such combination is in $H+K$, so $H+K=\Span\{\bv{h}_1,\bv{h}_2,\bv{k}_1,\bv{k}_2\}$. This is the column space of the matrix with these columns, so by Theorem~\ref{thm:colbasis} we take its pivot columns.
+\begin{align*}
+\begin{amat}{cccc}1&0&-1&-1\\1&1&-1&0\\0&1&1&0\\0&1&0&1\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{cccc}1&0&-1&-1\\0&1&0&1\\0&1&1&0\\0&1&0&1\end{amat}
+\rops{R_3-R_2,\ R_4-R_2}
+\begin{amat}{cccc}1&0&-1&-1\\0&1&0&1\\0&0&1&-1\\0&0&0&0\end{amat}\\[4pt]
+&\rops{R_1+R_3}
+\begin{amat}{cccc}1&0&0&-2\\0&1&0&1\\0&0&1&-1\\0&0&0&0\end{amat}.
+\end{align*}
+The pivot columns are $1$, $2$ and $3$, so $\{\bv{h}_1,\bv{h}_2,\bv{k}_1\}$ is a basis for $H+K$. The fourth column says $\bv{k}_2=-2\bv{h}_1+\bv{h}_2-\bv{k}_1$, and this relation will turn out to be the intersection.
+
+(c)~A vector of $H$ has the form $\bv{x}=a\bv{h}_1+b\bv{h}_2=(a,\ a+b,\ b,\ b)$. It lies in $K$ when it satisfies the two equations of $K$. The first gives $a-(a+b)+b=0$, which holds for all $a,b$. The second gives $(a+b)+b=a+2b=0$, so $a=-2b$. The intersection is therefore $\{b(-2\bv{h}_1+\bv{h}_2)\}=\Span\{(-2,-1,1,1)\}$, and a single nonzero vector is independent (Theorem~\ref{thm:easy}). So $\{(-2,-1,1,1)\}$ is a basis for $H\cap K$. Check: $(-2,-1,1,1)=\bv{k}_1+\bv{k}_2$ is in $K$, and it is $-2\bv{h}_1+\bv{h}_2$, which is in $H$. \ $\checkmark$
+\end{exmp}
+
+% ---------------------------------------------------------------------
+\subsection*{Bank I: Justifying statements about bases}
+
+\begin{exmp}{A new basis built from an old one}{b-newbasis}
+Let $\{\bv{u},\bv{v},\bv{w}\}$ be a basis for a vector space $V$. Show that $\{\bv{u}+\bv{v},\ \bv{v}+\bv{w},\ \bv{w}+\bv{u}\}$ is again a basis for $V$. Then decide whether $\{\bv{u}-\bv{v},\ \bv{v}-\bv{w},\ \bv{w}-\bv{u}\}$ is a basis.
+
+\textbf{Solution.} We check the two parts of Definition~\ref{def:basis}.
+
+\emph{Independence.} Suppose $a(\bv{u}+\bv{v})+b(\bv{v}+\bv{w})+c(\bv{w}+\bv{u})=\bv{0}$. Collect the terms:
+\[
+(a+c)\bv{u}+(a+b)\bv{v}+(b+c)\bv{w}=\bv{0}.
+\]
+Because $\{\bv{u},\bv{v},\bv{w}\}$ is independent, all three weights are $0$: $a+c=0$, $a+b=0$, $b+c=0$. Subtracting the second from the first gives $c-b=0$, so $c=b$; then $b+c=0$ gives $b=c=0$, and $a=0$. Only the trivial relation exists.
+
+\emph{Spanning.} We write the three old vectors as combinations of the new ones:
+\begin{align*}
+\bv{u}&=\tfrac12\big[(\bv{u}+\bv{v})+(\bv{w}+\bv{u})-(\bv{v}+\bv{w})\big],\\
+\bv{v}&=\tfrac12\big[(\bv{u}+\bv{v})+(\bv{v}+\bv{w})-(\bv{w}+\bv{u})\big],\\
+\bv{w}&=\tfrac12\big[(\bv{v}+\bv{w})+(\bv{w}+\bv{u})-(\bv{u}+\bv{v})\big].
+\end{align*}
+Since every vector of $V$ is a combination of $\bv{u},\bv{v},\bv{w}$, and each of these is a combination of the new vectors, every vector of $V$ is a combination of the new vectors. So the new set spans $V$ and is a basis.
+
+\emph{The second set.} Here $(\bv{u}-\bv{v})+(\bv{v}-\bv{w})+(\bv{w}-\bv{u})=\bv{0}$ is a nontrivial relation (all three weights are $1$), so the set is dependent and is not a basis. The two sets look alike, but a sign change makes the difference. For the sums, collecting terms gave the system $a+c=0$, $a+b=0$, $b+c=0$, which has only the trivial solution. For the differences, $a(\bv{u}-\bv{v})+b(\bv{v}-\bv{w})+c(\bv{w}-\bv{u})=(a-c)\bv{u}+(b-a)\bv{v}+(c-b)\bv{w}$ vanishes as soon as $a=b=c$, which has nontrivial solutions.
+
+\emph{A numerical instance.} Take $V=\R^3$ with $\bv{u}=(1,0,1)$, $\bv{v}=(0,1,1)$ and $\bv{w}=(1,1,0)$. The sums are $(1,1,2)$, $(1,2,1)$ and $(2,1,1)$, and the differences are $(1,-1,0)$, $(-1,0,1)$ and $(0,1,-1)$, whose sum is $\bv{0}$.
+\end{exmp}
+
+\begin{exmp}{Six statements to judge}{b-judge}
+Decide whether each statement is true or false, and justify your answer with an argument or a counterexample.
+
+(1)~If a set of two or more vectors spans $H$ and is dependent, then it has a proper subset that still spans $H$.
+
+(2)~The columns of an echelon form of $A$ form a basis for $\Col A$.
+
+(3)~If $\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ is independent, then $\{\bv{v}_1,\bv{v}_2\}$ is independent.
+
+(4)~If $\{\bv{v}_1,\bv{v}_2\}$ spans $H$ and $\bv{v}_3$ is in $H$, then $\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ is a basis for $H$.
+
+(5)~Every independent subset of a basis for $H$ is a basis for its own span.
+
+(6)~A subspace $H\neq\{\bv{0}\}$ has only one basis.
+
+\textbf{Solution.} (1)~\emph{True.} By Theorem~\ref{thm:criterion} a dependent set of two or more vectors has a vector that is a combination of the others, and removing it leaves a proper subset with the same span (Theorem~\ref{thm:sst}(a)).
+
+(2)~\emph{False.} Take $A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$ with echelon form $B=\begin{bmatrix}1&2\\0&0\end{bmatrix}$. Then $\Col A=\Span\{(1,2)\}$, but the first column of $B$ is $(1,0)$, which is not a multiple of $(1,2)$, so it is not even in $\Col A$. The pivot columns of $A$ give a basis; the columns of $B$ only say \emph{which} ones.
+
+(3)~\emph{True.} Suppose $c_1\bv{v}_1+c_2\bv{v}_2=\bv{0}$. Then $c_1\bv{v}_1+c_2\bv{v}_2+0\,\bv{v}_3=\bv{0}$ is a relation among the three vectors, and independence of the three forces $c_1=c_2=0$. The same argument works for any subset of an independent set.
+
+(4)~\emph{False.} Because $\bv{v}_3$ is in $H=\Span\{\bv{v}_1,\bv{v}_2\}$, it is a combination of $\bv{v}_1$ and $\bv{v}_2$, so $\{\bv{v}_1,\bv{v}_2,\bv{v}_3\}$ is dependent (Theorem~\ref{thm:criterion}). For example, $\bv{v}_1=(1,0)$, $\bv{v}_2=(0,1)$ and $\bv{v}_3=(1,1)$ in $H=\R^2$. A basis must be independent.
+
+(5)~\emph{True.} A subset $S$ of a basis is independent, by the argument of (3), and this is part (i) of Definition~\ref{def:basis} for $S$. By the definition of a span, $S$ it spans its own span, which is part (ii) for the subspace $\Span S$.
+
+(6)~\emph{False.} In $\R^2$ both $\{(1,0),(0,1)\}$ and $\{(1,0),(1,1)\}$ are bases. (Check the second set: $(0,1)=(1,1)-(1,0)$, so it spans $\R^2$, and neither vector is a multiple of the other.) More generally, if $\{\bv{b}_1,\dots,\bv{b}_p\}$ is a basis, replacing $\bv{b}_1$ by $2\bv{b}_1$ gives another.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:cols}.] (a)~Row reduce the matrix with these columns:
