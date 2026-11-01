@@ -526,6 +526,336 @@ Two students factor the same \emph{invertible} matrix $A=LU$ without interchange
   \item If you also scale each pivot row so that the pivots become $1$, you get an extra diagonal factor: $A=LDV$ with $D$ diagonal and $V$ having ones in the pivot positions. For Example~\ref{ex:threeE}, find $D$ and $V$ (use Section~2.1 on scaling rows).
 \end{enumerate}
 
+\subsection*{Example bank}
+
+What follows is more practice with the kinds of problem this section poses, and then three short proofs. Only earlier ideas are used, and nothing that follows relies on any of it.
+
+\begin{remark}[What's in this bank]
+\begin{itemize}
+  \item \textbf{Finding $L$ and $U$.} A $3\times3$ matrix where the signs of the multipliers need care, a $4\times4$ matrix with a zero multiplier, and a $3\times5$ matrix with a column that has no pivot.
+  \item \textbf{Checking and reading factors.} Find the error in a claimed factorization, and recover $L$ from $A$ and $U$ without redoing the elimination.
+  \item \textbf{Solving with $L$ and $U$.} Forward and back substitution with a check in the original equation, and a banded system with two right-hand sides.
+  \item \textbf{When a factorization exists.} A $3\times3$ family where one value of the parameter blocks the elimination and another does not, and the solution of a system with a permuted factorization.
+  \item \textbf{Counting the work.} Where the time goes when one factorization serves many right-hand sides.
+  \item \textbf{Basic proofs.} Read a ``for every'' statement about products of unit lower triangular matrices, prove that their inverses are unit lower triangular, and disprove a statement about the order of the factors with a counterexample.
+\end{itemize}
+\end{remark}
+
+\subsection*{Bank: finding $L$ and $U$}
+
+\begin{exmp}{Signs of the multipliers}{bankSigns}
+Find an $LU$ factorization of $A=\begin{bmatrix}1&3&-2\\-2&-4&8\\3&7&-5\end{bmatrix}$ and check it.
+
+\textbf{Solution.} Use only replacements of a lower row, working down the first pivot column and then the second:
+\begin{align*}
+&\begin{bmatrix}1&3&-2\\-2&-4&8\\3&7&-5\end{bmatrix}
+\rops{R_2+2R_1}
+\begin{bmatrix}1&3&-2\\0&2&4\\3&7&-5\end{bmatrix}
+\rops{R_3-3R_1}
+\begin{bmatrix}1&3&-2\\0&2&4\\0&-2&1\end{bmatrix}\\[4pt]
+&\rops{R_3+R_2}
+\begin{bmatrix}1&3&-2\\0&2&4\\0&0&5\end{bmatrix}
+\end{align*}
+The last matrix is the echelon form $U$. Each multiplier is the number that is \emph{subtracted}: $R_2+2R_1$ is $R_2-(-2)R_1$, so $\ell_{21}=-2$; $R_3-3R_1$ gives $\ell_{31}=3$; and $R_3+R_2$ is $R_3-(-1)R_2$, so $\ell_{32}=-1$. Therefore
+\[
+L=\begin{bmatrix}1&0&0\\-2&1&0\\3&-1&1\end{bmatrix},\qquad U=\begin{bmatrix}1&3&-2\\0&2&4\\0&0&5\end{bmatrix}.
+\]
+Check by multiplying (for instance, the entry in position $(3,3)$ is $3\cdot(-2)-1\cdot4+1\cdot5=-5$):
+\[
+LU=\begin{bmatrix}1&0&0\\-2&1&0\\3&-1&1\end{bmatrix}\begin{bmatrix}1&3&-2\\0&2&4\\0&0&5\end{bmatrix}=\begin{bmatrix}1&3&-2\\-2&-4&8\\3&7&-5\end{bmatrix}=A.\ \checkmark
+\]
+\emph{Moral.} The sign of a multiplier is the opposite of the sign in the written operation: adding twice a row means the multiplier is $-2$.
+\end{exmp}
+
+\begin{exmp}{A $4\times4$ matrix with a zero multiplier}{bankFour}
+Find an $LU$ factorization of $A=\begin{bmatrix}2&1&0&3\\4&5&1&5\\0&-3&-2&3\\2&7&-1&11\end{bmatrix}$.
+
+\textbf{Solution.} Column~$1$ has pivot $2$. Row~$3$ already has $0$ in that column, so no operation is needed there and the multiplier $\ell_{31}$ is $0$. The other operations, one at a time:
+\begin{align*}
+&\begin{bmatrix}2&1&0&3\\4&5&1&5\\0&-3&-2&3\\2&7&-1&11\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}2&1&0&3\\0&3&1&-1\\0&-3&-2&3\\2&7&-1&11\end{bmatrix}\\[4pt]
+&\rops{R_4-R_1}
+\begin{bmatrix}2&1&0&3\\0&3&1&-1\\0&-3&-2&3\\0&6&-1&8\end{bmatrix}\\[4pt]
+&\rops{R_3+R_2}
+\begin{bmatrix}2&1&0&3\\0&3&1&-1\\0&0&-1&2\\0&6&-1&8\end{bmatrix}\\[4pt]
+&\rops{R_4-2R_2}
+\begin{bmatrix}2&1&0&3\\0&3&1&-1\\0&0&-1&2\\0&0&-3&10\end{bmatrix}\\[4pt]
+&\rops{R_4-3R_3}
+\begin{bmatrix}2&1&0&3\\0&3&1&-1\\0&0&-1&2\\0&0&0&4\end{bmatrix}
+\end{align*}
+The echelon form is the last matrix, with pivots $2,3,-1,4$. The multipliers, by position, are $\ell_{21}=2$, \ $\ell_{31}=0$, \ $\ell_{41}=1$, \ $\ell_{32}=-1$, \ $\ell_{42}=2$, \ $\ell_{43}=3$, so
+\[
+L=\begin{bmatrix}1&0&0&0\\2&1&0&0\\0&-1&1&0\\1&2&3&1\end{bmatrix},\qquad U=\begin{bmatrix}2&1&0&3\\0&3&1&-1\\0&0&-1&2\\0&0&0&4\end{bmatrix}.
+\]
+Two quick checks of $LU=A$ (compare with the notes): the first column of $LU$ is $2\cdot(1,2,0,1)=(2,4,0,2)$, which is the first column of $A$; the last row of $LU$ is $1\cdot(2,1,0,3)+2\cdot(0,3,1,-1)+3\cdot(0,0,-1,2)+1\cdot(0,0,0,4)=(2,\ 7,\ -1,\ 11)$, which is the last row of $A$.
+
+\emph{Moral.} A zero below a pivot costs no operation and leaves a $0$ in $L$; the position of every multiplier is read from the operation, row first and pivot row second.
+\end{exmp}
+
+\begin{exmp}{A $3\times5$ matrix with a column that has no pivot}{bankWide}
+Find an $LU$ factorization of $A=\begin{bmatrix}1&2&0&3&1\\2&4&1&7&0\\-1&-2&1&0&5\end{bmatrix}$, and say where each multiplier goes.
+
+\textbf{Solution.} Clear column~$1$ below the pivot, then look at column~$2$:
+\begin{align*}
+&\begin{bmatrix}1&2&0&3&1\\2&4&1&7&0\\-1&-2&1&0&5\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}1&2&0&3&1\\0&0&1&1&-2\\-1&-2&1&0&5\end{bmatrix}\\[4pt]
+&\rops{R_3+R_1}
+\begin{bmatrix}1&2&0&3&1\\0&0&1&1&-2\\0&0&1&3&6\end{bmatrix}\\[4pt]
+&\rops{R_3-R_2}
+\begin{bmatrix}1&2&0&3&1\\0&0&1&1&-2\\0&0&0&2&8\end{bmatrix}
+\end{align*}
+In the second matrix, column~$2$ has $0$ in rows $2$ and $3$: there is no pivot in column~$2$. The next pivot is the $1$ in position $(2,3)$, so row~$2$ is the second pivot row, and we use it to clear the entry below it in column~$3$. The multiplier of $R_3-R_2$ is $\ell_{32}=1$. It goes in position $(3,2)$ of $L$, because it uses the \emph{second pivot row} on the \emph{third row}; the column of the pivot (column~$3$) plays no role. Therefore
+\[
+L=\begin{bmatrix}1&0&0\\2&1&0\\-1&1&1\end{bmatrix},\qquad U=\begin{bmatrix}1&2&0&3&1\\0&0&1&1&-2\\0&0&0&2&8\end{bmatrix},
+\]
+where $L$ is $3\times3$ (the number of rows of $A$) and $U$ is $3\times5$. Check two entries of $LU$: position $(3,5)$ is $-1\cdot1+1\cdot(-2)+1\cdot8=5$, as in $A$; position $(3,4)$ is $-1\cdot3+1\cdot1+1\cdot2=0$, as in $A$.
+
+\emph{Moral.} The index of a multiplier in $L$ counts pivot \emph{rows}, not pivot columns, so a skipped column leaves the pattern of $L$ untouched.
+\end{exmp}
+
+\subsection*{Bank: checking and reading factors}
+
+\begin{exmp}{Find the error in a claimed factorization}{bankError}
+A student reports $A=LU$ with
+\[
+A=\begin{bmatrix}1&2&1\\-3&-4&-4\\2&6&4\end{bmatrix},\qquad L=\begin{bmatrix}1&0&0\\3&1&0\\2&1&1\end{bmatrix},\qquad U=\begin{bmatrix}1&2&1\\0&2&-1\\0&0&3\end{bmatrix}.
+\]
+Show that the claim is wrong, find the error, and give the correct $L$.
+
+\textbf{Solution.} Test the first column, the quickest check: row~$2$ of $L$ times column~$1$ of $U$ is $3\cdot1+1\cdot0+0\cdot0=3$, but $a_{21}=-3$. So $LU\neq A$. Redo the elimination of $A$ and see which factor is at fault:
+\begin{align*}
+&\begin{bmatrix}1&2&1\\-3&-4&-4\\2&6&4\end{bmatrix}
+\rops{R_2+3R_1}
+\begin{bmatrix}1&2&1\\0&2&-1\\2&6&4\end{bmatrix}
+\rops{R_3-2R_1}
+\begin{bmatrix}1&2&1\\0&2&-1\\0&2&2\end{bmatrix}\\[4pt]
+&\rops{R_3-R_2}
+\begin{bmatrix}1&2&1\\0&2&-1\\0&0&3\end{bmatrix}
+\end{align*}
+The echelon form is $U$, exactly as claimed, so $U$ is right. The operations were $R_2+3R_1$, \ $R_3-2R_1$ and $R_3-R_2$, with multipliers $\ell_{21}=-3$, \ $\ell_{31}=2$, \ $\ell_{32}=1$. The student wrote $+3$ in position $(2,1)$ (the sign in the written operation $R_2+3R_1$) instead of $-3$. The other two entries have the right sign. The correct factor is $L=\begin{bmatrix}1&0&0\\-3&1&0\\2&1&1\end{bmatrix}$, and
+\[
+LU=\begin{bmatrix}1&0&0\\-3&1&0\\2&1&1\end{bmatrix}\begin{bmatrix}1&2&1\\0&2&-1\\0&0&3\end{bmatrix}=\begin{bmatrix}1&2&1\\-3&-6+2&-3-1\\2&4+2&2-1+3\end{bmatrix}=\begin{bmatrix}1&2&1\\-3&-4&-4\\2&6&4\end{bmatrix}=A.\ \checkmark
+\]
+\emph{Moral.} A single sign error shows up at once in the first column of the product. When $LU\neq A$, the question is which factor is wrong, and re-running the elimination answers it.
+\end{exmp}
+
+\begin{exmp}{Recover $L$ from $A$ and $U$}{bankReadL}
+A computation produced the echelon form $U=\begin{bmatrix}2&1&1\\0&3&0\\0&0&4\end{bmatrix}$ of $A=\begin{bmatrix}2&1&1\\4&5&2\\-2&8&3\end{bmatrix}$, using only replacements, but the multipliers were lost. Find $L$ from $A$ and $U$ alone.
+
+\textbf{Solution.} By the column rule for products (Definition~\ref{2.1-def:product}), column~$j$ of $A=LU$ is $L$ times column~$j$ of $U$: a combination of the columns $\bv{l}_1,\bv{l}_2,\bv{l}_3$ of $L$ with the entries of column~$j$ of $U$ as weights. Go column by column.
+
+\emph{Column 1.} $U$ has column $(2,0,0)$, so $(2,4,-2)=2\bv{l}_1$ and $\bv{l}_1=(1,2,-1)$. This gives $\ell_{21}=2$ and $\ell_{31}=-1$.
+
+\emph{Column 2.} $U$ has column $(1,3,0)$, so $(1,5,8)=1\cdot\bv{l}_1+3\bv{l}_2$. Hence $3\bv{l}_2=(1,5,8)-(1,2,-1)=(0,3,9)$ and $\bv{l}_2=(0,1,3)$, which gives $\ell_{32}=3$.
+
+\emph{Column 3.} $U$ has column $(1,0,4)$, so $(1,2,3)=1\cdot\bv{l}_1+0\cdot\bv{l}_2+4\bv{l}_3$. Hence $4\bv{l}_3=(1,2,3)-(1,2,-1)=(0,0,4)$ and $\bv{l}_3=(0,0,1)$. This is the third column of a unit lower triangular matrix, which confirms the work: it came out with the right zeros and the $1$ on the diagonal without being forced.
+
+So $L=\begin{bmatrix}1&0&0\\2&1&0\\-1&3&1\end{bmatrix}$. Check by redoing the elimination:
+\begin{align*}
+&\begin{bmatrix}2&1&1\\4&5&2\\-2&8&3\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}2&1&1\\0&3&0\\-2&8&3\end{bmatrix}
+\rops{R_3+R_1}
+\begin{bmatrix}2&1&1\\0&3&0\\0&9&4\end{bmatrix}\\[4pt]
+&\rops{R_3-3R_2}
+\begin{bmatrix}2&1&1\\0&3&0\\0&0&4\end{bmatrix}
+\end{align*}
+The operations $R_2-2R_1$, $R_3+R_1$ and $R_3-3R_2$ have multipliers $2,-1,3$, as found.
+
+\emph{Moral.} Because $U$ is triangular, each column of $A$ involves only the first few columns of $L$, so $L$ can be solved for one column at a time. The automatic zeros and ones in the last column are a free check.
+\end{exmp}
+
+\subsection*{Bank: solving with $L$ and $U$}
+
+\begin{exmp}{Forward and back substitution, and a check in the original equation}{bankSolveLU}
+Use the factorization of Example~\ref{ex:bankSigns} to solve $A\bv{x}=\bv{b}$ for $\bv{b}=(-3,8,-6)$.
+
+\textbf{Solution.} By Theorem~\ref{thm:lusolve} we solve $L\bv{y}=\bv{b}$ and then $U\bv{x}=\bv{y}$. Forward substitution, from the top:
+\begin{align*}
+y_1&=-3,\\
+-2y_1+y_2&=8\ \Rightarrow\ y_2=8+2(-3)=2,\\
+3y_1-y_2+y_3&=-6\ \Rightarrow\ y_3=-6-3(-3)+2=5.
+\end{align*}
+Back substitution, from the bottom, with $U=\begin{bmatrix}1&3&-2\\0&2&4\\0&0&5\end{bmatrix}$ and $\bv{y}=(-3,2,5)$:
+\begin{align*}
+5x_3&=5\ \Rightarrow\ x_3=1,\\
+2x_2+4x_3&=2\ \Rightarrow\ x_2=-1,\\
+x_1+3x_2-2x_3&=-3\ \Rightarrow\ x_1=-3+3+2=2.
+\end{align*}
+So $\bv{x}=(2,-1,1)$. Check in the \emph{original} equation, with the rows of $A=\begin{bmatrix}1&3&-2\\-2&-4&8\\3&7&-5\end{bmatrix}$: $2-3-2=-3$, \ $-4+4+8=8$, \ $6-7-5=-6$. \ $\checkmark$
+
+\emph{Moral.} Check in $A\bv{x}=\bv{b}$, not in $L\bv{y}=\bv{b}$ or $U\bv{x}=\bv{y}$: the original equation catches an error in either factor.
+\end{exmp}
+
+\begin{exmp}{A banded system, two right-hand sides}{bankBanded}
+In the system $A\bv{x}=\bv{b}$ with $A=\begin{bmatrix}2&-1&0\\-2&3&-1\\0&-4&5\end{bmatrix}$ each equation involves only an unknown and its neighbours, as for three stages in a row that exchange material only with the next one. Find an $LU$ factorization, and solve for $\bv{b}_1=(1,0,1)$ and $\bv{b}_2=(4,-3,-5)$.
+
+\textbf{Solution.} Row~$1$ has pivot $2$. In column~$1$, the entry in row~$2$ is $-2$, so $R_2+R_1$ ($\ell_{21}=-1$); the entry in row~$3$ is already $0$ ($\ell_{31}=0$). Then $R_2$ becomes $(0,2,-1)$, and $R_3-(-2)R_2$, that is $R_3+2R_2$, gives $(0,0,3)$ ($\ell_{32}=-2$):
+\[
+L=\begin{bmatrix}1&0&0\\-1&1&0\\0&-2&1\end{bmatrix},\qquad U=\begin{bmatrix}2&-1&0\\0&2&-1\\0&0&3\end{bmatrix}.
+\]
+Check a row: row~$3$ of $LU$ is $-2\cdot(0,2,-1)+1\cdot(0,0,3)=(0,-4,5)$, the last row of $A$. Note that $L$ and $U$ each have only one nonzero entry off the diagonal in each row, so every substitution step uses at most two entries of the factor.
+
+\emph{For $\bv{b}_1=(1,0,1)$.} Forward: $y_1=1$, \ $y_2=0+y_1=1$, \ $y_3=1+2y_2=3$. Back: $3x_3=3$ gives $x_3=1$; $2x_2-x_3=1$ gives $x_2=1$; $2x_1-x_2=1$ gives $x_1=1$. So $\bv{x}=(1,1,1)$.
+
+\emph{For $\bv{b}_2=(4,-3,-5)$.} Forward: $y_1=4$, \ $y_2=-3+4=1$, \ $y_3=-5+2\cdot1=-3$. Back: $3x_3=-3$ gives $x_3=-1$; $2x_2-x_3=1$ gives $x_2=0$; $2x_1-x_2=4$ gives $x_1=2$. So $\bv{x}=(2,0,-1)$.
+
+Check both in $A\bv{x}=\bv{b}$: $A(1,1,1)=(2-1,\ -2+3-1,\ -4+5)=(1,0,1)$, and $A(2,0,-1)=(4,\ -4+0+1,\ 0-5)=(4,-3,-5)$. \ $\checkmark$
+
+\emph{Moral.} The elimination was done once; each right-hand side then cost two short substitutions. For a matrix whose nonzero entries lie near the diagonal, $L$ and $U$ keep that shape, so the substitutions are cheaper still.
+\end{exmp}
+
+\subsection*{Bank: when a factorization exists}
+
+\begin{exmp}{A parameter that can block the elimination}{bankBlock}
+Let $A(h)=\begin{bmatrix}1&2&0\\3&h&1\\2&5&1\end{bmatrix}$. For which values of $h$ does $A(h)$ have an $LU$ factorization? Find the factorization for $h=7$, and for $h=6$ find a permuted factorization $PA=LU$.
+
+\textbf{Solution.} Clear column~$1$ with $R_2-3R_1$ and $R_3-2R_1$ (multipliers $3$ and $2$ for every $h$):
+\begin{align*}
+&\begin{bmatrix}1&2&0\\3&h&1\\2&5&1\end{bmatrix}
+\rops{R_2-3R_1}
+\begin{bmatrix}1&2&0\\0&h-6&1\\2&5&1\end{bmatrix}
+\rops{R_3-2R_1}
+\begin{bmatrix}1&2&0\\0&h-6&1\\0&1&1\end{bmatrix}
+\end{align*}
+The next pivot position is $(2,2)$, which holds $h-6$, with the nonzero entry $1$ below it.
+\begin{itemize}
+  \item \emph{If $h\neq6$}, the pivot is nonzero and the elimination can continue with replacements alone, so by Theorem~\ref{thm:exists} an $LU$ factorization exists. The next multiplier is $\ell_{32}=\frac{1}{h-6}$, and the last diagonal entry of $U$ is $1-\frac1{h-6}=\frac{h-7}{h-6}$.
+  \item \emph{If $h=7$}, that last entry is $0$, but nothing lies below it, so nothing is blocked. With $\ell_{32}=1$:
+\begin{align*}
+&\begin{bmatrix}1&2&0\\0&1&1\\0&1&1\end{bmatrix}
+\rops{R_3-R_2}
+\begin{bmatrix}1&2&0\\0&1&1\\0&0&0\end{bmatrix},\qquad
+L=\begin{bmatrix}1&0&0\\3&1&0\\2&1&1\end{bmatrix},\quad U=\begin{bmatrix}1&2&0\\0&1&1\\0&0&0\end{bmatrix}.
+\end{align*}
+  Check: row~$3$ of $LU$ is $2(1,2,0)+1(0,1,1)+1(0,0,0)=(2,5,1)$, the last row of $A(7)$. This matrix has an $LU$ factorization although it is not invertible: $A(7)(2,-1,1)=(2-2,\ 6-7+1,\ 4-5+1)=\bv{0}$.
+  \item \emph{If $h=6$}, the pivot position $(2,2)$ holds $0$ and the entry $1$ below it is nonzero: the elimination is blocked, and by Theorem~\ref{thm:exists} there is \emph{no} $LU$ factorization. Interchange rows $2$ and $3$ at the start, with $P=\begin{bmatrix}1&0&0\\0&0&1\\0&1&0\end{bmatrix}$. Then $PA(6)=\begin{bmatrix}1&2&0\\2&5&1\\3&6&1\end{bmatrix}$ and
+\begin{align*}
+&\begin{bmatrix}1&2&0\\2&5&1\\3&6&1\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}1&2&0\\0&1&1\\3&6&1\end{bmatrix}
+\rops{R_3-3R_1}
+\begin{bmatrix}1&2&0\\0&1&1\\0&0&1\end{bmatrix}
+\end{align*}
+  so $PA(6)=LU$ with $L=\begin{bmatrix}1&0&0\\2&1&0\\3&0&1\end{bmatrix}$ and $U=\begin{bmatrix}1&2&0\\0&1&1\\0&0&1\end{bmatrix}$ (Theorem~\ref{thm:plu}). Here $U$ has three pivots, and row operations (an interchange and replacements) took $A(6)$ to $U$, so $A(6)$ is row equivalent to $I$ and is invertible (Theorem~\ref{2.2-thm:algorithm}), although it has no $LU$ factorization.
+\end{itemize}
+
+\emph{Moral.} Whether a factorization exists, and whether the matrix is invertible, are different questions. The value $h=6$ gives an invertible matrix with no $LU$ factorization, and $h=7$ a singular matrix with one.
+\end{exmp}
+
+\begin{exmp}{Solving with a permuted factorization}{bankSolvePLU}
+Use the factorization $PA=LU$ of $A(6)$ from Example~\ref{ex:bankBlock} to solve $A(6)\bv{x}=\bv{b}$ for $\bv{b}=(3,7,5)$.
+
+\textbf{Solution.} Here $A(6)=\begin{bmatrix}1&2&0\\3&6&1\\2&5&1\end{bmatrix}$ and $PA=LU$. Multiplying $A\bv{x}=\bv{b}$ on the left by $P$ gives $PA\bv{x}=P\bv{b}$, that is $LU\bv{x}=P\bv{b}$, so solve $L\bv{y}=P\bv{b}$ and then $U\bv{x}=\bv{y}$. Applying $P$ interchanges the last two entries: $P\bv{b}=(3,5,7)$. Forward substitution with $L=\begin{bmatrix}1&0&0\\2&1&0\\3&0&1\end{bmatrix}$:
+\[
+y_1=3,\qquad y_2=5-2\cdot3=-1,\qquad y_3=7-3\cdot3=-2.
+\]
+Back substitution with $U=\begin{bmatrix}1&2&0\\0&1&1\\0&0&1\end{bmatrix}$: \ $x_3=-2$, \ $x_2=-1-x_3=1$, \ $x_1=3-2x_2=1$. So $\bv{x}=(1,1,-2)$. Check in the original equation, with the rows of $A(6)$: $1+2+0=3$, \ $3+6-2=7$, \ $2+5-2=5$. \ $\checkmark$
+
+\emph{Moral.} The permutation acts on the right-hand side only: $P\bv{b}$ is $\bv{b}$ with the same entries interchanged that were interchanged in $A$. Forgetting to apply $P$ to $\bv{b}$ is the commonest error, and the check in the original equation catches it.
+\end{exmp}
+
+\subsection*{Bank: counting the work}
+
+\begin{exmp}{Where the time goes}{bankCount}
+A $600\times600$ matrix $A$ is factored, and then $A\bv{x}=\bv{b}$ is solved for $50$ right-hand sides. Use the rough counts $\tfrac23n^3$ for factoring and $2n^2$ for each pair of triangular solves. (a)~How much does one right-hand side cost compared with the factoring? (b)~How many right-hand sides cost as much as the factoring? (c)~Compare the total for $50$ right-hand sides with and without keeping the factorization.
+
+\textbf{Solution.} With $n=600$: factoring costs about $\tfrac23\cdot600^3=1.44\times10^8$ operations, and one pair of triangular solves about $2\cdot600^2=7.2\times10^5$.
+
+(a)~The ratio is $\dfrac{1.44\times10^8}{7.2\times10^5}=200$: one right-hand side costs about $\tfrac1{200}$ of the factoring.
+
+(b)~$k$ right-hand sides cost $7.2\times10^5\,k$, which equals the factoring cost when $k=200$ (in general $\tfrac23n^3\big/2n^2=n/3$). Below $200$ right-hand sides the factoring is the larger part of the cost; above, the solves are.
+
+(c)~With the factorization kept: $1.44\times10^8+50\cdot7.2\times10^5=1.44\times10^8+3.6\times10^7=1.8\times10^8$ operations. Repeating the elimination for every right-hand side: $50\cdot(1.44\times10^8+7.2\times10^5)\approx7.2\times10^9$ operations. Keeping the factorization is about $40$ times cheaper.
+
+\emph{Moral.} The saving is large but bounded: however many right-hand sides there are, it cannot exceed the factor $\dfrac{1.44\times10^8+7.2\times10^5}{7.2\times10^5}=201$. The counts are rough, and only their size matters.
+\end{exmp}
+
+\subsection*{Bank: basic proofs}
+
+A proof is a short argument that covers every case a statement names; the three examples below, easiest first, read a statement and prove it in named steps, extend it to a new statement, and disprove a false one.
+
+\begin{exmp}{Reading a ``for every'' statement}{bankProdL}
+\textbf{Statement.} For every $n$ and for all $n\times n$ unit lower triangular matrices $L$ and $M$, the product $LM$ is unit lower triangular.
+
+\textbf{What we are proving and how.} The answer to Pause and think~\ref{think:unique} uses this fact without proof. We prove it by looking at one entry $(LM)_{ij}$ of the product at a time, using the row--column rule, and split into the cases $i<j$ and $i=j$.
+
+\textbf{Read the statement first.}
+\begin{itemize}
+  \item \emph{Hypotheses:} $L_{ij}=0$ and $M_{ij}=0$ whenever $i<j$, and $L_{ii}=M_{ii}=1$ for every $i$.
+  \item \emph{Goal:} $(LM)_{ij}=0$ whenever $i<j$, and $(LM)_{ii}=1$ for every $i$.
+  \item \emph{Scope:} every size $n$, so the argument must not use $n=2$ or $n=3$ in particular.
+\end{itemize}
+A numerical test: for $L=\begin{bmatrix}1&0&0\\2&1&0\\-1&3&1\end{bmatrix}$ and $M=\begin{bmatrix}1&0&0\\4&1&0\\0&-2&1\end{bmatrix}$,
+\[
+LM=\begin{bmatrix}1&0&0\\2+4&1&0\\-1+12+0&3-2&1\end{bmatrix}=\begin{bmatrix}1&0&0\\6&1&0\\11&1&1\end{bmatrix},
+\]
+which is again unit lower triangular.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $L$ and $M$ are $n\times n$ and unit lower triangular. By the row--column rule $(LM)_{ij}=\sum_{k=1}^{n}L_{ik}M_{kj}$.
+  \item \emph{Compute.} A term $L_{ik}M_{kj}$ can be nonzero only if $L_{ik}\neq0$, which forces $k\le i$ (entries of $L$ above the diagonal are $0$), and $M_{kj}\neq0$, which forces $k\ge j$. \emph{Case $i<j$:} no $k$ satisfies $j\le k\le i$, so every term is $0$ and $(LM)_{ij}=0$. \emph{Case $i=j$:} the only $k$ with $i\le k\le i$ is $k=i$, so $(LM)_{ii}=L_{ii}M_{ii}=1\cdot1=1$.
+  \item \emph{Conclude.} The entries of $LM$ above the diagonal are $0$ and those on the diagonal are $1$, so $LM$ is unit lower triangular. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} Only the zeros above the diagonal and the ones on the diagonal. In the test, the entry $(3,1)$ of $LM$ is the sum $L_{31}M_{11}+L_{32}M_{21}+L_{33}M_{31}=-1+12+0$: the entries below the diagonal are not controlled, and they do not need to be. By induction the same is true for a product of any number of unit lower triangular matrices.
+\end{exmp}
+
+\begin{exmp}{The inverse of a unit lower triangular matrix}{bankInvL}
+\textbf{Statement.} Let $L$ be an $n\times n$ unit lower triangular matrix. Then $L$ is invertible, and $L^{-1}$ is unit lower triangular.
+
+\textbf{What we are proving and how.} The proof of Theorem~\ref{thm:exists} reduces $L$ to $I$ with replacements of lower rows, and the answer to Pause and think~\ref{think:unique} states the result about $L^{-1}$ without proof. We make that idea precise, and combine it with the previous example: the inverse is a product of elementary matrices that are themselves unit lower triangular.
+
+\textbf{Read the statement first.} \emph{Hypotheses:} $L$ is $n\times n$, has ones on the diagonal and zeros above it. \emph{Goal:} two claims, that $L^{-1}$ exists and that it is unit lower triangular. \emph{Scope:} every such $L$. A numerical test: $L=\begin{bmatrix}1&0&0\\2&1&0\\-3&4&1\end{bmatrix}$ reduces to $I$ by
+\begin{align*}
+&\begin{bmatrix}1&0&0\\2&1&0\\-3&4&1\end{bmatrix}
+\rops{R_2-2R_1}
+\begin{bmatrix}1&0&0\\0&1&0\\-3&4&1\end{bmatrix}
+\rops{R_3+3R_1}
+\begin{bmatrix}1&0&0\\0&1&0\\0&4&1\end{bmatrix}\\[4pt]
+&\rops{R_3-4R_2}
+\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}
+\end{align*}
+and the three elementary matrices of these operations multiply to $E_3E_2E_1=\begin{bmatrix}1&0&0\\-2&1&0\\11&-4&1\end{bmatrix}$, which is unit lower triangular. Check: $\begin{bmatrix}1&0&0\\-2&1&0\\11&-4&1\end{bmatrix}\begin{bmatrix}1&0&0\\2&1&0\\-3&4&1\end{bmatrix}=\begin{bmatrix}1&0&0\\-2+2&1&0\\11-8-3&-4+4&1\end{bmatrix}=I$.
+
+\textbf{Proof.}
+\begin{enumerate}[itemsep=2pt]
+  \item \emph{Assume} $L$ is $n\times n$ and unit lower triangular.
+  \item \emph{Compute.} Treat the columns $k=1,2,\dots,n-1$ in turn. We claim that when column~$k$ is about to be treated, the current matrix is unit lower triangular and its first $k-1$ columns are $\bv{e}_1,\dots,\bv{e}_{k-1}$. For $k=1$ this is the hypothesis. Given the claim for $k$, row~$k$ of the current matrix has $0$ in the first $k-1$ positions (those columns are $\bv{e}_1,\dots,\bv{e}_{k-1}$), a $1$ in position~$k$, and $0$ to the right (the matrix is lower triangular): row~$k$ is the row with a single $1$ in position~$k$. So for every $i>k$ the replacement $R_i-\ell R_k\to R_i$, with $\ell$ the current $(i,k)$ entry, changes only the $(i,k)$ entry of row~$i$, and makes it $0$. The new matrix is still unit lower triangular and has $\bv{e}_k$ as its column~$k$, which is the claim for $k+1$. After column $n-1$ the matrix is $I$. Each replacement uses a row below the pivot row, so its elementary matrix is $I$ with one extra entry below the diagonal: it is unit lower triangular. If the replacements are, in order, $E_1,\dots,E_r$, then $E_r\cdots E_1L=I$.
+  \item \emph{Conclude.} Let $M=E_r\cdots E_1$. It is a product of invertible matrices, so it is invertible, and $ML=I$ gives $L=M^{-1}$; hence $L$ is invertible and $L^{-1}=M$ (Theorem~\ref{2.2-thm:algorithm}). By the previous example, a product of unit lower triangular matrices is unit lower triangular, so $L^{-1}=M$ is unit lower triangular. \qquad$\blacksquare$
+\end{enumerate}
+
+\textbf{What the proof used.} That a replacement of a \emph{lower} row keeps the shape (a replacement of a higher row would put a nonzero entry above the diagonal), and the closure of the shape under products. In the test, $L^{-1}$ has the multipliers of $L$ with their signs changed in the first column, but not in the entry $(3,1)$: $11$, not $3$. The inverse is not simply $L$ with the signs flipped.
+\end{exmp}
+
+\begin{exmp}{Disproving a statement about the order of the factors}{bankLUUL}
+\textbf{Statement.} If $L$ is an $n\times n$ unit lower triangular matrix and $U$ is an $n\times n$ upper triangular matrix, then $LU=UL$.
+
+\textbf{What we are doing and how.} The notes always write the factors in the order $LU$, and a student might think that the order does not matter. To disprove a statement about all pairs $(L,U)$ we need one pair that fits the hypotheses and for which the two products differ.
+
+\textbf{Counterexample.} Take $L=\begin{bmatrix}1&0\\1&1\end{bmatrix}$ and $U=\begin{bmatrix}1&1\\0&1\end{bmatrix}$.
+\begin{itemize}
+  \item \emph{The hypotheses hold.} $L$ has ones on the diagonal and a zero above it; $U$ has a zero below the diagonal.
+  \item \emph{The conclusion fails.} $LU=\begin{bmatrix}1&1\\1&2\end{bmatrix}$ but $UL=\begin{bmatrix}1\cdot1+1\cdot1&1\\1&1\end{bmatrix}=\begin{bmatrix}2&1\\1&1\end{bmatrix}$, and these differ in position $(1,1)$.
+\end{itemize}
+So the statement is false. \qquad$\blacksquare$
+
+\textbf{What is true instead.} For $L=\begin{bmatrix}1&0\\\ell&1\end{bmatrix}$ and $U=\begin{bmatrix}a&b\\0&d\end{bmatrix}$ we get $LU=\begin{bmatrix}a&b\\\ell a&\ell b+d\end{bmatrix}$ and $UL=\begin{bmatrix}a+b\ell&b\\d\ell&d\end{bmatrix}$. These are equal exactly when $b\ell=0$ and $\ell(a-d)=0$: that is, when $\ell=0$, or when $b=0$ and $a=d$. In the counterexample $\ell=1$ and $b=1$, so neither way out is open. Only the product $LU$ is the one that elimination produces, which is why the order matters.
+
+\emph{Moral.} A statement with ``for all'' is refuted by one pair; the pair has to satisfy the hypotheses, and it is the \emph{conclusion} that must fail.
+\end{exmp}
+
+\begin{think}{Proof habits}{habits}
+\begin{enumerate}[label=(\arabic*)]
+  \item In Example~\ref{ex:bankInvL}, suppose the diagonal entries of $L$ are allowed to be nonzero numbers other than $1$, for instance $L=\begin{bmatrix}2&0\\3&1\end{bmatrix}$. Which sentence of step~2 is no longer true, and how would you change the replacement and the proof? What goes wrong if a diagonal entry is $0$?
+  \item In Example~\ref{ex:bankProdL}, which terms of the sum vanish for $(i,j)=(1,3)$ and for $(i,j)=(3,3)$ when $n=3$? Compute $LM$ for the lower triangular matrices $L=\begin{bmatrix}2&0\\1&3\end{bmatrix}$ and $M=\begin{bmatrix}4&0\\5&1\end{bmatrix}$ (not unit) and compare the diagonal of $LM$ with the diagonals of $L$ and $M$. What does the case $i=j$ of the proof give?
+  \item Prove, in the three named steps, that if $A=LU$ is an invertible $n\times n$ matrix with $L$ unit lower triangular, then $U$ is invertible. Use Example~\ref{ex:bankInvL}. Why is there no contradiction with Example~\ref{ex:doesit}(c), where $A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$ has an $LU$ factorization?
+\end{enumerate}
+\end{think}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:triangular}.] (a)~unit lower triangular (and so also lower triangular). (b)~lower triangular, but not unit lower triangular: the diagonal entries are $3$ and $2$. (c)~upper triangular; it is not lower triangular because of the $2$ above the diagonal. (d)~the identity matrix is all of them: lower triangular, upper triangular and unit lower triangular. (e)~none of these: the $2$ lies above the diagonal and the $3$ lies below it.
@@ -547,6 +877,7 @@ Two students factor the same \emph{invertible} matrix $A=LU$ without interchange
   \item[Pause and think \ref{think:invertible}.] Yes and invertible: $\begin{bmatrix}1&2\\3&4\end{bmatrix}$ (Example (a)). Yes and not invertible: $\begin{bmatrix}1&2\\2&4\end{bmatrix}$ (Example (c)). No and invertible: $\begin{bmatrix}0&1\\1&0\end{bmatrix}$ (Example (b)). No and not invertible: $\begin{bmatrix}0&1&0\\1&0&0\\0&0&0\end{bmatrix}$, which needs an interchange at the first step (its pivot position $(1,1)$ holds $0$ and the $1$ below it cannot be cleared) and has a zero row, so it is not invertible. All four combinations occur, so the two properties are unrelated. What \emph{is} true: for an $n\times n$ matrix with $A=LU$, the matrix $A$ is invertible if and only if every diagonal entry of $U$ is nonzero. (Then $U$ has a pivot in every column, and both factors are invertible.)
   \item[Pause and think \ref{think:permL}.] Here $P^{-1}L=P\begin{bmatrix}1&0&0\\3&1&0\\2&0&1\end{bmatrix}=\begin{bmatrix}1&0&0\\2&0&1\\3&1&0\end{bmatrix}$, which has nonzero entries above the diagonal, so it is not lower triangular; its rows are those of $L$ with rows $2$ and $3$ interchanged. Then $P^{-1}LU=P^{-1}(PA)=A$: $A$ is $L$ with its rows shuffled, times $U$. In the elimination, the multipliers were recorded as the rows of $A$ were being swapped; the dry run recorded them in the order of the original rows (multipliers $2$ and $3$), and the swap permutes the rows of this record. That is why the same data reappear as a row-permuted $L$.
   \item[Pause and think \ref{think:unique}.] Both $L_1,L_2$ are unit lower triangular and invertible, and $U_i=L_i^{-1}A$ is invertible, hence so is $U_i$. From $L_1U_1=L_2U_2$ we get $L_2^{-1}L_1=U_2U_1^{-1}$. The left side is unit lower triangular (inverses and products of unit lower triangular matrices are unit lower triangular), the right side is upper triangular (the mirror-image facts). A matrix that is both lower and upper triangular is diagonal, and a unit lower triangular diagonal matrix is $I$. So $L_2^{-1}L_1=I$, hence $L_1=L_2$, and then $U_1=U_2$. The hypothesis ``invertible'' matters: for the zero matrix, $L\cdot\mathbf{0}=\mathbf{0}$ for \emph{every} unit lower triangular $L$, so $L$ is not determined.
+  \item[Pause and think \ref{think:habits}.] (1)~The sentence ``row~$k$ is the row with a single $1$ in position~$k$'' is no longer true: for $L=\begin{bmatrix}2&0\\3&1\end{bmatrix}$ row~$1$ is $(2,0)$, with a $2$ in the pivot position. The replacement is then $R_2-\ell R_1$ with $\ell=\tfrac32$ (the entry divided by the pivot), which still changes only the $(2,1)$ entry because row~$1$ has nothing to the right of the pivot; this gives $\begin{bmatrix}2&0\\0&1\end{bmatrix}$, and then each row is scaled by the reciprocal of its diagonal entry to reach $I$. The proof goes through with those extra scaling steps, but the elementary matrices of the scalings are diagonal, not unit lower triangular, and the inverse is lower triangular with diagonal entries $\tfrac12$ and $1$: the word \emph{unit} is lost. If a diagonal entry is $0$ the argument stops: for $\begin{bmatrix}0&0\\1&1\end{bmatrix}$ there is no pivot in position $(1,1)$ to clear anything with, and the matrix has a zero row in its echelon form, so it is not invertible. (2)~For $n=3$ and $(i,j)=(1,3)$ the terms are $L_{11}M_{13}+L_{12}M_{23}+L_{13}M_{33}$; all three vanish, since $M_{13}=M_{23}=0$ (above the diagonal) and $L_{12}=L_{13}=0$, which matches the rule ``$k\le i=1$ and $k\ge j=3$ is impossible''. For $(3,3)$ the only surviving term is $L_{33}M_{33}=1$. For the non-unit matrices, $LM=\begin{bmatrix}2&0\\1&3\end{bmatrix}\begin{bmatrix}4&0\\5&1\end{bmatrix}=\begin{bmatrix}8&0\\4+15&3\end{bmatrix}=\begin{bmatrix}8&0\\19&3\end{bmatrix}$, with diagonal $8=2\cdot4$ and $3=3\cdot1$: the diagonal of $LM$ is the entrywise product of the diagonals. That is the case $i=j$ of the proof, which gives $L_{ii}M_{ii}$ in general. (3)~\emph{Assume} $A=LU$ is invertible, with $L$ unit lower triangular. \emph{Compute.} By Example~\ref{ex:bankInvL}, $L$ is invertible, so $L^{-1}A=L^{-1}LU=U$. \emph{Conclude.} $U=L^{-1}A$ is a product of two invertible matrices, hence invertible by Theorem~\ref{2.2-thm:invprops}. In Example~\ref{ex:doesit}(c) the matrix $A=\begin{bmatrix}1&2\\2&4\end{bmatrix}$ is \emph{not} invertible, so the hypothesis fails: its $U=\begin{bmatrix}1&2\\0&0\end{bmatrix}$ is not invertible either, as the contrapositive of the statement predicts (if $U$ is not invertible, then $A=LU$ is not invertible).
   \item[Before the next section.] (1)~If $A$ is invertible, then $U=L^{-1}A$ is invertible, so $U$ has $n$ pivots; in an $n\times n$ echelon form that means a pivot in every diagonal position, so every diagonal entry is nonzero. And $A^{-1}=(LU)^{-1}=U^{-1}L^{-1}$ by the socks-and-shoes rule (Theorem~\ref{2.2-thm:invprops}). (2)~No. The matrix $\begin{bmatrix}0&1\\1&0\end{bmatrix}$ of Example~\ref{ex:doesit}(b) is invertible but has no factorization $LU$ with $L$ unit lower triangular; the remedy is the permutation matrix of Theorem~\ref{thm:plu}. (3)~$D=\begin{bmatrix}2&0&0\\0&1&0\\0&0&3\end{bmatrix}$ (the pivots) and $V=\begin{bmatrix}1&\tfrac12&\tfrac12\\0&1&2\\0&0&1\end{bmatrix}$, and $DV=U$. This uses the rule of Section~2.1 that scaling the rows of a matrix is a left multiplication by a diagonal matrix.
 \end{description}
 
