@@ -740,6 +740,288 @@ The plane $H$ of Example~\ref{ex:plane} has the coordinate vector $[\bv{x}]_{\ma
   \item Suppose the columns of an $n\times n$ matrix $Q$ form a basis for $\R^n$. Prove that $Q$ is invertible. Conversely, if $Q$ is invertible, prove that its columns form a basis for $\R^n$ and find $[\bv{x}]_{\mathcal{B}}$ for this basis.
 \end{enumerate}
 
+\subsection*{Example bank}
+The ten examples below add problem types that the worked examples above do not cover: bases with no triangular shape to exploit, subspaces described by a condition, vectors with more than one representation, true-or-false judgments about coordinates, and sets of polynomials and matrices that depend on a parameter. Try each one before you read its solution. Every solution shows its reasoning, and the numbers are different from the ones in the text.
+
+\textbf{What is in this bank.}
+\begin{itemize}
+  \item \textbf{Bank A, coordinates in a polynomial basis with no triangular shape:} Example~\ref{ex:b-nontri} (a mixed basis of $\mathbb{P}_2$) and Example~\ref{ex:b-allbut} (a basis of $\mathbb{P}_3$ in which each vector leaves out one power of $t$).
+  \item \textbf{Bank B, coordinates in a subspace given by a condition:} Example~\ref{ex:b-planegen} (a plane in $\R^3$ with a basis that is not the free-variable basis, and a vector outside it) and Example~\ref{ex:b-vanish} (the polynomials that vanish at $t=1$).
+  \item \textbf{Bank C, how many representations does a vector have?} Example~\ref{ex:b-family} (a dependent set with a one-parameter family of representations) and Example~\ref{ex:b-staircase} (proving a basis of $M_{2\times2}$ by unique representation).
+  \item \textbf{Bank D, true or false:} Example~\ref{ex:b-tfcoord} (statements about coordinates) and Example~\ref{ex:b-tftransfer} (statements about the coordinate mapping and testing in coordinates).
+  \item \textbf{Bank E, a parameter $h$:} Example~\ref{ex:b-hpoly} (three polynomials in $\mathbb{P}_2$) and Example~\ref{ex:b-hmat} (four matrices in $M_{2\times2}$).
+\end{itemize}
+
+\subsection*{Bank A: Coordinates in a polynomial basis with no triangular shape}
+
+\begin{exmp}{A mixed basis of $\mathbb P_2$}{b-nontri}
+Let $\mathcal{B}=\{\bv{b}_1,\bv{b}_2,\bv{b}_3\}$ with $\bv{b}_1=2+t$, $\bv{b}_2=1+t^2$, $\bv{b}_3=t-t^2$. (a)~Find $[p]_{\mathcal{B}}$ for $p=5-t+3t^2$. (b)~Which polynomial $q$ has $[q]_{\mathcal{B}}=(1,2,-1)$?
+
+\textbf{Solution.} (a)~In the standard coordinates $(\text{constant},\ t,\ t^2)$ the basis vectors are $(2,1,0)$, $(1,0,1)$, $(0,1,-1)$ and $p=(5,-1,3)$. No column has a zero pattern that lets us read off the answer (unlike Example~\ref{ex:tri}), so we row reduce $[\,P_{\mathcal{B}}\ \ p\,]$. A row interchange puts a $1$ at the top:
+\begin{align*}
+\begin{amat}{ccc|c}2 & 1 & 0 & 5\\ 1 & 0 & 1 & -1\\ 0 & 1 & -1 & 3\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|c}1 & 0 & 1 & -1\\ 2 & 1 & 0 & 5\\ 0 & 1 & -1 & 3\end{amat}
+\rops{R_2-2R_1}
+\begin{amat}{ccc|c}1 & 0 & 1 & -1\\ 0 & 1 & -2 & 7\\ 0 & 1 & -1 & 3\end{amat}
+\\[4pt]
+&\rops{R_3-R_2}
+\begin{amat}{ccc|c}1 & 0 & 1 & -1\\ 0 & 1 & -2 & 7\\ 0 & 0 & 1 & -4\end{amat}
+\rops{R_2+2R_3}
+\begin{amat}{ccc|c}1 & 0 & 1 & -1\\ 0 & 1 & 0 & -1\\ 0 & 0 & 1 & -4\end{amat}
+\\[4pt]
+&\rops{R_1-R_3}
+\begin{amat}{ccc|c}1 & 0 & 0 & 3\\ 0 & 1 & 0 & -1\\ 0 & 0 & 1 & -4\end{amat}
+\end{align*}
+There is a pivot in each of the three columns of $P_{\mathcal{B}}$, so the coordinate vectors are independent and span $\R^3$, and $\mathcal{B}$ is indeed a basis for $\mathbb{P}_2$ (Theorem~\ref{thm:transfer}(d)). Reading the last column, $[p]_{\mathcal{B}}=(3,-1,-4)$. Check by forming the combination: $3(2+t)-(1+t^2)-4(t-t^2)=(6-1)+(3-4)t+(-1+4)t^2=5-t+3t^2$. \ $\checkmark$
+
+(b)~Going from coordinates to the vector needs no reduction: $q=1\cdot(2+t)+2(1+t^2)-1\cdot(t-t^2)=(2+2)+(1-1)t+(2+1)t^2=4+3t^2$. The $t$ term cancels, which is a reminder that the coordinates $(1,2,-1)$ do not show the coefficients of $q$.
+\end{exmp}
+
+\begin{exmp}{A basis of $\mathbb P_3$ in which each vector omits one power}{b-allbut}
+Let $s=1+t+t^2+t^3$ and let $\mathcal{B}=\{s-1,\ s-t,\ s-t^2,\ s-t^3\}$, that is, $\bv{b}_1=t+t^2+t^3$, $\bv{b}_2=1+t^2+t^3$, $\bv{b}_3=1+t+t^3$, $\bv{b}_4=1+t+t^2$. Find $[p]_{\mathcal{B}}$ for $p=2-t+4t^2+t^3$, and then find $P_{\mathcal{B}}^{-1}$.
+
+\textbf{Solution.} The standard coordinates $(\text{constant},\ t,\ t^2,\ t^3)$ of $\bv{b}_k$ are all ones except for a $0$ in position $k$. We row reduce $[\,P_{\mathcal{B}}\ \ p\,]$ with $p=(2,-1,4,1)$, starting with an interchange that puts a row of ones on top:
+\begin{align*}
+\begin{amat}{cccc|c}0 & 1 & 1 & 1 & 2\\ 1 & 0 & 1 & 1 & -1\\ 1 & 1 & 0 & 1 & 4\\ 1 & 1 & 1 & 0 & 1\end{amat}
+&\rops{R_1\leftrightarrow R_4}
+\begin{amat}{cccc|c}1 & 1 & 1 & 0 & 1\\ 1 & 0 & 1 & 1 & -1\\ 1 & 1 & 0 & 1 & 4\\ 0 & 1 & 1 & 1 & 2\end{amat}
+\\[4pt]
+&\rops{R_2-R_1,\ R_3-R_1}
+\begin{amat}{cccc|c}1 & 1 & 1 & 0 & 1\\ 0 & -1 & 0 & 1 & -2\\ 0 & 0 & -1 & 1 & 3\\ 0 & 1 & 1 & 1 & 2\end{amat}
+\\[4pt]
+&\rops{R_4+R_2,\ R_4+R_3}
+\begin{amat}{cccc|c}1 & 1 & 1 & 0 & 1\\ 0 & -1 & 0 & 1 & -2\\ 0 & 0 & -1 & 1 & 3\\ 0 & 0 & 0 & 3 & 3\end{amat}
+\\[4pt]
+&\rops{-R_2,\ -R_3,\ \tfrac{1}{3}R_4}
+\begin{amat}{cccc|c}1 & 1 & 1 & 0 & 1\\ 0 & 1 & 0 & -1 & 2\\ 0 & 0 & 1 & -1 & -3\\ 0 & 0 & 0 & 1 & 1\end{amat}
+\\[4pt]
+&\rops{R_3+R_4,\ R_2+R_4}
+\begin{amat}{cccc|c}1 & 1 & 1 & 0 & 1\\ 0 & 1 & 0 & 0 & 3\\ 0 & 0 & 1 & 0 & -2\\ 0 & 0 & 0 & 1 & 1\end{amat}
+\\[4pt]
+&\rops{R_1-R_2,\ R_1-R_3}
+\begin{amat}{cccc|c}1 & 0 & 0 & 0 & 0\\ 0 & 1 & 0 & 0 & 3\\ 0 & 0 & 1 & 0 & -2\\ 0 & 0 & 0 & 1 & 1\end{amat}
+\end{align*}
+The coordinate vectors have a pivot in each column, so $\mathcal{B}$ is a basis for $\mathbb{P}_3$ (Theorem~\ref{thm:transfer}(d)), and $[p]_{\mathcal{B}}=(0,3,-2,1)$. Check: $0\bv{b}_1+3\bv{b}_2-2\bv{b}_3+\bv{b}_4=3(1+t^2+t^3)-2(1+t+t^3)+(1+t+t^2)=(3-2+1)+(-2+1)t+(3+1)t^2+(3-2)t^3=2-t+4t^2+t^3$. \ $\checkmark$
+
+\textbf{A shortcut.} Write $p=a_0+a_1t+a_2t^2+a_3t^3$ and $c_1,\dots,c_4$ for the coordinates. Because $\bv{b}_k=s-t^{k-1}$, we have $p=(c_1+c_2+c_3+c_4)\,s-(c_1+c_2t+c_3t^2+c_4t^3)$. Comparing the coefficient of $t^{k-1}$ gives $a_{k-1}=\sigma-c_k$ where $\sigma=c_1+c_2+c_3+c_4$. Adding the four equations gives $a_0+a_1+a_2+a_3=4\sigma-\sigma=3\sigma$, so $\sigma=\tfrac13(a_0+a_1+a_2+a_3)$ and $c_k=\sigma-a_{k-1}$. Here $\sigma=\tfrac13(2-1+4+1)=2$ and $c=(2-2,\ 2+1,\ 2-4,\ 2-1)=(0,3,-2,1)$, in agreement with the row reduction. In matrix form the shortcut says $P_{\mathcal{B}}^{-1}=\tfrac13 J-I$, where $J$ is the matrix of all ones. This inverse has $-\tfrac23$ on the diagonal and $\tfrac13$ elsewhere, and we confirm the product:
+\[
+\begin{bmatrix}0&1&1&1\\1&0&1&1\\1&1&0&1\\1&1&1&0\end{bmatrix}
+\begin{bmatrix}-\tfrac{2}{3}&\tfrac{1}{3}&\tfrac{1}{3}&\tfrac{1}{3}\\\tfrac{1}{3}&-\tfrac{2}{3}&\tfrac{1}{3}&\tfrac{1}{3}\\\tfrac{1}{3}&\tfrac{1}{3}&-\tfrac{2}{3}&\tfrac{1}{3}\\\tfrac{1}{3}&\tfrac{1}{3}&\tfrac{1}{3}&-\tfrac{2}{3}\end{bmatrix}
+=\begin{bmatrix}1&0&0&0\\0&1&0&0\\0&0&1&0\\0&0&0&1\end{bmatrix}.
+\]
+Row $i$ of the first matrix has a $0$ in position $i$ and ones elsewhere, and column $j$ of the second has $-\tfrac23$ in position $j$ and $\tfrac13$ elsewhere. For $i=j$ the product is $0\cdot(-\tfrac23)+3\cdot\tfrac13=1$; for $i\neq j$ it is $1\cdot(-\tfrac23)+0\cdot\tfrac13+2\cdot\tfrac13=0$.
+\end{exmp}
+
+\subsection*{Bank B: Coordinates in a subspace given by a condition}
+
+\begin{exmp}{A plane with a basis that is not the free-variable basis}{b-planegen}
+Let $\bv{b}_1=(1,2,3)$, $\bv{b}_2=(2,-1,1)$ and $H=\Span\{\bv{b}_1,\bv{b}_2\}$, with $\mathcal{B}=\{\bv{b}_1,\bv{b}_2\}$. Neither vector is a multiple of the other, so $\mathcal{B}$ is independent and hence a basis for $H$. Decide whether $\bv{u}=(7,4,11)$ and $\bv{v}=(4,3,5)$ are in $H$, and find the coordinate vectors of those that are.
+
+\textbf{Solution.} Both questions have the same coefficient matrix $P_{\mathcal{B}}$, so we reduce $[\,\bv{b}_1\ \ \bv{b}_2\ \ \bv{u}\ \ \bv{v}\,]$ once:
+\begin{align*}
+\begin{amat}{cc|cc}1 & 2 & 7 & 4\\ 2 & -1 & 4 & 3\\ 3 & 1 & 11 & 5\end{amat}
+&\rops{R_2-2R_1,\ R_3-3R_1}
+\begin{amat}{cc|cc}1 & 2 & 7 & 4\\ 0 & -5 & -10 & -5\\ 0 & -5 & -10 & -7\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{cc|cc}1 & 2 & 7 & 4\\ 0 & -5 & -10 & -5\\ 0 & 0 & 0 & -2\end{amat}
+\\[4pt]
+&\rops{-\tfrac{1}{5}R_2}
+\begin{amat}{cc|cc}1 & 2 & 7 & 4\\ 0 & 1 & 2 & 1\\ 0 & 0 & 0 & -2\end{amat}
+\rops{R_1-2R_2}
+\begin{amat}{cc|cc}1 & 0 & 3 & 2\\ 0 & 1 & 2 & 1\\ 0 & 0 & 0 & -2\end{amat}
+\end{align*}
+Look at the two augmented columns separately. In the column of $\bv{u}$ the third row reads $0=0$, so the system is consistent and the weights are $(3,2)$: $[\bv{u}]_{\mathcal{B}}=(3,2)$. Check: $3(1,2,3)+2(2,-1,1)=(3+4,\ 6-2,\ 9+2)=(7,4,11)$. \ $\checkmark$ In the column of $\bv{v}$ the third row reads $0=-2$, so the system is inconsistent and $\bv{v}$ is not in $H$; it has no coordinate vector (Example~\ref{ex:nonmember}). A quick test agrees: every vector of $H$ satisfies $x_1+x_2-x_3=0$ (both basis vectors do: $1+2-3=0$ and $2-1-1=0$, and so do all their combinations), and $\bv{u}$ passes, $7+4-11=0$, while $\bv{v}$ fails, $4+3-5=2\neq0$. The coordinates here are not entries of $\bv{u}$: the free-variable shortcut of Pause and think~\ref{think:freevars} needs the free-variable basis, and this basis is not one (the second and third entries of $\bv{u}$ are $(4,11)$, not $(3,2)$).
+\end{exmp}
+
+\begin{exmp}{The polynomials that vanish at $t=1$}{b-vanish}
+Let $H$ be the set of polynomials $p$ in $\mathbb{P}_3$ with $p(1)=0$, and let $\mathcal{B}=\{\bv{b}_1,\bv{b}_2,\bv{b}_3\}$ with $\bv{b}_1=t-1$, $\bv{b}_2=t^2-t$, $\bv{b}_3=t^3-t^2$. (a)~Show that every $p$ in $H$ is a combination of $\mathcal{B}$ in exactly one way, and give the weights in terms of the coefficients of $p$. (b)~Find $[p]_{\mathcal{B}}$ for $p=3+2t-4t^2-t^3$. (c)~Is $q=1+t+t^2+t^3$ in $H$? (d)~Which polynomial has $[r]_{\mathcal{B}}=(1,0,-2)$?
+
+\textbf{Solution.} (a)~Each $\bv{b}_j$ vanishes at $1$, so every combination of $\mathcal{B}$ is in $H$. Conversely, let $p=a_0+a_1t+a_2t^2+a_3t^3$ be in $H$, so $a_0+a_1+a_2+a_3=0$, and look for weights with $p=c_1\bv{b}_1+c_2\bv{b}_2+c_3\bv{b}_3$. Since $c_1\bv{b}_1+c_2\bv{b}_2+c_3\bv{b}_3=-c_1+(c_1-c_2)t+(c_2-c_3)t^2+c_3t^3$, matching coefficients from the top gives
+\[
+c_3=a_3,\qquad c_2=a_2+c_3=a_2+a_3,\qquad c_1=a_1+c_2=a_1+a_2+a_3,
+\]
+and these are forced, so there is at most one list of weights. They do work: the constant term of the combination is $-c_1=-(a_1+a_2+a_3)=a_0$ because $p(1)=0$. So every $p$ in $H$ has exactly one representation, $\mathcal{B}$ spans $H$ and is independent, and $\mathcal{B}$ is a basis for $H$. The weights are partial sums of the coefficients, not the coefficients themselves.
+
+(b)~Here $p(1)=3+2-4-1=0$, so $p$ is in $H$. The standard coordinates $(\text{constant},\ t,\ t^2,\ t^3)$ of the basis are $(-1,1,0,0)$, $(0,-1,1,0)$, $(0,0,-1,1)$ and $p=(3,2,-4,-1)$:
+\begin{align*}
+\begin{amat}{ccc|c}-1 & 0 & 0 & 3\\ 1 & -1 & 0 & 2\\ 0 & 1 & -1 & -4\\ 0 & 0 & 1 & -1\end{amat}
+&\rops{-R_1}
+\begin{amat}{ccc|c}1 & 0 & 0 & -3\\ 1 & -1 & 0 & 2\\ 0 & 1 & -1 & -4\\ 0 & 0 & 1 & -1\end{amat}
+\rops{R_2-R_1}
+\begin{amat}{ccc|c}1 & 0 & 0 & -3\\ 0 & -1 & 0 & 5\\ 0 & 1 & -1 & -4\\ 0 & 0 & 1 & -1\end{amat}
+\\[4pt]
+&\rops{-R_2,\ R_3-R_2}
+\begin{amat}{ccc|c}1 & 0 & 0 & -3\\ 0 & 1 & 0 & -5\\ 0 & 0 & -1 & 1\\ 0 & 0 & 1 & -1\end{amat}
+\rops{-R_3}
+\begin{amat}{ccc|c}1 & 0 & 0 & -3\\ 0 & 1 & 0 & -5\\ 0 & 0 & 1 & -1\\ 0 & 0 & 1 & -1\end{amat}
+\\[4pt]
+&\rops{R_4-R_3}
+\begin{amat}{ccc|c}1 & 0 & 0 & -3\\ 0 & 1 & 0 & -5\\ 0 & 0 & 1 & -1\\ 0 & 0 & 0 & 0\end{amat}
+\end{align*}
+The last row is $0=0$, as it must be for a vector of $H$, and $[p]_{\mathcal{B}}=(-3,-5,-1)$. This agrees with part (a): $c_3=a_3=-1$, $c_2=a_2+a_3=-5$, $c_1=a_1+a_2+a_3=-3$. Check: $-3(t-1)-5(t^2-t)-(t^3-t^2)=3+(-3+5)t+(-5+1)t^2-t^3=3+2t-4t^2-t^3$. \ $\checkmark$
+
+(c)~$q(1)=4\neq0$, so $q$ is not in $H$ and has no coordinate vector relative to $\mathcal{B}$. (d)~$r=(t-1)-2(t^3-t^2)=-1+t+2t^2-2t^3$, and $r(1)=-1+1+2-2=0$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Bank C: How many representations does a vector have?}
+
+\begin{exmp}{A dependent set gives a whole family of representations}{b-family}
+Let $\bv{u}_1=(1,3,1)$, $\bv{u}_2=(-2,-1,1)$, $\bv{u}_3=(-1,-2,-1)$, $\bv{u}_4=(-1,0,2)$ and $\bv{x}=(-2,3,4)$. (a)~In how many ways can $\bv{x}$ be written as a combination of $\bv{u}_1,\dots,\bv{u}_4$? Describe all of them. (b)~Find the representation that does not use $\bv{u}_4$, and decide whether one of the vectors can be removed without losing $\bv{x}$. (c)~For which representations are all four weights nonnegative?
+
+\textbf{Solution.} (a)~We need all solutions of $c_1\bv{u}_1+c_2\bv{u}_2+c_3\bv{u}_3+c_4\bv{u}_4=\bv{x}$:
+\begin{align*}
+\begin{amat}{cccc|c}1 & -2 & -1 & -1 & -2\\ 3 & -1 & -2 & 0 & 3\\ 1 & 1 & -1 & 2 & 4\end{amat}
+&\rops{R_2-3R_1,\ R_3-R_1}
+\begin{amat}{cccc|c}1 & -2 & -1 & -1 & -2\\ 0 & 5 & 1 & 3 & 9\\ 0 & 3 & 0 & 3 & 6\end{amat}
+\\[4pt]
+&\rops{\tfrac{1}{3}R_3}
+\begin{amat}{cccc|c}1 & -2 & -1 & -1 & -2\\ 0 & 5 & 1 & 3 & 9\\ 0 & 1 & 0 & 1 & 2\end{amat}
+\\[4pt]
+&\rops{R_2\leftrightarrow R_3}
+\begin{amat}{cccc|c}1 & -2 & -1 & -1 & -2\\ 0 & 1 & 0 & 1 & 2\\ 0 & 5 & 1 & 3 & 9\end{amat}
+\\[4pt]
+&\rops{R_3-5R_2}
+\begin{amat}{cccc|c}1 & -2 & -1 & -1 & -2\\ 0 & 1 & 0 & 1 & 2\\ 0 & 0 & 1 & -2 & -1\end{amat}
+\\[4pt]
+&\rops{R_1+2R_2}
+\begin{amat}{cccc|c}1 & 0 & -1 & 1 & 2\\ 0 & 1 & 0 & 1 & 2\\ 0 & 0 & 1 & -2 & -1\end{amat}
+\\[4pt]
+&\rops{R_1+R_3}
+\begin{amat}{cccc|c}1 & 0 & 0 & -1 & 1\\ 0 & 1 & 0 & 1 & 2\\ 0 & 0 & 1 & -2 & -1\end{amat}
+\end{align*}
+The fourth column has no pivot, so $c_4=s$ is free. The first three rows give $c_1=1+s$, $c_2=2-s$, $c_3=-1+2s$. So there are infinitely many representations, one for each real number $s$:
+\[
+\bv{x}=(1+s)\bv{u}_1+(2-s)\bv{u}_2+(-1+2s)\bv{u}_3+s\,\bv{u}_4 .
+\]
+For $s=0$ this is $\bv{u}_1+2\bv{u}_2-\bv{u}_3$, and for $s=1$ it is $2\bv{u}_1+\bv{u}_2+\bv{u}_3+\bv{u}_4$. Check $s=1$: $2(1,3,1)+(-2,-1,1)+(-1,-2,-1)+(-1,0,2)=(2-2-1-1,\ 6-1-2+0,\ 2+1-1+2)=(-2,3,4)$. \ $\checkmark$ This is what the Unique Representation Theorem (Theorem~\ref{thm:unique}) predicts for a set that is not independent: the difference of two representations is a dependence relation, and here the relation is $\bv{u}_1-\bv{u}_2+2\bv{u}_3+\bv{u}_4=\bv{0}$, the vector of free-variable weights $(1,-1,2,1)$ (check: $(1+2-2-1,\ 3+1-4+0,\ 1-1-2+2)=(0,0,0)$). Moving along the family by $s$ adds $s$ times this relation.
+
+(b)~Taking $s=0$ gives $(1,2,-1,0)$, so $\bv{x}=\bv{u}_1+2\bv{u}_2-\bv{u}_3$. The first three columns of the reduced matrix are the columns of $I_3$, so $\{\bv{u}_1,\bv{u}_2,\bv{u}_3\}$ is independent and spans $\R^3$: it is a basis, and with respect to this basis the representation is unique, with coordinates $(1,2,-1)$. The fourth vector is not needed, since $\bv{u}_4=-\bv{u}_1+\bv{u}_2-2\bv{u}_3$ (from the relation).
+
+(c)~We need $1+s\ge0$, $2-s\ge0$, $-1+2s\ge0$ and $s\ge0$, that is, $\tfrac12\le s\le2$. For example, $s=1$ gives the weights $(2,1,1,1)$, and $s=\tfrac12$ gives $(\tfrac32,\tfrac32,0,\tfrac12)$.
+\end{exmp}
+
+\begin{exmp}{Proving a basis of $2\times2$ matrices by unique representation}{b-staircase}
+Let $B_1=\begin{bmatrix}1&1\\0&0\end{bmatrix}$, $B_2=\begin{bmatrix}0&1\\1&0\end{bmatrix}$, $B_3=\begin{bmatrix}0&0\\1&1\end{bmatrix}$, $B_4=\begin{bmatrix}0&0\\0&1\end{bmatrix}$ and $\mathcal{B}=\{B_1,B_2,B_3,B_4\}$. (a)~Show that every matrix $M=\begin{bmatrix}a&b\\c&d\end{bmatrix}$ can be written in exactly one way as $c_1B_1+c_2B_2+c_3B_3+c_4B_4$, and conclude that $\mathcal{B}$ is a basis for $M_{2\times2}$. (b)~Find $[M]_{\mathcal{B}}$ for $M=\begin{bmatrix}3&1\\-2&4\end{bmatrix}$.
+
+\textbf{Solution.} (a)~Compare the four entries of $c_1B_1+c_2B_2+c_3B_3+c_4B_4$ with those of $M$:
+\[
+\begin{array}{ll}
+\text{entry }(1,1): & c_1=a,\\
+\text{entry }(1,2): & c_1+c_2=b,\\
+\text{entry }(2,1): & c_2+c_3=c,\\
+\text{entry }(2,2): & c_3+c_4=d.
+\end{array}
+\]
+Solving from the top, each equation determines one new unknown and no choice is left: $c_1=a$, $c_2=b-a$, $c_3=c-b+a$, $c_4=d-c+b-a$. So for every $M$ there is one and only one list of weights. Existence says that $\mathcal{B}$ spans $M_{2\times2}$, and uniqueness (applied to $M=O$, which gives $c_1=c_2=c_3=c_4=0$) says that $\mathcal{B}$ is independent. Hence $\mathcal{B}$ is a basis, which is the converse direction of Theorem~\ref{thm:unique}.
+
+(b)~Substituting $a=3$, $b=1$, $c=-2$, $d=4$ gives $c_1=3$, $c_2=-2$, $c_3=-2-1+3=0$, $c_4=4+2+1-3=4$. The same answer from the reduction of $[\,P_{\mathcal{B}}\ \ [M]\,]$ in standard coordinates $(a_{11},a_{12},a_{21},a_{22})$:
+\begin{align*}
+\begin{amat}{cccc|c}1 & 0 & 0 & 0 & 3\\ 1 & 1 & 0 & 0 & 1\\ 0 & 1 & 1 & 0 & -2\\ 0 & 0 & 1 & 1 & 4\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{cccc|c}1 & 0 & 0 & 0 & 3\\ 0 & 1 & 0 & 0 & -2\\ 0 & 1 & 1 & 0 & -2\\ 0 & 0 & 1 & 1 & 4\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{cccc|c}1 & 0 & 0 & 0 & 3\\ 0 & 1 & 0 & 0 & -2\\ 0 & 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 1 & 4\end{amat}
+\\[4pt]
+&\rops{R_4-R_3}
+\begin{amat}{cccc|c}1 & 0 & 0 & 0 & 3\\ 0 & 1 & 0 & 0 & -2\\ 0 & 0 & 1 & 0 & 0\\ 0 & 0 & 0 & 1 & 4\end{amat}
+\end{align*}
+so $[M]_{\mathcal{B}}=(3,-2,0,4)$. Check: $3B_1-2B_2+0B_3+4B_4=\begin{bmatrix}3&3\\0&0\end{bmatrix}+\begin{bmatrix}0&-2\\-2&0\end{bmatrix}+\begin{bmatrix}0&0\\0&4\end{bmatrix}=\begin{bmatrix}3&1\\-2&4\end{bmatrix}$. \ $\checkmark$ A zero coordinate is allowed: $M$ simply does not use $B_3$.
+\end{exmp}
+
+\subsection*{Bank D: True or false}
+
+\begin{exmp}{True or false: coordinates}{b-tfcoord}
+Let $\mathcal{B}=\{\bv{b}_1,\dots,\bv{b}_p\}$ be a basis for a vector space $V$. Decide whether each statement is true or false, and explain.
+
+(a)~Every $\bv{x}$ in $V$ has exactly one coordinate vector $[\bv{x}]_{\mathcal{B}}$.
+(b)~If $[\bv{x}]_{\mathcal{B}}=[\bv{y}]_{\mathcal{B}}$, then $\bv{x}=\bv{y}$.
+(c)~Listing the basis vectors in a different order never changes $[\bv{x}]_{\mathcal{B}}$.
+(d)~For the standard basis $\mathcal{E}$ of $\R^n$, $[\bv{x}]_{\mathcal{E}}=\bv{x}$ for every $\bv{x}$.
+(e)~Two different bases of $\R^2$ can give the same coordinate vector to the same nonzero vector.
+
+\textbf{Solution.} (a)~\emph{True.} Spanning gives at least one list of weights and independence gives at most one (Theorem~\ref{thm:unique}).
+
+(b)~\emph{True.} Both vectors are the same combination of the same basis vectors: $\bv{x}=c_1\bv{b}_1+\cdots+c_p\bv{b}_p=\bv{y}$. This is the statement that the coordinate mapping is one-to-one (Theorem~\ref{thm:coordmap}).
+
+(c)~\emph{False.} Reordering permutes the entries. If $\bv{x}=2\bv{b}_1+5\bv{b}_2$, then $[\bv{x}]_{\mathcal{B}}=(2,5)$ for $\mathcal{B}=\{\bv{b}_1,\bv{b}_2\}$ but $(5,2)$ for $\{\bv{b}_2,\bv{b}_1\}$ (Example~\ref{ex:order}). The statement would be true for a vector such as $\bv{b}_1+\bv{b}_2$, whose two weights are equal, but ``never'' is too strong.
+
+(d)~\emph{True.} $\bv{x}=x_1\bv{e}_1+\cdots+x_n\bv{e}_n$, so the weights are the entries (Example~\ref{ex:std}).
+
+(e)~\emph{True.} Take $\bv{x}=(2,3)$. For $\mathcal{B}=\{(1,0),(0,1)\}$, $[\bv{x}]_{\mathcal{B}}=(2,3)$. For $\mathcal{C}=\{(1,1),(0,\tfrac13)\}$ (a basis, because the matrix $\begin{bmatrix}1&0\\1&\tfrac13\end{bmatrix}$ has two pivots), $2(1,1)+3(0,\tfrac13)=(2,3)$, so $[\bv{x}]_{\mathcal{C}}=(2,3)$ as well. The same numbers can name the same vector in different bases; what changes is the basis that goes with them (compare Example~\ref{ex:samenums}).
+\end{exmp}
+
+\begin{exmp}{True or false: the coordinate mapping and tests in coordinates}{b-tftransfer}
+Decide whether each statement is true or false, and explain.
+
+(a)~Any five polynomials in $\mathbb{P}_3$ are linearly dependent.
+(b)~The coordinate mapping $\bv{x}\mapsto[\bv{x}]_{\mathcal{B}}$ takes $V$ onto $\R^p$ for every basis $\mathcal{B}$ with $p$ vectors, whatever kind of vectors $V$ has.
+(c)~If the coordinate vectors of three polynomials in $\mathbb{P}_2$ span $\R^3$, the three polynomials form a basis for $\mathbb{P}_2$.
+(d)~If $\bv{u},\bv{v},\bv{w}$ are in $V$ and $[\bv{u}]_{\mathcal{B}}+2[\bv{v}]_{\mathcal{B}}-[\bv{w}]_{\mathcal{B}}=\bv{0}$, then $\bv{u}+2\bv{v}-\bv{w}=\bv{0}$.
+(e)~The polynomials $1+t$, $1-t$ and $2$ span $\mathbb{P}_2$.
+
+\textbf{Solution.} (a)~\emph{True.} The standard coordinate vectors are five vectors in $\R^4$, which are dependent because a $4\times5$ matrix has at most four pivots and so a column without a pivot; by Theorem~\ref{thm:transfer}(a) the polynomials are dependent with the same weights.
+
+(b)~\emph{True.} Given any $(c_1,\dots,c_p)$, the vector $c_1\bv{b}_1+\cdots+c_p\bv{b}_p$ is in $V$ and has these weights as its coordinates. Nothing depends on what the vectors are (Theorem~\ref{thm:coordmap}).
+
+(c)~\emph{True.} Three vectors that span $\R^3$ give a $3\times3$ matrix with a pivot in every row, hence in every column, so they are also independent (the Invertible Matrix Theorem). By Theorem~\ref{thm:transfer}(d), the polynomials are independent and span $\mathbb{P}_2$.
+
+(d)~\emph{True.} The coordinate mapping is linear and one-to-one: $[\bv{u}+2\bv{v}-\bv{w}]_{\mathcal{B}}=[\bv{u}]_{\mathcal{B}}+2[\bv{v}]_{\mathcal{B}}-[\bv{w}]_{\mathcal{B}}=\bv{0}=[\bv{0}]_{\mathcal{B}}$, and only the zero vector has the coordinate vector $\bv{0}$. Dependence relations carry over with the same weights.
+
+(e)~\emph{False.} The standard coordinates $(1,1,0)$, $(1,-1,0)$, $(2,0,0)$ all have a $0$ in the third position, so every combination has a $0$ there, and a vector such as $(0,0,1)$ is not reached. By Theorem~\ref{thm:transfer}(c) the polynomials do not span $\mathbb{P}_2$: no combination equals $t^2$. (They span only the polynomials of degree at most $1$.)
+\end{exmp}
+
+\subsection*{Bank E: A parameter $h$}
+
+\begin{exmp}{Which $h$ make three polynomials a basis of $\mathbb P_2$?}{b-hpoly}
+Let $p_1=-1+ht+t^2$, $p_2=1-t+t^2$, $p_3=1+t+ht^2$. (a)~For which values of $h$ is $\{p_1,p_2,p_3\}$ a basis for $\mathbb{P}_2$? (b)~For each value of $h$ that fails, find a dependence relation among the three polynomials.
+
+\textbf{Solution.} (a)~The standard coordinates $(\text{constant},\ t,\ t^2)$ of the polynomials are $(-1,h,1)$, $(1,-1,1)$, $(1,1,h)$. Reduce the matrix with these columns, keeping $h$ as a symbol:
+\begin{align*}
+\begin{amat}{ccc}-1 & 1 & 1\\ h & -1 & 1\\ 1 & 1 & h\end{amat}
+&\rops{R_2+hR_1,\ R_3+R_1}
+\begin{amat}{ccc}-1 & 1 & 1\\ 0 & h-1 & h+1\\ 0 & 2 & h+1\end{amat}
+\\[4pt]
+&\rops{R_2\leftrightarrow R_3}
+\begin{amat}{ccc}-1 & 1 & 1\\ 0 & 2 & h+1\\ 0 & h-1 & h+1\end{amat}
+\\[4pt]
+&\rops{2R_3}
+\begin{amat}{ccc}-1 & 1 & 1\\ 0 & 2 & h+1\\ 0 & 2(h-1) & 2(h+1)\end{amat}
+\\[4pt]
+&\rops{R_3-(h-1)R_2}
+\begin{amat}{ccc}-1 & 1 & 1\\ 0 & 2 & h+1\\ 0 & 0 & -(h-3)(h+1)\end{amat}
+\end{align*}
+(The step $R_3-(h-1)R_2$ is legitimate for every $h$; we multiplied $R_3$ by $2$ first to avoid a fraction.) The last pivot is $-(h-3)(h+1)$, which is zero exactly when $h=3$ or $h=-1$. For every other $h$ there is a pivot in each column, hence in each row of this square matrix, so the coordinate vectors are independent and span $\R^3$ and $\{p_1,p_2,p_3\}$ is a basis for $\mathbb{P}_2$ (Theorem~\ref{thm:transfer}(d)). For $h=3$ and $h=-1$ the third column has no pivot and the set is not a basis.
+
+(b)~For $h=3$ the reduced matrix has rows $(-1,1,1)$, $(0,2,4)$, $(0,0,0)$. The equation $2c_2+4c_3=0$ gives $c_2=-2c_3$, and $-c_1+c_2+c_3=0$ gives $c_1=c_2+c_3=-c_3$. Taking $c_3=1$: $-p_1-2p_2+p_3=\bv{0}$. Check with $p_1=-1+3t+t^2$, $p_2=1-t+t^2$, $p_3=1+t+3t^2$: $(1-3t-t^2)+(-2+2t-2t^2)+(1+t+3t^2)=(1-2+1)+(-3+2+1)t+(-1-2+3)t^2=0$. \ $\checkmark$ For $h=-1$ the rows are $(-1,1,1)$, $(0,2,0)$, $(0,0,0)$, so $c_2=0$ and $c_1=c_3$; taking $c_3=1$: $p_1+p_3=\bv{0}$. Check with $p_1=-1-t+t^2$ and $p_3=1+t-t^2$: they are negatives of each other. \ $\checkmark$ In each case a nontrivial relation exists, so the set is dependent (by Theorem~\ref{thm:transfer}(a) the coordinate relation is a relation among the polynomials).
+\end{exmp}
+
+\begin{exmp}{Which $h$ make four matrices a basis of the $2\times2$ matrices?}{b-hmat}
+Let $N_1=\begin{bmatrix}1&0\\0&-1\end{bmatrix}$, $N_2=\begin{bmatrix}1&1\\2&-1\end{bmatrix}$, $N_3=\begin{bmatrix}0&1\\h&-1\end{bmatrix}$, $N_4=\begin{bmatrix}2&1\\0&0\end{bmatrix}$. For which $h$ is $\{N_1,N_2,N_3,N_4\}$ a basis for $M_{2\times2}$? When it is not, find a dependence relation.
+
+\textbf{Solution.} Use the standard coordinates $(a_{11},a_{12},a_{21},a_{22})$: $N_1=(1,0,0,-1)$, $N_2=(1,1,2,-1)$, $N_3=(0,1,h,-1)$, $N_4=(2,1,0,0)$. Reduce the $4\times4$ matrix with these columns:
+\begin{align*}
+\begin{amat}{cccc}1 & 1 & 0 & 2\\ 0 & 1 & 1 & 1\\ 0 & 2 & h & 0\\ -1 & -1 & -1 & 0\end{amat}
+&\rops{R_4+R_1}
+\begin{amat}{cccc}1 & 1 & 0 & 2\\ 0 & 1 & 1 & 1\\ 0 & 2 & h & 0\\ 0 & 0 & -1 & 2\end{amat}
+\\[4pt]
+&\rops{R_3-2R_2}
+\begin{amat}{cccc}1 & 1 & 0 & 2\\ 0 & 1 & 1 & 1\\ 0 & 0 & h-2 & -2\\ 0 & 0 & -1 & 2\end{amat}
+\\[4pt]
+&\rops{R_3\leftrightarrow R_4}
+\begin{amat}{cccc}1 & 1 & 0 & 2\\ 0 & 1 & 1 & 1\\ 0 & 0 & -1 & 2\\ 0 & 0 & h-2 & -2\end{amat}
+\\[4pt]
+&\rops{R_4+(h-2)R_3}
+\begin{amat}{cccc}1 & 1 & 0 & 2\\ 0 & 1 & 1 & 1\\ 0 & 0 & -1 & 2\\ 0 & 0 & 0 & 2(h-3)\end{amat}
+\end{align*}
+The last pivot is $2(h-3)$. If $h\neq3$ there is a pivot in every column of this square matrix, so the coordinate vectors are independent and span $\R^4$ (the Invertible Matrix Theorem) and the four matrices form a basis for $M_{2\times2}$ by Theorem~\ref{thm:transfer}(d). If $h=3$ the last row is zero. Then $-c_3+2c_4=0$ gives $c_3=2c_4$; $c_2+c_3+c_4=0$ gives $c_2=-3c_4$; $c_1+c_2+2c_4=0$ gives $c_1=c_4$. Taking $c_4=1$ gives the relation $N_1-3N_2+2N_3+N_4=O$, which we check for $h=3$:
+\[
+\begin{bmatrix}1&0\\0&-1\end{bmatrix}-3\begin{bmatrix}1&1\\2&-1\end{bmatrix}+2\begin{bmatrix}0&1\\3&-1\end{bmatrix}+\begin{bmatrix}2&1\\0&0\end{bmatrix}
+=\begin{bmatrix}1-3+0+2&0-3+2+1\\0-6+6+0&-1+3-2+0\end{bmatrix}=\begin{bmatrix}0&0\\0&0\end{bmatrix}.
+\]
+So exactly one value of $h$, namely $h=3$, makes the set dependent. That is typical for a $4\times4$ matrix in which $h$ appears in a single entry: the last pivot is a first-degree expression in $h$.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:fromto}.] (a)~$\bv{x}=2(3,1)-(1,2)=(6-1,\ 2-2)=(5,0)$. (b)~Solve $c_1(3,1)+c_2(1,2)=(7,4)$:
