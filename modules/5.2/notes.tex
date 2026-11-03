@@ -1,0 +1,567 @@
+\documentclass[11pt]{article}
+\usepackage[notes]{la}
+\lamodule{5}{2}{The Characteristic Equation}
+\laxdoc{2.3}
+\laxdoc{3.1}
+\laxdoc{3.2}
+\laxdoc{5.1}
+
+\begin{document}
+
+\section{The Characteristic Equation}
+
+\begin{guide}
+In the last section an eigenvalue had to be guessed, or tested one number at a time. That is no way to find \emph{all} the eigenvalues of a matrix. There is a better way, and it uses a tool we already have: the determinant detects exactly when a matrix fails to be invertible, and $\lambda$ is an eigenvalue exactly when $A-\lambda I$ fails to be invertible. So the eigenvalues should be the numbers $\lambda$ that make $\det(A-\lambda I)$ equal to zero. This section turns that idea into a polynomial equation, explains what its roots and their multiplicities say, and uses it to compare matrices.
+\end{guide}
+
+\textbf{By the end of this section you should be able to:}
+\begin{itemize}
+  \item state and use the determinant test for eigenvalues, and form the characteristic polynomial $\det(A-\lambda I)$ of a $2\times2$, $3\times3$ or sparse $4\times4$ matrix;
+  \item find all real eigenvalues of a matrix from its characteristic equation and then a basis for each eigenspace;
+  \item read eigenvalues, multiplicities, the determinant and the trace from a factored characteristic polynomial, and explain why the multiplicity of an eigenvalue is not the dimension of its eigenspace;
+  \item recognise when a real matrix has no real eigenvalue, and decide how many real eigenvalues a $2\times2$ matrix with a parameter has;
+  \item find the complex eigenvalues of a real matrix, find a complex eigenvector, and use the fact that non-real eigenvalues of a real matrix come in conjugate pairs;
+  \item define similar matrices, prove that they have the same characteristic polynomial, and decide whether two matrices can be similar;
+  \item explain why row operations do not preserve eigenvalues;
+  \item prove that the determinant is the product and the trace is the sum of the eigenvalues, when the characteristic polynomial splits into linear factors (real or complex).
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{A determinant that detects eigenvalues}
+
+\begin{exmp}{Finding the eigenvalues of a $2\times2$ matrix}{first}
+Let $A=\begin{bmatrix}2&1\\-3&6\end{bmatrix}$. Subtract $\lambda$ from the diagonal and take the determinant:
+\[
+\det(A-\lambda I)=\begin{vmatrix}2-\lambda&1\\-3&6-\lambda\end{vmatrix}=(2-\lambda)(6-\lambda)-(1)(-3)=\lambda^2-8\lambda+15=(\lambda-3)(\lambda-5).
+\]
+This is zero exactly for $\lambda=3$ and $\lambda=5$. For every other number $\lambda$ the determinant is not zero, so $A-\lambda I$ is invertible (Theorem~\ref{3.2-thm:invertible}) and $\lambda$ is not an eigenvalue (Theorem~\ref{5.1-thm:test}). So the eigenvalues of $A$ are exactly $3$ and $5$, and no guessing was needed. The eigenvectors are found afterwards, by row reducing $[\,A-\lambda I\ \ \bv{0}\,]$ as in the last section:
+\begin{align*}
+\begin{amat}{cc|c}-1 & 1 & 0\\-3 & 3 & 0\end{amat}
+&\rops{-R_1}
+\begin{amat}{cc|c}1 & -1 & 0\\-3 & 3 & 0\end{amat}
+\rops{R_2+3R_1}
+\begin{amat}{cc|c}1 & -1 & 0\\0 & 0 & 0\end{amat}
+\end{align*}
+\begin{align*}
+\begin{amat}{cc|c}-3 & 1 & 0\\-3 & 1 & 0\end{amat}
+&\rops{-\tfrac{1}{3}R_1}
+\begin{amat}{cc|c}1 & -\tfrac{1}{3} & 0\\-3 & 1 & 0\end{amat}
+\rops{R_2+3R_1}
+\begin{amat}{cc|c}1 & -\tfrac{1}{3} & 0\\0 & 0 & 0\end{amat}
+\end{align*}
+so $E_3=\Span\{(1,1)\}$ and $E_5=\Span\{(1,3)\}$. Check: $A(1,1)=(3,3)=3(1,1)$ and $A(1,3)=(5,15)=5(1,3)$. \ $\checkmark$
+\end{exmp}
+
+The computation in Example~\ref{ex:first} works for every square matrix, and the reason is a chain of statements that we already know.
+
+\begin{thm}{The determinant test}{dettest}
+Let $A$ be an $n\times n$ matrix and $\lambda$ a scalar. Then $\lambda$ is an eigenvalue of $A$ if and only if $\det(A-\lambda I)=0$.
+\end{thm}
+
+\begin{proof}
+By Theorem~\ref{5.1-thm:test}, $\lambda$ is an eigenvalue of $A$ if and only if $A-\lambda I$ is not invertible. By Theorem~\ref{3.2-thm:invertible}, a square matrix is not invertible if and only if its determinant is $0$. Joining the two statements gives the claim.
+\end{proof}
+
+\begin{defn}{Characteristic polynomial and characteristic equation}{charpoly}
+For an $n\times n$ matrix $A$ the \emph{characteristic polynomial} is
+\[
+p_A(\lambda)=\det(A-\lambda I),
+\]
+and the \emph{characteristic equation} is $p_A(\lambda)=0$. By Theorem~\ref{thm:dettest}, the real eigenvalues of $A$ are exactly the real roots of the characteristic polynomial. (Non-real roots are the complex eigenvalues, met later in this section.)
+\end{defn}
+
+Some books define $p_A(\lambda)=\det(\lambda I-A)$ instead. The two differ by the factor $(-1)^n$, since every one of the $n$ rows changes sign, so they have the same roots and the same factorization up to that sign. We use $\det(A-\lambda I)$ because it is the matrix that appeared in the last section.
+
+\begin{think}{Why $\lambda I$?}{lambdaI}
+(a)~The expression $A-\lambda$ has no meaning when $A$ is a matrix and $\lambda$ a number. Which matrix takes the place of the number $\lambda$, and what does it do to a vector? (b)~In Example~\ref{ex:first}, check that $\lambda=0$ gives $\det A=15$. What does the value of $p_A$ at $\lambda=0$ always equal?
+\end{think}
+
+Why is $p_A$ a polynomial, and what does it look like? For a $2\times2$ matrix, $\det(A-\lambda I)=(a-\lambda)(d-\lambda)-bc=\lambda^2-(a+d)\lambda+(ad-bc)$: the coefficient of $\lambda$ is minus the \emph{trace}, the sum of the diagonal entries, and the constant term is $\det A$. The next theorem says that the same pattern holds for every size. We write $\operatorname{tr}A=a_{11}+a_{22}+\cdots+a_{nn}$ for the trace.
+
+\begin{thm}{The shape of the characteristic polynomial}{shape}
+Let $A$ be an $n\times n$ matrix. Then $p_A(\lambda)$ is a polynomial of degree $n$ in $\lambda$ of the form
+\[
+p_A(\lambda)=(-1)^n\lambda^n+(-1)^{n-1}(\operatorname{tr}A)\,\lambda^{n-1}+\cdots+\det A,
+\]
+where the dots stand for terms of degree $n-2$ down to $1$. In particular $p_A(0)=\det A$, and $A$ has at most $n$ different eigenvalues.
+\end{thm}
+
+\begin{proof}
+\emph{The constant term.} Putting $\lambda=0$ gives $p_A(0)=\det(A-0I)=\det A$, and the value of a polynomial at $0$ is its constant term.
+
+\emph{The first two coefficients, by induction on $n$.} For $n=1$, $p_A(\lambda)=a_{11}-\lambda=(-1)^1\lambda+(-1)^0\operatorname{tr}A$. Now let $n\ge2$ and assume the formula for matrices of size $n-1$. Expand $\det(A-\lambda I)$ along the first row (Theorem~\ref{3.1-thm:expansion}):
+\[
+p_A(\lambda)=(a_{11}-\lambda)\det M_{11}+\sum_{j=2}^{n}(-1)^{1+j}a_{1j}\det M_{1j},
+\]
+where $M_{1j}$ is $A-\lambda I$ with row $1$ and column $j$ deleted. The matrix $M_{11}$ is $A_{11}-\lambda I$, where $A_{11}$ is $A$ with row $1$ and column $1$ deleted, so $\det M_{11}=p_{A_{11}}(\lambda)=(-1)^{n-1}\lambda^{n-1}+(-1)^{n-2}(\operatorname{tr}A_{11})\lambda^{n-2}+\cdots$ by the assumption. For $j\ge2$ the matrix $M_{1j}$ contains $\lambda$ only in the diagonal positions of $A-\lambda I$ that are left in it, and there are just $n-2$ of them (the positions $(1,1)$ and $(j,j)$ are gone). Every term in the expansion of $\det M_{1j}$ is a product of $n-1$ entries, and at most $n-2$ of these entries contain $\lambda$. So $\det M_{1j}$ has degree at most $n-2$, and the sum over $j\ge2$ affects only the coefficients of $\lambda^{n-2}$ and lower. In the first product, the coefficient of $\lambda^n$ is $(-1)(-1)^{n-1}=(-1)^n$, and the coefficient of $\lambda^{n-1}$ is
+\[
+a_{11}(-1)^{n-1}+(-1)(-1)^{n-2}\operatorname{tr}A_{11}=(-1)^{n-1}\bigl(a_{11}+\operatorname{tr}A_{11}\bigr)=(-1)^{n-1}\operatorname{tr}A.
+\]
+This completes the induction. Finally, a polynomial of degree $n$ has at most $n$ roots, so by Theorem~\ref{thm:dettest} $A$ has at most $n$ eigenvalues.
+\end{proof}
+
+Theorem~\ref{thm:shape} gives a second proof that an $n\times n$ matrix has at most $n$ eigenvalues; the first was Theorem~\ref{5.1-thm:indep}. Notice that the $2\times2$ case reads
+\[
+p_A(\lambda)=\lambda^2-(\operatorname{tr}A)\,\lambda+\det A,
+\]
+which is the quickest way to write down the characteristic polynomial of a $2\times2$ matrix. In Example~\ref{ex:first}, $\operatorname{tr}A=8$ and $\det A=15$. \emph{Finding an eigenvalue is therefore finding a root of a polynomial.} Everything we know about roots now applies.
+
+\begin{kc}{A characteristic polynomial}{cpoly}
+Let $A=\begin{bmatrix}1&2\\2&-2\end{bmatrix}$. (a)~Find $\operatorname{tr}A$ and $\det A$, write down $p_A(\lambda)$ and factor it. (b)~Find the eigenvalues of $A$ and an eigenvector for each.
+\end{kc}
+
+\begin{proc}{Finding all eigenvalues and eigenspaces}{find}
+\begin{enumerate}[itemsep=1pt]
+  \item Write down $A-\lambda I$: subtract $\lambda$ from each diagonal entry and leave the other entries alone.
+  \item Compute $p_A(\lambda)=\det(A-\lambda I)$. For $2\times2$ use $\lambda^2-(\operatorname{tr}A)\lambda+\det A$; for larger matrices expand along a row or column with many zeros (Procedure~\ref{3.1-proc:strategy}).
+  \item Solve $p_A(\lambda)=0$. Its real roots are the eigenvalues; note the multiplicity of each root.
+  \item For each eigenvalue $\lambda_0$ row reduce $[\,A-\lambda_0 I\ \ \bv{0}\,]$ and read a basis of $E_{\lambda_0}$ from the free variables (Procedure~\ref{5.1-proc:eigspace}).
+  \item Check: each eigenvector $\bv{x}$ must satisfy $A\bv{x}=\lambda_0\bv{x}$, and each eigenvalue must have at least one free variable. A row reduction with no free variable means a mistake in step 2 or 3.
+\end{enumerate}
+\end{proc}
+
+\begin{exmp}{All eigenvalues and eigenspaces of a $3\times3$ matrix}{threeD}
+Let $A=\begin{bmatrix}-1&0&3\\-3&2&3\\0&0&2\end{bmatrix}$. The third row has two zeros, so expand $\det(A-\lambda I)$ along it:
+\[
+\det(A-\lambda I)=\begin{vmatrix}-1-\lambda&0&3\\-3&2-\lambda&3\\0&0&2-\lambda\end{vmatrix}=(2-\lambda)\begin{vmatrix}-1-\lambda&0\\-3&2-\lambda\end{vmatrix}=(2-\lambda)^2(-1-\lambda).
+\]
+So $p_A(\lambda)=-(\lambda-2)^2(\lambda+1)$, with roots $2$ (twice) and $-1$. For $\lambda=2$:
+\begin{align*}
+\begin{amat}{ccc|c}-3 & 0 & 3 & 0\\-3 & 0 & 3 & 0\\0 & 0 & 0 & 0\end{amat}
+&\rops{-\tfrac{1}{3}R_1}
+\begin{amat}{ccc|c}1 & 0 & -1 & 0\\-3 & 0 & 3 & 0\\0 & 0 & 0 & 0\end{amat}
+\rops{R_2+3R_1}
+\begin{amat}{ccc|c}1 & 0 & -1 & 0\\0 & 0 & 0 & 0\\0 & 0 & 0 & 0\end{amat}
+\end{align*}
+Here $x_2$ and $x_3$ are free and $x_1=x_3$, so $E_2=\Span\{(0,1,0),(1,0,1)\}$ and $\dim E_2=2$. For $\lambda=-1$:
+\begin{align*}
+\begin{amat}{ccc|c}0 & 0 & 3 & 0\\-3 & 3 & 3 & 0\\0 & 0 & 3 & 0\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|c}-3 & 3 & 3 & 0\\0 & 0 & 3 & 0\\0 & 0 & 3 & 0\end{amat}
+\rops{-\tfrac{1}{3}R_1}
+\begin{amat}{ccc|c}1 & -1 & -1 & 0\\0 & 0 & 3 & 0\\0 & 0 & 3 & 0\end{amat}
+\\[4pt]
+&\rops{\tfrac{1}{3}R_2}
+\begin{amat}{ccc|c}1 & -1 & -1 & 0\\0 & 0 & 1 & 0\\0 & 0 & 3 & 0\end{amat}
+\rops{R_1+R_2,\ R_3-3R_2}
+\begin{amat}{ccc|c}1 & -1 & 0 & 0\\0 & 0 & 1 & 0\\0 & 0 & 0 & 0\end{amat}
+\end{align*}
+Here $x_3=0$ and $x_2=x_1$, with $x_1$ free, so $E_{-1}=\Span\{(1,1,0)\}$ and $\dim E_{-1}=1$. Check: $A(1,0,1)=(-1+3,\ -3+3,\ 2)=(2,0,2)=2(1,0,1)$, $A(0,1,0)=(0,2,0)=2(0,1,0)$ and $A(1,1,0)=(-1,-1,0)=-(1,1,0)$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{A row of zeros makes the determinant easy}{rowzero}
+Let $B=\begin{bmatrix}2&-1&0\\-1&2&2\\0&0&2\end{bmatrix}$. Expanding along the third row,
+\[
+\det(B-\lambda I)=(2-\lambda)\begin{vmatrix}2-\lambda&-1\\-1&2-\lambda\end{vmatrix}=(2-\lambda)\bigl[(2-\lambda)^2-1\bigr]=(2-\lambda)(1-\lambda)(3-\lambda).
+\]
+The eigenvalues are $1$, $2$ and $3$. Three different eigenvalues for a $3\times3$ matrix: by Theorem~\ref{5.1-thm:indep} there is a basis of eigenvectors, one from each eigenspace. For $\lambda=2$:
+\begin{align*}
+\begin{amat}{ccc|c}0 & -1 & 0 & 0\\-1 & 0 & 2 & 0\\0 & 0 & 0 & 0\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|c}-1 & 0 & 2 & 0\\0 & -1 & 0 & 0\\0 & 0 & 0 & 0\end{amat}
+\rops{-R_1}
+\begin{amat}{ccc|c}1 & 0 & -2 & 0\\0 & -1 & 0 & 0\\0 & 0 & 0 & 0\end{amat}
+\\[4pt]
+&\rops{-R_2}
+\begin{amat}{ccc|c}1 & 0 & -2 & 0\\0 & 1 & 0 & 0\\0 & 0 & 0 & 0\end{amat}
+\end{align*}
+so $E_2=\Span\{(2,0,1)\}$. Check: $B(2,0,1)=(4,\ -2+2,\ 2)=(4,0,2)=2(2,0,1)$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{A sparse $4\times4$ matrix}{fourby}
+Let $F=\begin{bmatrix}-2&0&0&0\\0&1&0&3\\0&0&0&1\\0&0&1&0\end{bmatrix}$. Expand along the first row, which has only one nonzero entry, and then along the first column of what is left:
+\[
+\det(F-\lambda I)=(-2-\lambda)\begin{vmatrix}1-\lambda&0&3\\0&-\lambda&1\\0&1&-\lambda\end{vmatrix}=(-2-\lambda)(1-\lambda)\bigl(\lambda^2-1\bigr).
+\]
+Since $\lambda^2-1=(\lambda-1)(\lambda+1)$, we get $p_F(\lambda)=(\lambda+2)(\lambda-1)^2(\lambda+1)$. The eigenvalues are $-2$, $1$ and $-1$, and the eigenvalue $1$ is a root twice. Check with Theorem~\ref{thm:shape}: the constant term is $p_F(0)=2\cdot1\cdot1=2$ and $\det F=(-2)\cdot\det\begin{bmatrix}1&0&3\\0&0&1\\0&1&0\end{bmatrix}=(-2)(-1)=2$. \ $\checkmark$
+\end{exmp}
+
+\begin{kc}{Reading a polynomial}{readpoly}
+A $4\times4$ matrix has characteristic polynomial $p(\lambda)=\lambda(\lambda-1)(\lambda+3)^2$. (a)~What are its eigenvalues? (b)~Is the matrix invertible? (c)~What is $\det A$?
+\end{kc}
+
+\subsection*{Multiplicity}
+
+\begin{defn}{Multiplicity of an eigenvalue}{mult}
+The \emph{multiplicity} of an eigenvalue $\lambda_0$ of $A$ is its multiplicity as a root of $p_A$: the largest $k$ such that $(\lambda-\lambda_0)^k$ is a factor of $p_A(\lambda)$. An eigenvalue of multiplicity $1$ is called \emph{simple}.
+\end{defn}
+
+In Example~\ref{ex:threeD} the eigenvalue $2$ has multiplicity $2$ and $-1$ is simple; in Example~\ref{ex:fourby} the eigenvalue $1$ has multiplicity $2$ and the others are simple. Since $\deg p_A=n$, the multiplicities of the real roots add up to at most $n$, with equality exactly when $p_A$ factors completely into real linear factors.
+
+\begin{exmp}{Multiplicities from a given polynomial}{given}
+A $6\times6$ matrix has characteristic polynomial $p(\lambda)=(\lambda-4)(\lambda-2)^3(\lambda+1)^2$. The roots are $4$, $2$ and $-1$, so these are the eigenvalues, with multiplicities $1$, $3$ and $2$. The multiplicities add up to $1+3+2=6=n$, so there are no other roots, not even complex ones. The matrix is invertible, since $0$ is not a root; and $p(0)=(-4)(-2)^3(1)^2=32=\det A$ by Theorem~\ref{thm:shape}. Each eigenvalue has at least one eigenvector, so each eigenspace has dimension at least $1$. What the polynomial does \emph{not} tell us is the dimension of each eigenspace.
+\end{exmp}
+
+\begin{exmp}{Multiplicity is not the dimension of the eigenspace}{multdim}
+The matrices $2I=\begin{bmatrix}2&0\\0&2\end{bmatrix}$ and $J=\begin{bmatrix}2&1\\0&2\end{bmatrix}$ are triangular, so both have $p(\lambda)=(\lambda-2)^2$: the eigenvalue $2$ has multiplicity $2$ in each. But $2I-2I=0$ has no pivots, so for the first matrix $E_2=\R^2$ and $\dim E_2=2$; while
+\[
+J-2I=\begin{bmatrix}0&1\\0&0\end{bmatrix}
+\]
+has one pivot, so $x_1$ is free and $x_2=0$: $E_2=\Span\{(1,0)\}$ and $\dim E_2=1$. In Example~\ref{ex:threeD}, the double eigenvalue $2$ gives a two-dimensional eigenspace, but the triangular matrix of Example~\ref{5.1-ex:tri} has a double eigenvalue $2$ with a one-dimensional eigenspace. The polynomial does not decide, and the rows of $A-\lambda_0I$ must be examined each time.
+\end{exmp}
+
+\begin{think}{Reading the two numbers}{twonumbers}
+(a)~For the eigenvalue $2$ of $J$ above, which number is larger, the multiplicity or $\dim E_2$? (b)~Could the dimension of an eigenspace ever be larger than the multiplicity? Test your guess on all the examples of this section; do not try to prove it yet.
+\end{think}
+
+\begin{kc}{Same polynomial, different eigenspaces}{samepoly}
+Two $3\times3$ matrices both have characteristic polynomial $-(\lambda-3)^2(\lambda+1)$. Find $\dim E_3$ for $M_1=\operatorname{diag}(3,3,-1)$ and for $M_2=\begin{bmatrix}3&1&0\\0&3&0\\0&0&-1\end{bmatrix}$, and confirm that both have this characteristic polynomial.
+\end{kc}
+
+\subsection*{No real roots; roots that depend on a parameter}
+
+\begin{exmp}{A real matrix without real eigenvalues}{noreal}
+Let $R=\begin{bmatrix}2&-1\\1&2\end{bmatrix}$. Here $\operatorname{tr}R=4$ and $\det R=5$, so $p_R(\lambda)=\lambda^2-4\lambda+5$. By the quadratic formula the roots are $\frac{4\pm\sqrt{16-20}}{2}=2\pm\sqrt{-1}$, which are not real. So $R$ has no real eigenvalue and no eigenvector in $\R^2$: it turns every nonzero vector off its own line. Indeed $R=\sqrt5\begin{bmatrix}2/\sqrt5&-1/\sqrt5\\1/\sqrt5&2/\sqrt5\end{bmatrix}$ is a rotation through an angle $\theta$ with $\cos\theta=2/\sqrt5$, followed by a stretch by $\sqrt5$, and no line through the origin is kept fixed by a rotation through $0<\theta<\pi$.
+\end{exmp}
+
+The roots $2\pm\sqrt{-1}$ are \emph{complex numbers}; we make them respectable later in this section. For now, a real matrix may have fewer than $n$ real eigenvalues. One fact is worth remembering: a polynomial of odd degree has at least one real root (its graph goes from below the axis to above it, so it crosses the axis by the Intermediate Value Theorem of calculus). Hence \emph{a real matrix of odd size always has a real eigenvalue.}
+
+\begin{exmp}{How many real eigenvalues does $A_h$ have?}{param}
+Let $A_h=\begin{bmatrix}1&h\\-4&5\end{bmatrix}$. Then $\operatorname{tr}A_h=6$ and $\det A_h=5+4h$, so $p(\lambda)=\lambda^2-6\lambda+5+4h$. The discriminant is $36-4(5+4h)=16-16h=16(1-h)$. If $h<1$ it is positive: two different real eigenvalues $3\pm2\sqrt{1-h}$. If $h=1$ it is zero: $p(\lambda)=(\lambda-3)^2$, the single eigenvalue $3$ of multiplicity $2$. If $h>1$ it is negative: no real eigenvalue. For $h=1$:
+\begin{align*}
+\begin{amat}{cc|c}-2 & 1 & 0\\-4 & 2 & 0\end{amat}
+&\rops{-\tfrac{1}{2}R_1}
+\begin{amat}{cc|c}1 & -\tfrac{1}{2} & 0\\-4 & 2 & 0\end{amat}
+\rops{R_2+4R_1}
+\begin{amat}{cc|c}1 & -\tfrac{1}{2} & 0\\0 & 0 & 0\end{amat}
+\end{align*}
+so $x_2$ is free, $x_1=\tfrac12x_2$, and $E_3=\Span\{(1,2)\}$: the double eigenvalue has a one-dimensional eigenspace.
+\end{exmp}
+
+\begin{think}{Odd degree}{odd}
+(a)~Give a $2\times2$ real matrix with no real eigenvalue other than Example~\ref{ex:noreal}. (b)~Why can no $3\times3$ real matrix be like that? (c)~Can a $4\times4$ real matrix have no real eigenvalue? Think of a matrix built from two copies of your $2\times2$ matrix.
+\end{think}
+
+\begin{kc}{Count the eigenvalues}{count}
+(a)~How many real eigenvalues can a $5\times5$ matrix have, at least and at most? (b)~How many can a $4\times4$ matrix have, at least and at most?
+\end{kc}
+
+\subsection*{Complex eigenvalues}
+
+The roots $2\pm\sqrt{-1}$ of Example~\ref{ex:noreal} are perfectly good numbers once we allow $i$ with $i^2=-1$. A \emph{complex number} is $z=a+bi$ with $a,b$ real; $a$ is its real part and $b$ its imaginary part. Complex numbers are added and multiplied by the usual rules together with $i^2=-1$; for example $(2+i)(1-3i)=2-6i+i-3i^2=5-5i$. The \emph{conjugate} of $z=a+bi$ is $\overline{z}=a-bi$, and $z\overline{z}=a^2+b^2$ is real and not negative. The conjugate of a sum is the sum of the conjugates and the conjugate of a product is the product of the conjugates, as one checks by multiplying out. A real number is a complex number with $b=0$, so $\overline{z}=z$ exactly when $z$ is real.
+
+The space $\C^n$ consists of vectors with $n$ complex entries, and matrices act on them by the same rule as before. A complex number $\lambda$ is a \emph{complex eigenvalue} of $A$ if $A\bv{x}=\lambda\bv{x}$ for some nonzero $\bv{x}$ in $\C^n$, and $\bv{x}$ is then a \emph{complex eigenvector}. Everything in this section and the last uses only the arithmetic rules (adding, multiplying, solving a system, determinants), and those rules are the same for complex numbers. So the determinant test (Theorem~\ref{thm:dettest}) and Procedure~\ref{proc:find} work unchanged: the complex eigenvalues of $A$ are exactly the complex roots of $p_A$.
+
+How many roots are there? For $n=2$ the quadratic formula answers completely: $\lambda^2-(\operatorname{tr}A)\lambda+\det A$ has the two roots $\frac{\operatorname{tr}A\pm\sqrt{(\operatorname{tr}A)^2-4\det A}}{2}$, which are complex numbers (conjugates of each other when the discriminant is negative and $A$ is real). For every $n$ one uses the \emph{Fundamental Theorem of Algebra}: a polynomial of degree $n$ with complex coefficients factors as $c(\lambda-\lambda_1)\cdots(\lambda-\lambda_n)$ with complex $\lambda_i$. Its proof is beyond this course, so we quote it without proof; every result below is proved for $2\times2$ matrices without it, and for larger sizes it is used only to know that the factorization exists.
+
+\begin{exmp}{Complex eigenvalues and eigenvectors of $R$}{complex}
+For $R=\begin{bmatrix}2&-1\\1&2\end{bmatrix}$ we found $p_R(\lambda)=\lambda^2-4\lambda+5$ with roots $2+i$ and $2-i$. For $\lambda=2+i$,
+\[
+R-(2+i)I=\begin{bmatrix}-i&-1\\1&-i\end{bmatrix}.
+\]
+The first row says $-ix_1-x_2=0$, so $x_2=-ix_1$; the second row says $x_1-ix_2=x_1-i(-ix_1)=x_1+i^2x_1=0$, which is true, so the second row adds nothing. Taking $x_1=1$ gives the eigenvector $\bv{v}=(1,-i)$. Check: $R\bv{v}=(2\cdot1+(-1)(-i),\ 1\cdot1+2(-i))=(2+i,\ 1-2i)$ and $(2+i)\bv{v}=(2+i,\ -2i-i^2)=(2+i,\ 1-2i)$. The two agree.
+\end{exmp}
+
+\begin{thm}{Complex eigenvalues of a real matrix come in conjugate pairs}{conj}
+Let $A$ be a real $n\times n$ matrix. If $\lambda$ is an eigenvalue of $A$ with eigenvector $\bv{x}$ in $\C^n$, then $\overline{\lambda}$ is an eigenvalue of $A$ with eigenvector $\overline{\bv{x}}$ (the vector whose entries are the conjugates of those of $\bv{x}$). In particular a non-real eigenvalue of a real matrix is never alone.
+\end{thm}
+
+\begin{proof}
+Start from $A\bv{x}=\lambda\bv{x}$ and conjugate every entry of both sides. The $i$th entry of $A\bv{x}$ is $\sum_j a_{ij}x_j$, and its conjugate is $\sum_j\overline{a_{ij}}\,\overline{x_j}$ because conjugation respects sums and products. Since $A$ is real, $\overline{a_{ij}}=a_{ij}$, so the conjugate of $A\bv{x}$ is $A\overline{\bv{x}}$. The conjugate of $\lambda\bv{x}$ is $\overline{\lambda}\,\overline{\bv{x}}$. Hence $A\overline{\bv{x}}=\overline{\lambda}\,\overline{\bv{x}}$. Finally $\overline{\bv{x}}\neq\bv{0}$, because $\bv{x}\neq\bv{0}$ and a number is zero exactly when its conjugate is. So $\overline{\bv{x}}$ is an eigenvector for $\overline{\lambda}$.
+\end{proof}
+
+In Example~\ref{ex:complex} this gives the eigenvector $\overline{\bv{v}}=(1,i)$ for the eigenvalue $2-i$ with no further work. The theorem needs $A$ to be real: for $\begin{bmatrix}i&0\\0&1\end{bmatrix}$ the eigenvalues are $i$ and $1$, and $-i$ is not an eigenvalue.
+
+\begin{exmp}{A $3\times3$ matrix with one real and two complex eigenvalues}{complexthree}
+Let $C=\begin{bmatrix}3&0&0\\0&1&-2\\0&2&1\end{bmatrix}$. Expanding along the first row, $p_C(\lambda)=(3-\lambda)\det\begin{bmatrix}1-\lambda&-2\\2&1-\lambda\end{bmatrix}=(3-\lambda)\bigl((1-\lambda)^2+4\bigr)$. The roots are $3$ and the roots of $(\lambda-1)^2=-4$, namely $1\pm2i$. For $\lambda=1+2i$,
+\[
+C-(1+2i)I=\begin{bmatrix}2-2i&0&0\\0&-2i&-2\\0&2&-2i\end{bmatrix}.
+\]
+The first row forces $x_1=0$ (as $2-2i\neq0$). The second row gives $x_3=-ix_2$, and the third row, $2x_2-2ix_3=2x_2-2i(-ix_2)=2x_2+2i^2x_2=0$, is then automatic. So $\bv{v}=(0,1,-i)$ is an eigenvector. Check: $C\bv{v}=(0,\ 1+2i,\ 2-i)$ and $(1+2i)\bv{v}=(0,\ 1+2i,\ -i+2)$. By Theorem~\ref{thm:conj}, $(0,1,i)$ is an eigenvector for $1-2i$. An eigenvector for $3$ is $(1,0,0)$.
+\end{exmp}
+
+\begin{kc}{Complex eigenvalues}{cplx}
+Let $A=\begin{bmatrix}1&-2\\2&1\end{bmatrix}$. (a)~Find the characteristic polynomial and the eigenvalues. (b)~Find an eigenvector for $1+2i$. (c)~Use Theorem~\ref{thm:conj} to write down an eigenvector for $1-2i$.
+\end{kc}
+
+\begin{think}{Why real?}{conjpair}
+(a)~Where does the proof of Theorem~\ref{thm:conj} use that $A$ is real? (b)~Can a real $2\times2$ matrix have the eigenvalues $1$ and $i$?
+\end{think}
+
+\subsection*{Similar matrices}
+
+Row reduction changes a matrix without keeping its eigenvalues (we will see an example in a moment). There is, however, a way of changing a matrix that \emph{does} keep them.
+
+\begin{defn}{Similar matrices}{similar}
+Two $n\times n$ matrices $A$ and $B$ are \emph{similar} if there is an invertible $n\times n$ matrix $P$ with $B=P^{-1}AP$ (equivalently, $A=PBP^{-1}$).
+\end{defn}
+
+\begin{thm}{Similar matrices have the same characteristic polynomial}{similar}
+Let $B=P^{-1}AP$ with $P$ invertible. Then:
+\begin{enumerate}[label=(\alph*),itemsep=1pt]
+  \item $p_B(\lambda)=p_A(\lambda)$ for every $\lambda$. Hence $A$ and $B$ have the same eigenvalues with the same multiplicities, the same determinant and the same trace.
+  \item If $\bv{x}$ is an eigenvector of $B$ for $\lambda$, then $P\bv{x}$ is an eigenvector of $A$ for the same $\lambda$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+(a)~Since $P^{-1}(\lambda I)P=\lambda P^{-1}P=\lambda I$, we can write
+\[
+B-\lambda I=P^{-1}AP-P^{-1}(\lambda I)P=P^{-1}(A-\lambda I)P.
+\]
+Take determinants and use the product rule (Theorem~\ref{3.2-thm:product}) and $\det P^{-1}=1/\det P$ (Theorem~\ref{3.2-thm:inverse}):
+\[
+\det(B-\lambda I)=\det(P^{-1})\det(A-\lambda I)\det(P)=\frac{1}{\det P}\det(A-\lambda I)\det P=\det(A-\lambda I).
+\]
+So $p_B=p_A$. Equal polynomials have equal roots, multiplicities, constant terms and $\lambda^{n-1}$-coefficients, which by Theorem~\ref{thm:shape} are the determinant and the trace.
+
+(b)~Let $B\bv{x}=\lambda\bv{x}$ with $\bv{x}\neq\bv{0}$. Then $P^{-1}AP\bv{x}=\lambda\bv{x}$; multiply on the left by $P$ to get $A(P\bv{x})=\lambda P\bv{x}$. And $P\bv{x}\neq\bv{0}$, because $P$ is invertible and $\bv{x}\neq\bv{0}$.
+\end{proof}
+
+\begin{think}{Same eigenvalues, different eigenvectors}{simev}
+In Theorem~\ref{thm:similar}(b) the eigenvector of $A$ is $P\bv{x}$, not $\bv{x}$. (a)~Can two similar matrices have the same eigenvectors? (b)~If $\bv{x}$ is an eigenvector of $A$, what is an eigenvector of $B=P^{-1}AP$ for the same $\lambda$?
+\end{think}
+
+\begin{exmp}{Two similar matrices}{simex}
+Let $A=\begin{bmatrix}2&1\\-3&6\end{bmatrix}$ of Example~\ref{ex:first} and $P=\begin{bmatrix}1&1\\0&1\end{bmatrix}$, so $P^{-1}=\begin{bmatrix}1&-1\\0&1\end{bmatrix}$. Then
+\[
+AP=\begin{bmatrix}2&3\\-3&3\end{bmatrix},\qquad B=P^{-1}AP=\begin{bmatrix}1&-1\\0&1\end{bmatrix}\begin{bmatrix}2&3\\-3&3\end{bmatrix}=\begin{bmatrix}5&0\\-3&3\end{bmatrix}.
+\]
+$B$ is triangular, so its eigenvalues are $5$ and $3$: the same as $A$ (Theorem~\ref{thm:similar}(a)); the trace is $8$ and the determinant is $15$ for both. Eigenvectors: $B(0,1)=(0,3)=3(0,1)$, and $P(0,1)=(1,1)$ is the eigenvector of $A$ for $3$ found in Example~\ref{ex:first}. Also $B(2,-3)=(10,-15)=5(2,-3)$ and $P(2,-3)=(-1,-3)=-(1,3)$, an eigenvector of $A$ for $5$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{Same polynomial, not similar}{notsim}
+The matrices $2I$ and $J=\begin{bmatrix}2&1\\0&2\end{bmatrix}$ of Example~\ref{ex:multdim} have the same characteristic polynomial $(\lambda-2)^2$. If $J=P^{-1}(2I)P$ for some invertible $P$, then $J=2P^{-1}IP=2P^{-1}P=2I$, which is false. So they are not similar: \emph{the converse of Theorem~\ref{thm:similar}(a) is false.} The theorem is a test with one possible verdict: if the characteristic polynomials, the traces or the determinants differ, the matrices are not similar; if they agree, nothing is decided.
+\end{exmp}
+
+\begin{think}{Equal polynomials}{conv}
+(a)~Why do $2I$ and $J$ have eigenspaces of different dimensions even though both have the eigenvalue $2$ with multiplicity $2$? (b)~Theorem~\ref{thm:similar}(b) says that an eigenvector of $B$ gives an eigenvector of $A$. Why does that make the dimensions of corresponding eigenspaces equal for similar matrices?
+\end{think}
+
+\begin{exmp}{Row operations do not keep the eigenvalues}{rowops}
+The matrix $A=\begin{bmatrix}2&1\\-3&6\end{bmatrix}$ has eigenvalues $3$ and $5$ (Example~\ref{ex:first}), but it is invertible, so it row reduces to $I$, whose only eigenvalue is $1$. A row operation replaces $A$ by $EA$ with $E$ an elementary matrix: the multiplication happens on \emph{one side only}. For similarity we multiply by $P^{-1}$ on one side and by $P$ on the other, and then $B-\lambda I=P^{-1}(A-\lambda I)P$ factors; for $EA-\lambda I$ no such factorization exists. So the eigenvalues must be computed for the matrix itself, never for an echelon form of it.
+\end{exmp}
+
+\begin{think}{Why not just row reduce?}{rowops}
+(a)~Use the example above to explain why $\det(EA-\lambda I)$ is not $\det(A-\lambda I)$. (b)~Which operation on $A$ gives a matrix $B$ that is similar to $A$: replacing $A$ by $EA$, or replacing $A$ by $EAE^{-1}$?
+\end{think}
+
+\begin{kc}{Similar matrices}{sim}
+The $2\times2$ matrices $A$ and $B$ are similar, and $A$ has eigenvalues $1$ and $4$. (a)~What are the trace and determinant of $B$? (b)~What are the eigenvalues of $B$? (c)~Is $B$ invertible?
+\end{kc}
+
+\subsection*{Determinant and trace from the eigenvalues}
+
+\begin{thm}{Product and sum of the eigenvalues}{detprod}
+Let $A$ be $n\times n$ and suppose $p_A$ splits into linear factors with real or complex $\lambda_i$ (over the complex numbers this always happens, by the Fundamental Theorem of Algebra and, for $n=2$, by the quadratic formula), $p_A(\lambda)=(-1)^n(\lambda-\lambda_1)(\lambda-\lambda_2)\cdots(\lambda-\lambda_n)$, where the eigenvalues are listed according to their multiplicity. Then
+\[
+\det A=\lambda_1\lambda_2\cdots\lambda_n\qquad\text{and}\qquad\operatorname{tr}A=\lambda_1+\lambda_2+\cdots+\lambda_n.
+\]
+\end{thm}
+
+\begin{proof}
+\emph{Determinant.} Put $\lambda=0$ in the factorization: $p_A(0)=(-1)^n(-\lambda_1)(-\lambda_2)\cdots(-\lambda_n)=(-1)^n(-1)^n\lambda_1\cdots\lambda_n=\lambda_1\cdots\lambda_n$. By Theorem~\ref{thm:shape}, $p_A(0)=\det A$.
+
+\emph{Trace.} When the product $(\lambda-\lambda_1)\cdots(\lambda-\lambda_n)$ is multiplied out, a term of degree $n-1$ arises by choosing $\lambda$ from $n-1$ of the factors and $-\lambda_i$ from the remaining one. So the coefficient of $\lambda^{n-1}$ in $p_A$ is $(-1)^n\bigl(-(\lambda_1+\cdots+\lambda_n)\bigr)=(-1)^{n-1}(\lambda_1+\cdots+\lambda_n)$. By Theorem~\ref{thm:shape} this coefficient is also $(-1)^{n-1}\operatorname{tr}A$. Compare.
+\end{proof}
+
+The matrix $R$ of Example~\ref{ex:noreal} has $\det R=5$ and $\operatorname{tr}R=4$ but no real eigenvalues. Its complex eigenvalues $2+i$ and $2-i$ have product $(2+i)(2-i)=5$ and sum $4$, exactly as the theorem says. So the theorem is true for every matrix once complex eigenvalues are allowed; it is only the \emph{real} eigenvalues that may be too few to see it.
+
+\begin{exmp}{The third eigenvalue}{third}
+A $3\times3$ matrix $A$ has three real eigenvalues, counted with multiplicity. Two of them are $2$ and $-3$, and $\operatorname{tr}A=4$. By Theorem~\ref{thm:detprod}, $2+(-3)+\lambda_3=4$, so $\lambda_3=5$. Then $\det A=2\cdot(-3)\cdot5=-30$, so $A$ is invertible (Theorem~\ref{3.2-thm:invertible}). We know none of the entries of $A$, yet this much follows from the three numbers.
+\end{exmp}
+
+\begin{exmp}{A $2\times2$ matrix from its trace and determinant}{recover}
+Only $\operatorname{tr}A$ and $\det A$ are needed to write $p_A(\lambda)=\lambda^2-(\operatorname{tr}A)\lambda+\det A$. (a)~$\operatorname{tr}A=5$, $\det A=6$: $\lambda^2-5\lambda+6=(\lambda-2)(\lambda-3)$, eigenvalues $2$ and $3$. (b)~$\operatorname{tr}A=4$, $\det A=4$: $(\lambda-2)^2$, the single eigenvalue $2$ of multiplicity $2$. (c)~$\operatorname{tr}A=2$, $\det A=5$: the discriminant is $4-20<0$, so there is no real eigenvalue. In (a) and (b) the roots add up to the trace and multiply to the determinant, as Theorem~\ref{thm:detprod} says.
+\end{exmp}
+
+\begin{kc}{Trace and determinant}{td}
+A $2\times2$ matrix has trace $6$ and determinant $8$. Find its eigenvalues.
+\end{kc}
+
+\begin{thm}{The Invertible Matrix Theorem, continued}{imtext}
+For an $n\times n$ matrix $A$ the following statements are equivalent.
+\begin{enumerate}[label=(\alph*),itemsep=1pt]
+  \item $A$ is invertible.
+  \item $\det A\neq0$.
+  \item $0$ is not an eigenvalue of $A$.
+  \item The constant term of $p_A(\lambda)$ is not $0$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+(a)$\iff$(b) is Theorem~\ref{3.2-thm:invertible}. (a)$\iff$(c) is the last sentence of Theorem~\ref{5.1-thm:test}. (b)$\iff$(d): the constant term of $p_A$ is $p_A(0)=\det A$ by Theorem~\ref{thm:shape}.
+\end{proof}
+
+\begin{exmp}{When is a matrix with a parameter singular?}{singpar}
+Let $W_c=\begin{bmatrix}1&c\\2&4\end{bmatrix}$. Then $\det W_c=4-2c$ and $\operatorname{tr}W_c=5$. By Theorem~\ref{thm:imtext}, $W_c$ is singular exactly for $c=2$, and then $0$ is an eigenvalue. The other eigenvalue is found by the trace: $0+\lambda_2=5$, so $\lambda_2=5$. Check: $p(\lambda)=\lambda^2-5\lambda=\lambda(\lambda-5)$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Summary}
+\begin{itemize}
+  \item \textbf{Determinant test.} $\lambda$ is an eigenvalue of $A$ exactly when $\det(A-\lambda I)=0$. The characteristic polynomial $p_A(\lambda)=\det(A-\lambda I)$ has degree $n$ (Theorem~\ref{thm:shape}); its real roots are the eigenvalues, so there are at most $n$ of them, and an odd-size real matrix has at least one.
+  \item \textbf{$2\times2$.} $p_A(\lambda)=\lambda^2-(\operatorname{tr}A)\lambda+\det A$. In general $p_A(0)=\det A$.
+  \item \textbf{Procedure.} Form $A-\lambda I$, expand the determinant (use zeros), factor, then row reduce $[\,A-\lambda_0I\ \ \bv{0}\,]$ for each root (Procedure~\ref{proc:find}).
+  \item \textbf{Multiplicity.} The multiplicity of an eigenvalue is its multiplicity as a root. It is not the dimension of the eigenspace: $2I$ and $J$ show that the same polynomial can go with different dimensions.
+  \item \textbf{Similarity.} If $B=P^{-1}AP$, then $A$ and $B$ have the same characteristic polynomial, hence the same eigenvalues, multiplicities, determinant and trace; eigenvectors correspond by $\bv{x}\mapsto P\bv{x}$. The converse is false. Row operations do not preserve eigenvalues.
+  \item \textbf{Product and sum.} When $p_A$ splits into linear factors (always, over the complex numbers), $\det A$ is the product and $\operatorname{tr}A$ the sum of the eigenvalues (Theorem~\ref{thm:detprod}), and $A$ is invertible exactly when $0$ is not an eigenvalue (Theorem~\ref{thm:imtext}).
+  \item \textbf{No real roots, complex eigenvalues.} A real matrix such as a rotation with a stretch may have no real eigenvalue. Over the complex numbers the roots of $p_A$ are the complex eigenvalues, with eigenvectors in $\C^n$ found by the same procedure; for a real matrix the non-real ones come in conjugate pairs (Theorem~\ref{thm:conj}), the eigenvector for $\overline{\lambda}$ being $\overline{\bv{x}}$.
+\end{itemize}
+
+\subsection*{Questions to think about}
+\begin{enumerate}
+  \item Let $A$ be a $2\times2$ matrix with $A^2=0$. Show that $\det A=0$ and $\operatorname{tr}A=0$.
+  \item Which $2\times2$ matrices are similar to the identity matrix $I$?
+  \item For $A=\begin{bmatrix}a&b\\c&d\end{bmatrix}$ compare $p_A$ and $p_{A\T}$. Do $A$ and $A\T$ always have the same eigenvectors?
+\end{enumerate}
+
+\subsection*{Example bank}
+The thirteen examples below add problem types that the worked examples above do not cover: the trace and determinant shortcut with its eigenvectors, a determinant expanded down a column and along a row of a $4\times4$ block matrix, reading a polynomial for a $5\times5$ matrix, a parameter that decides the dimension of an eigenspace, complex eigenvalues of a real matrix, finding eigenvalues from the trace, deciding whether matrices are similar, and three short proofs.
+
+\textbf{What is in this bank.}
+\begin{itemize}
+  \item \textbf{Bank A, characteristic polynomial and eigenvalues:} Example~\ref{ex:b-twobytwo} (the $2\times2$ shortcut, with eigenvectors), Example~\ref{ex:b-expcol} (expanding down a column) and Example~\ref{ex:b-block4} (a $4\times4$ matrix with a double eigenvalue and its eigenspace).
+  \item \textbf{Bank B, multiplicity:} Example~\ref{ex:b-readpoly} (what a $5\times5$ polynomial tells and does not tell) and Example~\ref{ex:b-dimparam} (a parameter that decides the dimension of an eigenspace).
+  \item \textbf{Bank C, trace and determinant:} Example~\ref{ex:b-thirdeig} (eigenvalues from the trace and the determinant) and Example~\ref{ex:b-recover} (a $2\times2$ matrix with an unknown entry).
+  \item \textbf{Bank D, real roots, complex roots and similarity:} Example~\ref{ex:b-nrparam} (how many real eigenvalues, depending on a parameter), Example~\ref{ex:b-cplx} (complex eigenvalues and eigenvectors, and the rotation-with-stretch form) and Example~\ref{ex:b-simcheck} (which pairs of matrices can be similar).
+  \item \textbf{Bank E, proofs:} Example~\ref{ex:b-ptranspose} (beginner: $A$ and $A\T$), Example~\ref{ex:b-simdet} (beginner: similar matrices and invertibility) and Example~\ref{ex:b-abba} (intermediate: $AB$ and $BA$).
+\end{itemize}
+
+\subsection*{Bank A: Characteristic polynomial and eigenvalues}
+\begin{exmp}{The $2\times2$ shortcut, with eigenvectors}{b-twobytwo}
+Find the eigenvalues of $M=\begin{bmatrix}3&2\\1&4\end{bmatrix}$ and an eigenvector for each.
+
+\textbf{Solution.} For a $2\times2$ matrix we do not need to expand a determinant: $p_M(\lambda)=\lambda^2-(\operatorname{tr}M)\lambda+\det M$. Here $\operatorname{tr}M=3+4=7$ and $\det M=12-2=10$, so $p_M(\lambda)=\lambda^2-7\lambda+10=(\lambda-5)(\lambda-2)$. The eigenvalues are $5$ and $2$.
+
+For $\lambda=5$: $M-5I=\begin{bmatrix}-2&2\\1&-1\end{bmatrix}$. Both rows say $x_1=x_2$, so $x_2$ is free and $(1,1)$ is an eigenvector: $M(1,1)=(5,5)=5(1,1)$. For $\lambda=2$: $M-2I=\begin{bmatrix}1&2\\1&2\end{bmatrix}$; both rows say $x_1=-2x_2$, so $(-2,1)$ is an eigenvector: $M(-2,1)=(-6+2,\ -2+4)=(-4,2)=2(-2,1)$. The two rows of $M-\lambda I$ must be proportional when $\lambda$ is an eigenvalue of a $2\times2$ matrix (otherwise the matrix would be invertible), which is a quick check that the eigenvalue is right.
+\end{exmp}
+
+\begin{exmp}{Expanding down a column}{b-expcol}
+Find the eigenvalues of $X=\begin{bmatrix}-1&1&2\\0&0&-2\\0&1&3\end{bmatrix}$ and an eigenvector for the eigenvalue $1$.
+
+\textbf{Solution.} The first column of $X-\lambda I$ is $(-1-\lambda,0,0)$, so expand down that column: only one term survives.
+\[
+\det(X-\lambda I)=(-1-\lambda)\begin{vmatrix}-\lambda&-2\\1&3-\lambda\end{vmatrix}=(-1-\lambda)\bigl[-\lambda(3-\lambda)+2\bigr]=(-1-\lambda)(\lambda^2-3\lambda+2).
+\]
+Since $\lambda^2-3\lambda+2=(\lambda-1)(\lambda-2)$, the roots are $-1$, $1$ and $2$. For $\lambda=1$: $X-I=\begin{bmatrix}-2&1&2\\0&-1&-2\\0&1&2\end{bmatrix}$. The last two rows say $x_2=-2x_3$; the first row then gives $-2x_1-2x_3+2x_3=0$, so $x_1=0$. With $x_3=1$ the eigenvector is $(0,-2,1)$. Check: $X(0,-2,1)=(-2+2,\ -2,\ -2+3)=(0,-2,1)$. \ $\checkmark$ The roots add up to $2=\operatorname{tr}X=-1+0+3$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{A $4\times4$ block matrix}{b-block4}
+Let $Y=\begin{bmatrix}1&1&0&2\\2&0&0&-2\\0&0&-2&0\\0&0&0&-2\end{bmatrix}$. Find $p_Y$, the eigenvalues, and $\dim E_{-2}$.
+
+\textbf{Solution.} Expand $\det(Y-\lambda I)$ along the last row, which has one nonzero entry, and then along what is now the last row again:
+\[
+\det(Y-\lambda I)=(-2-\lambda)(-2-\lambda)\begin{vmatrix}1-\lambda&1\\2&-\lambda\end{vmatrix}=(\lambda+2)^2\bigl(\lambda^2-\lambda-2\bigr)=(\lambda+2)^2(\lambda-2)(\lambda+1).
+\]
+The eigenvalues are $2$, $-1$ and $-2$, and $-2$ has multiplicity $2$. For the dimension of $E_{-2}$ we need the rank of
+\[
+Y+2I=\begin{bmatrix}3&1&0&2\\2&2&0&-2\\0&0&0&0\\0&0&0&0\end{bmatrix}.
+\]
+The first two rows are not proportional, so the rank is $2$ and there are $4-2=2$ free variables: $\dim E_{-2}=2$, equal to the multiplicity. Check the trace: $2+(-1)+(-2)+(-2)=-3=1+0-2-2$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Bank B: Multiplicity}
+\begin{exmp}{What a polynomial tells and does not tell}{b-readpoly}
+A $5\times5$ matrix has characteristic polynomial $p(\lambda)=-\lambda^2(\lambda-3)(\lambda+2)^2$. State everything that follows about the eigenvalues, the invertibility, the determinant and the trace.
+
+\textbf{Solution.} The roots are $0$ (multiplicity $2$), $3$ (multiplicity $1$) and $-2$ (multiplicity $2$); the multiplicities add up to $5$, so all roots are real and they are the eigenvalues. Since $0$ is an eigenvalue, the matrix is not invertible and $\det A=0$ (Theorem~\ref{thm:imtext}); this agrees with $p(0)=0$. By Theorem~\ref{thm:detprod}, $\operatorname{tr}A=0+0+3+(-2)+(-2)=-1$. What does not follow: the dimensions of the eigenspaces. Each is at least $1$, since each is an eigenvalue, but $\dim E_0$ could be $1$ or $2$ as far as the polynomial is concerned.
+\end{exmp}
+
+\begin{exmp}{A parameter that decides the dimension}{b-dimparam}
+Let $K_c=\begin{bmatrix}1&0&c\\0&-2&0\\0&0&1\end{bmatrix}$. Find the eigenvalues and, for each $c$, $\dim E_1$.
+
+\textbf{Solution.} The matrix is triangular, so the eigenvalues are the diagonal entries: $1$ (twice) and $-2$, for every $c$. Now
+\[
+K_c-I=\begin{bmatrix}0&0&c\\0&-3&0\\0&0&0\end{bmatrix}.
+\]
+If $c\neq0$ the rows $(0,0,c)$ and $(0,-3,0)$ give pivots in columns $3$ and $2$, so the rank is $2$, only $x_1$ is free, and $\dim E_1=1$ with $E_1=\Span\{(1,0,0)\}$. If $c=0$ the only nonzero row is $(0,-3,0)$, the rank is $1$, and $x_1$ and $x_3$ are free: $\dim E_1=2$ with $E_1=\Span\{(1,0,0),(0,0,1)\}$. The characteristic polynomial is the same for every $c$, but the eigenspace changes with $c$: the polynomial alone does not decide the dimension (compare Example~\ref{ex:multdim}).
+\end{exmp}
+
+\subsection*{Bank C: Trace and determinant}
+\begin{exmp}{Eigenvalues from the trace and the determinant}{b-thirdeig}
+A $3\times3$ matrix has three real eigenvalues, counted with multiplicity. Its trace is $1$ and its determinant is $-6$, and $3$ is one of the eigenvalues. Find the others.
+
+\textbf{Solution.} Call the other two $\mu$ and $\nu$. By Theorem~\ref{thm:detprod}, $3+\mu+\nu=1$ and $3\mu\nu=-6$, so $\mu+\nu=-2$ and $\mu\nu=-2$. Then $\mu$ and $\nu$ are the roots of $t^2+2t-2=0$ (the polynomial whose roots have this sum and product), that is $t=-1\pm\sqrt3$. Check: $(-1+\sqrt3)+(-1-\sqrt3)=-2$ and $(-1+\sqrt3)(-1-\sqrt3)=1-3=-2$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{An unknown entry}{b-recover}
+For which values of $a$ does $N=\begin{bmatrix}a&2\\3&1\end{bmatrix}$ have the eigenvalue $4$? Find the other eigenvalue in that case.
+
+\textbf{Solution.} $4$ is an eigenvalue exactly when $p_N(4)=0$. Here $p_N(\lambda)=\lambda^2-(a+1)\lambda+(a-6)$, so $p_N(4)=16-4a-4+a-6=6-3a$, which is $0$ for $a=2$. Then $N=\begin{bmatrix}2&2\\3&1\end{bmatrix}$ has trace $3$, so the other eigenvalue is $3-4=-1$, and $\det N=-4$ agrees with $4\cdot(-1)$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Bank D: Real roots, complex roots and similarity}
+\begin{exmp}{How many real eigenvalues?}{b-nrparam}
+Let $N_t=\begin{bmatrix}1&t\\1&1\end{bmatrix}$. For each $t$, how many real eigenvalues does $N_t$ have? Find the eigenvectors for $t=4$.
+
+\textbf{Solution.} $\operatorname{tr}N_t=2$ and $\det N_t=1-t$, so $p(\lambda)=\lambda^2-2\lambda+1-t=(\lambda-1)^2-t$. The roots are $1\pm\sqrt t$ when $t\ge0$. So: for $t>0$ two different real eigenvalues; for $t=0$ the single eigenvalue $1$, with $N_0-I=\begin{bmatrix}0&0\\1&0\end{bmatrix}$ of rank $1$ and $\dim E_1=1$; for $t<0$ none. For $t=4$ the eigenvalues are $3$ and $-1$. $N_4-3I=\begin{bmatrix}-2&4\\1&-2\end{bmatrix}$ gives $x_1=2x_2$, the eigenvector $(2,1)$; $N_4+I=\begin{bmatrix}2&4\\1&2\end{bmatrix}$ gives $x_1=-2x_2$, the eigenvector $(-2,1)$. Check: $N_4(2,1)=(2+4,\ 2+1)=(6,3)=3(2,1)$ and $N_4(-2,1)=(-2+4,\ -2+1)=(2,-1)=-(-2,1)$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{Complex eigenvalues of two real matrices}{b-cplx}
+(a)~Find the eigenvalues of $N=\begin{bmatrix}1&-5\\1&3\end{bmatrix}$ and an eigenvector for each. (b)~Show that $M=\begin{bmatrix}3&-4\\4&3\end{bmatrix}$ has the eigenvalues $3\pm4i$, and that their size $\sqrt{3^2+4^2}=5$ satisfies $\det M=5^2$.
+
+\textbf{Solution.} (a)~$\operatorname{tr}N=4$ and $\det N=3+5=8$, so $p(\lambda)=\lambda^2-4\lambda+8$ with discriminant $16-32=-16$ and roots $\frac{4\pm4i}{2}=2\pm2i$. For $\lambda=2+2i$: $N-\lambda I=\begin{bmatrix}-1-2i&-5\\1&1-2i\end{bmatrix}$. The second row gives $x_1=-(1-2i)x_2$; with $x_2=1$ we get $\bv{v}=(-1+2i,\ 1)$. The first row is then $(-1-2i)(-1+2i)-5=(1+4)-5=0$, so it holds. Hence $(-1+2i,1)$ is an eigenvector for $2+2i$ and, by Theorem~\ref{thm:conj}, $(-1-2i,1)$ is one for $2-2i$. Check with the product and sum (Theorem~\ref{thm:detprod}): $(2+2i)(2-2i)=8=\det N$ and $(2+2i)+(2-2i)=4=\operatorname{tr}N$.
+
+(b)~$\operatorname{tr}M=6$ and $\det M=9+16=25$, so $p(\lambda)=\lambda^2-6\lambda+25$, with roots $\frac{6\pm\sqrt{36-100}}{2}=3\pm4i$. The size of $3\pm4i$ is $\sqrt{3^2+4^2}=5$, and indeed $\det M=25=5^2$. For $\lambda=3+4i$ the matrix $M-\lambda I=\begin{bmatrix}-4i&-4\\4&-4i\end{bmatrix}$ gives $x_2=-ix_1$, the eigenvector $(1,-i)$; check: $M(1,-i)=(3+4i,\ 4-3i)=(3+4i)(1,-i)$. In general $\begin{bmatrix}a&-b\\b&a\end{bmatrix}$ has eigenvalues $a\pm bi$ and eigenvectors $(1,\mp i)$.
+
+\textbf{Common mistake.} Row reducing $N-\lambda I$ and concluding that there is only the zero solution. For a complex $\lambda$ the rows are \emph{multiples} of each other by a complex number, so one of them disappears; if both rows survive, recheck the arithmetic with $i^2=-1$.
+\end{exmp}
+
+\begin{exmp}{Can these matrices be similar?}{b-simcheck}
+Decide for each pair whether the two matrices can be similar. (a)~$A=\begin{bmatrix}2&1\\0&3\end{bmatrix}$ and $B=\begin{bmatrix}3&1\\0&2\end{bmatrix}$. (b)~$C=\begin{bmatrix}1&2\\3&4\end{bmatrix}$ and $D=\begin{bmatrix}1&2\\3&5\end{bmatrix}$. (c)~$2I$ and $J=\begin{bmatrix}2&1\\0&2\end{bmatrix}$.
+
+\textbf{Solution.} First compare the invariants of Theorem~\ref{thm:similar}: trace, determinant and characteristic polynomial. (a)~Both are triangular with diagonal entries $2,3$, so $p=(\lambda-2)(\lambda-3)$ for both. The test does not exclude similarity, so look for $P$. Take $P=\begin{bmatrix}1&0\\1&1\end{bmatrix}$, $P^{-1}=\begin{bmatrix}1&0\\-1&1\end{bmatrix}$. Then $AP=\begin{bmatrix}3&1\\3&3\end{bmatrix}$ and $P^{-1}AP=\begin{bmatrix}3&1\\0&2\end{bmatrix}=B$. So $A$ and $B$ are similar. (b)~$\operatorname{tr}C=5$ but $\operatorname{tr}D=6$, so the characteristic polynomials differ and $C$, $D$ are not similar. (c)~The polynomials agree, but $P^{-1}(2I)P=2I\neq J$ for every $P$ (Example~\ref{ex:notsim}), so they are not similar. The lesson: a difference in an invariant settles the matter; an agreement settles nothing, and a $P$ must be found or the matrices must be told apart another way, for example by the dimension of an eigenspace.
+\end{exmp}
+
+\subsection*{Bank E: Proofs}
+\begin{exmp}{$A$ and $A\T$ have the same eigenvalues}{b-ptranspose}
+\textbf{Statement.} For every $n\times n$ matrix $A$, $p_{A\T}=p_A$. Hence $A$ and $A\T$ have the same eigenvalues.
+
+\textbf{Plan.} We must show $\det(A\T-\lambda I)=\det(A-\lambda I)$ for every $\lambda$. The right side is the determinant of a matrix; the left side is the determinant of its transpose, once we see that $A\T-\lambda I$ is the transpose of $A-\lambda I$. Then the theorem on transposes does the rest.
+
+\textbf{Proof.}
+\emph{Step 1 (transpose of $A-\lambda I$).} Transposition respects sums and scalar multiples, and $I\T=I$. So $(A-\lambda I)\T=A\T-\lambda I\T=A\T-\lambda I$.
+\emph{Step 2 (apply the determinant).} For every square matrix $M$, $\det M\T=\det M$ (Theorem~\ref{3.2-thm:transpose}). With $M=A-\lambda I$ this gives $\det(A\T-\lambda I)=\det(A-\lambda I)$ for every number $\lambda$.
+\emph{Step 3 (conclude).} The two polynomials have the same value at every $\lambda$, so $p_{A\T}=p_A$; their roots, the real eigenvalues (Theorem~\ref{thm:dettest}), are the same. \qquad$\blacksquare$
+
+\textbf{Common mistake.} Concluding that $A$ and $A\T$ have the same eigen\emph{vectors}. For $A=\begin{bmatrix}1&1\\0&2\end{bmatrix}$, $(1,1)$ is an eigenvector for $2$, but $A\T(1,1)=(1,3)$ is not a multiple of $(1,1)$.
+\end{exmp}
+
+\begin{exmp}{Similar matrices and invertibility}{b-simdet}
+\textbf{Statement.} If $A$ and $B$ are similar, then $\det A=\det B$, and $A$ is invertible if and only if $B$ is invertible.
+
+\textbf{Plan.} Write $B=P^{-1}AP$ and take determinants. The product rule turns the determinant of a product into a product of numbers, and numbers can be reordered and cancelled.
+
+\textbf{Proof.}
+\emph{Step 1 (write the definition).} There is an invertible $P$ with $B=P^{-1}AP$.
+\emph{Step 2 (product rule).} By Theorem~\ref{3.2-thm:product}, $\det B=\det(P^{-1})\det A\det P$.
+\emph{Step 3 (the two outer factors cancel).} By Theorem~\ref{3.2-thm:inverse}, $\det(P^{-1})=1/\det P$, and $\det P\neq0$ because $P$ is invertible. Hence $\det B=\det A$.
+\emph{Step 4 (invertibility).} A square matrix is invertible exactly when its determinant is not $0$ (Theorem~\ref{3.2-thm:invertible}). The determinants are equal, so one is zero exactly when the other is. \qquad$\blacksquare$
+
+\textbf{Common mistake.} Cancelling $P^{-1}$ and $P$ in the matrix product, writing $P^{-1}AP=A$. Matrices do not commute, so this is false (Example~\ref{ex:simex} has $B\neq A$). The cancellation in Step 3 is legitimate because determinants are numbers.
+\end{exmp}
+
+\begin{exmp}{$AB$ and $BA$ have the same eigenvalues}{b-abba}
+\textbf{Statement.} Let $A$ and $B$ be $n\times n$ matrices. Then $AB$ and $BA$ have the same real eigenvalues.
+
+\textbf{Plan.} The roles of $A$ and $B$ are symmetric, so it is enough to show that every eigenvalue of $AB$ is an eigenvalue of $BA$. Given $AB\bv{x}=\lambda\bv{x}$, the natural candidate for an eigenvector of $BA$ is $B\bv{x}$. This fails only if $B\bv{x}=\bv{0}$ or if $\lambda=0$, so those cases need care.
+
+\textbf{Proof.}
+\emph{Step 1 (reduce).} Suppose $\lambda$ is an eigenvalue of $AB$. If we prove that $\lambda$ is an eigenvalue of $BA$, then exchanging the names $A$ and $B$ proves the other direction.
+\emph{Step 2 (case $\lambda\neq0$, produce the vector).} Let $AB\bv{x}=\lambda\bv{x}$ with $\bv{x}\neq\bv{0}$. Multiply on the left by $B$: $(BA)(B\bv{x})=\lambda(B\bv{x})$.
+\emph{Step 3 (case $\lambda\neq0$, the vector is not zero).} If $B\bv{x}$ were $\bv{0}$, then $\lambda\bv{x}=AB\bv{x}=A\bv{0}=\bv{0}$, and since $\lambda\neq0$ this gives $\bv{x}=\bv{0}$, a contradiction. So $B\bv{x}\neq\bv{0}$ is an eigenvector of $BA$ for $\lambda$.
+\emph{Step 4 (case $\lambda=0$).} If $0$ is an eigenvalue of $AB$, then $AB$ is not invertible (Theorem~\ref{5.1-thm:test}), so $\det(AB)=0$. By the product rule (Theorem~\ref{3.2-thm:product}), $\det(BA)=\det B\det A=\det(AB)=0$, so $BA$ is not invertible and $0$ is an eigenvalue of $BA$. \qquad$\blacksquare$
+
+\textbf{Common mistake.} Assuming $AB=BA$, or that $AB$ and $BA$ share eigenvectors. For $A=\begin{bmatrix}1&0\\0&0\end{bmatrix}$ and $B=\begin{bmatrix}0&1\\0&0\end{bmatrix}$ we get $AB=B$ and $BA=0$: both have only the eigenvalue $0$, but $AB\neq BA$ and their eigenspaces differ ($E_0=\Span\{(1,0)\}$ for $AB$, $E_0=\R^2$ for $BA$). The vector that works is $B\bv{x}$, not $\bv{x}$.
+\end{exmp}
+
+\subsection*{Answers and discussion}
+\begin{description}[leftmargin=0pt,itemsep=5pt]
+  \item[Knowledge Check \ref{kc:cpoly}.] (a)~$\operatorname{tr}A=1+(-2)=-1$ and $\det A=-2-4=-6$, so $p_A(\lambda)=\lambda^2+\lambda-6=(\lambda+3)(\lambda-2)$. (b)~The eigenvalues are $-3$ and $2$. For $2$: $A-2I=\begin{bmatrix}-1&2\\2&-4\end{bmatrix}$ gives $x_1=2x_2$, the eigenvector $(2,1)$: $A(2,1)=(2+2,\ 4-2)=(4,2)=2(2,1)$. For $-3$: $A+3I=\begin{bmatrix}4&2\\2&1\end{bmatrix}$ gives $x_2=-2x_1$, the eigenvector $(1,-2)$: $A(1,-2)=(1-4,\ 2+4)=(-3,6)=-3(1,-2)$.
+  \item[Knowledge Check \ref{kc:readpoly}.] (a)~The roots are $0$, $1$ and $-3$ (the last of multiplicity $2$); these are the eigenvalues. (b)~No: $0$ is an eigenvalue. (c)~$\det A=p(0)=0$.
+  \item[Knowledge Check \ref{kc:samepoly}.] $M_1-3I=\operatorname{diag}(0,0,-4)$ has rank $1$, so two free variables: $\dim E_3=2$. $M_2-3I=\begin{bmatrix}0&1&0\\0&0&0\\0&0&-4\end{bmatrix}$ has rank $2$, so one free variable: $\dim E_3=1$. Both are triangular with diagonal entries $3,3,-1$, so $p=(3-\lambda)^2(-1-\lambda)=-(\lambda-3)^2(\lambda+1)$ for both.
+  \item[Knowledge Check \ref{kc:count}.] (a)~A $5\times5$ matrix has an odd-degree polynomial, which has at least one real root: at least $1$ and at most $5$ real eigenvalues. (b)~A $4\times4$ matrix can have none (two copies of a rotation, for example) and at most $4$.
+  \item[Knowledge Check \ref{kc:sim}.] Similar matrices have the same characteristic polynomial (Theorem~\ref{thm:similar}). (a)~$\operatorname{tr}B=1+4=5$ and $\det B=1\cdot4=4$. (b)~The eigenvalues of $B$ are $1$ and $4$. (c)~$B$ is invertible since $\det B=4\neq0$.
+  \item[Knowledge Check \ref{kc:td}.] $p(\lambda)=\lambda^2-6\lambda+8=(\lambda-2)(\lambda-4)$, so the eigenvalues are $2$ and $4$.
+  \item[Knowledge Check \ref{kc:cplx}.] (a)~$\operatorname{tr}A=2$, $\det A=1+4=5$, so $p_A(\lambda)=\lambda^2-2\lambda+5$ with roots $\frac{2\pm\sqrt{4-20}}{2}=1\pm2i$. (b)~$A-(1+2i)I=\begin{bmatrix}-2i&-2\\2&-2i\end{bmatrix}$; the first row gives $x_2=-ix_1$, so $(1,-i)$. Check: $A(1,-i)=(1+2i,\ 2-i)=(1+2i)(1,-i)$. (c)~The conjugate vector $(1,i)$.
+  \item[Pause and think \ref{think:lambdaI}.] (a)~$\lambda I$ is the matrix that multiplies every vector by $\lambda$. (b)~$\lambda=0$ gives $\det(A-0I)=\det A=15$ and in general $p_A(0)=\det A$.
+  \item[Pause and think \ref{think:twonumbers}.] (a)~The multiplicity $2$ is larger than $\dim E_2=1$. (b)~In every example of this section the dimension of the eigenspace is at most the multiplicity. That this holds for every eigenvalue of every matrix is a theorem that we meet in the next section.
+  \item[Pause and think \ref{think:odd}.] (a)~$\begin{bmatrix}0&-1\\1&0\end{bmatrix}$ has $p=\lambda^2+1$. (b)~A $3\times3$ real matrix has a polynomial of degree $3$, which always has a real root, so there is a real eigenvalue. (c)~Yes: a block matrix with this matrix twice on the diagonal has $p=(\lambda^2+1)^2$, which has no real root.
+  \item[Pause and think \ref{think:rowops}.] (a)~$EA-\lambda I$ is not $E(A-\lambda I)$, because $E(A-\lambda I)=EA-\lambda E$; so the product rule cannot be used, and in the example the roots change from $3,5$ to $1$. (b)~$EAE^{-1}$: it has $P=E^{-1}$ in the definition of similarity.
+  \item[Pause and think \ref{think:simev}.] (a)~Only in special cases (for example $B=A$); in Example~\ref{ex:simex}, $B$ has the eigenvector $(0,1)$ for $3$ and $A$ has $(1,1)$. (b)~$P^{-1}\bv{x}$: from $A\bv{x}=\lambda\bv{x}$ we get $B(P^{-1}\bv{x})=P^{-1}A\bv{x}=\lambda P^{-1}\bv{x}$.
+  \item[Pause and think \ref{think:conv}.] (a)~For $2I$ every vector is an eigenvector, for $J$ only the multiples of $(1,0)$; the multiplicity is only the number of times the factor appears in the polynomial. (b)~$\bv{x}\mapsto P\bv{x}$ is a one-to-one map from $E_\lambda(B)$ into $E_\lambda(A)$ that takes independent vectors to independent vectors, and $\bv{y}\mapsto P^{-1}\bv{y}$ goes back. So the dimensions are equal. This also shows that $2I$ and $J$ cannot be similar.
+  \item[Pause and think \ref{think:conjpair}.] (a)~In the step $\overline{a_{ij}}=a_{ij}$: conjugating $A$ gives back $A$ only when its entries are real. (b)~No. If $i$ were an eigenvalue of a real matrix, so would be $-i$ (Theorem~\ref{thm:conj}), and a $2\times2$ matrix has only two eigenvalues counted with multiplicity, so $1$, $i$ and $-i$ cannot all occur.
+  \item[Questions to think about.] (1)~$(\det A)^2=\det(A^2)=0$, so $\det A=0$. The characteristic polynomial is $\lambda^2-(\operatorname{tr}A)\lambda$, with roots $0$ and $\operatorname{tr}A$. If $\operatorname{tr}A$ were an eigenvalue $\mu\neq0$, then $\mu^2$ would be an eigenvalue of $A^2=0$, impossible. So $\operatorname{tr}A=0$ and $p_A=\lambda^2$. (2)~If $B=P^{-1}IP$, then $B=P^{-1}P=I$ for every invertible $P$. So only $I$ itself is similar to $I$. (3)~Both polynomials equal $\lambda^2-(a+d)\lambda+(ad-bc)$, as the example in the bank proves for every size. The eigenvectors differ in general: $A=\begin{bmatrix}1&1\\0&2\end{bmatrix}$ has $(1,1)$ for $2$, while $A\T(1,1)=(1,3)$.
+\end{description}
+
+\end{document}
