@@ -487,6 +487,398 @@ $V$ is a $3$-dimensional vector space. For each matrix, decide whether it could 
   \item Show directly, without determinants, that the columns of $P_{\mathcal{C}\leftarrow\mathcal{B}}$ are linearly independent. (Suppose $P_{\mathcal{C}\leftarrow\mathcal{B}}\bv{y}=\bv{0}$ and ask what vector $\bv{y}$ describes.) Which statement of the Invertible Matrix Theorem do you then use to conclude that the matrix is invertible?
 \end{enumerate}
 
+\subsection*{Example bank}
+The eight examples below add problem types that the worked examples above do not cover: deciding from the way a formula is written which of $P_{\mathcal{B}\leftarrow\mathcal{C}}$ and $P_{\mathcal{C}\leftarrow\mathcal{B}}$ one has, inverting when the formulas run the other way, a polynomial basis in powers of $t-2$, a rotated pair of trigonometric functions, two bases of a null space, recovering a basis from its change-of-basis matrix, true-or-false judgments, and vectors whose coordinates do not change. Try each one before you read its solution. Every solution shows its reasoning, and the numbers are different from the ones in the text.
+
+\textbf{What is in this bank.}
+\begin{itemize}
+  \item \textbf{Bank A, which direction does the matrix go:} Example~\ref{ex:b-direction} (a conversion rule given by formulas; decide whether the array of coefficients is $P_{\mathcal{B}\leftarrow\mathcal{C}}$ or $P_{\mathcal{C}\leftarrow\mathcal{B}}$, then convert both ways).
+  \item \textbf{Bank B, invert when the formulas run the other way:} Example~\ref{ex:b-invert} (three formulas for $\mathcal{C}$ in terms of $\mathcal{B}$ when $P_{\mathcal{C}\leftarrow\mathcal{B}}$ is wanted).
+  \item \textbf{Bank C, shift a polynomial basis:} Example~\ref{ex:b-shift} (the basis $1,\ t-2,\ (t-2)^2,\ (t-2)^3$ of $\mathbb{P}_3$).
+  \item \textbf{Bank D, rotate a trigonometric basis:} Example~\ref{ex:b-rotate} ($\cos t,\ \sin t$ against $\cos(t+\pi/3),\ \sin(t+\pi/3)$).
+  \item \textbf{Bank E, change basis inside a null space:} Example~\ref{ex:b-nullspace} (two bases of $\Nul A$ for a $2\times5$ matrix $A$).
+  \item \textbf{Bank F, recover the unknown basis:} Example~\ref{ex:b-recover} (the matrix and one basis of $\mathbb{P}_2$ are given; the target basis needs the inverse).
+  \item \textbf{Bank G, true or false:} Example~\ref{ex:b-truefalse} (eight statements, some of the form ``could this be a change-of-basis matrix?'').
+  \item \textbf{Bank H, vectors with the same coordinates in both bases:} Example~\ref{ex:b-equal} (two bases of $\R^3$ and the vectors $\bv{x}$ with $[\bv{x}]_{\mathcal{B}}=[\bv{x}]_{\mathcal{C}}$).
+\end{itemize}
+
+\subsection*{Bank A: Which direction does the matrix go?}
+\begin{exmp}{Reading the direction from the way a formula is written}{b-direction}
+Two survey teams describe the same plane of colour mixtures. Team~1 uses the basis $\mathcal{B}=\{\bv{b}_1,\bv{b}_2\}$ and Team~2 uses the basis $\mathcal{C}=\{\bv{c}_1,\bv{c}_2\}$, which Team~2 defines by
+\[
+\bv{c}_1=3\bv{b}_1-\bv{b}_2,\qquad \bv{c}_2=2\bv{b}_1+\bv{b}_2.
+\]
+Let $M=\begin{bmatrix}3&2\\-1&1\end{bmatrix}$ be the array of the coefficients: the coefficients of $\bv{c}_1$ in the first column and those of $\bv{c}_2$ in the second.
+\begin{enumerate}
+  \item[(a)] Is $M$ the matrix $P_{\mathcal{C}\leftarrow\mathcal{B}}$ or the matrix $P_{\mathcal{B}\leftarrow\mathcal{C}}$? Give the reason that decides it.
+  \item[(b)] Find $[\bv{x}]_{\mathcal{B}}$ if $[\bv{x}]_{\mathcal{C}}=(2,-1)$.
+  \item[(c)] Find $[\bv{y}]_{\mathcal{C}}$ if $[\bv{y}]_{\mathcal{B}}=(5,0)$.
+  \item[(d)] A student uses $M$ in the wrong direction on $\bv{b}_1$. Show that the answer is wrong.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~\emph{Ask which basis the numbers in each column are weights on.} By Theorem~\ref{thm:matrix}, column $j$ of $P_{\mathcal{C}\leftarrow\mathcal{B}}$ is $[\bv{b}_j]_{\mathcal{C}}$: the weights on the vectors of $\mathcal{C}$ that make up $\bv{b}_j$. In the formulas above the weights multiply $\bv{b}_1$ and $\bv{b}_2$, so the first column $(3,-1)$ is $[\bv{c}_1]_{\mathcal{B}}$ and the second column $(2,1)$ is $[\bv{c}_2]_{\mathcal{B}}$. A matrix whose columns are $[\bv{c}_j]_{\mathcal{B}}$ is $P_{\mathcal{B}\leftarrow\mathcal{C}}$. Hence
+\[
+M=P_{\mathcal{B}\leftarrow\mathcal{C}},\qquad [\bv{x}]_{\mathcal{B}}=M\,[\bv{x}]_{\mathcal{C}}.
+\]
+It is easy to be fooled: the formulas ``start from the $\bv{b}$'s'' in the sense that the $\bv{b}$'s appear on the right, but the matrix takes $\mathcal{C}$-coordinates in and gives $\mathcal{B}$-coordinates out. The rule to remember is: \emph{formulas that write the vectors of $\mathcal{X}$ in terms of $\mathcal{Y}$ give $P_{\mathcal{Y}\leftarrow\mathcal{X}}$.} (This is the definition, Definition~\ref{def:PCB}, read from right to left.)
+
+(b)~We have $\mathcal{C}$-coordinates and want $\mathcal{B}$-coordinates, which is the direction of $M$:
+\[
+[\bv{x}]_{\mathcal{B}}=\begin{bmatrix}3&2\\-1&1\end{bmatrix}\begin{bmatrix}2\\-1\end{bmatrix}=\begin{bmatrix}4\\-3\end{bmatrix}.
+\]
+Check by the formulas: $2\bv{c}_1-\bv{c}_2=2(3\bv{b}_1-\bv{b}_2)-(2\bv{b}_1+\bv{b}_2)=4\bv{b}_1-3\bv{b}_2$.\ $\checkmark$
+
+(c)~Now the direction is the other one, so we need $P_{\mathcal{C}\leftarrow\mathcal{B}}=M^{-1}$ (Theorem~\ref{thm:inverse}). The determinant of $M$ is $3\cdot1-2\cdot(-1)=5$, so
+\[
+P_{\mathcal{C}\leftarrow\mathcal{B}}=\tfrac15\begin{bmatrix}1&-2\\1&3\end{bmatrix},\qquad \begin{bmatrix}3&2\\-1&1\end{bmatrix}\tfrac15\begin{bmatrix}1&-2\\1&3\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix},
+\]
+and
+\[
+[\bv{y}]_{\mathcal{C}}=\tfrac15\begin{bmatrix}1&-2\\1&3\end{bmatrix}\begin{bmatrix}5\\0\end{bmatrix}=\begin{bmatrix}1\\1\end{bmatrix}.
+\]
+Check: $\bv{c}_1+\bv{c}_2=(3+2)\bv{b}_1+(-1+1)\bv{b}_2=5\bv{b}_1$, which has $\mathcal{B}$-coordinates $(5,0)$.\ $\checkmark$
+
+(d)~Suppose a student treats $M$ as $P_{\mathcal{C}\leftarrow\mathcal{B}}$ and applies it to $\bv{b}_1$, whose $\mathcal{B}$-coordinates are $(1,0)$. The claim would be $[\bv{b}_1]_{\mathcal{C}}=M(1,0)=(3,-1)$, that is $\bv{b}_1=3\bv{c}_1-\bv{c}_2$. But
+\[
+3\bv{c}_1-\bv{c}_2=3(3\bv{b}_1-\bv{b}_2)-(2\bv{b}_1+\bv{b}_2)=7\bv{b}_1-4\bv{b}_2\neq\bv{b}_1.
+\]
+The correct value is the first column of $M^{-1}$: $[\bv{b}_1]_{\mathcal{C}}=(\tfrac15,\tfrac15)$, and indeed $\tfrac15(\bv{c}_1+\bv{c}_2)=\bv{b}_1$ by part~(c). A single test vector such as a basis vector exposes a wrong direction at once.
+\end{exmp}
+
+\subsection*{Bank B: Invert when the formulas run the other way}
+\begin{exmp}{Inverting when the formulas run the other way}{b-invert}
+In a three-dimensional space $V$ of signals the bases $\mathcal{B}=\{\bv{b}_1,\bv{b}_2,\bv{b}_3\}$ and $\mathcal{C}=\{\bv{c}_1,\bv{c}_2,\bv{c}_3\}$ are related by
+\[
+\bv{c}_1=2\bv{b}_1+\bv{b}_2+\bv{b}_3,\qquad \bv{c}_2=\bv{b}_1+\bv{b}_2,\qquad \bv{c}_3=\bv{b}_3.
+\]
+\begin{enumerate}
+  \item[(a)] Which of $P_{\mathcal{B}\leftarrow\mathcal{C}}$ and $P_{\mathcal{C}\leftarrow\mathcal{B}}$ can be written down at once?
+  \item[(b)] Find $P_{\mathcal{C}\leftarrow\mathcal{B}}$ by row reduction, and say what its columns mean.
+  \item[(c)] Solve the three formulas for $\bv{b}_1,\bv{b}_2,\bv{b}_3$ by elimination and compare with part~(b).
+  \item[(d)] Find $[\bv{x}]_{\mathcal{C}}$ for $\bv{x}=\bv{b}_1+2\bv{b}_2-\bv{b}_3$.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~The formulas write the $\bv{c}_j$ in terms of the $\bv{b}_i$, so by the rule of Example~\ref{ex:b-direction} their coefficients are the columns $[\bv{c}_j]_{\mathcal{B}}$ of $P_{\mathcal{B}\leftarrow\mathcal{C}}$:
+\[
+P_{\mathcal{B}\leftarrow\mathcal{C}}=\begin{bmatrix}2&1&0\\1&1&0\\1&0&1\end{bmatrix}.
+\]
+The other matrix, $P_{\mathcal{C}\leftarrow\mathcal{B}}$, is the one the problem wants, and it is not written down: it is the inverse of this one (Theorem~\ref{thm:inverse}).
+
+(b)~Reduce $[\,P_{\mathcal{B}\leftarrow\mathcal{C}}\mid I\,]$ to $[\,I\mid P_{\mathcal{C}\leftarrow\mathcal{B}}\,]$. We swap the first two rows to get a leading $1$ without fractions:
+\begin{align*}
+\begin{amat}{ccc|ccc}2 & 1 & 0 & 1 & 0 & 0\\1 & 1 & 0 & 0 & 1 & 0\\1 & 0 & 1 & 0 & 0 & 1\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|ccc}1 & 1 & 0 & 0 & 1 & 0\\2 & 1 & 0 & 1 & 0 & 0\\1 & 0 & 1 & 0 & 0 & 1\end{amat}
+\\[4pt]
+&\rops{R_2-2R_1,\ R_3-R_1}
+\begin{amat}{ccc|ccc}1 & 1 & 0 & 0 & 1 & 0\\0 & -1 & 0 & 1 & -2 & 0\\0 & -1 & 1 & 0 & -1 & 1\end{amat}
+\\[4pt]
+&\rops{-R_2}
+\begin{amat}{ccc|ccc}1 & 1 & 0 & 0 & 1 & 0\\0 & 1 & 0 & -1 & 2 & 0\\0 & -1 & 1 & 0 & -1 & 1\end{amat}
+\\[4pt]
+&\rops{R_1-R_2,\ R_3+R_2}
+\begin{amat}{ccc|ccc}1 & 0 & 0 & 1 & -1 & 0\\0 & 1 & 0 & -1 & 2 & 0\\0 & 0 & 1 & -1 & 1 & 1\end{amat}
+\end{align*}
+Therefore
+\[
+P_{\mathcal{C}\leftarrow\mathcal{B}}=\begin{bmatrix}1&-1&0\\-1&2&0\\-1&1&1\end{bmatrix},\qquad \begin{bmatrix}2&1&0\\1&1&0\\1&0&1\end{bmatrix}\begin{bmatrix}1&-1&0\\-1&2&0\\-1&1&1\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}.
+\]
+The columns are the $\mathcal{C}$-coordinates of the $\bv{b}_j$: $\bv{b}_1=\bv{c}_1-\bv{c}_2-\bv{c}_3$, $\bv{b}_2=-\bv{c}_1+2\bv{c}_2+\bv{c}_3$ and $\bv{b}_3=\bv{c}_3$.
+
+(c)~Elimination goes from the bottom formula up. The third formula says $\bv{b}_3=\bv{c}_3$. Subtracting the second formula from the first gives $\bv{c}_1-\bv{c}_2=\bv{b}_1+\bv{b}_3$, so $\bv{b}_1=\bv{c}_1-\bv{c}_2-\bv{b}_3=\bv{c}_1-\bv{c}_2-\bv{c}_3$. Then the second formula gives $\bv{b}_2=\bv{c}_2-\bv{b}_1=-\bv{c}_1+2\bv{c}_2+\bv{c}_3$. These are the columns found in part~(b). Elimination and row reduction are the same computation, and either one serves as a check on the other.
+
+(d)~The vector has $\mathcal{B}$-coordinates $(1,2,-1)$, and we need the direction $\mathcal{B}\to\mathcal{C}$:
+\[
+[\bv{x}]_{\mathcal{C}}=\begin{bmatrix}1&-1&0\\-1&2&0\\-1&1&1\end{bmatrix}\begin{bmatrix}1\\2\\-1\end{bmatrix}=\begin{bmatrix}-1\\3\\0\end{bmatrix}.
+\]
+Check: $-\bv{c}_1+3\bv{c}_2=-(2\bv{b}_1+\bv{b}_2+\bv{b}_3)+3(\bv{b}_1+\bv{b}_2)=\bv{b}_1+2\bv{b}_2-\bv{b}_3$.\ $\checkmark$ \emph{Moral:} the formulas you are given may run in either direction. Read off the matrix that matches them, and invert it only if the question asks for the other one.
+\end{exmp}
+
+\subsection*{Bank C: Shift a polynomial basis}
+\begin{exmp}{A polynomial basis in powers of t minus 2}{b-shift}
+In $\mathbb{P}_3$ let $\mathcal{E}=\{1,t,t^2,t^3\}$ be the standard basis and let $\mathcal{B}=\{1,\ t-2,\ (t-2)^2,\ (t-2)^3\}$. A heat profile is described by polynomials in the time $t-2$ measured from the moment $t=2$.
+\begin{enumerate}
+  \item[(a)] Write $P_{\mathcal{E}\leftarrow\mathcal{B}}$ and explain why $\mathcal{B}$ is a basis of $\mathbb{P}_3$.
+  \item[(b)] Find $P_{\mathcal{B}\leftarrow\mathcal{E}}$ by row reduction.
+  \item[(c)] Find $[p]_{\mathcal{B}}$ for $p(t)=t^3-3t^2+2t+5$, and check it by expanding.
+  \item[(d)] Read $[q]_{\mathcal{B}}$ for $q(t)=t^3-6t^2+12t-7$ without any computation, and confirm it with the matrix.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~Expand the powers: $(t-2)^2=t^2-4t+4$ and $(t-2)^3=t^3-6t^2+12t-8$. The standard coordinates $(1,t,t^2,t^3)$ of the four polynomials of $\mathcal{B}$ are $(1,0,0,0)$, $(-2,1,0,0)$, $(4,-4,1,0)$ and $(-8,12,-6,1)$, and these are the columns of
+\[
+P_{\mathcal{E}\leftarrow\mathcal{B}}=\begin{bmatrix}1&-2&4&-8\\0&1&-4&12\\0&0&1&-6\\0&0&0&1\end{bmatrix}.
+\]
+The matrix is triangular with $1$ on the diagonal, so its determinant is $1$ and it is invertible. By Theorem~\ref{thm:converse} (with the basis $\mathcal{E}$ and this invertible matrix), the four polynomials form a basis. The reason is also visible directly: the four polynomials have the four different degrees $0,1,2,3$.
+
+(b)~Reduce $[\,P_{\mathcal{E}\leftarrow\mathcal{B}}\mid I\,]$. The matrix is already triangular, so we clear the entries above the diagonal from the last column to the first:
+\begin{align*}
+&\begin{amat}{cccc|cccc}1 & -2 & 4 & -8 & 1 & 0 & 0 & 0\\0 & 1 & -4 & 12 & 0 & 1 & 0 & 0\\0 & 0 & 1 & -6 & 0 & 0 & 1 & 0\\0 & 0 & 0 & 1 & 0 & 0 & 0 & 1\end{amat}
+\\[4pt]
+&\rops{R_1+8R_4,\ R_2-12R_4,\ R_3+6R_4}
+\begin{amat}{cccc|cccc}1 & -2 & 4 & 0 & 1 & 0 & 0 & 8\\0 & 1 & -4 & 0 & 0 & 1 & 0 & -12\\0 & 0 & 1 & 0 & 0 & 0 & 1 & 6\\0 & 0 & 0 & 1 & 0 & 0 & 0 & 1\end{amat}
+\\[4pt]
+&\rops{R_1-4R_3,\ R_2+4R_3}
+\begin{amat}{cccc|cccc}1 & -2 & 0 & 0 & 1 & 0 & -4 & -16\\0 & 1 & 0 & 0 & 0 & 1 & 4 & 12\\0 & 0 & 1 & 0 & 0 & 0 & 1 & 6\\0 & 0 & 0 & 1 & 0 & 0 & 0 & 1\end{amat}
+\\[4pt]
+&\rops{R_1+2R_2}
+\begin{amat}{cccc|cccc}1 & 0 & 0 & 0 & 1 & 2 & 4 & 8\\0 & 1 & 0 & 0 & 0 & 1 & 4 & 12\\0 & 0 & 1 & 0 & 0 & 0 & 1 & 6\\0 & 0 & 0 & 1 & 0 & 0 & 0 & 1\end{amat}
+\end{align*}
+So
+\[
+P_{\mathcal{B}\leftarrow\mathcal{E}}=\begin{bmatrix}1&2&4&8\\0&1&4&12\\0&0&1&6\\0&0&0&1\end{bmatrix}.
+\]
+Its columns say $1=1$, $t=2+(t-2)$, $t^2=4+4(t-2)+(t-2)^2$ and $t^3=8+12(t-2)+6(t-2)^2+(t-2)^3$. Check the last: $8+12t-24+6t^2-24t+24+t^3-6t^2+12t-8=t^3$.\ $\checkmark$
+
+(c)~The polynomial $p$ has $[p]_{\mathcal{E}}=(5,2,-3,1)$, so
+\[
+[p]_{\mathcal{B}}=\begin{bmatrix}1&2&4&8\\0&1&4&12\\0&0&1&6\\0&0&0&1\end{bmatrix}\begin{bmatrix}5\\2\\-3\\1\end{bmatrix}=\begin{bmatrix}5\\2\\3\\1\end{bmatrix},
+\]
+that is $p(t)=5+2(t-2)+3(t-2)^2+(t-2)^3$. Check by expanding: $5+(2t-4)+(3t^2-12t+12)+(t^3-6t^2+12t-8)=t^3-3t^2+2t+5$.\ $\checkmark$ The first coordinate is the value at the base point: $p(2)=8-12+4+5=5$.
+
+(d)~Since $(t-2)^3=t^3-6t^2+12t-8$, we have $q(t)=(t-2)^3+1$, so $q=1\cdot1+0\cdot(t-2)+0\cdot(t-2)^2+1\cdot(t-2)^3$ and $[q]_{\mathcal{B}}=(1,0,0,1)$. The matrix agrees: $[q]_{\mathcal{E}}=(-7,12,-6,1)$ and
+\[
+\begin{bmatrix}1&2&4&8\\0&1&4&12\\0&0&1&6\\0&0&0&1\end{bmatrix}\begin{bmatrix}-7\\12\\-6\\1\end{bmatrix}=\begin{bmatrix}1\\0\\0\\1\end{bmatrix}.
+\]
+\emph{Moral:} going from powers of $t-2$ to powers of $t$ only expands the binomials, and the matrix is written down; going the other way is the inverse, which is a row reduction (or repeated division by $t-2$).
+\end{exmp}
+
+\subsection*{Bank D: Rotate a trigonometric basis}
+\begin{exmp}{Rotating a pair of trigonometric functions}{b-rotate}
+Let $H=\Span\{\cos t,\ \sin t\}$ and $\mathcal{B}=\{\cos t,\ \sin t\}$. Let $\mathcal{C}=\{\cos(t+\tfrac\pi3),\ \sin(t+\tfrac\pi3)\}$, the same two oscillations shifted by a phase of $\pi/3$.
+\begin{enumerate}
+  \item[(a)] Use the angle-addition formulas to find $P_{\mathcal{B}\leftarrow\mathcal{C}}$ and explain why $\mathcal{C}$ is a basis of $H$.
+  \item[(b)] Find $P_{\mathcal{C}\leftarrow\mathcal{B}}$ and check that it is the inverse. What do its columns say?
+  \item[(c)] Find $[f]_{\mathcal{C}}$ for $f(t)=2\cos t+\sin t$, and check the answer at two values of $t$.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~The functions $\cos t$ and $\sin t$ are independent: if $a\cos t+b\sin t=0$ for all $t$, then $t=0$ gives $a=0$ and $t=\pi/2$ gives $b=0$. So $\mathcal{B}$ is a basis of $H$. The angle-addition formulas, with $\cos\tfrac\pi3=\tfrac12$ and $\sin\tfrac\pi3=\tfrac{\sqrt3}{2}$, give
+\[
+\cos(t+\tfrac\pi3)=\tfrac12\cos t-\tfrac{\sqrt3}{2}\sin t,\qquad \sin(t+\tfrac\pi3)=\tfrac{\sqrt3}{2}\cos t+\tfrac12\sin t.
+\]
+Both functions of $\mathcal{C}$ lie in $H$, and these formulas give their $\mathcal{B}$-coordinates, which are the columns of
+\[
+P_{\mathcal{B}\leftarrow\mathcal{C}}=\begin{bmatrix}\tfrac12&\tfrac{\sqrt3}{2}\\-\tfrac{\sqrt3}{2}&\tfrac12\end{bmatrix}.
+\]
+Its determinant is $\tfrac14+\tfrac34=1$, so it is invertible, and by Theorem~\ref{thm:converse} (with the basis $\mathcal{B}$ and this matrix) the set $\mathcal{C}$ is a basis of $H$.
+
+(b)~The inverse of a $2\times2$ matrix with determinant $1$ is obtained by swapping the diagonal entries and changing the signs of the other two:
+\[
+P_{\mathcal{C}\leftarrow\mathcal{B}}=\begin{bmatrix}\tfrac12&-\tfrac{\sqrt3}{2}\\\tfrac{\sqrt3}{2}&\tfrac12\end{bmatrix},\qquad \begin{bmatrix}\tfrac12&\tfrac{\sqrt3}{2}\\-\tfrac{\sqrt3}{2}&\tfrac12\end{bmatrix}\begin{bmatrix}\tfrac12&-\tfrac{\sqrt3}{2}\\\tfrac{\sqrt3}{2}&\tfrac12\end{bmatrix}=\begin{bmatrix}1&0\\0&1\end{bmatrix}.
+\]
+This matrix is the transpose of $P_{\mathcal{B}\leftarrow\mathcal{C}}$; it is a rotation matrix, and the inverse of a rotation through an angle is the rotation through the opposite angle, which for these matrices is the transpose. The columns say
+\[
+\cos t=\tfrac12\cos(t+\tfrac\pi3)+\tfrac{\sqrt3}{2}\sin(t+\tfrac\pi3),\qquad \sin t=-\tfrac{\sqrt3}{2}\cos(t+\tfrac\pi3)+\tfrac12\sin(t+\tfrac\pi3),
+\]
+which are the angle-subtraction formulas for $\cos\bigl((t+\tfrac\pi3)-\tfrac\pi3\bigr)$ and $\sin\bigl((t+\tfrac\pi3)-\tfrac\pi3\bigr)$. Check the first at $t=0$: $\tfrac12\cdot\tfrac12+\tfrac{\sqrt3}{2}\cdot\tfrac{\sqrt3}{2}=\tfrac14+\tfrac34=1=\cos0$.\ $\checkmark$
+
+(c)~The function $f$ has $[f]_{\mathcal{B}}=(2,1)$, so
+\[
+[f]_{\mathcal{C}}=\begin{bmatrix}\tfrac12&-\tfrac{\sqrt3}{2}\\\tfrac{\sqrt3}{2}&\tfrac12\end{bmatrix}\begin{bmatrix}2\\1\end{bmatrix}=\begin{bmatrix}1-\tfrac{\sqrt3}{2}\\\sqrt3+\tfrac12\end{bmatrix}.
+\]
+Check at $t=0$, where $f(0)=2$ and $\cos\tfrac\pi3=\tfrac12$, $\sin\tfrac\pi3=\tfrac{\sqrt3}{2}$: the right-hand side is $(1-\tfrac{\sqrt3}{2})\tfrac12+(\sqrt3+\tfrac12)\tfrac{\sqrt3}{2}=\tfrac12-\tfrac{\sqrt3}{4}+\tfrac32+\tfrac{\sqrt3}{4}=2$.\ $\checkmark$ Check at $t=\pi/2$, where $f(\pi/2)=1$, $\cos\tfrac{5\pi}{6}=-\tfrac{\sqrt3}{2}$ and $\sin\tfrac{5\pi}{6}=\tfrac12$: $(1-\tfrac{\sqrt3}{2})(-\tfrac{\sqrt3}{2})+(\sqrt3+\tfrac12)\tfrac12=-\tfrac{\sqrt3}{2}+\tfrac34+\tfrac{\sqrt3}{2}+\tfrac14=1$.\ $\checkmark$ Two functions of the $2$-dimensional space $H$ that agree at these two values of $t$ are equal here, because the evaluations $t=0$ and $t=\pi/2$ read off the two $\mathcal{B}$-coordinates. \emph{Moral:} a change of phase is a change of basis, and its matrix is a rotation matrix.
+\end{exmp}
+
+\subsection*{Bank E: Change basis inside a null space}
+\begin{exmp}{Two bases of a null space}{b-nullspace}
+Let
+\[
+A=\begin{bmatrix}1&2&0&-1&1\\0&0&1&1&-1\end{bmatrix},\qquad H=\Nul A\subseteq\R^5.
+\]
+The vectors $\bv{c}_1=(0,0,0,1,1)$, $\bv{c}_2=(-2,1,0,1,1)$, $\bv{c}_3=(1,0,-1,2,1)$ will be a second basis $\mathcal{C}$ of $H$.
+\begin{enumerate}
+  \item[(a)] Find the basis $\mathcal{B}$ of $H$ that comes from the free variables, and show that $\bv{c}_1,\bv{c}_2,\bv{c}_3$ lie in $H$.
+  \item[(b)] Find $P_{\mathcal{B}\leftarrow\mathcal{C}}$ and show that $\mathcal{C}$ is a basis of $H$.
+  \item[(c)] Find $P_{\mathcal{C}\leftarrow\mathcal{B}}$.
+  \item[(d)] The vector $\bv{w}=(-2,1,0,3,3)$ is in $H$. Find $[\bv{w}]_{\mathcal{B}}$ and $[\bv{w}]_{\mathcal{C}}$.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~The matrix $A$ is already in reduced echelon form, with pivots in columns $1$ and $3$ and free variables $x_2,x_4,x_5$. The equations read $x_1=-2x_2+x_4-x_5$ and $x_3=-x_4+x_5$, so
+\[
+\bv{x}=x_2\begin{bmatrix}-2\\1\\0\\0\\0\end{bmatrix}+x_4\begin{bmatrix}1\\0\\-1\\1\\0\end{bmatrix}+x_5\begin{bmatrix}-1\\0\\1\\0\\1\end{bmatrix}.
+\]
+The three vectors $\bv{b}_1=(-2,1,0,0,0)$, $\bv{b}_2=(1,0,-1,1,0)$, $\bv{b}_3=(-1,0,1,0,1)$ span $H$, and they are independent (look at the entries in positions $2,4,5$: they are the columns of the identity matrix). So $\mathcal{B}=\{\bv{b}_1,\bv{b}_2,\bv{b}_3\}$ is a basis and $\dim H=3$. Note what this says: a vector of $H$ has \emph{$\mathcal{B}$-coordinates equal to its entries $(x_2,x_4,x_5)$ in the free positions}. To see that the $\bv{c}_j$ lie in $H$, multiply:
+\[
+\begin{bmatrix}1&2&0&-1&1\\0&0&1&1&-1\end{bmatrix}\begin{bmatrix}0\\0\\0\\1\\1\end{bmatrix}=\begin{bmatrix}0\\0\end{bmatrix}
+\]
+\[
+\begin{bmatrix}1&2&0&-1&1\\0&0&1&1&-1\end{bmatrix}\begin{bmatrix}-2\\1\\0\\1\\1\end{bmatrix}=\begin{bmatrix}0\\0\end{bmatrix}
+\]
+\[
+\begin{bmatrix}1&2&0&-1&1\\0&0&1&1&-1\end{bmatrix}\begin{bmatrix}1\\0\\-1\\2\\1\end{bmatrix}=\begin{bmatrix}0\\0\end{bmatrix}
+\]
+
+(b)~By the observation in part~(a), $[\bv{c}_j]_{\mathcal{B}}$ is the list of the entries of $\bv{c}_j$ in positions $2,4,5$: $(0,1,1)$, $(1,1,1)$ and $(0,2,1)$. These are the columns of
+\[
+P_{\mathcal{B}\leftarrow\mathcal{C}}=\begin{bmatrix}0&1&0\\1&1&2\\1&1&1\end{bmatrix}.
+\]
+Its determinant is $0\cdot(1-2)-1\cdot(1-2)+0=1$, so the matrix is invertible, and by Theorem~\ref{thm:converse} the vectors $\bv{c}_1,\bv{c}_2,\bv{c}_3$ form a basis of $H$. The matrix has size $3\times3$ and not $5\times5$: the vectors have five entries, but $H$ has dimension $3$, and coordinates relative to a basis of $H$ have three entries.
+
+(c)~Invert by reducing $[\,P_{\mathcal{B}\leftarrow\mathcal{C}}\mid I\,]$:
+\begin{align*}
+\begin{amat}{ccc|ccc}0 & 1 & 0 & 1 & 0 & 0\\1 & 1 & 2 & 0 & 1 & 0\\1 & 1 & 1 & 0 & 0 & 1\end{amat}
+&\rops{R_1\leftrightarrow R_2}
+\begin{amat}{ccc|ccc}1 & 1 & 2 & 0 & 1 & 0\\0 & 1 & 0 & 1 & 0 & 0\\1 & 1 & 1 & 0 & 0 & 1\end{amat}
+\\[4pt]
+&\rops{R_3-R_1}
+\begin{amat}{ccc|ccc}1 & 1 & 2 & 0 & 1 & 0\\0 & 1 & 0 & 1 & 0 & 0\\0 & 0 & -1 & 0 & -1 & 1\end{amat}
+\\[4pt]
+&\rops{-R_3}
+\begin{amat}{ccc|ccc}1 & 1 & 2 & 0 & 1 & 0\\0 & 1 & 0 & 1 & 0 & 0\\0 & 0 & 1 & 0 & 1 & -1\end{amat}
+\\[4pt]
+&\rops{R_1-2R_3}
+\begin{amat}{ccc|ccc}1 & 1 & 0 & 0 & -1 & 2\\0 & 1 & 0 & 1 & 0 & 0\\0 & 0 & 1 & 0 & 1 & -1\end{amat}
+\\[4pt]
+&\rops{R_1-R_2}
+\begin{amat}{ccc|ccc}1 & 0 & 0 & -1 & -1 & 2\\0 & 1 & 0 & 1 & 0 & 0\\0 & 0 & 1 & 0 & 1 & -1\end{amat}
+\end{align*}
+Hence
+\[
+P_{\mathcal{C}\leftarrow\mathcal{B}}=\begin{bmatrix}-1&-1&2\\1&0&0\\0&1&-1\end{bmatrix},\qquad \begin{bmatrix}0&1&0\\1&1&2\\1&1&1\end{bmatrix}\begin{bmatrix}-1&-1&2\\1&0&0\\0&1&-1\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}.
+\]
+The first column says $\bv{b}_1=-\bv{c}_1+\bv{c}_2$: indeed $-(0,0,0,1,1)+(-2,1,0,1,1)=(-2,1,0,0,0)$.\ $\checkmark$
+
+(d)~First check that $\bv{w}$ is in $H$: its entries in the positions $2,4,5$ are $1,3,3$, and by part~(a) the vector $1\bv{b}_1+3\bv{b}_2+3\bv{b}_3=(-2+3-3,\ 1,\ -3+3,\ 3,\ 3)=(-2,1,0,3,3)$. So $[\bv{w}]_{\mathcal{B}}=(1,3,3)$ and
+\[
+[\bv{w}]_{\mathcal{C}}=\begin{bmatrix}-1&-1&2\\1&0&0\\0&1&-1\end{bmatrix}\begin{bmatrix}1\\3\\3\end{bmatrix}=\begin{bmatrix}2\\1\\0\end{bmatrix}.
+\]
+Check: $2\bv{c}_1+\bv{c}_2=2(0,0,0,1,1)+(-2,1,0,1,1)=(-2,1,0,3,3)$.\ $\checkmark$
+\end{exmp}
+
+\subsection*{Bank F: Recover the unknown basis}
+\begin{exmp}{Recovering a basis of P2 from the matrix}{b-recover}
+In $\mathbb{P}_2$ let $\mathcal{C}=\{1+t,\ t+t^2,\ 1+t^2\}$, and let
+\[
+Q=\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\end{bmatrix}.
+\]
+\begin{enumerate}
+  \item[(a)] Find the basis $\mathcal{B}$ of $\mathbb{P}_2$ for which $P_{\mathcal{C}\leftarrow\mathcal{B}}=Q$.
+  \item[(b)] Let $\mathcal{B}'=\{1-t,\ t,\ 1+t^2\}$. Find the basis $\mathcal{C}'$ of $\mathbb{P}_2$ for which $P_{\mathcal{C}'\leftarrow\mathcal{B}'}=Q$. Why is this a different kind of problem from part~(a)?
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~Here the matrix and the \emph{target} basis $\mathcal{C}$ are given, and the unknown is the basis we start from. By Theorem~\ref{thm:converse}, the columns of $Q$ are the $\mathcal{C}$-coordinates of the vectors of $\mathcal{B}$, so each $\bv{b}_j$ is the combination of the $\bv{c}_i$ with the weights in column $j$:
+\[
+\bv{b}_1=\bv{c}_1+\bv{c}_2=1+2t+t^2,\qquad \bv{b}_2=\bv{c}_2+\bv{c}_3=1+t+2t^2,\qquad \bv{b}_3=\bv{c}_1+\bv{c}_2+\bv{c}_3=2+2t+2t^2.
+\]
+In matrix form $P_{\mathcal{B}}=P_{\mathcal{C}}Q$ (Theorem~\ref{thm:formula}), where $P_{\mathcal{C}}$ holds the standard coordinates of $1+t$, $t+t^2$, $1+t^2$:
+\[
+\begin{bmatrix}1&0&1\\1&1&0\\0&1&1\end{bmatrix}\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\end{bmatrix}=\begin{bmatrix}1&1&2\\2&1&2\\1&2&2\end{bmatrix}.
+\]
+The determinant of $Q$ is $1\cdot(1-1)-0+1\cdot(1-0)=1\neq0$, which is what guarantees that the three polynomials form a basis. Check: the first column of $P_{\mathcal{C}\leftarrow\mathcal{B}}$ is $[\bv{b}_1]_{\mathcal{C}}$, and $1(1+t)+1(t+t^2)=1+2t+t^2=\bv{b}_1$.\ $\checkmark$
+
+(b)~Now the \emph{starting} basis $\mathcal{B}'$ is given and the target $\mathcal{C}'$ is unknown. The columns of $Q$ are the $\mathcal{C}'$-coordinates of the $\bv{b}'_j$, but $\mathcal{C}'$ is exactly what we do not know, so we cannot use them as weights. We need the matrix that goes the other way, $P_{\mathcal{B}'\leftarrow\mathcal{C}'}=Q^{-1}$ (Theorem~\ref{thm:inverse}), whose columns are the $\mathcal{B}'$-coordinates of the $\bv{c}'_j$. Reduce $[\,Q\mid I\,]$:
+\begin{align*}
+\begin{amat}{ccc|ccc}1 & 0 & 1 & 1 & 0 & 0\\1 & 1 & 1 & 0 & 1 & 0\\0 & 1 & 1 & 0 & 0 & 1\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{ccc|ccc}1 & 0 & 1 & 1 & 0 & 0\\0 & 1 & 0 & -1 & 1 & 0\\0 & 1 & 1 & 0 & 0 & 1\end{amat}
+\rops{R_3-R_2}
+\begin{amat}{ccc|ccc}1 & 0 & 1 & 1 & 0 & 0\\0 & 1 & 0 & -1 & 1 & 0\\0 & 0 & 1 & 1 & -1 & 1\end{amat}
+\\[4pt]
+&\rops{R_1-R_3}
+\begin{amat}{ccc|ccc}1 & 0 & 0 & 0 & 1 & -1\\0 & 1 & 0 & -1 & 1 & 0\\0 & 0 & 1 & 1 & -1 & 1\end{amat}
+\end{align*}
+So $Q^{-1}=\begin{bmatrix}0&1&-1\\-1&1&0\\1&-1&1\end{bmatrix}$, and the columns give
+\[
+\bv{c}'_1=-\bv{b}'_2+\bv{b}'_3=1-t+t^2,\qquad \bv{c}'_2=\bv{b}'_1+\bv{b}'_2-\bv{b}'_3=-t^2,\qquad \bv{c}'_3=-\bv{b}'_1+\bv{b}'_3=t+t^2.
+\]
+Check by multiplying: $P_{\mathcal{C}'}Q$ must equal $P_{\mathcal{B}'}$, where $P_{\mathcal{C}'}$ and $P_{\mathcal{B}'}$ hold the standard coordinates:
+\[
+\begin{bmatrix}1&0&0\\-1&0&1\\1&-1&1\end{bmatrix}\begin{bmatrix}1&0&1\\1&1&1\\0&1&1\end{bmatrix}=\begin{bmatrix}1&0&1\\-1&1&0\\0&0&1\end{bmatrix}.
+\]
+This is $P_{\mathcal{B}'}$ column by column, so $P_{\mathcal{C}'\leftarrow\mathcal{B}'}=Q$.\ $\checkmark$ \emph{The trap:} using the columns of $Q$ as weights on the $\bv{b}'_j$ would produce a basis $\mathcal{C}''$ with $P_{\mathcal{B}'\leftarrow\mathcal{C}''}=Q$, that is, with $P_{\mathcal{C}''\leftarrow\mathcal{B}'}=Q^{-1}$, and that is not the matrix we were given. The weights in column $j$ of a matrix $P_{\mathcal{Y}\leftarrow\mathcal{X}}$ are weights on the vectors of $\mathcal{Y}$, the basis named \emph{first}. In part~(a) that basis is known, so the columns can be used directly. In part~(b) it is the unknown one, so we invert first.
+\end{exmp}
+
+\subsection*{Bank G: True or false}
+\begin{exmp}{Eight statements about change-of-basis matrices}{b-truefalse}
+Let $\mathcal{B}$, $\mathcal{C}$ and $\mathcal{D}$ be bases of a $3$-dimensional vector space $V$, so that all the matrices below are $3\times3$. Decide whether each statement is true or false, and give a reason or a counterexample.
+\begin{enumerate}
+  \item[(a)] The matrix $\begin{bmatrix}2&0&0\\0&1&0\\0&0&-1\end{bmatrix}$ can be $P_{\mathcal{C}\leftarrow\mathcal{B}}$ for suitable bases.
+  \item[(b)] The matrix $\begin{bmatrix}1&2&0\\1&2&0\\0&1&1\end{bmatrix}$ can be $P_{\mathcal{C}\leftarrow\mathcal{B}}$ for suitable bases.
+  \item[(c)] Every entry of a change-of-basis matrix is nonzero.
+  \item[(d)] $P_{\mathcal{C}\leftarrow\mathcal{B}}\,P_{\mathcal{D}\leftarrow\mathcal{C}}=P_{\mathcal{D}\leftarrow\mathcal{B}}$.
+  \item[(e)] The sum of two change-of-basis matrices of the same size is a change-of-basis matrix.
+  \item[(f)] The product of two $3\times3$ change-of-basis matrices is a change-of-basis matrix.
+  \item[(g)] If $P_{\mathcal{C}\leftarrow\mathcal{B}}$ is upper triangular, then $\Span\{\bv{b}_1,\bv{b}_2\}=\Span\{\bv{c}_1,\bv{c}_2\}$.
+  \item[(h)] Let $\mathcal{B}$ and $\mathcal{C}$ be bases of $\R^3$ whose matrices $P_{\mathcal{B}}$ and $P_{\mathcal{C}}$ have integer entries and determinant $1$ or $-1$. Then $P_{\mathcal{C}\leftarrow\mathcal{B}}$ has integer entries.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~\emph{True.} The matrix is invertible (its determinant is $-2$), and by Theorem~\ref{thm:converse} every invertible matrix is $P_{\mathcal{C}\leftarrow\mathcal{B}}$ for some pair. Concretely, take any basis $\mathcal{C}$ and put $\bv{b}_1=2\bv{c}_1$, $\bv{b}_2=\bv{c}_2$, $\bv{b}_3=-\bv{c}_3$; then the columns are $(2,0,0)$, $(0,1,0)$, $(0,0,-1)$.
+
+(b)~\emph{False.} The first two rows are equal, so the matrix has rank at most $2$ and is not invertible, but a change-of-basis matrix is invertible (Theorem~\ref{thm:inverse}). (Its determinant is $0$.)
+
+(c)~\emph{False.} The identity matrix $P_{\mathcal{B}\leftarrow\mathcal{B}}$ (Theorem~\ref{thm:inverse}(a)) is a change-of-basis matrix with six zero entries.
+
+(d)~\emph{False.} The correct order is $P_{\mathcal{D}\leftarrow\mathcal{B}}=P_{\mathcal{D}\leftarrow\mathcal{C}}\,P_{\mathcal{C}\leftarrow\mathcal{B}}$ (Theorem~\ref{thm:chain}), and matrices do not commute. A counterexample with actual matrices: let
+\[
+P_{\mathcal{C}\leftarrow\mathcal{B}}=\begin{bmatrix}1&1&0\\0&1&0\\0&0&1\end{bmatrix},\qquad P_{\mathcal{D}\leftarrow\mathcal{C}}=\begin{bmatrix}1&0&0\\1&1&0\\0&0&1\end{bmatrix}.
+\]
+The correct product is
+\[
+P_{\mathcal{D}\leftarrow\mathcal{B}}=\begin{bmatrix}1&0&0\\1&1&0\\0&0&1\end{bmatrix}\begin{bmatrix}1&1&0\\0&1&0\\0&0&1\end{bmatrix}=\begin{bmatrix}1&1&0\\1&2&0\\0&0&1\end{bmatrix},
+\]
+while the product in the wrong order is
+\[
+\begin{bmatrix}1&1&0\\0&1&0\\0&0&1\end{bmatrix}\begin{bmatrix}1&0&0\\1&1&0\\0&0&1\end{bmatrix}=\begin{bmatrix}2&1&0\\1&1&0\\0&0&1\end{bmatrix}.
+\]
+The two results differ. Read the letters: in the statement the two $\mathcal{C}$'s are not next to each other, so they do not cancel (compare Pause and think~\ref{think:order}).
+
+(e)~\emph{False.} Let $\mathcal{C}=\{-\bv{b}_1,-\bv{b}_2,-\bv{b}_3\}$. Then $P_{\mathcal{B}\leftarrow\mathcal{B}}=I$ and $P_{\mathcal{C}\leftarrow\mathcal{B}}=-I$ are both change-of-basis matrices, but their sum is the zero matrix, which is not invertible.
+
+(f)~\emph{True.} Both matrices are invertible, so their product is invertible, and by Theorem~\ref{thm:converse} every invertible matrix is a change-of-basis matrix. (When the product is $P_{\mathcal{D}\leftarrow\mathcal{C}}P_{\mathcal{C}\leftarrow\mathcal{B}}$ it is $P_{\mathcal{D}\leftarrow\mathcal{B}}$ by Theorem~\ref{thm:chain}; for two arbitrary matrices the pair of bases has to be chosen to fit.)
+
+(g)~\emph{True.} If $P_{\mathcal{C}\leftarrow\mathcal{B}}$ is upper triangular, column $j$ has zeros below position $j$, so $[\bv{b}_j]_{\mathcal{C}}=(q_{1j},\dots,q_{jj},0,\dots,0)$. For $j=1,2$ this says $\bv{b}_1$ and $\bv{b}_2$ are combinations of $\bv{c}_1$ and $\bv{c}_2$ only. The vectors $\bv{b}_1,\bv{b}_2$ are independent and lie in the $2$-dimensional space $\Span\{\bv{c}_1,\bv{c}_2\}$, so they span it (two independent vectors in a $2$-dimensional space form a basis, by the Basis Theorem).
+
+(h)~\emph{True.} We have $P_{\mathcal{C}\leftarrow\mathcal{B}}=P_{\mathcal{C}}^{-1}P_{\mathcal{B}}$ (Theorem~\ref{thm:formula}). The cofactor formula for the inverse says $P_{\mathcal{C}}^{-1}=\pm\operatorname{adj}P_{\mathcal{C}}$ when the determinant is $\pm1$, and the adjugate of an integer matrix has integer entries. A product of integer matrices has integer entries. (The statement fails without the condition on the determinant: for $P_{\mathcal{C}}=2I$ and $P_{\mathcal{B}}=I$ we get $P_{\mathcal{C}\leftarrow\mathcal{B}}=\tfrac12I$.)
+
+\end{exmp}
+
+\subsection*{Bank H: Vectors with the same coordinates in both bases}
+\begin{exmp}{Vectors whose coordinates do not change}{b-equal}
+In $\R^3$ let $\mathcal{B}=\{\bv{b}_1,\bv{b}_2,\bv{b}_3\}=\{(1,2,0),(0,1,1),(1,0,1)\}$ and $\mathcal{C}=\{\bv{c}_1,\bv{c}_2,\bv{c}_3\}=\{(0,1,0),(1,1,1),(0,-2,1)\}$. Both are bases. Find all vectors $\bv{x}$ with $[\bv{x}]_{\mathcal{B}}=[\bv{x}]_{\mathcal{C}}$.
+\begin{enumerate}
+  \item[(a)] Turn the condition into a homogeneous system and solve it.
+  \item[(b)] Describe the set of such vectors $\bv{x}$.
+  \item[(c)] Confirm the answer with $P_{\mathcal{C}\leftarrow\mathcal{B}}$.
+\end{enumerate}
+
+\textbf{Solution.}
+(a)~Suppose $[\bv{x}]_{\mathcal{B}}=[\bv{x}]_{\mathcal{C}}=\bv{y}$. By the definition of coordinates, $\bv{x}=y_1\bv{b}_1+y_2\bv{b}_2+y_3\bv{b}_3$ and also $\bv{x}=y_1\bv{c}_1+y_2\bv{c}_2+y_3\bv{c}_3$. Subtracting,
+\[
+y_1(\bv{b}_1-\bv{c}_1)+y_2(\bv{b}_2-\bv{c}_2)+y_3(\bv{b}_3-\bv{c}_3)=\bv{0}.
+\]
+Conversely, every $\bv{y}$ that satisfies this equation gives a vector $\bv{x}=\sum y_i\bv{b}_i=\sum y_i\bv{c}_i$ whose two coordinate vectors are both $\bv{y}$. So the problem is to find the null space of the matrix with columns $\bv{b}_i-\bv{c}_i$, which is $P_{\mathcal{B}}-P_{\mathcal{C}}$. The differences are $\bv{b}_1-\bv{c}_1=(1,1,0)$, $\bv{b}_2-\bv{c}_2=(-1,0,0)$ and $\bv{b}_3-\bv{c}_3=(1,2,0)$. Reduce:
+\begin{align*}
+\begin{amat}{ccc}1 & -1 & 1\\1 & 0 & 2\\0 & 0 & 0\end{amat}
+&\rops{R_2-R_1}
+\begin{amat}{ccc}1 & -1 & 1\\0 & 1 & 1\\0 & 0 & 0\end{amat}
+\rops{R_1+R_2}
+\begin{amat}{ccc}1 & 0 & 2\\0 & 1 & 1\\0 & 0 & 0\end{amat}
+\end{align*}
+The variable $y_3$ is free, with $y_1=-2y_3$ and $y_2=-y_3$. Writing $y_3=-s$, the solutions are $\bv{y}=s\,(2,1,-1)$ with $s$ any real number.
+
+(b)~The vector with coordinates $\bv{y}=s(2,1,-1)$ is $\bv{x}=s\,(2\bv{b}_1+\bv{b}_2-\bv{b}_3)=s\,(1,5,0)$:
+\[
+2(1,2,0)+1(0,1,1)-1(1,0,1)=(1,5,0)
+\]
+\[
+2(0,1,0)+1(1,1,1)-1(0,-2,1)=(1,5,0).
+\]
+The two computations agree, as they must. So the vectors with equal coordinates in the two bases are exactly the multiples of $(1,5,0)$, a line through the origin; the vector $(1,5,0)$ has $[\bv{x}]_{\mathcal{B}}=[\bv{x}]_{\mathcal{C}}=(2,1,-1)$. The zero vector is always in the set, and a solution set of a homogeneous system is a subspace, which is why the answer is a line and not, say, two separate points.
+
+(c)~Let $P=P_{\mathcal{C}\leftarrow\mathcal{B}}=P_{\mathcal{C}}^{-1}P_{\mathcal{B}}$. Its columns are the $\mathcal{C}$-coordinates of the $\bv{b}_j$, and a direct computation gives $P=\begin{bmatrix}-1&3&-1\\1&0&1\\-1&1&0\end{bmatrix}$. We check this matrix against the definition, $P_{\mathcal{C}}P=P_{\mathcal{B}}$, and then ask for the vectors $\bv{y}$ with $P\bv{y}=\bv{y}$ (equal coordinates in the two bases means exactly this):
+\[
+\begin{bmatrix}0&1&0\\1&1&-2\\0&1&1\end{bmatrix}\begin{bmatrix}-1&3&-1\\1&0&1\\-1&1&0\end{bmatrix}=\begin{bmatrix}1&0&1\\2&1&0\\0&1&1\end{bmatrix},\qquad
+\begin{bmatrix}-1&3&-1\\1&0&1\\-1&1&0\end{bmatrix}\begin{bmatrix}2\\1\\-1\end{bmatrix}=\begin{bmatrix}2\\1\\-1\end{bmatrix}.
+\]
+The first equation says that $P$ is the correct matrix, and the second says that $(2,1,-1)$ is left unchanged by it. The matrix $P-I$ has rank $2$, and its null space is the line spanned by $(2,1,-1)$: the same answer as in part~(a), reached without subtracting the vectors. \emph{Moral:} the vectors with equal coordinates in two bases are those that the change-of-basis matrix leaves unchanged. If $P-I$ were invertible, only $\bv{0}$ would remain.
+\end{exmp}
+
 \subsection*{Answers and discussion}
 \begin{description}[leftmargin=0pt,itemsep=5pt]
   \item[Knowledge Check \ref{kc:cols}.] (a)~The columns are the coefficients of $\bv{b}_1,\bv{b}_2,\bv{b}_3$ in terms of the $\bv{c}$'s, namely $(1,-1,0)$, $(0,1,1)$, $(2,0,1)$:
