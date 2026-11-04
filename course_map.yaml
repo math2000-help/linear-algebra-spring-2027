@@ -43,7 +43,7 @@ modules:
   - {id: "5.4", chapter: 5, title: "Eigenvectors and Linear Transformations", tested: true, prereqs: ["4.4"], status: done, note: "Matrix of a transformation and the diagonal case. Stands on 4.4 alone; introduces the change-of-basis matrix itself."}
   - {id: "6.1", chapter: 6, title: "Inner Product, Length, and Orthogonality", tested: true, prereqs: ["4.2"], status: done}
   - {id: "6.2", chapter: 6, title: "Orthogonal Sets", tested: true, prereqs: ["6.1", "4.3"], status: done}
-  - {id: "6.3", chapter: 6, title: "Orthogonal Projections", tested: true, prereqs: ["6.2", "4.4"], status: todo, note: "Needed by 6.4, 6.5 and 6.7."}
-  - {id: "6.4", chapter: 6, title: "The Gram-Schmidt Process", tested: true, prereqs: ["6.3"], status: todo}
+  - {id: "6.3", chapter: 6, title: "Orthogonal Projections", tested: true, prereqs: ["6.2", "4.4"], status: done, note: "Needed by 6.4, 6.5 and 6.7."}
+  - {id: "6.4", chapter: 6, title: "The Gram-Schmidt Process", tested: true, prereqs: ["6.3"], status: done}
   - {id: "6.5", chapter: 6, title: "Least-Squares Problems", tested: true, prereqs: ["6.3", "6.4"], status: todo, note: "Payoff for the chapter; ties back to inconsistent systems in Ch. 1."}
   - {id: "6.7", chapter: 6, title: "Inner Product Spaces", tested: true, priority: if-time-permits, prereqs: ["6.3", "6.4", "4.1"], status: todo, note: "Abstraction payoff for Ch. 6. Build last; decide in April whether it makes the syllabus."}
