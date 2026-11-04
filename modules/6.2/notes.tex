@@ -1,0 +1,456 @@
+\documentclass[11pt]{article}
+\usepackage[notes]{la}
+\lamodule{6}{2}{Orthogonal Sets}
+\laxdoc{1.7}
+\laxdoc{2.1}
+\laxdoc{2.3}
+\laxdoc{4.3}
+\laxdoc{6.1}
+
+\begin{document}
+
+\section{Orthogonal Sets}
+
+\begin{guide}
+Finding the weights that write a vector $\bv{y}$ as a combination of some other vectors usually means row reducing a system. Is there a family of vectors for which the weights can simply be read off, one dot product each? There is: vectors that are pairwise perpendicular. This section shows that such a family is automatically independent, that the weights are $\bv{y}\cdot\bv{u}_j/\bv{u}_j\cdot\bv{u}_j$, and that the same formula with one vector $\bv{u}$ splits any $\bv{y}$ into a part along $\bv{u}$ and a part perpendicular to $\bv{u}$. Dividing every vector by its length then gives the nicest matrices of all: those whose inverse is their transpose.
+\end{guide}
+
+\textbf{By the end of this section you should be able to:}
+\begin{itemize}
+  \item decide whether a set of vectors is orthogonal, and explain why a set of nonzero orthogonal vectors is linearly independent;
+  \item find the weights of a vector in an orthogonal basis with the dot-product formula, with no row reduction;
+  \item compute the orthogonal projection of $\bv{y}$ onto a line, and write $\bv{y}$ as a sum of a vector along the line and a vector perpendicular to it;
+  \item turn an orthogonal basis into an orthonormal one, and recognise a matrix with orthonormal columns by $U\T U=I$;
+  \item use that such matrices keep lengths, dot products and orthogonality, and that a square one is invertible with $U^{-1}=U\T$.
+\end{itemize}
+
+% ---------------------------------------------------------------------
+\subsection*{Orthogonal sets and independence}
+
+\begin{defn}{Orthogonal set and orthogonal basis}{orthset}
+A set of vectors $\{\bv{u}_1,\dots,\bv{u}_p\}$ in $\R^n$ is an \emph{orthogonal set} if $\bv{u}_i\cdot\bv{u}_j=0$ whenever $i\neq j$; that is, every two different vectors are orthogonal (Definition~\ref{6.1-def:orth}). An \emph{orthogonal basis} for a subspace $W$ is a basis for $W$ (Definition~\ref{4.3-def:basis}) that is also an orthogonal set.
+\end{defn}
+
+\begin{exmp}{Testing a set}{testset}
+Let $\bv{a}_1=(1,1,1)$, $\bv{a}_2=(1,-2,1)$ and $\bv{a}_3=(1,0,-1)$. There are three pairs to check:
+\[
+\bv{a}_1\cdot\bv{a}_2=1-2+1=0,\qquad\bv{a}_1\cdot\bv{a}_3=1+0-1=0,\qquad\bv{a}_2\cdot\bv{a}_3=1+0-1=0 .
+\]
+So $\{\bv{a}_1,\bv{a}_2,\bv{a}_3\}$ is an orthogonal set. By contrast, for $\bv{b}_1=(2,1,-1)$, $\bv{b}_2=(1,-1,1)$ and $\bv{b}_3=(0,1,2)$ we get $\bv{b}_1\cdot\bv{b}_2=2-1-1=0$ but $\bv{b}_1\cdot\bv{b}_3=0+1-2=-1\neq0$, so $\{\bv{b}_1,\bv{b}_2,\bv{b}_3\}$ is not an orthogonal set: one failing pair is enough.
+\end{exmp}
+
+\begin{kc}{Orthogonal or not}{kcorthset}
+Is each set orthogonal? (a)~$\{(1,2),(4,-2)\}$. (b)~$\{(1,0,1),(0,3,0),(1,0,-1)\}$. (c)~$\{(1,1,0),(1,-1,0),(1,1,1)\}$.
+\end{kc}
+
+Is an orthogonal set automatically independent? Not quite, and the zero vector is the only obstruction.
+
+\begin{exmp}{Orthogonal but dependent}{zerocase}
+The set $\{(1,0),(0,0)\}$ is orthogonal, since $(1,0)\cdot(0,0)=0$; but it contains $\bv{0}$, so it is dependent: $0\cdot(1,0)+1\cdot(0,0)=\bv{0}$ is a relation with a nonzero weight.
+\end{exmp}
+
+\begin{thm}{Orthogonal sets are independent}{indep}
+If $\{\bv{u}_1,\dots,\bv{u}_p\}$ is an orthogonal set of \emph{nonzero} vectors in $\R^n$, then it is linearly independent. Hence it is an orthogonal basis for its span.
+\end{thm}
+
+\begin{proof}
+Suppose $c_1\bv{u}_1+\cdots+c_p\bv{u}_p=\bv{0}$. Take the dot product of both sides with $\bv{u}_j$. By the rules of Theorem~\ref{6.1-thm:dotprops}, the left side becomes $c_1(\bv{u}_1\cdot\bv{u}_j)+\cdots+c_p(\bv{u}_p\cdot\bv{u}_j)$. Every term with $i\neq j$ is $0$ because the set is orthogonal, so only $c_j(\bv{u}_j\cdot\bv{u}_j)$ is left, and the right side is $\bv{0}\cdot\bv{u}_j=0$. Hence $c_j(\bv{u}_j\cdot\bv{u}_j)=0$. Since $\bv{u}_j\neq\bv{0}$, we have $\bv{u}_j\cdot\bv{u}_j\neq0$ (Theorem~\ref{6.1-thm:dotprops}(d)), so $c_j=0$. This holds for every $j$, so the only relation is the trivial one.
+\end{proof}
+
+\begin{think}{The zero vector}{zerovec}
+(a)~Which step of the proof of Theorem~\ref{thm:indep} fails if $\bv{u}_j=\bv{0}$? (b)~Is a single nonzero vector an orthogonal set? Is it independent?
+\end{think}
+
+% ---------------------------------------------------------------------
+\subsection*{Weights in an orthogonal basis}
+
+For a general basis, finding the weights means solving a system. For an orthogonal basis the proof above already contains the answer: dotting with $\bv{u}_j$ isolates one weight.
+
+\begin{thm}{Weights in an orthogonal basis}{weights}
+Let $\{\bv{u}_1,\dots,\bv{u}_p\}$ be an orthogonal basis (of nonzero vectors) for a subspace $W$ of $\R^n$. For each $\bv{y}$ in $W$, the weights in $\bv{y}=c_1\bv{u}_1+\cdots+c_p\bv{u}_p$ are
+\[
+c_j=\frac{\bv{y}\cdot\bv{u}_j}{\bv{u}_j\cdot\bv{u}_j},\qquad j=1,\dots,p .
+\]
+\end{thm}
+
+\begin{proof}
+Since $\bv{y}$ is in $W$ and the $\bv{u}_j$ span $W$, there are weights with $\bv{y}=c_1\bv{u}_1+\cdots+c_p\bv{u}_p$. Dot both sides with $\bv{u}_j$. As in the proof of Theorem~\ref{thm:indep}, all terms with $i\neq j$ vanish and $\bv{y}\cdot\bv{u}_j=c_j(\bv{u}_j\cdot\bv{u}_j)$. Divide by $\bv{u}_j\cdot\bv{u}_j\neq0$.
+\end{proof}
+
+\begin{proc}{Weights in an orthogonal basis}{expand}
+Given an orthogonal basis $\bv{u}_1,\dots,\bv{u}_p$ for $W$ and a vector $\bv{y}$ in $W$:
+\begin{enumerate}[nosep]
+  \item compute the denominators $\bv{u}_j\cdot\bv{u}_j$ (the squared lengths);
+  \item compute the numerators $\bv{y}\cdot\bv{u}_j$;
+  \item set $c_j=(\bv{y}\cdot\bv{u}_j)/(\bv{u}_j\cdot\bv{u}_j)$;
+  \item check by adding up $c_1\bv{u}_1+\cdots+c_p\bv{u}_p$.
+\end{enumerate}
+\end{proc}
+
+\begin{exmp}{Integer weights}{weights1}
+With $\bv{a}_1,\bv{a}_2,\bv{a}_3$ from Example~\ref{ex:testset} (an orthogonal set of three nonzero vectors, so independent by Theorem~\ref{thm:indep}; the $3\times3$ matrix with these columns has a pivot in every column, hence in every row, so the columns span $\R^3$, by Theorem~\ref{2.3-thm:imt}) write $\bv{y}=(4,4,-2)$ as a combination. The squared lengths are $\bv{a}_1\cdot\bv{a}_1=3$, $\bv{a}_2\cdot\bv{a}_2=6$ and $\bv{a}_3\cdot\bv{a}_3=2$. The numerators are
+\[
+\bv{y}\cdot\bv{a}_1=4+4-2=6,\qquad\bv{y}\cdot\bv{a}_2=4-8-2=-6,\qquad\bv{y}\cdot\bv{a}_3=4+0+2=6,
+\]
+so $c_1=6/3=2$, $c_2=-6/6=-1$ and $c_3=6/2=3$. Check: $2(1,1,1)-(1,-2,1)+3(1,0,-1)=(2-1+3,\ 2+2+0,\ 2-1-3)=(4,4,-2)$. \ $\checkmark$ No system was solved.
+\end{exmp}
+
+\begin{exmp}{Fractional weights}{weights2}
+For $\bv{y}=(6,0,3)$ and the same basis: $\bv{y}\cdot\bv{a}_1=9$, $\bv{y}\cdot\bv{a}_2=6+0+3=9$, $\bv{y}\cdot\bv{a}_3=6-3=3$. The weights are $c_1=9/3=3$, $c_2=9/6=\tfrac32$ and $c_3=3/2$. Check: $3(1,1,1)+\tfrac32(1,-2,1)+\tfrac32(1,0,-1)=(3+\tfrac32+\tfrac32,\ 3-3+0,\ 3+\tfrac32-\tfrac32)=(6,0,3)$. \ $\checkmark$ Fractions are normal here; the denominators are the squared lengths.
+\end{exmp}
+
+\begin{center}
+\begin{tikzpicture}[>=stealth,scale=0.8]
+  \draw[gray!50,->] (-1,0)--(7,0);
+  \draw[gray!50,->] (0,-1)--(0,5);
+  \draw[->,thick,blue] (0,0)--(3,0) node[below] {u1};
+  \draw[->,thick,blue] (0,0)--(0,2) node[left] {u2};
+  \draw[->,thick,red] (0,0)--(6,4) node[above right] {y};
+  \draw[dashed] (6,0)--(6,4);
+  \draw[dashed] (0,4)--(6,4);
+  \node at (6,-0.5) {2 u1};
+  \node at (-0.7,4) {2 u2};
+\end{tikzpicture}
+\end{center}
+
+\noindent\textbf{Figure 1.} In an orthogonal basis the weights are found by dropping perpendiculars. Here $\bv{u}_1=(3,0)$ and $\bv{u}_2=(0,2)$, and $\bv{y}=(6,4)=2\bv{u}_1+2\bv{u}_2$: each weight depends on $\bv{y}$ and one basis vector only.
+
+\begin{exmp}{Is $\bv{y}$ in the span?}{notin}
+Let $W=\Span\{\bv{a}_1,\bv{a}_2\}$ and $\bv{y}=(2,1,3)$. The formula gives candidate weights $c_1=(2+1+3)/3=2$ and $c_2=(2-2+3)/6=\tfrac12$, and
+\[
+2\bv{a}_1+\tfrac12\bv{a}_2=(2,2,2)+(\tfrac12,-1,\tfrac12)=(\tfrac52,1,\tfrac52)\neq(2,1,3).
+\]
+So $\bv{y}$ is \emph{not} in $W$: if it were, Theorem~\ref{thm:weights} says these would be its weights. The leftover $\bv{y}-(\tfrac52,1,\tfrac52)=(-\tfrac12,0,\tfrac12)$ is $-\tfrac12\bv{a}_3$, perpendicular to both $\bv{a}_1$ and $\bv{a}_2$.
+\end{exmp}
+
+\begin{think}{When $\bv{y}$ is not in the span}{notinspan}
+In Example~\ref{ex:notin}, (a)~what are the weights of $\bv{y}$ in the full basis $\{\bv{a}_1,\bv{a}_2,\bv{a}_3\}$? (b)~Which of them equals the weight found for $\bv{a}_3$ in the leftover vector?
+\end{think}
+
+\begin{kc}{Weights}{kcweights}
+The vectors $\bv{u}_1=(2,1)$ and $\bv{u}_2=(-1,2)$ form an orthogonal basis for $\R^2$. Write $\bv{y}=(7,4)$ as $c_1\bv{u}_1+c_2\bv{u}_2$.
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{Orthogonal projection onto a line}
+
+Take just one vector $\bv{u}\neq\bv{0}$ and the line $L=\Span\{\bv{u}\}$. Given $\bv{y}$, we want to write $\bv{y}=\hat{\bv{y}}+\bv{z}$ with $\hat{\bv{y}}$ on $L$ and $\bv{z}$ perpendicular to $L$.
+
+\begin{thm}{Splitting a vector along a line}{split}
+Let $\bv{u}\neq\bv{0}$ and $L=\Span\{\bv{u}\}$. Every $\bv{y}$ in $\R^n$ can be written in exactly one way as $\bv{y}=\hat{\bv{y}}+\bv{z}$ with $\hat{\bv{y}}$ in $L$ and $\bv{z}\cdot\bv{u}=0$. Namely
+\[
+\hat{\bv{y}}=\frac{\bv{y}\cdot\bv{u}}{\bv{u}\cdot\bv{u}}\,\bv{u},\qquad\bv{z}=\bv{y}-\hat{\bv{y}} .
+\]
+\end{thm}
+
+\begin{proof}
+\emph{Existence.} Define $\hat{\bv{y}}$ and $\bv{z}$ as stated. Then $\hat{\bv{y}}$ is a multiple of $\bv{u}$, so it lies on $L$, and $\hat{\bv{y}}+\bv{z}=\bv{y}$. Also
+\[
+\bv{z}\cdot\bv{u}=\bv{y}\cdot\bv{u}-\frac{\bv{y}\cdot\bv{u}}{\bv{u}\cdot\bv{u}}(\bv{u}\cdot\bv{u})=\bv{y}\cdot\bv{u}-\bv{y}\cdot\bv{u}=0 .
+\]
+\emph{Uniqueness.} Suppose also $\bv{y}=\alpha\bv{u}+\bv{w}$ with $\bv{w}\cdot\bv{u}=0$. Dot with $\bv{u}$: $\bv{y}\cdot\bv{u}=\alpha(\bv{u}\cdot\bv{u})+0$, so $\alpha=(\bv{y}\cdot\bv{u})/(\bv{u}\cdot\bv{u})$. Thus $\alpha\bv{u}=\hat{\bv{y}}$ and then $\bv{w}=\bv{y}-\hat{\bv{y}}=\bv{z}$.
+\end{proof}
+
+\begin{defn}{Orthogonal projection onto a line}{proj}
+The vector $\hat{\bv{y}}$ of Theorem~\ref{thm:split} is the \emph{orthogonal projection of $\bv{y}$ onto $L$}, written $\proj_L\bv{y}$. The vector $\bv{z}=\bv{y}-\proj_L\bv{y}$ is the part of $\bv{y}$ perpendicular to $L$.
+\end{defn}
+
+\begin{center}
+\begin{tikzpicture}[>=stealth,scale=0.75]
+  \draw[gray!60] (-1,-0.67)--(7,4.67);
+  \node at (7.3,4.9) {L};
+  \draw[->,thick,blue] (0,0)--(3,2) node[below right] {u};
+  \draw[->,thick,red] (0,0)--(5,5) node[above] {y};
+  \draw[->,thick,green!50!black] (0,0)--(5.38,3.58) node[below right] {yhat};
+  \draw[->,thick,orange] (5.38,3.58)--(5,5) node[midway,right] {z};
+  \draw (5.1,3.5)--(5.2,3.8)--(5.5,3.7);
+\end{tikzpicture}
+\end{center}
+
+\noindent\textbf{Figure 2.} The vector $\bv{y}$ is the diagonal of a right triangle: $\hat{\bv{y}}=\proj_L\bv{y}$ runs along $L$ and $\bv{z}$ is perpendicular to $L$.
+
+\begin{exmp}{A projection in the plane}{proj2d}
+Let $\bv{u}=(3,4)$ and $\bv{y}=(7,1)$. Then $\bv{y}\cdot\bv{u}=21+4=25$ and $\bv{u}\cdot\bv{u}=25$, so $\hat{\bv{y}}=\tfrac{25}{25}(3,4)=(3,4)$ and $\bv{z}=(7,1)-(3,4)=(4,-3)$. Check: $\bv{z}\cdot\bv{u}=12-12=0$. \ $\checkmark$ The perpendicular part has length $\lVert\bv{z}\rVert=\sqrt{16+9}=5$.
+\end{exmp}
+
+\begin{exmp}{A projection in $\R^3$}{proj3d}
+Let $\bv{u}=(1,2,2)$ and $\bv{y}=(2,3,1)$. Then $\bv{y}\cdot\bv{u}=2+6+2=10$ and $\bv{u}\cdot\bv{u}=9$, so
+\[
+\hat{\bv{y}}=\tfrac{10}{9}(1,2,2)=(\tfrac{10}{9},\tfrac{20}{9},\tfrac{20}{9}),\qquad\bv{z}=(2,3,1)-\hat{\bv{y}}=(\tfrac{8}{9},\tfrac{7}{9},-\tfrac{11}{9}).
+\]
+Check: $\bv{z}\cdot\bv{u}=\tfrac{8}{9}+\tfrac{14}{9}-\tfrac{22}{9}=0$. \ $\checkmark$ Also $\lVert\bv{y}\rVert^2=14$ equals $\lVert\hat{\bv{y}}\rVert^2+\lVert\bv{z}\rVert^2=\tfrac{100}{9}+\tfrac{26}{9}$, as Theorem~\ref{6.1-thm:pyth} predicts.
+\end{exmp}
+
+\begin{think}{Only the line matters}{scaleproj}
+Replace $\bv{u}=(1,2,2)$ in Example~\ref{ex:proj3d} by $2\bv{u}=(2,4,4)$ and recompute the fraction in the formula. What happens to $\proj_L\bv{y}$, and why?
+\end{think}
+
+\begin{kc}{Projections}{kcproj}
+Find $\proj_L\bv{y}$ and $\bv{z}$ for $\bv{u}=(2,1)$ and $\bv{y}=(3,4)$, and check that $\bv{z}\cdot\bv{u}=0$.
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{Orthonormal sets and matrices with orthonormal columns}
+
+\begin{defn}{Orthonormal set}{orthonormal}
+An orthogonal set of \emph{unit} vectors is an \emph{orthonormal set}. An \emph{orthonormal basis} for $W$ is an orthogonal basis for $W$ consisting of unit vectors.
+\end{defn}
+
+Any orthogonal basis becomes orthonormal when every vector is divided by its length (Procedure~\ref{6.1-proc:unit}); dividing by a positive number keeps the vectors orthogonal, by Theorem~\ref{6.1-thm:dotprops}(c).
+
+\begin{exmp}{An orthonormal basis}{normalize}
+The lengths of $\bv{a}_1,\bv{a}_2,\bv{a}_3$ are $\sqrt3$, $\sqrt6$ and $\sqrt2$, so
+\[
+\bv{e}_1=\tfrac1{\sqrt3}(1,1,1),\qquad\bv{e}_2=\tfrac1{\sqrt6}(1,-2,1),\qquad\bv{e}_3=\tfrac1{\sqrt2}(1,0,-1)
+\]
+is an orthonormal basis for $\R^3$. For an orthonormal basis the denominators in Theorem~\ref{thm:weights} are all $1$, so the weights are just $c_j=\bv{y}\cdot\bv{e}_j$. For $\bv{y}=(4,4,-2)$: $c_1=\tfrac{6}{\sqrt3}=2\sqrt3$, $c_2=\tfrac{-6}{\sqrt6}=-\sqrt6$, $c_3=\tfrac{6}{\sqrt2}=3\sqrt2$. These agree with Example~\ref{ex:weights1}: $2\sqrt3\,\bv{e}_1=2\bv{a}_1$, $-\sqrt6\,\bv{e}_2=-\bv{a}_2$ and $3\sqrt2\,\bv{e}_3=3\bv{a}_3$.
+\end{exmp}
+
+Now put orthonormal vectors in the columns of a matrix $U=\begin{bmatrix}\bv{u}_1&\cdots&\bv{u}_p\end{bmatrix}$. The $(i,j)$ entry of $U\T U$ is row $i$ of $U\T$ times column $j$ of $U$, that is $\bv{u}_i\T\bv{u}_j=\bv{u}_i\cdot\bv{u}_j$ (the row--column rule, Theorem~\ref{2.1-thm:rowcol}).
+
+\begin{thm}{Orthonormal columns}{utu}
+For an $m\times p$ matrix $U$, the columns of $U$ form an orthonormal set if and only if $U\T U=I_p$.
+\end{thm}
+
+\begin{proof}
+The $(i,j)$ entry of $U\T U$ is $\bv{u}_i\cdot\bv{u}_j$. The matrix $U\T U$ equals $I_p$ exactly when every diagonal entry $\bv{u}_i\cdot\bv{u}_i$ equals $1$ (each column is a unit vector) and every off-diagonal entry $\bv{u}_i\cdot\bv{u}_j$, $i\neq j$, equals $0$ (the columns are orthogonal). These are exactly the conditions of an orthonormal set.
+\end{proof}
+
+\begin{exmp}{Two orthonormal columns in $\R^3$}{twobythree}
+Let $U=\tfrac13\begin{bmatrix}1&2\\2&1\\2&-2\end{bmatrix}$. The columns are $\tfrac13(1,2,2)$ and $\tfrac13(2,1,-2)$, with squared lengths $\tfrac19(1+4+4)=1$ and $\tfrac19(4+1+4)=1$ and dot product $\tfrac19(2+2-4)=0$. So $U\T U=I_2$. But $UU\T$ is the $3\times3$ matrix $\tfrac19\begin{bmatrix}5&4&-2\\4&5&2\\-2&2&8\end{bmatrix}$, which is not $I_3$. The order of the product matters when $U$ is not square.
+\end{exmp}
+
+\begin{thm}{Orthonormal columns preserve lengths and dot products}{preserve}
+Let $U$ be an $m\times p$ matrix with orthonormal columns and let $\bv{x},\bv{y}$ be in $\R^p$. Then
+\begin{enumerate}[label=(\alph*),itemsep=1pt]
+  \item $(U\bv{x})\cdot(U\bv{y})=\bv{x}\cdot\bv{y}$;
+  \item $\lVert U\bv{x}\rVert=\lVert\bv{x}\rVert$;
+  \item $(U\bv{x})\cdot(U\bv{y})=0$ if and only if $\bv{x}\cdot\bv{y}=0$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+(a)~$(U\bv{x})\cdot(U\bv{y})=(U\bv{x})\T(U\bv{y})=\bv{x}\T U\T U\bv{y}=\bv{x}\T\bv{y}=\bv{x}\cdot\bv{y}$, using $(AB)\T=B\T A\T$ (Theorem~\ref{2.1-thm:transprops}(d)) and $U\T U=I$ (Theorem~\ref{thm:utu}). (b)~Put $\bv{y}=\bv{x}$ in (a): $\lVert U\bv{x}\rVert^2=\lVert\bv{x}\rVert^2$, and both lengths are nonnegative. (c)~Both sides of (a) are $0$ together.
+\end{proof}
+
+\begin{exmp}{Lengths and dot products are kept}{preserveex}
+With $U$ from Example~\ref{ex:twobythree}, take $\bv{x}=(6,3)$ and $\bv{y}=(1,2)$. Then $U\bv{x}=\tfrac13(6+6,\ 12+3,\ 12-6)=(4,5,2)$ and $U\bv{y}=\tfrac13(1+4,\ 2+2,\ 2-4)=(\tfrac53,\tfrac43,-\tfrac23)$. Indeed $\lVert U\bv{x}\rVert^2=16+25+4=45=36+9=\lVert\bv{x}\rVert^2$, and $(U\bv{x})\cdot(U\bv{y})=\tfrac{20}{3}+\tfrac{20}{3}-\tfrac43=12=\bv{x}\cdot\bv{y}$.
+\end{exmp}
+
+\begin{think}{A matrix that is not square}{nonsquare}
+In Example~\ref{ex:twobythree} the matrix $U$ is $3\times2$. (a)~Can the columns of $U$ span $\R^3$? Use the number of pivots. (b)~Why does $U\T U=I_2$ not contradict $UU\T\neq I_3$?
+\end{think}
+
+\begin{kc}{Orthonormal columns}{kcorthonorm}
+Which matrices have orthonormal columns? (a)~$\begin{bmatrix}\tfrac35&-\tfrac45\\\tfrac45&\tfrac35\end{bmatrix}$. (b)~$\begin{bmatrix}1&1\\1&-1\end{bmatrix}$. (c)~$\begin{bmatrix}\tfrac12\\\tfrac12\\\tfrac12\\\tfrac12\end{bmatrix}$.
+\end{kc}
+
+% ---------------------------------------------------------------------
+\subsection*{Orthogonal matrices}
+
+\begin{defn}{Orthogonal matrix}{orthmat}
+An \emph{orthogonal matrix} is a \emph{square} matrix $U$ whose columns are orthonormal.
+\end{defn}
+
+The word ``orthogonal'' is unfortunate: the columns must be orthonormal, not just orthogonal. For square matrices the extra equation $UU\T=I$ comes for free.
+
+\begin{thm}{Orthogonal matrices}{orthinv}
+Let $U$ be an $n\times n$ matrix with orthonormal columns. Then $U$ is invertible, $U^{-1}=U\T$, and the \emph{rows} of $U$ are also orthonormal.
+\end{thm}
+
+\begin{proof}
+By Theorem~\ref{thm:utu}, $U\T U=I_n$. For square matrices one product equal to $I$ is enough (Theorem~\ref{2.3-thm:onesided}), so $UU\T=I_n$ as well, $U$ is invertible and $U^{-1}=U\T$. The $(i,j)$ entry of $UU\T$ is the dot product of row $i$ of $U$ with row $j$ of $U$. Since $UU\T=I_n$, these dot products are $1$ for $i=j$ and $0$ for $i\neq j$: the rows are orthonormal.
+\end{proof}
+
+\begin{exmp}{An orthogonal matrix}{orthex}
+Let $V=\tfrac13\begin{bmatrix}1&2&-2\\2&1&2\\2&-2&-1\end{bmatrix}$. Its columns $\tfrac13(1,2,2)$, $\tfrac13(2,1,-2)$, $\tfrac13(-2,2,-1)$ have squared lengths $1$ and dot products $\tfrac19(2+2-4)=0$, $\tfrac19(-2+4-2)=0$, $\tfrac19(-4+2+2)=0$. So $V$ is orthogonal. The rows $(1,2,-2)$, $(2,1,2)$, $(2,-2,-1)$ (each divided by $3$) are orthonormal too: their dot products are $2+2-4=0$, $2-4+2=0$ and $4-2-2=0$, and each has squared length $9$.
+\end{exmp}
+
+\begin{exmp}{Solving a system without row reduction}{solveorth}
+Solve $V\bv{x}=\bv{b}$ for $\bv{b}=(-3,6,0)$, with $V$ from Example~\ref{ex:orthex}. Since $V^{-1}=V\T$,
+\[
+\bv{x}=V\T\bv{b}=\tfrac13\begin{bmatrix}1&2&2\\2&1&-2\\-2&2&-1\end{bmatrix}\begin{bmatrix}-3\\6\\0\end{bmatrix}=\tfrac13(-3+12,\ -6+6,\ 6+12)=(3,0,6).
+\]
+Check: $V\bv{x}=\tfrac13(3-12,\ 6+12,\ 6-6)=(-3,6,0)$. \ $\checkmark$ Note also $\lVert\bv{x}\rVert^2=45=\lVert\bv{b}\rVert^2$, as Theorem~\ref{thm:preserve}(b) says.
+\end{exmp}
+
+\begin{exmp}{Rotations and reflections}{rotref}
+Let $R=\begin{bmatrix}\tfrac35&-\tfrac45\\\tfrac45&\tfrac35\end{bmatrix}$ and $F=\begin{bmatrix}\tfrac35&\tfrac45\\\tfrac45&-\tfrac35\end{bmatrix}$. The columns of $R$ are $(\tfrac35,\tfrac45)$ and $(-\tfrac45,\tfrac35)$: squared lengths $\tfrac{9+16}{25}=1$, dot product $-\tfrac{12}{25}+\tfrac{12}{25}=0$. Those of $F$ are $(\tfrac35,\tfrac45)$ and $(\tfrac45,-\tfrac35)$: lengths $1$, dot product $\tfrac{12}{25}-\tfrac{12}{25}=0$. Both are orthogonal matrices: $R$ turns the plane about the origin and $F$ flips it across a line, and neither changes any length. The inverse of $R$ is $R\T=\tfrac15\begin{bmatrix}3&4\\-4&3\end{bmatrix}$, the turn in the opposite direction.
+\end{exmp}
+
+\begin{exmp}{Completing an orthogonal set}{complete}
+Given $\bv{u}_1=(1,2,2)$ and $\bv{u}_2=(2,1,-2)$, which are orthogonal, find a third vector $\bv{u}_3$ orthogonal to both. Such a vector satisfies $\bv{u}_1\cdot\bv{x}=0$ and $\bv{u}_2\cdot\bv{x}=0$, that is $A\bv{x}=\bv{0}$ for $A=\begin{bmatrix}1&2&2\\2&1&-2\end{bmatrix}$ (Procedure~\ref{6.1-proc:findperp}). Row reducing,
+\begin{align*}
+\begin{amat}{ccc}1&2&2\\2&1&-2\end{amat}\rops{R_2-2R_1}\begin{amat}{ccc}1&2&2\\0&-3&-6\end{amat}\rops{-\frac13R_2}\begin{amat}{ccc}1&2&2\\0&1&2\end{amat}\rops{R_1-2R_2}\begin{amat}{ccc}1&0&-2\\0&1&2\end{amat}
+\end{align*}
+gives $x_1=2x_3$, $x_2=-2x_3$, so $\bv{x}=x_3(2,-2,1)$. Take $\bv{u}_3=(2,-2,1)$. Then $\{\bv{u}_1,\bv{u}_2,\bv{u}_3\}$ is an orthogonal set of three nonzero vectors, hence an orthogonal basis for $\R^3$, and dividing by $3$ gives an orthonormal basis.
+\end{exmp}
+
+\begin{warn}[Orthogonal set is not orthogonal matrix]
+A matrix whose columns are only \emph{orthogonal} is not an orthogonal matrix. For $\begin{bmatrix}1&1\\1&-1\end{bmatrix}$ the columns are orthogonal but have length $\sqrt2$, and $U\T U=2I\neq I$. And $U\T U=I$ for a non-square $U$ does not make $U$ invertible (Example~\ref{ex:twobythree}).
+\end{warn}
+
+\begin{kc}{True or false}{kctf}
+Decide, with a reason. (a)~Every orthogonal set is linearly independent. (b)~If $U$ has orthonormal columns then $\lVert U\bv{x}\rVert=\lVert\bv{x}\rVert$. (c)~The inverse of an orthogonal matrix is orthogonal. (d)~If $\{\bv{u}_1,\bv{u}_2\}$ is an orthogonal basis and $\bv{y}$ is a multiple of $\bv{u}_1$, then the weight of $\bv{u}_2$ in $\bv{y}$ is $0$. (e)~$\proj_L\bv{y}$ changes if $\bv{u}$ is replaced by $5\bv{u}$.
+\end{kc}
+
+\begin{think}{Rows and columns}{rowscols}
+(a)~If the columns of a square matrix $U$ are orthonormal, why must $U\T$ also have orthonormal columns? (b)~Use this to explain why the inverse of an orthogonal matrix is orthogonal.
+\end{think}
+
+\begin{think}{Angles are kept}{angles}
+Using Theorem~\ref{thm:preserve}, show that for $U$ with orthonormal columns, the angle between $U\bv{x}$ and $U\bv{y}$ (Section~6.1) equals the angle between $\bv{x}$ and $\bv{y}$, whenever both $\bv{x}$ and $\bv{y}$ are nonzero.
+\end{think}
+
+\subsection*{Summary}
+\begin{itemize}
+  \item \textbf{Orthogonal sets.} Pairwise orthogonal \emph{nonzero} vectors are independent (Theorem~\ref{thm:indep}).
+  \item \textbf{Weights.} In an orthogonal basis $c_j=(\bv{y}\cdot\bv{u}_j)/(\bv{u}_j\cdot\bv{u}_j)$ (Theorem~\ref{thm:weights}, Procedure~\ref{proc:expand}). If $\bv{y}$ is not in the span, the formula's combination is not $\bv{y}$ (Example~\ref{ex:notin}).
+  \item \textbf{Projection onto a line.} $\proj_L\bv{y}=\dfrac{\bv{y}\cdot\bv{u}}{\bv{u}\cdot\bv{u}}\bv{u}$; the remainder $\bv{z}$ is perpendicular to $\bv{u}$ (Theorem~\ref{thm:split}).
+  \item \textbf{Orthonormal columns.} $U\T U=I$; lengths, dot products and orthogonality are kept (Theorems~\ref{thm:utu} and~\ref{thm:preserve}).
+  \item \textbf{Orthogonal matrices.} Square with orthonormal columns: $U^{-1}=U\T$, rows orthonormal too (Theorem~\ref{thm:orthinv}).
+\end{itemize}
+
+\subsection*{Questions to think about before the next section}
+\begin{enumerate}[nosep]
+  \item In Theorem~\ref{thm:weights}, what does the formula give when $\bv{y}$ is not in $W$? Is the result still a vector in $W$?
+  \item For a line $L$, the vector $\bv{y}-\proj_L\bv{y}$ is perpendicular to $L$. Could we do the same for a plane $W$ with an orthogonal basis $\bv{u}_1,\bv{u}_2$, by adding up two projections?
+  \item If $U$ is a $3\times2$ matrix with orthonormal columns and $\bv{x}$ is in $\R^2$, what is $\lVert U\bv{x}\rVert$?
+\end{enumerate}
+
+% ---------------------------------------------------------------------
+\subsection*{Example bank}
+The thirteen examples below add problem types that the worked examples above do not cover: finding an unknown entry of an orthogonal set; weights in $\R^4$; deciding whether a vector is in a span; completing an orthogonal basis; projections and distances; the matrix of a projection; deciding which matrices are orthogonal; completing an orthogonal matrix; solving with the transpose; and three proofs. Within each group the examples go from easier to harder. Work each problem before you read its solution.
+
+\textbf{What is in this bank.}
+\begin{itemize}
+  \item \textbf{Bank A, orthogonal sets and weights:} Example~\ref{ex:b-findk} (an unknown entry), Example~\ref{ex:b-had} (weights in $\R^4$), Example~\ref{ex:b-inspan} (is $\bv{y}$ in the span?) and Example~\ref{ex:b-third} (a third orthogonal vector).
+  \item \textbf{Bank B, projections onto a line:} Example~\ref{ex:b-proj2} (a projection with whole-number result), Example~\ref{ex:b-perplen} (the perpendicular part in $\R^3$) and Example~\ref{ex:b-pmat} (the matrix of a projection).
+  \item \textbf{Bank C, orthonormal and orthogonal matrices:} Example~\ref{ex:b-which} (which matrices qualify), Example~\ref{ex:b-complete} (completing a matrix) and Example~\ref{ex:b-solve} (solving with the transpose).
+  \item \textbf{Bank D, proofs:} Example~\ref{ex:b-prod} (beginner: a product of orthogonal matrices), Example~\ref{ex:b-zero} (intermediate: a vector in the span and perpendicular to the basis is $\bv{0}$) and Example~\ref{ex:b-lin} (intermediate: the projection respects sums and multiples).
+\end{itemize}
+
+\subsection*{Bank A: Orthogonal sets and weights}
+\begin{exmp}{An unknown entry}{b-findk}
+For which $k$ is $\{(k,3,1),(k,-4,-4)\}$ an orthogonal set?
+
+\textbf{Solution.} The only pair is the two vectors, and their dot product is $k\cdot k+3(-4)+1(-4)=k^2-16$. This is $0$ when $k^2=16$, so $k=4$ or $k=-4$. Check $k=4$: $(4,3,1)\cdot(4,-4,-4)=16-12-4=0$. \ $\checkmark$ There are two answers; do not stop at the positive one.
+\end{exmp}
+
+\begin{exmp}{Weights in $\R^4$}{b-had}
+The vectors $\bv{h}_1=(1,1,1,1)$, $\bv{h}_2=(1,1,-1,-1)$, $\bv{h}_3=(1,-1,1,-1)$ and $\bv{h}_4=(1,-1,-1,1)$ are pairwise orthogonal, each with squared length $4$. Write $\bv{y}=(4,2,6,0)$ in this basis.
+
+\textbf{Solution.} Compute the four numerators: $\bv{y}\cdot\bv{h}_1=4+2+6+0=12$; $\bv{y}\cdot\bv{h}_2=4+2-6-0=0$; $\bv{y}\cdot\bv{h}_3=4-2+6-0=8$; $\bv{y}\cdot\bv{h}_4=4-2-6+0=-4$. Dividing by $4$, the weights are $3$, $0$, $2$ and $-1$. A zero weight is a perfectly good answer: $\bv{h}_2$ is not needed. Check: $3\bv{h}_1+2\bv{h}_3-\bv{h}_4=(3+2-1,\ 3-2+1,\ 3+2+1,\ 3-2-1)=(4,2,6,0)$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{Is the vector in the span?}{b-inspan}
+Let $\bv{p}_1=(1,1,1)$, $\bv{p}_2=(1,-2,1)$, $\bv{y}=(5,-1,5)$. Decide whether $\bv{y}$ is in $\Span\{\bv{p}_1,\bv{p}_2\}$.
+
+\textbf{Solution.} The vectors $\bv{p}_1,\bv{p}_2$ are orthogonal ($1-2+1=0$), with squared lengths $3$ and $6$. The candidate weights are $c_1=(5-1+5)/3=3$ and $c_2=(5+2+5)/6=2$. Test the combination: $3(1,1,1)+2(1,-2,1)=(5,-1,5)=\bv{y}$. So yes, $\bv{y}$ is in the span, with weights $3$ and $2$. (Had the sum come out different from $\bv{y}$, the answer would be no, by Theorem~\ref{thm:weights}.)
+\end{exmp}
+
+\begin{exmp}{A third orthogonal vector}{b-third}
+The vectors $\bv{u}_1=(1,-2,2)$ and $\bv{u}_2=(2,2,1)$ are orthogonal. Find an orthogonal basis for $\R^3$ that contains both.
+
+\textbf{Solution.} We need $\bv{x}$ with $\bv{u}_1\cdot\bv{x}=0$ and $\bv{u}_2\cdot\bv{x}=0$. Row reduce
+\[
+\begin{amat}{ccc}1&-2&2\\2&2&1\end{amat}\rops{R_2-2R_1}\begin{amat}{ccc}1&-2&2\\0&6&-3\end{amat}\rops{\frac16R_2}\begin{amat}{ccc}1&-2&2\\0&1&-\frac12\end{amat}\rops{R_1+2R_2}\begin{amat}{ccc}1&0&1\\0&1&-\frac12\end{amat}.
+\]
+So $x_1=-x_3$ and $x_2=\tfrac12x_3$; with $x_3=-2$ we get $\bv{u}_3=(2,-1,-2)$. Check: $\bv{u}_1\cdot\bv{u}_3=2+2-4=0$ and $\bv{u}_2\cdot\bv{u}_3=4-2-2=0$. \ $\checkmark$ Three nonzero orthogonal vectors in $\R^3$ are independent (Theorem~\ref{thm:indep}), so the $3\times3$ matrix with these columns is invertible and its columns span $\R^3$ (Theorem~\ref{2.3-thm:imt}): they form a basis.
+\end{exmp}
+
+\subsection*{Bank B: Projections onto a line}
+\begin{exmp}{A projection with a whole-number answer}{b-proj2}
+Project $\bv{y}=(3,4)$ onto $L=\Span\{(2,1)\}$.
+
+\textbf{Solution.} $\bv{y}\cdot\bv{u}=6+4=10$, $\bv{u}\cdot\bv{u}=5$, so $\proj_L\bv{y}=\tfrac{10}{5}(2,1)=(4,2)$ and $\bv{z}=(3,4)-(4,2)=(-1,2)$. Check: $\bv{z}\cdot\bv{u}=-2+2=0$. \ $\checkmark$
+\end{exmp}
+
+\begin{exmp}{The perpendicular part in $\R^3$}{b-perplen}
+Let $\bv{u}=(2,1,2)$ and $\bv{y}=(1,1,3)$. Find $\proj_L\bv{y}$, the perpendicular part and its length.
+
+\textbf{Solution.} $\bv{y}\cdot\bv{u}=2+1+6=9=\bv{u}\cdot\bv{u}$, so $\proj_L\bv{y}=1\cdot\bv{u}=(2,1,2)$ and $\bv{z}=(1,1,3)-(2,1,2)=(-1,0,1)$, of length $\sqrt2$. Check: $\bv{z}\cdot\bv{u}=-2+0+2=0$. \ $\checkmark$ Here the fraction is exactly $1$ because $\bv{y}-\bv{u}$ happens to be perpendicular to $\bv{u}$.
+\end{exmp}
+
+\begin{exmp}{The matrix of a projection}{b-pmat}
+Let $L=\Span\{(1,2)\}$. Show that $\proj_L\bv{y}=P\bv{y}$ for a matrix $P$, and compute $P$.
+
+\textbf{Solution.} With $\bv{u}=(1,2)$ we have $\bv{u}\cdot\bv{u}=5$ and $(\bv{y}\cdot\bv{u})\bv{u}=\bv{u}(\bv{u}\T\bv{y})=(\bv{u}\bv{u}\T)\bv{y}$, so $P=\tfrac15\bv{u}\bv{u}\T=\tfrac15\begin{bmatrix}1&2\\2&4\end{bmatrix}$. Test with $\bv{y}=(7,1)$: $P\bv{y}=\tfrac15(7+2,\ 14+4)=(\tfrac95,\tfrac{18}5)$, and the formula gives $\tfrac{9}{5}(1,2)$. \ $\checkmark$ Also $P\bv{u}=\bv{u}$, as it must: $\bv{u}$ is already on the line.
+\end{exmp}
+
+\subsection*{Bank C: Orthonormal and orthogonal matrices}
+\begin{exmp}{Which matrices qualify?}{b-which}
+Let $A=\tfrac15\begin{bmatrix}3&4\\4&-3\end{bmatrix}$, $B=\tfrac13\begin{bmatrix}2&1\\2&-2\\1&2\end{bmatrix}$ and $C=\begin{bmatrix}1&1\\1&-1\end{bmatrix}$. Which have orthonormal columns? Which are orthogonal matrices?
+
+\textbf{Solution.} For $A$: $\tfrac1{25}(9+16)=1$, $\tfrac1{25}(16+9)=1$ and $\tfrac1{25}(12-12)=0$. Orthonormal columns, and $A$ is square, so $A$ is orthogonal. For $B$: the columns are $\tfrac13(2,2,1)$ and $\tfrac13(1,-2,2)$ with squared lengths $\tfrac99=1$ each and dot product $\tfrac19(2-4+2)=0$: orthonormal columns, but $B$ is $3\times2$, so $B$ is \emph{not} an orthogonal matrix. For $C$: the columns are orthogonal ($1-1=0$) but each has squared length $2$, so the columns are not orthonormal and $C$ is not orthogonal.
+\end{exmp}
+
+\begin{exmp}{Completing an orthogonal matrix}{b-complete}
+Find a third column so that $U=\tfrac17\begin{bmatrix}2&3&*\\3&-6&*\\6&2&*\end{bmatrix}$ is orthogonal.
+
+\textbf{Solution.} The first two columns are $\tfrac17(2,3,6)$ and $\tfrac17(3,-6,2)$; both have squared length $\tfrac{49}{49}=1$ and dot product $\tfrac1{49}(6-18+12)=0$. We need $\bv{x}$ orthogonal to $(2,3,6)$ and $(3,-6,2)$. A vector that works is $(6,2,-3)$: $12+6-18=0$ and $18-12-6=0$, and its squared length is $36+4+9=49$. So the third column is $\tfrac17(6,2,-3)$; the vector $-\tfrac17(6,2,-3)$ works as well, and these are the only two choices.
+\end{exmp}
+
+\begin{exmp}{Solving with the transpose}{b-solve}
+Let $W=\tfrac17\begin{bmatrix}2&3&6\\3&-6&2\\6&2&-3\end{bmatrix}$ (orthogonal, by the previous example). Solve $W\bv{x}=\bv{b}$ for $\bv{b}=(7,14,-7)$.
+
+\textbf{Solution.} $W$ is symmetric, so $W\T=W=W^{-1}$, and $\bv{x}=W\T\bv{b}=\tfrac17(14+42-42,\ 21-84-14,\ 42+28+21)=\tfrac17(14,-77,91)=(2,-11,13)$. Check by lengths: $\lVert\bv{x}\rVert^2=4+121+169=294$ and $\lVert\bv{b}\rVert^2=49+196+49=294$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Bank D: Proofs}
+\begin{exmp}{A product of orthogonal matrices}{b-prod}
+\textbf{Statement.} If $P$ and $Q$ are $n\times n$ orthogonal matrices, then $PQ$ is orthogonal.
+
+\textbf{Plan.} $PQ$ is square, so by Theorem~\ref{thm:utu} we must show $(PQ)\T(PQ)=I$. Expand the transpose of a product and use $P\T P=I$ and $Q\T Q=I$.
+
+\textbf{Proof.}
+\emph{Step 1 (transpose of a product).} $(PQ)\T=Q\T P\T$ by Theorem~\ref{2.1-thm:transprops}(d).
+\emph{Step 2 (regroup).} $(PQ)\T(PQ)=Q\T P\T PQ=Q\T(P\T P)Q$.
+\emph{Step 3 (use the hypothesis twice).} $P\T P=I$ gives $Q\T IQ=Q\T Q$, and $Q\T Q=I$. So $(PQ)\T(PQ)=I$. \qquad$\blacksquare$
+
+\textbf{Common mistake.} Writing $(PQ)\T=P\T Q\T$ (same order). The product reverses; here the middle $P\T P$ only collapses because the order is $Q\T P\T$.
+\end{exmp}
+
+\begin{exmp}{Orthogonal to the basis, and in the span}{b-zero}
+\textbf{Statement.} Let $\{\bv{u}_1,\dots,\bv{u}_p\}$ be an orthogonal set of nonzero vectors. If $\bv{y}$ is in $\Span\{\bv{u}_1,\dots,\bv{u}_p\}$ and $\bv{y}\cdot\bv{u}_j=0$ for every $j$, then $\bv{y}=\bv{0}$.
+
+\textbf{Plan.} Since $\bv{y}$ is in the span, Theorem~\ref{thm:weights} gives its weights as $\bv{y}\cdot\bv{u}_j$ divided by something nonzero. If all numerators are $0$, all weights are $0$.
+
+\textbf{Proof.}
+\emph{Step 1 (the set is a basis of its span).} By Theorem~\ref{thm:indep} the set is independent, so it is an orthogonal basis for its span.
+\emph{Step 2 (weights).} By Theorem~\ref{thm:weights}, $\bv{y}=c_1\bv{u}_1+\cdots+c_p\bv{u}_p$ with $c_j=(\bv{y}\cdot\bv{u}_j)/(\bv{u}_j\cdot\bv{u}_j)=0/(\bv{u}_j\cdot\bv{u}_j)=0$.
+\emph{Step 3 (conclude).} Every weight is $0$, so $\bv{y}=\bv{0}$. \qquad$\blacksquare$
+
+\textbf{Common mistake.} Forgetting the hypothesis ``in the span''. Without it the claim is false: $\bv{y}=(0,0,1)$ is orthogonal to $(1,0,0)$ and $(0,1,0)$ but is not $\bv{0}$; it simply lies outside their span.
+\end{exmp}
+
+\begin{exmp}{The projection respects sums and multiples}{b-lin}
+\textbf{Statement.} For a line $L=\Span\{\bv{u}\}$ and vectors $\bv{y}_1,\bv{y}_2$ and a scalar $c$: $\proj_L(\bv{y}_1+\bv{y}_2)=\proj_L\bv{y}_1+\proj_L\bv{y}_2$ and $\proj_L(c\bv{y}_1)=c\,\proj_L\bv{y}_1$.
+
+\textbf{Plan.} The projection is given by a formula in which $\bv{y}$ appears only through the dot product $\bv{y}\cdot\bv{u}$. The rules of Theorem~\ref{6.1-thm:dotprops} split that dot product.
+
+\textbf{Proof.}
+\emph{Step 1 (sums).} $\proj_L(\bv{y}_1+\bv{y}_2)=\dfrac{(\bv{y}_1+\bv{y}_2)\cdot\bv{u}}{\bv{u}\cdot\bv{u}}\bv{u}=\dfrac{\bv{y}_1\cdot\bv{u}+\bv{y}_2\cdot\bv{u}}{\bv{u}\cdot\bv{u}}\bv{u}$ by Theorem~\ref{6.1-thm:dotprops}(b).
+\emph{Step 2 (split the fraction).} This equals $\dfrac{\bv{y}_1\cdot\bv{u}}{\bv{u}\cdot\bv{u}}\bv{u}+\dfrac{\bv{y}_2\cdot\bv{u}}{\bv{u}\cdot\bv{u}}\bv{u}=\proj_L\bv{y}_1+\proj_L\bv{y}_2$.
+\emph{Step 3 (multiples).} $(c\bv{y}_1)\cdot\bv{u}=c(\bv{y}_1\cdot\bv{u})$ by Theorem~\ref{6.1-thm:dotprops}(c), so $\proj_L(c\bv{y}_1)=c\,\proj_L\bv{y}_1$. \qquad$\blacksquare$
+
+\textbf{Common mistake.} Claiming $\proj_L(\bv{y}_1\bv{y}_2)$ or $\proj_L(\bv{y}^2)$ behave the same way: only sums and scalar multiples are respected. Numerical check with $\bv{u}=(1,2)$: $\proj_L(7,1)=(\tfrac95,\tfrac{18}5)$ and $\proj_L(0,3)=(\tfrac65,\tfrac{12}5)$, whose sum $(3,6)$ is $\proj_L(7,4)=\tfrac{15}{5}(1,2)$. \ $\checkmark$
+\end{exmp}
+
+\subsection*{Answers and discussion}
+\begin{description}[leftmargin=0pt,itemsep=5pt]
+  \item[Knowledge Check \ref{kc:kcorthset}.] (a)~$4-4=0$: orthogonal. (b)~$(1,0,1)\cdot(0,3,0)=0$, $(1,0,1)\cdot(1,0,-1)=0$, $(0,3,0)\cdot(1,0,-1)=0$: orthogonal. (c)~$(1,1,0)\cdot(1,-1,0)=0$ but $(1,1,0)\cdot(1,1,1)=2\neq0$: not orthogonal.
+  \item[Knowledge Check \ref{kc:kcweights}.] $\bv{u}_1\cdot\bv{u}_2=-2+2=0$, $\bv{u}_1\cdot\bv{u}_1=5$, $\bv{u}_2\cdot\bv{u}_2=5$. $\bv{y}\cdot\bv{u}_1=14+4=18$ and $\bv{y}\cdot\bv{u}_2=-7+8=1$, so $c_1=\tfrac{18}{5}$ and $c_2=\tfrac15$. Check: $\tfrac{18}{5}(2,1)+\tfrac15(-1,2)=(\tfrac{36-1}{5},\tfrac{18+2}{5})=(7,4)$.
+  \item[Knowledge Check \ref{kc:kcproj}.] $\bv{y}\cdot\bv{u}=6+4=10$, $\bv{u}\cdot\bv{u}=5$, so $\proj_L\bv{y}=2(2,1)=(4,2)$ and $\bv{z}=(3,4)-(4,2)=(-1,2)$; $\bv{z}\cdot\bv{u}=-2+2=0$.
+  \item[Knowledge Check \ref{kc:kcorthonorm}.] (a)~Yes: $\tfrac{9+16}{25}=1$ for both columns and $-\tfrac{12}{25}+\tfrac{12}{25}=0$ (it is $R$ of Example~\ref{ex:rotref}). (b)~No: the columns are orthogonal but have length $\sqrt2$. (c)~Yes: a single column is orthonormal if it has length $1$, and $4\cdot\tfrac14=1$.
+  \item[Knowledge Check \ref{kc:kctf}.] (a)~False: $\{(1,0),(0,0)\}$ (Example~\ref{ex:zerocase}); true for nonzero vectors. (b)~True (Theorem~\ref{thm:preserve}(b)). (c)~True: $U^{-1}=U\T$ has orthonormal columns, because the rows of $U$ are orthonormal (Theorem~\ref{thm:orthinv}). (d)~True: $\bv{y}\cdot\bv{u}_2=0$ because $\bv{u}_1\cdot\bv{u}_2=0$. (e)~False: the fraction changes by a factor $1/5$ and $5\bv{u}$ by a factor $5$; the product is unchanged (Pause and think~\ref{think:scaleproj}).
+  \item[Pause and think \ref{think:zerovec}.] (a)~The last step: $\bv{u}_j\cdot\bv{u}_j=0$, so we cannot divide and cannot conclude $c_j=0$. (b)~Yes and yes: there are no pairs to check, and one nonzero vector is independent.
+  \item[Pause and think \ref{think:notinspan}.] (a)~$c_1=2$, $c_2=\tfrac12$ as before, and $c_3=\bv{y}\cdot\bv{a}_3/2=(2-3)/2=-\tfrac12$. (b)~The leftover vector is $-\tfrac12\bv{a}_3$: the third weight. So $\bv{y}=2\bv{a}_1+\tfrac12\bv{a}_2-\tfrac12\bv{a}_3$, and the part outside $W$ is exactly the $\bv{a}_3$ term.
+  \item[Pause and think \ref{think:scaleproj}.] $(\bv{y}\cdot2\bv{u})/(2\bv{u}\cdot2\bv{u})=20/36=\tfrac59$, and $\tfrac59(2,4,4)=(\tfrac{10}{9},\tfrac{20}{9},\tfrac{20}{9})$: the same vector. The factor $2$ in the numerator and the factor $4$ in the denominator, together with the factor $2$ in the vector, cancel. The projection depends on the line, not on the vector chosen to describe it.
+  \item[Pause and think \ref{think:nonsquare}.] (a)~No. $U$ has only $2$ columns, hence at most $2$ pivots, but spanning $\R^3$ needs a pivot in each of the $3$ rows. (b)~$U\T U$ is $2\times2$ and $UU\T$ is $3\times3$; they are different products. The one-sided inverse theorem (Theorem~\ref{2.3-thm:onesided}) needs square matrices.
+  \item[Pause and think \ref{think:rowscols}.] (a)~The columns of $U\T$ are the rows of $U$, which are orthonormal by Theorem~\ref{thm:orthinv}. (b)~$U^{-1}=U\T$ is square with orthonormal columns, hence orthogonal.
+  \item[Pause and think \ref{think:angles}.] The angle is determined by $\cos\theta=\bv{x}\cdot\bv{y}/(\lVert\bv{x}\rVert\lVert\bv{y}\rVert)$. By Theorem~\ref{thm:preserve}, replacing $\bv{x},\bv{y}$ by $U\bv{x},U\bv{y}$ changes neither the numerator (part (a)) nor the lengths in the denominator (part (b)). Also $U\bv{x}\neq\bv{0}$ since its length is that of $\bv{x}$.
+  \item[Questions to think about.] (1)~A vector in $W$: the formula always gives a combination of the $\bv{u}_j$, whether or not $\bv{y}$ is in $W$. In Example~\ref{ex:notin} it is $(\tfrac52,1,\tfrac52)$, and the leftover $\bv{y}-(\tfrac52,1,\tfrac52)$ is perpendicular to $W$. (2)~Try it on $W=\Span\{\bv{a}_1,\bv{a}_2\}$ and $\bv{y}=(2,1,3)$ of Example~\ref{ex:notin}: the two line projections are $2\bv{a}_1$ and $\tfrac12\bv{a}_2$, and their sum is the combination found there. (3)~$\lVert\bv{x}\rVert$, by Theorem~\ref{thm:preserve}(b): a $3\times2$ matrix with orthonormal columns keeps lengths.
+\end{description}
+
+\end{document}
