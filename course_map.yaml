@@ -41,8 +41,8 @@ modules:
   - {id: "5.2", chapter: 5, title: "The Characteristic Equation", tested: true, prereqs: ["5.1", "3.2"], status: done}
   - {id: "5.3", chapter: 5, title: "Diagonalization", tested: true, prereqs: ["5.2", "4.3"], status: done}
   - {id: "5.4", chapter: 5, title: "Eigenvectors and Linear Transformations", tested: true, prereqs: ["4.4"], status: done, note: "Matrix of a transformation and the diagonal case. Stands on 4.4 alone; introduces the change-of-basis matrix itself."}
-  - {id: "6.1", chapter: 6, title: "Inner Product, Length, and Orthogonality", tested: true, prereqs: ["4.2"], status: todo}
-  - {id: "6.2", chapter: 6, title: "Orthogonal Sets", tested: true, prereqs: ["6.1", "4.3"], status: todo}
+  - {id: "6.1", chapter: 6, title: "Inner Product, Length, and Orthogonality", tested: true, prereqs: ["4.2"], status: done}
+  - {id: "6.2", chapter: 6, title: "Orthogonal Sets", tested: true, prereqs: ["6.1", "4.3"], status: done}
   - {id: "6.3", chapter: 6, title: "Orthogonal Projections", tested: true, prereqs: ["6.2", "4.4"], status: todo, note: "Needed by 6.4, 6.5 and 6.7."}
   - {id: "6.4", chapter: 6, title: "The Gram-Schmidt Process", tested: true, prereqs: ["6.3"], status: todo}
   - {id: "6.5", chapter: 6, title: "Least-Squares Problems", tested: true, prereqs: ["6.3", "6.4"], status: todo, note: "Payoff for the chapter; ties back to inconsistent systems in Ch. 1."}
